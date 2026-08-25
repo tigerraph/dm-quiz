@@ -6,6 +6,12 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "4173"],
       "port": 4173
+    },
+    {
+      "name": "dm-quiz-mock",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["tools/mock-supabase.mjs"],
+      "port": 4173
     }
   ]
 }
