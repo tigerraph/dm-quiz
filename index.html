@@ -43,7 +43,9 @@ body.host #app{max-width:none; padding:0;}
 .btn.ghost{background:transparent; color:#fff; box-shadow:inset 0 0 0 2px var(--teal);}
 .btn.ghost:active{transform:translateY(3px); box-shadow:inset 0 0 0 2px var(--teal);}
 .btn:disabled{opacity:.55; cursor:default;}
-.btn:focus-visible,.tile:focus-visible,.pill:focus-visible{outline:3px solid var(--teal); outline-offset:3px;}
+.btn:focus-visible,.tile:focus-visible,.pill:focus-visible,
+.namewrap input:focus-visible,.picker a:focus-visible{outline:3px solid var(--teal); outline-offset:3px;}
+.namewrap input:focus{outline:3px solid var(--teal); outline-offset:2px; border-color:transparent;}
 .pills{display:flex; gap:8px; justify-content:center;}
 .pill{
   font-family:inherit; font-weight:800; font-size:.8rem; letter-spacing:.06em;
@@ -130,7 +132,10 @@ body.host #app{max-width:none; padding:0;}
      font-size:.94rem; line-height:1.45; text-align:left; box-shadow:var(--paper-shadow);}
 .why b{display:block; font-weight:800; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase;
        color:var(--blue); margin-bottom:4px;}
-.nextrow{display:flex; justify-content:center;}
+.nextrow{display:flex; justify-content:center; margin-top:auto; padding-top:4px;}
+.stage.rev{gap:12px;}
+.stage.rev .qtext{margin:0 2px; font-size:1rem; font-weight:600; opacity:.85;}
+.stage.rev .grid{margin-top:0;}
 
 /* ---------- end ---------- */
 .bignum{font-weight:800; font-size:clamp(3rem,15vw,4.4rem); line-height:1; margin:0;}
@@ -144,34 +149,41 @@ body.host #app{max-width:none; padding:0;}
 
 /* ---------- host view (beamer) ---------- */
 body.host{overflow:hidden;}
-.hostwrap{height:100dvh; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-          gap:clamp(20px,3vw,48px); padding:clamp(20px,3vw,46px); align-items:center;}
-.hostleft{display:flex; flex-direction:column; gap:clamp(12px,2vh,26px); min-width:0;}
-.hostleft h1{font-size:clamp(1.8rem,4vw,3.4rem); line-height:1.05; margin:0;}
-.qrcard{background:#fff; border-radius:18px; padding:clamp(12px,1.6vw,22px); box-shadow:var(--paper-shadow);
-        width:min(100%,min(46vh,460px)); align-self:flex-start;}
+.hostwrap{height:100dvh; display:grid; grid-template-columns:minmax(0,42%) minmax(0,1fr);
+          gap:clamp(24px,3.5vw,64px); padding:clamp(24px,3.2vw,56px); align-items:stretch;}
+.hostleft{display:flex; flex-direction:column; justify-content:center; gap:clamp(10px,1.8vh,22px); min-width:0;}
+.hostleft h1{font-size:clamp(1.9rem,3.4vw,3.4rem); line-height:1.04; margin:0;}
+.hostleft .kicker{font-size:clamp(.85rem,1.2vw,1.15rem);}
+.qrcard{background:#fff; border-radius:20px; padding:clamp(12px,1.4vw,20px); box-shadow:var(--paper-shadow);
+        width:min(100%,52vh); align-self:flex-start;}
 .qrcard svg{display:block; width:100%; height:auto;}
-.joinurl{font-weight:700; font-size:clamp(.85rem,1.3vw,1.1rem); color:var(--teal); overflow-wrap:anywhere;}
-.hostright{display:flex; flex-direction:column; gap:clamp(10px,1.6vh,20px); min-width:0; height:100%;
+.scanlbl{font-weight:800; font-size:clamp(1rem,1.6vw,1.5rem); color:var(--green); margin:0;}
+.joinurl{font-weight:600; font-size:clamp(.8rem,1.05vw,1.05rem); color:rgba(255,255,255,.55);
+         overflow-wrap:anywhere; margin:0;}
+.hostright{display:flex; flex-direction:column; gap:clamp(12px,2vh,24px); min-width:0; min-height:0;
            justify-content:center;}
-.hoststats{display:flex; gap:clamp(18px,3vw,44px);}
-.hoststats .bignum{font-size:clamp(2.2rem,5vw,3.6rem);}
-.hostboard{background:rgba(255,255,255,.06); border-radius:16px; padding:clamp(12px,1.6vw,22px);
-           display:flex; flex-direction:column; gap:2px; min-height:0;}
-.hrow{display:grid; grid-template-columns:auto minmax(0,1fr) auto auto; gap:clamp(8px,1.2vw,18px);
-      align-items:baseline; font-size:clamp(.95rem,1.7vw,1.5rem); font-weight:600; padding:clamp(3px,.5vh,7px) 0;}
-.hrow .rk{font-weight:800; color:var(--teal); min-width:1.4em;}
+.hoststats{display:flex; gap:clamp(24px,4vw,64px); flex:0 0 auto;}
+.hoststats .metriclbl{font-size:clamp(.85rem,1.2vw,1.15rem); margin:0 0 2px;}
+.hoststats .bignum{font-size:clamp(2.4rem,4.6vw,4rem);}
+.hostboard{background:rgba(255,255,255,.06); border-radius:18px; padding:clamp(14px,1.6vw,26px);
+           display:flex; flex-direction:column; min-height:0; flex:0 1 auto; overflow:hidden;}
+.hrow{display:grid; grid-template-columns:auto minmax(0,1fr) auto auto; gap:clamp(10px,1.4vw,24px);
+      align-items:baseline; font-size:clamp(1rem,1.9vw,1.7rem); font-weight:600;
+      padding:clamp(4px,.7vh,10px) 0; border-bottom:1px solid rgba(255,255,255,.07);}
+.hrow:last-child{border-bottom:none;}
+.hrow .rk{font-weight:800; color:var(--teal); min-width:1.5em;}
 .hrow .nm{font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
-.hrow .cr{font-size:.72em; color:rgba(255,255,255,.6);}
-.hrow .sc{font-weight:800;}
-.hrow.top1 .rk,.hrow.top1 .sc{color:var(--green);}
-.hostempty{color:rgba(255,255,255,.55); font-size:clamp(.95rem,1.6vw,1.3rem); padding:8px 0;}
-.hostfoot{position:fixed; bottom:14px; right:20px; font-size:.72rem; color:rgba(255,255,255,.3);}
+.hrow .cr{font-size:.62em; color:rgba(255,255,255,.55); font-weight:600;}
+.hrow .sc{font-weight:800; font-variant-numeric:tabular-nums;}
+.hrow.top1{font-size:clamp(1.15rem,2.3vw,2.1rem);}
+.hrow.top1 .rk,.hrow.top1 .sc,.hrow.top1 .nm{color:var(--green);}
+.hostempty{color:rgba(255,255,255,.5); font-size:clamp(1rem,1.6vw,1.4rem); padding:10px 0;}
+.hostfoot{position:fixed; bottom:12px; right:18px; font-size:.7rem; color:rgba(255,255,255,.25);}
 @media (max-aspect-ratio:1/1){
-  .hostwrap{grid-template-columns:1fr; align-content:start; overflow:auto;}
+  .hostwrap{grid-template-columns:1fr; align-content:start; height:auto; min-height:100dvh; overflow:auto;}
   body.host{overflow:auto;}
+  .qrcard{width:min(100%,360px); align-self:center;}
 }
-
 .srcpill{font-weight:700; font-size:.72rem; color:rgba(255,255,255,.5);}
 .err{background:rgba(255,255,255,.08); border-radius:12px; padding:14px 16px; max-width:42ch;
      font-size:.9rem; line-height:1.5;}
@@ -2489,7 +2501,7 @@ var qrcode = function() {
    Engine (timer, speed scoring, streaks, i18n, audio, Supabase
    fallback) carried over from the noeggi-kahoot wedding app.
    ============================================================ */
-const CFG = {"supabaseUrl":"","supabaseAnonKey":"","build":"build 25.08.2026 18:40"};
+const CFG = {"supabaseUrl":"","supabaseAnonKey":"","build":"build 25.08.2026 18:45"};
 const SUPA_URL = CFG.supabaseUrl || "";
 const SUPA_KEY = CFG.supabaseAnonKey || "";
 
@@ -2510,6 +2522,7 @@ const I18N = {
   pickTitle:"Pick a session", pickSub:"Choose which session you want to play.",
   joinSub:"Answer fast — the quicker the correct answer, the more points.",
   namePh:"Your name", play:"Play",
+  meta:(n,sec)=>`${n} questions · ${sec}s each`,
   qof:(i,n)=>`Question ${i}/${n}`, ptsWord:"points",
   correct:"Correct!", wrong:"Not quite …", timeout:"Time's up!",
   answerWas:"The right answer:", streak:x=>`Streak x${x}`, why:"Why",
@@ -2526,6 +2539,7 @@ const I18N = {
   pickTitle:"Session wählen", pickSub:"Wähle, welche Session du spielen willst.",
   joinSub:"Schnell antworten — je schneller richtig, desto mehr Punkte.",
   namePh:"Dein Name", play:"Los geht's",
+  meta:(n,sec)=>`${n} Fragen · je ${sec}s`,
   qof:(i,n)=>`Frage ${i}/${n}`, ptsWord:"Punkte",
   correct:"Richtig!", wrong:"Leider nein …", timeout:"Zeit abgelaufen!",
   answerWas:"Richtig wäre gewesen:", streak:x=>`Serie x${x}`, why:"Warum",
@@ -2658,7 +2672,7 @@ function renderJoin(){
              autocomplete="nickname" enterkeyhint="go">
     </div>
     <button class="btn" id="go">${esc(t().play)}</button>
-    <p class="rules">${esc(pack.questions.length)} &middot; ${Math.round(TIME/1000)}s ${esc(t().ptsWord)}</p>
+    <p class="rules">${esc(t().meta(pack.questions.length, Math.round(TIME/1000)))}</p>
   </div>`;
   bindLangPills(); bindCtl();
   const inp = document.getElementById("pname");
@@ -2750,9 +2764,9 @@ function renderReveal(){
         <small>${esc(t().answerWas)} ${esc(opts[q.correct])}</small></div>`;
   const why = L(q.explanation);
   app.innerHTML = `${topBar()}
-  <div class="stage">
+  <div class="stage rev">
     ${banner}
-    <div class="qtext" style="font-size:1rem; font-weight:600; opacity:.85">${esc(L(q.q))}</div>
+    <div class="qtext">${esc(L(q.q))}</div>
     <div class="grid n${od.length}">
       ${od.map((oi,pos)=>{
         const cls = oi===q.correct ? "win" : (oi===picked ? "lose" : "dim");
@@ -2797,7 +2811,7 @@ function boardHtml(){
   const icon = src ? "🌍" : "📱";
   const rows = (src || localRows()).slice(0,10);
   const head = `<div class="boardtitle">${esc(t().board)} ${icon}${
-    saveState==="saving" ? ` <span class="srcpill">${esc(t().saving)}</span>` : ""}</div>`;
+    saveState==="saving" && SUPA_URL ? ` <span class="srcpill">${esc(t().saving)}</span>` : ""}</div>`;
   if(!rows.length) return head + `<div class="brow"><span>${esc(t().noScores)}</span><span></span></div>`;
   return head + rows.map((r,i)=>{
     const mine = myRow && r.name===myRow.name && r.score===myRow.score;
@@ -2887,8 +2901,8 @@ function renderHost(){
     <div class="hostleft">
       <div class="kicker">${esc(t().brand)} &middot; ${esc(t().quiz)}</div>
       <h1>${esc(title)}</h1>
+      <p class="scanlbl">${esc(t().scanTitle)}</p>
       <div class="qrcard">${qrSvg(joinUrl())}</div>
-      <p class="metriclbl">${esc(t().scanTitle)}</p>
       <p class="joinurl">${esc(joinUrl())}</p>
     </div>
     <div class="hostright">
