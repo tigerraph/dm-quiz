@@ -64,6 +64,8 @@ Pack schema:
 - `explanation` is shown after the reveal — the Learning Loop "Check" beat.
 - `img` is an optional relative path; `null` for none.
 - `timer_ms` defaults to 20000.
+- `sure` is an authoring flag ("we have checked this fact"). It carries over
+  from the wedding pack schema and the app does not read it.
 
 ## Build
 
