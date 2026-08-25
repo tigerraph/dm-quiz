@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1B2329">
+<title>Democracy Matters — Quiz</title>
+<style>
+__FONTS__
+:root{
+  /* DM / DAY8 tokens — verified against DM_Format_Learning-Loop deck */
+  --blue:#435CC6; --green:#A8D272; --teal:#5EB9A9;
+  --cream:#FDF2D0; --dark:#1B2329; --ink:#22313C;
+  --blue-deep:#33489e; --dark-2:#232c33;
+  --paper-shadow:0 6px 18px rgba(0,0,0,.32);
+  --radius:14px;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html,body{margin:0; padding:0;}
+body{
+  min-height:100dvh; background:var(--dark); color:#fff;
+  font-family:'Poppins','Segoe UI',system-ui,sans-serif; font-weight:400;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,.xb{font-weight:800; letter-spacing:-.01em;}
+#app{max-width:660px; margin:0 auto; padding:14px 16px calc(22px + env(safe-area-inset-bottom));
+     min-height:100dvh; display:flex; flex-direction:column;}
+body.host #app{max-width:none; padding:0;}
+
+/* ---------- shared ---------- */
+.kicker{font-weight:800; font-size:.82rem; letter-spacing:.02em; color:var(--teal);}
+.btn{
+  display:inline-block; border:none; cursor:pointer; text-decoration:none;
+  font-family:inherit; font-weight:800; font-size:1.02rem;
+  color:#fff; background:var(--blue); padding:14px 30px; border-radius:999px;
+  box-shadow:0 4px 0 var(--blue-deep); transition:transform .12s ease;
+}
+.btn:active{transform:translateY(3px); box-shadow:0 1px 0 var(--blue-deep);}
+.btn.small{padding:11px 18px; font-size:.9rem; border-radius:12px; box-shadow:0 3px 0 var(--blue-deep);}
+.btn.ghost{background:transparent; color:#fff; box-shadow:inset 0 0 0 2px var(--teal);}
+.btn.ghost:active{transform:translateY(3px); box-shadow:inset 0 0 0 2px var(--teal);}
+.btn:disabled{opacity:.55; cursor:default;}
+.btn:focus-visible,.tile:focus-visible,.pill:focus-visible{outline:3px solid var(--teal); outline-offset:3px;}
+.pills{display:flex; gap:8px; justify-content:center;}
+.pill{
+  font-family:inherit; font-weight:800; font-size:.8rem; letter-spacing:.06em;
+  color:rgba(255,255,255,.75); background:rgba(255,255,255,.08);
+  border:1.5px solid rgba(255,255,255,.28); border-radius:999px; padding:6px 15px; cursor:pointer;
+}
+.pill.on{color:var(--ink); background:var(--teal); border-color:var(--teal);}
+.iconbtn{width:36px; height:36px; border-radius:11px; border:1.5px solid rgba(255,255,255,.28);
+  background:rgba(255,255,255,.08); color:#fff; font-size:1rem; cursor:pointer; line-height:1; padding:0;}
+.corner{position:fixed; top:calc(10px + env(safe-area-inset-top)); right:14px; display:flex; gap:8px; z-index:6;}
+
+/* post-it surface — the deck's signature card */
+.postit{background:var(--cream); color:var(--ink); border-radius:4px; box-shadow:var(--paper-shadow);}
+
+/* ---------- centred screens ---------- */
+.screen{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+        text-align:center; gap:16px; padding:20px 0;}
+.screen h1{font-size:clamp(1.9rem,8.5vw,3rem); line-height:1.04; margin:0;}
+.sub{color:rgba(255,255,255,.82); font-size:1rem; max-width:40ch; margin:0;}
+.rules{color:rgba(255,255,255,.62); font-size:.84rem; max-width:42ch; margin:0;}
+.brandline{font-weight:800; font-size:.8rem; letter-spacing:.04em; color:rgba(255,255,255,.6);}
+.namewrap{display:flex; gap:8px; width:min(94%,360px);}
+.namewrap input{
+  flex:1; min-width:0; border-radius:12px; border:1.5px solid rgba(255,255,255,.28);
+  background:rgba(255,255,255,.08); color:#fff; padding:13px 15px; font:inherit; font-weight:600;
+}
+.namewrap input::placeholder{color:rgba(255,255,255,.55);}
+.picker{display:flex; flex-direction:column; gap:10px; width:min(94%,400px);}
+.picker a{
+  display:block; text-decoration:none; text-align:left; padding:14px 16px; border-radius:var(--radius);
+  background:rgba(255,255,255,.07); border:1.5px solid rgba(255,255,255,.16); color:#fff; font-weight:700;
+}
+.picker a small{display:block; font-weight:600; font-size:.78rem; color:rgba(255,255,255,.55); margin-top:2px;}
+
+/* ---------- top bar ---------- */
+.top{display:flex; align-items:center; gap:10px; padding:2px 0 12px;}
+.top .qcount{color:rgba(255,255,255,.7); font-size:.85rem; font-weight:700; margin-left:auto; white-space:nowrap;}
+.scorechip{background:rgba(255,255,255,.1); border-radius:999px; padding:5px 12px;
+  font-weight:800; font-size:.85rem; white-space:nowrap;}
+.langcycle{border:1.5px solid rgba(255,255,255,.28); background:transparent; color:rgba(255,255,255,.8);
+  font-family:inherit; font-weight:800; font-size:.72rem; border-radius:9px; padding:6px 9px;
+  cursor:pointer; letter-spacing:.06em;}
+
+/* ---------- question ---------- */
+.stage{flex:1; display:flex; flex-direction:column; gap:14px;}
+.timer{height:9px; border-radius:999px; background:rgba(255,255,255,.14); overflow:hidden;}
+.timer i{display:block; height:100%; width:100%; background:var(--teal); border-radius:999px;}
+.qimg{display:flex; justify-content:center;}
+.qimg img{max-height:min(30dvh,320px); max-width:100%; border-radius:10px;}
+.qtext{font-weight:800; font-size:clamp(1.15rem,5.2vw,1.6rem); line-height:1.2;
+       text-align:center; margin:auto 2px; text-wrap:balance;}
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:auto;}
+.grid.n2{grid-template-columns:1fr 1fr;}
+.grid.n3 .tile:last-child{grid-column:1/-1;}
+.tile{
+  position:relative; border:none; cursor:pointer; text-align:left;
+  display:flex; align-items:center; gap:11px; min-height:74px; padding:14px 14px;
+  background:var(--cream); color:var(--ink); border-radius:4px; box-shadow:var(--paper-shadow);
+  font-family:inherit; font-weight:600; font-size:clamp(.92rem,3.6vw,1.05rem); line-height:1.25;
+  transition:transform .12s ease, opacity .25s ease, filter .25s ease;
+}
+.tile:nth-child(odd){transform:rotate(-.9deg);}
+.tile:nth-child(even){transform:rotate(.9deg);}
+.tile:active{transform:translateY(2px);}
+.tile .badge{
+  flex:0 0 auto; width:28px; height:28px; border-radius:7px; background:var(--blue); color:#fff;
+  font-weight:800; font-size:.92rem; display:flex; align-items:center; justify-content:center;
+}
+.tile.dim{opacity:.3; filter:saturate(.35);}
+.tile.win{background:var(--green); box-shadow:0 0 0 3px #fff, var(--paper-shadow);}
+.tile.win .badge{background:var(--ink);}
+.tile.win::after{content:"\2713"; position:absolute; top:7px; right:11px; font-weight:800; font-size:1.05rem;}
+.tile.lose::after{content:"\2715"; position:absolute; top:7px; right:11px; font-weight:800; font-size:1.05rem;}
+@keyframes popin{from{transform:translateY(10px) scale(.96); opacity:0;} to{opacity:1;}}
+
+/* ---------- reveal ---------- */
+.banner{text-align:center; border-radius:var(--radius); padding:11px 15px; font-weight:800; font-size:1.02rem;}
+.banner.good{background:rgba(168,210,114,.22); box-shadow:inset 0 0 0 1.5px var(--green); color:var(--green);}
+.banner.bad{background:rgba(255,255,255,.08); box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.3);}
+.banner small{display:block; font-size:.82rem; font-weight:600; color:rgba(255,255,255,.75); margin-top:3px;}
+.banner .pts{color:#fff; font-size:1.2rem;}
+/* the Learning Loop "Check" beat */
+.why{background:var(--cream); color:var(--ink); border-radius:var(--radius); padding:13px 16px;
+     font-size:.94rem; line-height:1.45; text-align:left; box-shadow:var(--paper-shadow);}
+.why b{display:block; font-weight:800; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase;
+       color:var(--blue); margin-bottom:4px;}
+.nextrow{display:flex; justify-content:center;}
+
+/* ---------- end ---------- */
+.bignum{font-weight:800; font-size:clamp(3rem,15vw,4.4rem); line-height:1; margin:0;}
+.metriclbl{font-weight:800; font-size:.8rem; color:var(--teal); margin:0;}
+.board{width:min(94%,400px); background:rgba(255,255,255,.06); border-radius:12px; padding:12px 15px; font-size:.9rem;}
+.boardtitle{font-weight:800; letter-spacing:.1em; text-transform:uppercase; font-size:.66rem;
+            color:var(--teal); margin-bottom:7px;}
+.brow{display:flex; justify-content:space-between; gap:12px; line-height:1.85;}
+.brow.me{color:var(--green); font-weight:800;}
+.brow span:first-child{overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+
+/* ---------- host view (beamer) ---------- */
+body.host{overflow:hidden;}
+.hostwrap{height:100dvh; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+          gap:clamp(20px,3vw,48px); padding:clamp(20px,3vw,46px); align-items:center;}
+.hostleft{display:flex; flex-direction:column; gap:clamp(12px,2vh,26px); min-width:0;}
+.hostleft h1{font-size:clamp(1.8rem,4vw,3.4rem); line-height:1.05; margin:0;}
+.qrcard{background:#fff; border-radius:18px; padding:clamp(12px,1.6vw,22px); box-shadow:var(--paper-shadow);
+        width:min(100%,min(46vh,460px)); align-self:flex-start;}
+.qrcard svg{display:block; width:100%; height:auto;}
+.joinurl{font-weight:700; font-size:clamp(.85rem,1.3vw,1.1rem); color:var(--teal); overflow-wrap:anywhere;}
+.hostright{display:flex; flex-direction:column; gap:clamp(10px,1.6vh,20px); min-width:0; height:100%;
+           justify-content:center;}
+.hoststats{display:flex; gap:clamp(18px,3vw,44px);}
+.hoststats .bignum{font-size:clamp(2.2rem,5vw,3.6rem);}
+.hostboard{background:rgba(255,255,255,.06); border-radius:16px; padding:clamp(12px,1.6vw,22px);
+           display:flex; flex-direction:column; gap:2px; min-height:0;}
+.hrow{display:grid; grid-template-columns:auto minmax(0,1fr) auto auto; gap:clamp(8px,1.2vw,18px);
+      align-items:baseline; font-size:clamp(.95rem,1.7vw,1.5rem); font-weight:600; padding:clamp(3px,.5vh,7px) 0;}
+.hrow .rk{font-weight:800; color:var(--teal); min-width:1.4em;}
+.hrow .nm{font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.hrow .cr{font-size:.72em; color:rgba(255,255,255,.6);}
+.hrow .sc{font-weight:800;}
+.hrow.top1 .rk,.hrow.top1 .sc{color:var(--green);}
+.hostempty{color:rgba(255,255,255,.55); font-size:clamp(.95rem,1.6vw,1.3rem); padding:8px 0;}
+.hostfoot{position:fixed; bottom:14px; right:20px; font-size:.72rem; color:rgba(255,255,255,.3);}
+@media (max-aspect-ratio:1/1){
+  .hostwrap{grid-template-columns:1fr; align-content:start; overflow:auto;}
+  body.host{overflow:auto;}
+}
+
+.srcpill{font-weight:700; font-size:.72rem; color:rgba(255,255,255,.5);}
+.err{background:rgba(255,255,255,.08); border-radius:12px; padding:14px 16px; max-width:42ch;
+     font-size:.9rem; line-height:1.5;}
+@media (prefers-reduced-motion:reduce){*{animation:none !important; transition:none !important;}}
+</style>
+</head>
+<body>
+<div id="app" role="main">
+  <div class="screen"><p class="sub">Loading …</p></div>
+</div>
+<script>
+__QRCODE__
+</script>
+<script>
+"use strict";
+/* ============================================================
+   dm-quiz — Democracy Matters session quiz
+   Engine (timer, speed scoring, streaks, i18n, audio, Supabase
+   fallback) carried over from the noeggi-kahoot wedding app.
+   ============================================================ */
+const CFG = __CONFIG__;
+const SUPA_URL = CFG.supabaseUrl || "";
+const SUPA_KEY = CFG.supabaseAnonKey || "";
+
+const store = {
+  get(k,d){ try{ const v=localStorage.getItem("dmq_"+k); return v==null?d:JSON.parse(v); }
+            catch(e){ return (this.m && k in this.m)? this.m[k] : d; } },
+  set(k,v){ try{ localStorage.setItem("dmq_"+k, JSON.stringify(v)); }
+            catch(e){ (this.m=this.m||{})[k]=v; } }
+};
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,
+  c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+const LETTERS = ["A","B","C","D"];
+
+const I18N = {
+ en:{
+  brand:"Democracy Matters", quiz:"Quiz",
+  pickTitle:"Pick a session", pickSub:"Choose which session you want to play.",
+  joinSub:"Answer fast — the quicker the correct answer, the more points.",
+  namePh:"Your name", play:"Play",
+  qof:(i,n)=>`Question ${i}/${n}`, ptsWord:"points",
+  correct:"Correct!", wrong:"Not quite …", timeout:"Time's up!",
+  answerWas:"The right answer:", streak:x=>`Streak x${x}`, why:"Why",
+  next:"Next", last:"See results",
+  result:"Your result", ofN:(c,n)=>`${c} of ${n} correct`, again:"Play again",
+  board:"Leaderboard", saving:"Saving …", noScores:"No scores yet",
+  scanTitle:"Scan to join", players:"Players", topScore:"Top score",
+  waiting:"Waiting for the first scores …",
+  noSession:"Unknown session", noSessionSub:"That session id is not in the registry.",
+  loadFail:"Could not load the session data.", offline:"offline"
+ },
+ de:{
+  brand:"Democracy Matters", quiz:"Quiz",
+  pickTitle:"Session wählen", pickSub:"Wähle, welche Session du spielen willst.",
+  joinSub:"Schnell antworten — je schneller richtig, desto mehr Punkte.",
+  namePh:"Dein Name", play:"Los geht's",
+  qof:(i,n)=>`Frage ${i}/${n}`, ptsWord:"Punkte",
+  correct:"Richtig!", wrong:"Leider nein …", timeout:"Zeit abgelaufen!",
+  answerWas:"Richtig wäre gewesen:", streak:x=>`Serie x${x}`, why:"Warum",
+  next:"Weiter", last:"Zum Resultat",
+  result:"Dein Resultat", ofN:(c,n)=>`${c} von ${n} richtig`, again:"Nochmals spielen",
+  board:"Rangliste", saving:"Speichern …", noScores:"Noch keine Resultate",
+  scanTitle:"Zum Mitmachen scannen", players:"Mitspielende", topScore:"Bestwert",
+  waiting:"Warte auf die ersten Resultate …",
+  noSession:"Unbekannte Session", noSessionSub:"Diese Session-ID steht nicht in der Registry.",
+  loadFail:"Die Session-Daten konnten nicht geladen werden.", offline:"offline"
+ }
+};
+const LANGS = ["en","de"];
+
+/* ---------------- state ---------------- */
+const params  = new URLSearchParams(location.search);
+const SESSION = params.get("session") || "";
+const HOST    = params.get("host") === "1";
+
+let lang  = store.get("lang", (navigator.language||"en").slice(0,2)==="de" ? "de" : "en");
+if(!LANGS.includes(lang)) lang = "en";
+
+let registry = null, pack = null, TIME = 20000;
+let phase = "boot";                  // boot | picker | join | question | reveal | end | host | error
+let qi=0, score=0, streak=0, correctCount=0, order=[];
+let deadline=0, rafId=0, picked=-1, lastGain=0, lastBonus=0, timedOut=false, lastSec=99;
+let playerName = store.get("name","");
+let cloudRows = null, myRow = null, saveState = "idle";
+let soundOn = store.get("sound", true);
+let errText = "";
+
+const app = document.getElementById("app");
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+function t(){ return I18N[lang]; }
+function L(o){ return (o && (o[lang] != null ? o[lang] : o.en)) || ""; }
+function shuffled(n){
+  const a=[...Array(n).keys()];
+  for(let i=n-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+function setLang(l){
+  lang = l; store.set("lang", l);
+  document.documentElement.lang = l;
+  rerender();
+}
+function cycleLang(){ setLang(lang==="en" ? "de" : "en"); }
+function rerender(){
+  if(phase==="picker") renderPicker();
+  else if(phase==="join") renderJoin();
+  else if(phase==="question") renderQuestion();
+  else if(phase==="reveal") renderReveal();
+  else if(phase==="end") renderEnd();
+  else if(phase==="host") renderHost();
+  else if(phase==="error") renderError();
+}
+
+/* ---------------- boot ---------------- */
+async function loadJSON(path){
+  const r = await fetch(path, {cache:"no-cache"});
+  if(!r.ok) throw new Error(path+" -> "+r.status);
+  return r.json();
+}
+async function boot(){
+  document.documentElement.lang = lang;
+  try{ registry = await loadJSON("packs/sessions.json"); }
+  catch(e){ return fail(t().loadFail); }
+
+  if(!SESSION || !registry[SESSION]){
+    if(SESSION) errText = t().noSessionSub;
+    return renderPicker();
+  }
+  try{ pack = await loadJSON("packs/" + registry[SESSION].pack); }
+  catch(e){ return fail(t().loadFail); }
+
+  TIME = pack.timer_ms || 20000;
+  order = pack.questions.map(q => shuffled(L(q.o).length));
+
+  if(HOST){ document.body.classList.add("host"); return startHost(); }
+  renderJoin();
+}
+function fail(msg){ phase="error"; errText=msg; renderError(); }
+function renderError(){
+  app.innerHTML = `<div class="screen">
+    <div class="kicker">${esc(t().brand)}</div>
+    <h1>${esc(t().noSession)}</h1>
+    <div class="err">${esc(errText)}</div>
+  </div>`;
+}
+
+/* ---------------- session picker ---------------- */
+function renderPicker(){
+  phase="picker";
+  const ids = Object.keys(registry||{});
+  app.innerHTML = `<div class="screen">
+    ${langPills()}
+    <div class="kicker">${esc(t().brand)}</div>
+    <h1>${esc(t().pickTitle)}</h1>
+    <p class="sub">${esc(t().pickSub)}</p>
+    ${errText ? `<div class="err">${esc(errText)}</div>` : ""}
+    <div class="picker">
+      ${ids.map(id=>{
+        const s = registry[id];
+        return `<a href="?session=${encodeURIComponent(id)}">${esc(L(s.title)||id)}
+          <small>${esc(s.date || id)}</small></a>`;
+      }).join("") || `<p class="rules">—</p>`}
+    </div>
+  </div>`;
+  bindLangPills();
+}
+function langPills(){
+  return `<div class="pills" role="group" aria-label="Language">
+    ${LANGS.map(l=>`<button class="pill ${l===lang?"on":""}" data-lang="${l}">${l.toUpperCase()}</button>`).join("")}
+  </div>`;
+}
+function bindLangPills(){
+  app.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>setLang(b.dataset.lang));
+}
+
+/* ---------------- join ---------------- */
+function renderJoin(){
+  phase="join";
+  app.innerHTML = `<div class="corner">${ctl()}</div>
+  <div class="screen">
+    ${langPills()}
+    <div class="kicker">${esc(t().brand)} &middot; ${esc(t().quiz)}</div>
+    <h1>${esc(L(pack.title) || L(registry[SESSION].title))}</h1>
+    <p class="sub">${esc(t().joinSub)}</p>
+    <div class="namewrap">
+      <input id="pname" maxlength="14" placeholder="${esc(t().namePh)}" value="${esc(playerName)}"
+             autocomplete="nickname" enterkeyhint="go">
+    </div>
+    <button class="btn" id="go">${esc(t().play)}</button>
+    <p class="rules">${esc(pack.questions.length)} &middot; ${Math.round(TIME/1000)}s ${esc(t().ptsWord)}</p>
+  </div>`;
+  bindLangPills(); bindCtl();
+  const inp = document.getElementById("pname");
+  const go  = ()=>{
+    playerName = (inp.value||"").trim().slice(0,14) || "???";
+    store.set("name", playerName);
+    startGame();
+  };
+  document.getElementById("go").onclick = go;
+  inp.addEventListener("keydown", e=>{ if(e.key==="Enter") go(); });
+}
+
+/* ---------------- game ---------------- */
+function startGame(){
+  qi=0; score=0; streak=0; correctCount=0; saveState="idle"; myRow=null;
+  A.ensure(); A.unlock(); if(soundOn) A.music();
+  beginQuestion();
+}
+function beginQuestion(){
+  picked=-1; timedOut=false; lastGain=0; lastBonus=0; lastSec=99;
+  deadline = performance.now() + TIME;
+  renderQuestion(); tick();
+}
+function topBar(){
+  return `<div class="top">
+    <button class="langcycle" id="lc" title="EN / DE">${lang.toUpperCase()}</button>
+    ${ctl()}
+    <span class="qcount">${esc(t().qof(qi+1, pack.questions.length))}</span>
+    <span class="scorechip">${score}</span>
+  </div>`;
+}
+function curQ(){ return pack.questions[qi]; }
+function renderQuestion(){
+  phase="question";
+  const q=curQ(), opts=L(q.o), od=order[qi];
+  app.innerHTML = `${topBar()}
+  <div class="stage">
+    ${q.img ? `<div class="qimg"><img src="${esc(q.img)}" alt=""></div>` : ""}
+    <div class="timer" aria-hidden="true"><i id="tbar"></i></div>
+    <div class="qtext">${esc(L(q.q))}</div>
+    <div class="grid n${od.length}" id="grid">
+      ${od.map((oi,pos)=>`<button class="tile" data-oi="${oi}">
+        <span class="badge">${LETTERS[pos]}</span><span>${esc(opts[oi])}</span></button>`).join("")}
+    </div>
+  </div>`;
+  document.getElementById("lc").onclick = cycleLang;
+  bindCtl();
+  app.querySelectorAll(".tile").forEach(b=>b.onclick=()=>pick(+b.dataset.oi));
+}
+function tick(){
+  cancelAnimationFrame(rafId);
+  const loop=()=>{
+    const rem = deadline - performance.now();
+    const bar = document.getElementById("tbar");
+    if(bar) bar.style.width = Math.max(0, rem/TIME*100)+"%";
+    const sec = Math.ceil(rem/1000);
+    if(sec!==lastSec){ lastSec=sec; if(sec>=1 && sec<=5) A.tick(sec%2===0); }
+    if(rem<=0){ onTimeout(); return; }
+    if(phase==="question") rafId=requestAnimationFrame(loop);
+  };
+  rafId=requestAnimationFrame(loop);
+}
+function pick(oi){
+  if(phase!=="question") return;
+  const rem = Math.max(0, deadline - performance.now());
+  picked = oi;
+  if(oi === curQ().correct){
+    streak++; correctCount++;
+    lastGain  = 500 + Math.round(500*rem/TIME);
+    lastBonus = streak>=2 ? 50*Math.min(streak-1,4) : 0;
+    score += lastGain + lastBonus;
+    A.correct(streak);
+  } else { streak=0; A.wrong(); }
+  renderReveal();
+}
+function onTimeout(){
+  if(phase!=="question") return;
+  timedOut=true; picked=-1; streak=0; A.timeout(); renderReveal();
+}
+function renderReveal(){
+  phase="reveal";
+  cancelAnimationFrame(rafId);
+  const q=curQ(), opts=L(q.o), od=order[qi];
+  const ok = picked===q.correct;
+  const banner = ok
+    ? `<div class="banner good">${esc(t().correct)} <span class="pts">+${lastGain+lastBonus}</span>
+        ${lastBonus?`<small>${esc(t().streak(streak))} &middot; +${lastBonus}</small>`:""}</div>`
+    : `<div class="banner bad">${esc(timedOut?t().timeout:t().wrong)}
+        <small>${esc(t().answerWas)} ${esc(opts[q.correct])}</small></div>`;
+  const why = L(q.explanation);
+  app.innerHTML = `${topBar()}
+  <div class="stage">
+    ${banner}
+    <div class="qtext" style="font-size:1rem; font-weight:600; opacity:.85">${esc(L(q.q))}</div>
+    <div class="grid n${od.length}">
+      ${od.map((oi,pos)=>{
+        const cls = oi===q.correct ? "win" : (oi===picked ? "lose" : "dim");
+        return `<button class="tile ${cls}" disabled>
+          <span class="badge">${LETTERS[pos]}</span><span>${esc(opts[oi])}</span></button>`;
+      }).join("")}
+    </div>
+    ${why ? `<div class="why"><b>${esc(t().why)}</b>${esc(why)}</div>` : ""}
+    <div class="nextrow"><button class="btn" id="next">${
+      esc(qi < pack.questions.length-1 ? t().next : t().last)}</button></div>
+  </div>`;
+  document.getElementById("lc").onclick = cycleLang;
+  bindCtl();
+  const n = document.getElementById("next");
+  n.onclick = ()=>{ A.tap(); advance(); };
+  n.focus({preventScroll:true});
+}
+function advance(){
+  if(qi < pack.questions.length-1){ qi++; beginQuestion(); }
+  else { submitScore(); renderEnd(); }
+}
+
+/* ---------------- end ---------------- */
+function renderEnd(){
+  phase="end";
+  if(!renderEnd.fx){ renderEnd.fx=true; A.fanfare(); }
+  app.innerHTML = `<div class="corner">${ctl()}</div>
+  <div class="screen">
+    ${langPills()}
+    <p class="metriclbl">${esc(t().result)}</p>
+    <p class="bignum">${score}</p>
+    <p class="sub">${esc(t().ofN(correctCount, pack.questions.length))}</p>
+    <div class="board" id="board">${boardHtml()}</div>
+    <button class="btn ghost" id="again">${esc(t().again)}</button>
+    <p class="brandline">${esc(t().brand)} &middot; ${esc(L(pack.title))}</p>
+  </div>`;
+  bindLangPills(); bindCtl();
+  document.getElementById("again").onclick = ()=>{ renderEnd.fx=false; renderJoin(); };
+}
+function boardHtml(){
+  const src = cloudRows;
+  const icon = src ? "🌍" : "📱";
+  const rows = (src || localRows()).slice(0,10);
+  const head = `<div class="boardtitle">${esc(t().board)} ${icon}${
+    saveState==="saving" ? ` <span class="srcpill">${esc(t().saving)}</span>` : ""}</div>`;
+  if(!rows.length) return head + `<div class="brow"><span>${esc(t().noScores)}</span><span></span></div>`;
+  return head + rows.map((r,i)=>{
+    const mine = myRow && r.name===myRow.name && r.score===myRow.score;
+    return `<div class="brow${mine?" me":""}"><span>${i+1}. ${esc(r.name)}</span><span>${r.score}</span></div>`;
+  }).join("");
+}
+function localRows(){
+  const all = store.get("scores", {});
+  return (all[SESSION]||[]).slice().sort((a,b)=>b.score-a.score);
+}
+function pushLocal(rec){
+  const all = store.get("scores", {});
+  const list = all[SESSION] || (all[SESSION]=[]);
+  list.push(rec);
+  list.sort((a,b)=>b.score-a.score);
+  all[SESSION] = list.slice(0,50);
+  store.set("scores", all);
+}
+
+/* ---------------- Supabase (graceful offline fallback) ---------------- */
+function headers(extra){
+  return Object.assign({ apikey:SUPA_KEY, Authorization:"Bearer "+SUPA_KEY }, extra||{});
+}
+async function cloudTop(){
+  if(!SUPA_URL || !SUPA_KEY) return null;
+  try{
+    const url = SUPA_URL + "/rest/v1/dm_scores?select=name,score,correct,total"
+      + "&session=eq." + encodeURIComponent(SESSION)
+      + "&order=score.desc&limit=50";
+    const r = await fetch(url, { headers: headers() });
+    if(!r.ok) return null;
+    const rows = await r.json();
+    return Array.isArray(rows) ? rows : null;
+  }catch(e){ return null; }
+}
+async function cloudSave(rec){
+  if(!SUPA_URL || !SUPA_KEY) return false;
+  try{
+    const r = await fetch(SUPA_URL + "/rest/v1/dm_scores", {
+      method:"POST",
+      headers: headers({ "Content-Type":"application/json", Prefer:"return=minimal" }),
+      body: JSON.stringify(rec)
+    });
+    return r.ok;
+  }catch(e){ return false; }
+}
+async function submitScore(){
+  const rec = { session:SESSION, name:playerName, score,
+                correct:correctCount, total:pack.questions.length };
+  myRow = rec;
+  pushLocal(rec);
+  saveState = "saving";
+  await cloudSave(rec);
+  saveState = "idle";
+  cloudRows = await cloudTop();
+  const el = document.getElementById("board");
+  if(el && phase==="end") el.innerHTML = boardHtml();
+}
+
+/* ---------------- host view (beamer) ---------------- */
+let hostTimer = 0, hostRows = [];
+function joinUrl(){
+  return location.origin + location.pathname + "?session=" + encodeURIComponent(SESSION);
+}
+function qrSvg(text){
+  try{
+    const qr = qrcode(0, "M");
+    qr.addData(text);
+    qr.make();
+    return qr.createSvgTag({ cellSize:8, margin:0, scalable:true });
+  }catch(e){ return `<p class="joinurl">${esc(text)}</p>`; }
+}
+function startHost(){
+  phase = "host";
+  renderHost();
+  pollHost();
+  hostTimer = setInterval(pollHost, 4000);
+}
+async function pollHost(){
+  const rows = await cloudTop();
+  if(rows){ hostRows = rows; }
+  if(phase==="host") paintHostBoard();
+}
+function renderHost(){
+  const title = L(pack.title) || L(registry[SESSION].title) || SESSION;
+  app.innerHTML = `<div class="hostwrap">
+    <div class="hostleft">
+      <div class="kicker">${esc(t().brand)} &middot; ${esc(t().quiz)}</div>
+      <h1>${esc(title)}</h1>
+      <div class="qrcard">${qrSvg(joinUrl())}</div>
+      <p class="metriclbl">${esc(t().scanTitle)}</p>
+      <p class="joinurl">${esc(joinUrl())}</p>
+    </div>
+    <div class="hostright">
+      <div class="hoststats">
+        <div><p class="metriclbl">${esc(t().players)}</p><p class="bignum" id="hplayers">0</p></div>
+        <div><p class="metriclbl">${esc(t().topScore)}</p><p class="bignum" id="htop">–</p></div>
+      </div>
+      <div class="hostboard" id="hboard"></div>
+    </div>
+  </div>
+  <div class="hostfoot">${esc(CFG.build||"")}</div>`;
+  paintHostBoard();
+}
+function paintHostBoard(){
+  const board = document.getElementById("hboard");
+  const pl = document.getElementById("hplayers");
+  const tp = document.getElementById("htop");
+  if(!board) return;
+  const rows = hostRows.slice(0,10);
+  if(pl) pl.textContent = hostRows.length;
+  if(tp) tp.textContent = hostRows.length ? hostRows[0].score : "–";
+  board.innerHTML = rows.length
+    ? rows.map((r,i)=>`<div class="hrow${i===0?" top1":""}">
+        <span class="rk">${i+1}</span>
+        <span class="nm">${esc(r.name)}</span>
+        <span class="cr">${r.correct}/${r.total}</span>
+        <span class="sc">${r.score}</span>
+      </div>`).join("")
+    : `<div class="hostempty">${esc(t().waiting)}</div>`;
+}
+
+/* ---------------- sound control ---------------- */
+function ctl(){
+  return `<button class="iconbtn" id="sb" aria-pressed="${soundOn}" title="Sound">${
+    soundOn ? "🔊" : "🔇"}</button>`;
+}
+function bindCtl(){
+  const sb = document.getElementById("sb");
+  if(sb) sb.onclick = ()=>setSound(!soundOn);
+}
+function setSound(v){
+  soundOn=v; A.mute(!v); store.set("sound", v);
+  if(v){ A.ensure(); A.unlock(); if(phase!=="join" && phase!=="picker") A.music(); }
+  document.querySelectorAll("#sb").forEach(b=>{
+    b.textContent = v ? "🔊" : "🔇";
+    b.setAttribute("aria-pressed", v);
+  });
+}
+
+__AUDIO__
+
+/* ---------------- keyboard ---------------- */
+document.addEventListener("keydown", e=>{
+  if(phase==="question" && ["1","2","3","4"].includes(e.key)){
+    const b = app.querySelectorAll(".tile")[+e.key-1];
+    if(b) pick(+b.dataset.oi);
+  } else if(phase==="reveal" && (e.key==="Enter" || e.key===" ")){
+    e.preventDefault();
+    const n = document.getElementById("next");
+    if(n) n.click();
+  }
+});
+window.addEventListener("pointerdown", ()=>{ A.ensure(); A.unlock(); }, {passive:true});
+window.addEventListener("touchend",    ()=>{ A.unlock(); }, {passive:true});
+
+boot();
+</script>
+</body>
+</html>
