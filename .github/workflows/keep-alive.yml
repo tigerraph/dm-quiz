@@ -17,7 +17,7 @@ jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Select one row from dm_scores
+      - name: Select one row from dm_state
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
@@ -29,7 +29,7 @@ jobs:
           code=$(curl -sS -o /tmp/body -w '%{http_code}' \
             -H "apikey: $SUPABASE_ANON_KEY" \
             -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
-            "$SUPABASE_URL/rest/v1/dm_scores?select=id&limit=1")
+            "$SUPABASE_URL/rest/v1/dm_state?select=id&limit=1")
           echo "HTTP $code"
           if [ "$code" != "200" ]; then
             echo "::error::Unexpected status $code"
