@@ -1,6 +1,7 @@
-# Guards against index.html drifting from src/ — the built file is
-# committed (GitHub Pages serves it straight from the repo root), so a
-# stale build is easy to miss in review.
+# Guards against index.html drifting from src/. The built file is committed
+# (GitHub Pages serves it straight from the repo root), so a stale build is
+# easy to miss in review. The committed build stamp is reused so the rebuild
+# is byte-for-byte comparable.
 name: build
 
 on:
@@ -16,16 +17,19 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - run: npm run build
-      - name: index.html must match src/
+      - name: Rebuild with the committed stamp and compare
         run: |
-          # The build stamp changes every run; ignore that one line.
+          stamp=$(grep -o 'build [0-9][0-9]\.[0-9][0-9]\.[0-9]\{4\} [0-9][0-9]:[0-9][0-9]' index.html | head -1)
+          if [ -z "$stamp" ]; then
+            echo "::error::could not read the build stamp out of index.html"
+            exit 1
+          fi
+          echo "stamp: $stamp"
+          DM_BUILD_STAMP="$stamp" npm run build
           if ! git diff --quiet -- index.html; then
-            if git diff -U0 -- index.html | grep -E '^[+-]' | grep -vE '^[+-]{3}' \
-               | grep -qv 'build [0-9]'; then
-              echo "::error::index.html is out of date — run 'npm run build' and commit."
-              git diff -- index.html | head -40
-              exit 1
-            fi
+            echo "::error::index.html is out of date — run 'npm run build' and commit the result."
+            git diff --stat -- index.html
+            git diff -- index.html | head -60
+            exit 1
           fi
           echo "index.html is current."

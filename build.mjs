@@ -40,6 +40,8 @@ function fontCss() {
 }
 
 function stamp() {
+  // DM_BUILD_STAMP lets CI reproduce a committed build byte-for-byte.
+  if (process.env.DM_BUILD_STAMP) return process.env.DM_BUILD_STAMP;
   const d = new Date();
   const pad = n => String(n).padStart(2, "0");
   return `build ${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()} `
