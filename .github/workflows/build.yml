@@ -1,0 +1,31 @@
+# Guards against index.html drifting from src/ — the built file is
+# committed (GitHub Pages serves it straight from the repo root), so a
+# stale build is easy to miss in review.
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm run build
+      - name: index.html must match src/
+        run: |
+          # The build stamp changes every run; ignore that one line.
+          if ! git diff --quiet -- index.html; then
+            if git diff -U0 -- index.html | grep -E '^[+-]' | grep -vE '^[+-]{3}' \
+               | grep -qv 'build [0-9]'; then
+              echo "::error::index.html is out of date — run 'npm run build' and commit."
+              git diff -- index.html | head -40
+              exit 1
+            fi
+          fi
+          echo "index.html is current."

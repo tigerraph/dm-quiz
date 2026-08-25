@@ -2501,7 +2501,7 @@ var qrcode = function() {
    Engine (timer, speed scoring, streaks, i18n, audio, Supabase
    fallback) carried over from the noeggi-kahoot wedding app.
    ============================================================ */
-const CFG = {"supabaseUrl":"","supabaseAnonKey":"","build":"build 25.08.2026 18:45"};
+const CFG = {"supabaseUrl":"","supabaseAnonKey":"","build":"build 25.08.2026 18:46"};
 const SUPA_URL = CFG.supabaseUrl || "";
 const SUPA_KEY = CFG.supabaseAnonKey || "";
 
@@ -2569,7 +2569,7 @@ let deadline=0, rafId=0, picked=-1, lastGain=0, lastBonus=0, timedOut=false, las
 let playerName = store.get("name","");
 let cloudRows = null, myRow = null, saveState = "idle";
 let soundOn = store.get("sound", true);
-let errText = "";
+let errKey = "";          // i18n key, resolved at render so it follows the language switch
 
 const app = document.getElementById("app");
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -2605,14 +2605,14 @@ async function loadJSON(path){
 async function boot(){
   document.documentElement.lang = lang;
   try{ registry = await loadJSON("packs/sessions.json"); }
-  catch(e){ return fail(t().loadFail); }
+  catch(e){ return fail("loadFail"); }
 
   if(!SESSION || !registry[SESSION]){
-    if(SESSION) errText = t().noSessionSub;
+    if(SESSION) errKey = "noSessionSub";
     return renderPicker();
   }
   try{ pack = await loadJSON("packs/" + registry[SESSION].pack); }
-  catch(e){ return fail(t().loadFail); }
+  catch(e){ return fail("loadFail"); }
 
   TIME = pack.timer_ms || 20000;
   order = pack.questions.map(q => shuffled(L(q.o).length));
@@ -2620,12 +2620,12 @@ async function boot(){
   if(HOST){ document.body.classList.add("host"); return startHost(); }
   renderJoin();
 }
-function fail(msg){ phase="error"; errText=msg; renderError(); }
+function fail(key){ phase="error"; errKey=key; renderError(); }
 function renderError(){
   app.innerHTML = `<div class="screen">
     <div class="kicker">${esc(t().brand)}</div>
     <h1>${esc(t().noSession)}</h1>
-    <div class="err">${esc(errText)}</div>
+    <div class="err">${esc(t()[errKey] || "")}</div>
   </div>`;
 }
 
@@ -2638,7 +2638,7 @@ function renderPicker(){
     <div class="kicker">${esc(t().brand)}</div>
     <h1>${esc(t().pickTitle)}</h1>
     <p class="sub">${esc(t().pickSub)}</p>
-    ${errText ? `<div class="err">${esc(errText)}</div>` : ""}
+    ${errKey ? `<div class="err">${esc(t()[errKey])}</div>` : ""}
     <div class="picker">
       ${ids.map(id=>{
         const s = registry[id];
