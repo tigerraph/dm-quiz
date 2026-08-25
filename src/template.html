@@ -365,7 +365,7 @@ function renderJoin(){
   <div class="screen">
     ${langPills()}
     <div class="kicker">${esc(t().brand)} &middot; ${esc(t().quiz)}</div>
-    <h1>${esc(L(pack.title) || L(registry[SESSION].title))}</h1>
+    <h1>${esc(sessionTitle())}</h1>
     <p class="sub">${esc(t().joinSub)}</p>
     <div class="namewrap">
       <input id="pname" maxlength="14" placeholder="${esc(t().namePh)}" value="${esc(playerName)}"
@@ -405,6 +405,10 @@ function topBar(){
   </div>`;
 }
 function curQ(){ return pack.questions[qi]; }
+/* sessions.json is session-level and wins; a pack may be reused across sessions. */
+function sessionTitle(){
+  return L((registry[SESSION]||{}).title) || L(pack && pack.title) || SESSION;
+}
 function renderQuestion(){
   phase="question";
   const q=curQ(), opts=L(q.o), od=order[qi];
@@ -501,7 +505,7 @@ function renderEnd(){
     <p class="sub">${esc(t().ofN(correctCount, pack.questions.length))}</p>
     <div class="board" id="board">${boardHtml()}</div>
     <button class="btn ghost" id="again">${esc(t().again)}</button>
-    <p class="brandline">${esc(t().brand)} &middot; ${esc(L(pack.title))}</p>
+    <p class="brandline">${esc(t().brand)} &middot; ${esc(sessionTitle())}</p>
   </div>`;
   bindLangPills(); bindCtl();
   document.getElementById("again").onclick = ()=>{ renderEnd.fx=false; renderJoin(); };
@@ -581,7 +585,9 @@ function qrSvg(text){
     const qr = qrcode(0, "M");
     qr.addData(text);
     qr.make();
-    return qr.createSvgTag({ cellSize:8, margin:0, scalable:true });
+    // margin is in modules: the QR spec wants a 4-module quiet zone, and the
+    // white card's padding is nowhere near that at beamer size.
+    return qr.createSvgTag({ cellSize:8, margin:4, scalable:true });
   }catch(e){ return `<p class="joinurl">${esc(text)}</p>`; }
 }
 function startHost(){
@@ -596,7 +602,7 @@ async function pollHost(){
   if(phase==="host") paintHostBoard();
 }
 function renderHost(){
-  const title = L(pack.title) || L(registry[SESSION].title) || SESSION;
+  const title = sessionTitle();
   app.innerHTML = `<div class="hostwrap">
     <div class="hostleft">
       <div class="kicker">${esc(t().brand)} &middot; ${esc(t().quiz)}</div>
