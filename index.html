@@ -159,7 +159,9 @@ body.host #app{max-width:none; padding:0;}
 .dbar .dlab{position:absolute; inset:0; display:flex; align-items:center; padding:0 11px;
             font-weight:600; font-size:.92rem; color:#fff; white-space:nowrap; overflow:hidden;
             text-overflow:ellipsis;}
-.dbar .dn{font-weight:800; font-variant-numeric:tabular-nums; min-width:2ch; text-align:right;}
+.dbar .dn{font-weight:800; font-variant-numeric:tabular-nums; min-width:3.4ch; text-align:right;
+          display:flex; flex-direction:column; align-items:flex-end; line-height:1.1;}
+.dbar .dn small{font-weight:600; font-size:.66em; color:rgba(255,255,255,.5);}
 .dbar.win .dl{background:var(--green); color:var(--ink);}
 .dbar.win .df{background:var(--green);}
 .dbar.win .dlab{color:var(--ink);}
@@ -168,6 +170,7 @@ body.host #app{max-width:none; padding:0;}
 .dbar.win.empty .dlab{color:#fff;}
 .dbar.win.empty .dn{color:var(--green);}
 .dbar.win .dn{color:var(--green);}
+.dbar.win .dn small{color:rgba(168,210,114,.7);}
 .dbar.mine .dl{box-shadow:0 0 0 2.5px var(--teal);}
 .dbar.lose .df{background:rgba(219,106,87,.55);}
 
@@ -224,6 +227,10 @@ body.host{overflow:hidden;}
 .hrow .rk{font-weight:800; color:var(--teal); min-width:1.5em;}
 .hrow .nm{font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
 .hrow .cr{font-size:.62em; color:rgba(255,255,255,.55); font-weight:600;}
+.hrow .mv{font-size:.55em; font-weight:800; margin-left:.6em; vertical-align:middle;
+          letter-spacing:.02em;}
+.hrow .mv.up{color:var(--green);}
+.hrow .mv.down{color:var(--wrong);}
 .hrow .sc{font-weight:800; font-variant-numeric:tabular-nums;}
 .hrow.top1{font-size:clamp(1.15rem,2.3vw,2.1rem);}
 .hrow.top1 .rk,.hrow.top1 .sc,.hrow.top1 .nm{color:var(--green);}
@@ -245,7 +252,8 @@ body.host{overflow:hidden;}
                  font-size:clamp(.9rem,1.4vw,1.3rem);}
 .hostq .dbar .dt{height:clamp(42px,7vh,92px);}
 .hostq .dbar .dlab{font-size:clamp(.95rem,1.7vw,1.55rem); padding:0 clamp(12px,1.2vw,20px);}
-.hostq .dbar .dn{font-size:clamp(1.1rem,2vw,1.9rem);}
+.hostq .dbar .dn{font-size:clamp(1.3rem,2.9vw,2.7rem); min-width:4ch;}
+.hostq .dbar .dn small{font-size:.5em;}
 .hostq .why{font-size:clamp(1rem,1.6vw,1.5rem); padding:clamp(12px,1.4vw,22px) clamp(14px,1.6vw,26px);}
 .hostq .why b{font-size:clamp(.7rem,.9vw,.9rem);}
 .hostq .qhead{display:flex; align-items:baseline; gap:clamp(12px,2vw,28px); flex:0 0 auto;}
@@ -2606,7 +2614,7 @@ var qrcode = function() {
    Engine carried over from the noeggi-kahoot wedding app: timer,
    speed scoring, streak bonus, i18n, synthesized offline audio.
    ================================================================== */
-const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","build":"build 26.08.2026 09:24"};
+const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","build":"build 26.08.2026 17:23"};
 const SUPA_URL = CFG.supabaseUrl || "";
 const SUPA_KEY = CFG.supabaseAnonKey || "";
 
@@ -2819,7 +2827,8 @@ async function sbInsert(table, row, opts){
 }
 const qsSession = () => "session=eq."+encodeURIComponent(SESSION);
 const fetchState   = () => sbGet("dm_state?"+qsSession()+"&select=phase,q_index,round,started_at&order=started_at.desc&limit=1");
-const fetchRoster  = () => sbGet("dm_players?"+qsSession()+"&select=token,name&order=joined_at.asc&limit=200");
+const fetchRoster  = () => sbGet("dm_players?"+qsSession()+"&round=eq."+curRound()
+  +"&select=token,name&order=joined_at.asc&limit=200");
 const fetchAnswers = () => sbGet("dm_answers?"+qsSession()+"&round=eq."+curRound()
   +"&select=token,name,q_index,choice,correct,points&limit=2000");
 const fetchKicks   = () => sbGet("dm_kicks?"+qsSession()+"&select=token&limit=500");
@@ -2994,6 +3003,19 @@ function leaderboard(){
   return [...by.values()].sort((a,b)=> b.score-a.score || a.name.localeCompare(b.name));
 }
 function answersFor(qi){ return answers.filter(a=>a.q_index===qi && !kicked.has(a.token)); }
+/* Standings before this question, so the beamer can show who moved. With a
+   full room the movement is the interesting part, not the raw totals. */
+function ranksBefore(qi){
+  const by = new Map();
+  for(const a of answers){
+    if(kicked.has(a.token) || a.q_index >= qi) continue;
+    by.set(a.token, (by.get(a.token)||0) + a.points);
+  }
+  const order = [...by.entries()].sort((x,y)=>y[1]-x[1]).map(e=>e[0]);
+  const m = new Map();
+  order.forEach((tok,i)=>m.set(tok, i+1));
+  return m;
+}
 function distributionFor(qi, q){
   const n = L(q.o).length, counts = new Array(n).fill(0);
   let none = 0;
@@ -3037,6 +3059,13 @@ function renderJoin(){
   document.getElementById("go").onclick = go;
   inp.addEventListener("keydown", e=>{ if(e.key==="Enter") go(); });
 }
+/* The roster is per round, so a player sitting in the lobby when the host
+   starts a new round has to register again — silently, on their behalf. */
+async function rejoinRound(){
+  if(!myToken) return;
+  await sbInsert("dm_players",
+    { session:SESSION, token:myToken, name:myName, round:curRound() }, { conflictOk:true });
+}
 async function joinLive(){
   // The token is the player's identity, so reloading mid-game keeps their score.
   // A different name means a different player though — otherwise the join would
@@ -3048,7 +3077,7 @@ async function joinLive(){
     store.set("token_"+SESSION, myToken);
   }
   const ok = await sbInsert("dm_players",
-    { session:SESSION, token:myToken, name:myName }, { conflictOk:true });
+    { session:SESSION, token:myToken, name:myName, round:curRound() }, { conflictOk:true });
   if(!ok){ LIVE=false; return startSolo(); }   // database went away mid-join
   store.set("name_"+SESSION, myName);
   startPlayerLoop();
@@ -3084,7 +3113,7 @@ async function tickPlayer(){
 }
 function onPlayerPhase(st){
   stopTimer();
-  if(st.phase==="lobby"){ myAnswer=null; myStreak=0; answers=[]; renderPlayerLobby(); }
+  if(st.phase==="lobby"){ myAnswer=null; myStreak=0; answers=[]; rejoinRound(); renderPlayerLobby(); }
   else if(st.phase==="question"){ myAnswer=null; renderPlayerQuestion(); }
   else if(st.phase==="reveal"){ renderPlayerReveal(); }
   else if(st.phase==="done"){ renderPlayerDone(); }
@@ -3206,6 +3235,10 @@ function distHtml(qi, q, od, picked){
   const d = distributionFor(qi, q);
   const opts = L(q.o);
   const max = Math.max(1, ...d.counts);
+  // Share of the room is what scales: "8 of 12" means little across sessions,
+  // "67%" is comparable and reads from the back of the room.
+  const votes = d.counts.reduce((a,b)=>a+b, 0);
+  const pct = n => votes ? Math.round(n/votes*100) : 0;
   return `<div class="dist">
     ${od.map((oi,pos)=>{
       const n = d.counts[oi];
@@ -3215,7 +3248,7 @@ function distHtml(qi, q, od, picked){
         <span class="dl">${LETTERS[pos]}</span>
         <span class="dt"><span class="df" style="width:${Math.round(n/max*100)}%"></span>
           <span class="dlab">${esc(opts[oi])}</span></span>
-        <span class="dn">${n}</span>
+        <span class="dn"><b>${pct(n)}%</b><small>${n}</small></span>
       </div>`;
     }).join("")}
   </div>`;
@@ -3253,6 +3286,7 @@ async function tickHost(){
   if(k) kicked = new Set(k.map(x=>x.token));
   if(st && st[0]) liveState = st[0];
   if(!liveState) return;
+  if(phase==="question" && deadline && serverNow() > deadline){ goReveal(); return; }
   const key = liveState.round + ":" + liveState.phase + ":" + liveState.q_index;
   if(key !== lastKey){ lastKey = key; renderHost(); }
   else paintHost();
@@ -3395,7 +3429,7 @@ function renderHostReveal(){
         ${distHtml(qi, q, od, -1)}
         ${whyHtml(q)}
       </div>
-      <div>${hostBoardHtml(8)}</div>
+      <div>${hostBoardHtml(8, qi)}</div>
     </div>
   </div>
   <div class="hostbar">
@@ -3409,13 +3443,21 @@ function renderHostReveal(){
     renderHost();
   };
 }
-function hostBoardHtml(limit){
+function hostBoardHtml(limit, qi){
   const lb = leaderboard().slice(0, limit);
+  const before = qi==null ? null : ranksBefore(qi);
+  const move = tok => {
+    if(!before || !before.has(tok)) return "";
+    const was = before.get(tok), now = lb.findIndex(r=>r.token===tok)+1;
+    if(now===0 || was===now) return "";
+    const up = now < was;
+    return `<span class="mv ${up?"up":"down"}">${up?"\u25b2":"\u25bc"}${Math.abs(was-now)}</span>`;
+  };
   return `<div class="hostboard">
     <div class="boardtitle">${esc(t().board)}</div>
     ${lb.length ? lb.map((r,i)=>`<div class="hrow${i===0?" top1":""}">
         <span class="rk">${i+1}</span>
-        <span class="nm">${esc(r.name)}</span>
+        <span class="nm">${esc(r.name)}${move(r.token)}</span>
         <span class="cr">${r.correct}/${r.total}</span>
         <span class="sc">${r.score}</span>
       </div>`).join("")

@@ -63,7 +63,7 @@ function query(table, sp) {
 
 // mirrors the unique constraints in docs/supabase.sql
 const UNIQUE = {
-  dm_players: ["session", "token"],
+  dm_players: ["session", "token", "round"],
   dm_answers: ["session", "token", "round", "q_index"],
   dm_kicks:   ["session", "token"],
 };

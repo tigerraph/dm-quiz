@@ -15,10 +15,11 @@ create table dm_players (
   session   text not null,
   token     text not null,             -- random, generated on the device
   name      varchar(14) not null,
+  round     int not null default 0,    -- so "New round" clears the roster
   joined_at timestamptz default now(),
-  unique (session, token)
+  unique (session, token, round)
 );
-create index dm_players_session_idx on dm_players (session, joined_at);
+create index dm_players_session_idx on dm_players (session, round, joined_at);
 
 -- ----------------------------------------------------------------- answers
 -- One row per player per question. The unique constraint is what stops a
