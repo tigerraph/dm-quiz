@@ -43,6 +43,12 @@
   .langbar button.on{background:var(--teal);color:var(--dark)}
   .video{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000}
   .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .videofallback{position:absolute;inset:0;display:block;text-decoration:none;overflow:hidden;border-radius:inherit}
+  .videofallback img{width:100%;height:100%;object-fit:cover;display:block}
+  .videofallback .playbtn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-size:3rem;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.6);background:rgba(0,0,0,.28)}
+  .videofallback .vfcap{position:absolute;left:0;right:0;bottom:0;padding:10px 14px;
+    background:linear-gradient(transparent,rgba(0,0,0,.75));color:#fff;font-weight:700;font-size:.9rem}
   .postit{
     background:var(--cream);color:var(--ink);border-radius:6px;
     box-shadow:0 10px 24px rgba(0,0,0,.35);padding:20px 24px;
@@ -88,7 +94,7 @@
   <h2 lang-de>Das Video</h2>
   <h2 lang-en>The video</h2>
   <div class="video">
-    <iframe src="https://www.youtube-nocookie.com/embed/Nadu4ABEmxQ"
+    <iframe src="https://www.youtube-nocookie.com/embed/Nadu4ABEmxQ?rel=0"
             title="easyvote — Gewaltenteilung" loading="lazy"
             allow="encrypted-media; picture-in-picture" allowfullscreen></iframe>
   </div>
@@ -186,6 +192,23 @@
     var saved = q || localStorage.getItem('dm-lang');
     if(saved === 'en') setLang('en');
   }catch(e){}
+</script>
+<script>
+/* Opened straight off the disk, a YouTube embed has no origin to report and
+   the player refuses with "Error 153". Nothing can fix that inside the frame,
+   so swap it for a poster that opens the video in a real tab. Served over
+   http(s) — which is how the slides link to this page — the embed is used. */
+(function(){
+  if (location.protocol !== "file:") return;
+  var box = document.querySelector(".video");
+  if (!box) return;
+  box.innerHTML =
+    '<a class="videofallback" href="https://www.youtube.com/watch?v=Nadu4ABEmxQ" '
+  + 'target="_blank" rel="noopener">'
+  + '<img src="../assets/img/easyvote-thumb.jpg" alt="">'
+  + '<span class="playbtn" aria-hidden="true">&#9654;</span>'
+  + '<span class="vfcap">easyvote — «Gewaltenteilung» · auf YouTube öffnen</span></a>';
+})();
 </script>
 </body>
 </html>
