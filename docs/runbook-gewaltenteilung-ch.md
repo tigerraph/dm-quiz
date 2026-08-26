@@ -25,18 +25,18 @@ Kein-Folien-Fallback: [`docs/reference/DM_Template_V3_Topic-Card.pdf`](reference
 |---|---|---|---|
 | — | Ankommen | 1 DM-Hauptfolie | Pillar zeigen: heute gibt es den ersten **Civics-Stern**. Zwei Slots: Sprint (30′), dann die Runde. |
 | 0'–5' | **Einstieg** | 3 QR | «Handy raus.» QR scannen, Beamer-Ansicht per Klick öffnen, 3 Fragen spielen. Erklärungen zeigt die App — nicht doppelt erklären. |
-| 5'–15' | **Thema** | 4 Video, 5 Warum | Mission VOR dem Video ansagen (Antworten prüfen, wer kontrolliert wen, eine Überraschung). Video ab Folie anklicken. Danach die Warum-Folie als **Diskussion**, nicht als Vortrag — Provokation unten. |
-| 15'–20' | **Übung** | 6 Teach-back | Zu zweit, ohne Folien: drei Gewalten in einem Satz, wo verliert Gewaltenteilung, wo gewinnt sie. Ein Duo erklärt dem Raum. **Erst danach** Folie 7 (Check) zeigen: Was hattet ihr, was fehlte? |
-| 20'–25' | **Take-away** | 8 Skeptiker-Kit | Die vier Karten sind Antworten auf «die sind doch eh alle korrupt». Laut lesen lassen. Bottom Line auf die Master Checklist, Civics-Stern ★ vergeben. Nie streichen. |
-| 25'–30' | Puffer | — | Überzieher abfedern, dann Folie 9: Übergang in die Runde. |
-| danach | **Die Runde** | 9 | [Platzhalter — Ablauf und Fragen der Runde: Fritz] |
+| 5'–15' | **Thema** | 4 Video, 5 Check | Mission VOR dem Video ansagen (Antworten prüfen, wer kontrolliert wen, Überraschung merken — die kommt in die Diskussion). Video ab Folie anklicken. Danach Check-Folie: Dreieck kurz durchgehen, Überraschungen abholen. |
+| 15'–20' | **Übung** | 6 Warum-Diskussion | Die Provokation steht auf der Folie. **2′** zu zweit/dritt: Ist uns das den langsamen Apparat wert? Dann **3′** Runde: pro Gruppe **ein** stärkstes Argument. Nach 2′ hart unterbrechen — sonst frisst die Runde die Zeit. |
+| 20'–25' | **Take-away** | 7 Skeptiker-Kit | Die vier Karten sind Antworten auf «die sind doch eh alle korrupt». Laut lesen lassen. Bottom Line auf die Master Checklist, Civics-Stern ★ vergeben. Nie streichen. |
+| 25'–30' | Puffer | — | Überzieher abfedern, dann Folie 8: Übergang in die Runde. |
+| danach | **Die Runde** | 8 | Nur die Titelfolie — die Runde gehört dem Raum. |
 
-## Warum Video → Diskussion → Übung → Check (die Reihenfolge)
+## Die Dramaturgie
 
-Das Video sagt **wie**, absichtlich nicht **warum**. Die Warum-Diskussion sät das
-Argument, die Übung zwingt alle, es selbst zu formulieren (Teach-back), und erst
-dann kommt das Dreieck als Auflösung — wer es selbst konstruiert hat, behält es.
-Darum die Check-Folie **nach** der Übung, nicht direkt nach dem Video.
+Das Video sagt **wie**, absichtlich nicht **warum**. Der Check direkt danach
+sichert die Mechanik (Dreieck), die Übung ist dann die Warum-Diskussion mit
+hartem Timeboxing (2′ + 3′) — eine offene Runde ohne Auftrag ist nicht zu
+stoppen, darum steht der Auftrag auf der Folie.
 
 ## Die Provokation (Thema, ~Minute 12)
 

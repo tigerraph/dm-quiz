@@ -109,7 +109,7 @@
 
   /* S4 — video */
   .vidrow{display:flex;gap:48px;align-items:flex-start}
-  .thumb{position:relative;flex:none;width:560px;border-radius:16px;overflow:hidden}
+  .thumb{position:relative;display:block;border-radius:16px;overflow:hidden}
   .thumb img{display:block;width:100%}
   .thumb .play{
     position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
@@ -119,15 +119,18 @@
     display:flex;align-items:center;justify-content:center;color:#fff;font-size:40px;
     padding-left:8px;
   }
+  .vidcap{display:block;font-weight:800;font-size:21px;color:#fff;text-decoration:none;margin-top:14px}
+  .vidcap span{font-weight:400;opacity:.8}
+  .vidalt{font-size:16px;opacity:.7;margin-top:8px;line-height:1.5}
+  .vidalt a{text-decoration:underline}
 
-  /* S5 — warum visual */
-  .lanes{margin-top:22px;display:flex;flex-direction:column;gap:14px}
-  .lane{display:flex;align-items:center;gap:18px;font-size:22px}
-  .lane .tag{font-weight:800;width:250px;flex:none}
-  .lane .bar{height:44px;border-radius:10px;display:flex;align-items:center;
-             padding:0 16px;font-weight:800;font-size:19px;color:#fff}
+  /* S6 — übung task */
+  .task{
+    background:var(--blue);color:#fff;border-radius:14px;padding:18px 24px;
+    font-size:23px;line-height:1.45;margin:20px 0 4px;
+  }
 
-  /* S8 — take-away cards */
+  /* S7 — take-away cards */
   .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:0}
   .card{background:rgba(255,255,255,.13);border-radius:16px;padding:16px 20px;
         display:flex;gap:16px;align-items:flex-start}
@@ -230,20 +233,24 @@
   <div class="kicker">2 — THEMA</div>
   <h1 style="font-size:64px">Schauen, wie es funktioniert</h1>
   <div class="vidrow">
-    <a class="thumb" href="https://www.youtube.com/watch?v=Nadu4ABEmxQ">
-      <img src="../assets/img/easyvote-thumb.jpg" alt="easyvote — Gewaltenteilung">
-      <span class="play"><span>▶</span></span>
-    </a>
+    <div style="flex:none;width:560px">
+      <a class="thumb" href="https://www.youtube.com/watch?v=Nadu4ABEmxQ">
+        <img src="../assets/img/easyvote-thumb.jpg" alt="easyvote — Gewaltenteilung">
+        <span class="play"><span>▶</span></span>
+      </a>
+      <a class="vidcap" href="https://www.youtube.com/watch?v=Nadu4ABEmxQ">▶ easyvote — «Gewaltenteilung» <span>· DE · 1:24</span></a>
+      <div class="vidalt">
+        Backup: <a href="https://www.srf.ch/play/tv/srf-school/video/3-gewalten?urn=urn:srf:video:e5e3474b-c7a3-4ab2-ae79-52672cbbb981">SRF school — «3 Gewalten»</a><br>
+        EN zum Lesen: <a href="https://www.ch.ch/en/political-system/operation-and-organisation-of-switzerland/separation-of-powers/">ch.ch — Separation of powers</a>
+      </div>
+    </div>
     <div style="flex:1">
       <div class="lede" style="font-size:26px">Deine Mission:</div>
       <ol style="font-size:23px">
         <li>Prüfe deine drei Quiz-Antworten</li>
         <li>Erkenne: Wer kontrolliert wen?</li>
-        <li>Merke dir eine Überraschung</li>
+        <li>Merke dir, was dich überrascht —<br>das kommt gleich in die Diskussion</li>
       </ol>
-      <a class="link" style="font-size:20px;padding:12px 16px" href="https://www.youtube.com/watch?v=Nadu4ABEmxQ">▶ easyvote — «Gewaltenteilung»<small>DE · 1:24 · YouTube</small></a>
-      <a class="link" style="font-size:20px;padding:12px 16px" href="https://www.srf.ch/play/tv/srf-school/video/3-gewalten?urn=urn:srf:video:e5e3474b-c7a3-4ab2-ae79-52672cbbb981">▶ Backup: SRF school — «3 Gewalten»<small>DE · Play SRF</small></a>
-      <a class="link" style="font-size:20px;padding:12px 16px" href="https://www.ch.ch/en/political-system/operation-and-organisation-of-switzerland/separation-of-powers/">EN: ch.ch — Separation of powers<small>offizielle Kurzerklärung zum Lesen · 2′</small></a>
     </div>
   </div>
   <div class="foot">
@@ -251,51 +258,9 @@
   </div>
 </section>
 
-<!-- 5 · Thema: Warum eigentlich -->
-<section class="slide bg-cream">
-  <div class="kicker">2 — THEMA · ZUM DISKUTIEREN</div>
-  <h1 style="color:var(--ink);font-size:64px">Und warum eigentlich?</h1>
-  <div style="font-style:italic;font-weight:400;font-size:29px;line-height:1.4;max-width:1050px">
-    «Mal ehrlich: Eine Autokratie ist schneller. Ein Entscheid, keine Debatte. Warum leisten wir uns diesen langsamen Apparat?»
-  </div>
-  <div class="lanes">
-    <div class="lane">
-      <div class="tag">Autokratie</div>
-      <div class="bar" style="width:640px;background:var(--ink)">schnell —— bis die Macht die Besitzer wechselt&nbsp;&nbsp;✗</div>
-    </div>
-    <div class="lane">
-      <div class="tag">Gewaltenteilung</div>
-      <div class="bar" style="width:640px;background:var(--blue)">✓ Kontrolle&nbsp;&nbsp;·&nbsp;&nbsp;✓ Kontrolle&nbsp;&nbsp;·&nbsp;&nbsp;✓ Kontrolle — egal, wer regiert</div>
-    </div>
-  </div>
-  <div class="note" style="font-size:24px;margin-top:24px;color:var(--ink)">
-    Bremsen sind nicht da, um langsam zu fahren — sondern damit man schnell fahren <b>kann</b>.
-  </div>
-  <div class="foot">
-    <div class="wordmark" style="color:var(--ink)">In die Runde fragen: Wer kauft das Argument — wer nicht?</div>
-    <div class="metric"><div class="label">Zeit</div><div class="value">4m</div></div>
-  </div>
-</section>
-
-<!-- 6 · Übung: Erkläre es in deinen Worten -->
-<section class="slide bg-green">
-  <div class="kicker">3 — ÜBUNG · TEACH-BACK</div>
-  <h1 style="font-size:64px">Erkläre es in<br>deinen Worten</h1>
-  <div class="lede">Zu zweit — ohne Folien, ohne Handy:</div>
-  <ol style="font-size:26px">
-    <li>Die <b>drei Gewalten</b> — erkläre sie in einem Satz.</li>
-    <li>Wo <b>verliert</b> Gewaltenteilung gegen eine schnelle Autokratie?</li>
-    <li>Wo <b>gewinnt</b> sie — und warum zählt das mehr?</li>
-  </ol>
-  <div class="foot">
-    <div class="postit" style="padding:14px 22px;font-weight:800;font-size:20px;transform:rotate(-2deg)">Danach: ein Duo erklärt es dem Raum</div>
-    <div class="metric"><div class="label">Zeit</div><div class="value">5m</div></div>
-  </div>
-</section>
-
-<!-- 7 · Der Check: Wer kontrolliert wen -->
+<!-- 5 · Thema: Der Check — Wer kontrolliert wen -->
 <section class="slide bg-dark">
-  <div class="kicker">3 — ÜBUNG · DER CHECK</div>
+  <div class="kicker">2 — THEMA · DER CHECK</div>
   <h1 style="font-size:68px">Wer kontrolliert wen?</h1>
   <div style="display:flex;gap:48px;align-items:flex-start">
     <svg width="620" height="400" viewBox="0 0 620 400" style="flex:none">
@@ -336,10 +301,30 @@
       <div class="postit" style="font-size:20px;transform:rotate(-1deg)">Die letzte Kontrolle ist <b>das Volk</b>: Referendum &amp; Initiative.</div>
     </div>
   </div>
-  <div class="foot"><div class="wordmark">Was hattet ihr — was hat gefehlt?</div></div>
+  <div class="foot"><div class="wordmark">Mission 2 aufgelöst — was hat euch überrascht?</div></div>
 </section>
 
-<!-- 8 · Take-away: Skeptiker-Kit -->
+<!-- 6 · Übung: Warum-Diskussion -->
+<section class="slide bg-cream">
+  <div class="kicker">3 — ÜBUNG · DISKUSSION</div>
+  <h1 style="color:var(--ink);font-size:64px">Und warum eigentlich?</h1>
+  <div style="font-style:italic;font-weight:400;font-size:28px;line-height:1.4;max-width:1050px">
+    «Mal ehrlich: Eine Autokratie ist schneller. Ein Entscheid, keine Debatte. Warum leisten wir uns diesen langsamen Apparat?»
+  </div>
+  <div class="task">
+    <b>2′</b> zu zweit oder zu dritt: Ist uns das den langsamen Apparat wert — ja oder nein?<br>
+    <b>3′</b> in der Runde: pro Gruppe <b>ein</b> stärkstes Argument — dafür oder dagegen.
+  </div>
+  <div class="note" style="font-size:23px;margin-top:18px;color:var(--ink)">
+    Bremsen sind nicht da, um langsam zu fahren — sondern damit man schnell fahren <b>kann</b>.
+  </div>
+  <div class="foot">
+    <div class="wordmark" style="color:var(--ink)">Moderation: nach 2′ hart unterbrechen — ein Argument pro Gruppe, dann weiter.</div>
+    <div class="metric"><div class="label">Zeit</div><div class="value">5m</div></div>
+  </div>
+</section>
+
+<!-- 7 · Take-away: Skeptiker-Kit -->
 <section class="slide bg-blue">
   <div class="kicker">4 — TAKE-AWAY · BOTTOM LINE ★</div>
   <h1 style="font-size:52px;margin-bottom:14px">«Demokratie? Die sind doch eh alle korrupt.»</h1>
@@ -368,27 +353,19 @@
   </div>
 </section>
 
-<!-- 9 · Die Runde -->
-<section class="slide bg-teal">
-  <div class="kicker">2 — DIE RUNDE</div>
-  <h1>Die Runde</h1>
-  <div class="lede">Sprint vorbei — jetzt gehört der Abend euch.</div>
-  <ul style="font-size:26px">
-    <li>Was nimmst du aus dem Special Topic mit in die Runde?</li>
-    <li>Wo ist dir Gewaltenteilung diese Woche begegnet — oder ihr Fehlen?</li>
-  </ul>
-  <div class="note">[Platzhalter — Ablauf und Fragen der Runde: Fritz]</div>
-  <div class="foot"><div class="wordmark">Democracy Matters × DAY8</div></div>
+<!-- 8 · Die Runde -->
+<section class="slide bg-teal" style="align-items:center;justify-content:center;padding:0">
+  <h1 style="margin:0">Die Runde</h1>
 </section>
 
-<!-- 10 · Regie -->
+<!-- 9 · Regie -->
 <section class="slide bg-dark">
   <div class="kicker">FÜR DIE MODERATION</div>
   <h1 style="font-size:56px">Regie</h1>
   <table class="regie">
     <tr><td>0′–5′</td><td><b>Einstieg</b> — QR-Folie, <a href="https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch&amp;host=1">Beamer-Ansicht öffnen</a>, 3 Fragen spielen. Erklärungen zeigt die App.</td></tr>
-    <tr><td>5′–15′</td><td><b>Thema</b> — Mission ansagen, <a href="https://www.youtube.com/watch?v=Nadu4ABEmxQ">Video easyvote (1:24)</a>, dann die Warum-Folie als Diskussion. Backup: <a href="https://www.srf.ch/play/tv/srf-school/video/3-gewalten?urn=urn:srf:video:e5e3474b-c7a3-4ab2-ae79-52672cbbb981">SRF «3 Gewalten»</a>.</td></tr>
-    <tr><td>15′–20′</td><td><b>Übung</b> — Teach-back zu zweit (3 Prompts), ein Duo erklärt dem Raum. <b>Erst danach</b> die Check-Folie zeigen: Was hattet ihr, was fehlte?</td></tr>
+    <tr><td>5′–15′</td><td><b>Thema</b> — Mission ansagen, <a href="https://www.youtube.com/watch?v=Nadu4ABEmxQ">Video easyvote (1:24)</a> ab Folie anklicken, danach Check-Folie: Dreieck kurz durchgehen, Überraschungen abholen. Backup: <a href="https://www.srf.ch/play/tv/srf-school/video/3-gewalten?urn=urn:srf:video:e5e3474b-c7a3-4ab2-ae79-52672cbbb981">SRF «3 Gewalten»</a>.</td></tr>
+    <tr><td>15′–20′</td><td><b>Übung</b> — Warum-Diskussion: 2′ zu zweit/dritt, dann 3′ Runde, <b>ein</b> Argument pro Gruppe. Nach 2′ hart unterbrechen, sonst frisst die Runde die Zeit.</td></tr>
     <tr><td>20′–25′</td><td><b>Take-away</b> — Skeptiker-Kit durchgehen, Bottom Line in die Master Checklist, Civics-Stern ★ vergeben. Nie streichen.</td></tr>
     <tr><td>25′–30′</td><td><b>Puffer</b> — dann Übergang in die Runde.</td></tr>
   </table>
