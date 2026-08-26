@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gewaltenteilung CH — Learning Loop</title>
+<style>
+  @font-face{font-family:'Poppins';font-style:normal;font-weight:400;
+    src:url(../assets/fonts/poppins-400-latin.woff2) format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F;}
+  @font-face{font-family:'Poppins';font-style:normal;font-weight:400;
+    src:url(../assets/fonts/poppins-400-latin-ext.woff2) format('woff2');
+    unicode-range:U+0100-02BA,U+1E00-1E9F;}
+  @font-face{font-family:'Poppins';font-style:normal;font-weight:800;
+    src:url(../assets/fonts/poppins-800-latin.woff2) format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F;}
+  @font-face{font-family:'Poppins';font-style:normal;font-weight:800;
+    src:url(../assets/fonts/poppins-800-latin-ext.woff2) format('woff2');
+    unicode-range:U+0100-02BA,U+1E00-1E9F;}
+
+  :root{
+    --blue:#435CC6; --green:#A8D272; --teal:#5EB9A9;
+    --cream:#FDF2D0; --dark:#1B2329; --ink:#22313C;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:#101418}
+  body{font-family:'Poppins',system-ui,sans-serif;font-weight:400}
+
+  @page{size:1280px 720px;margin:0}
+  .slide{
+    position:relative;width:1280px;height:720px;overflow:hidden;
+    padding:64px 88px;display:flex;flex-direction:column;
+    page-break-after:always;break-after:page;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  @media screen{.slide{margin:24px auto;box-shadow:0 8px 40px rgba(0,0,0,.5)}}
+  /* box-shadows rasterize as dark blocks in print — flatten them */
+  @media print{.postit,.card,.pillar{box-shadow:none !important}}
+
+  .bg-blue{background:var(--blue);color:#fff}
+  .bg-teal{background:var(--teal);color:#fff}
+  .bg-dark{background:var(--dark);color:#fff}
+  .bg-green{background:var(--green);color:var(--ink)}
+  .bg-cream{background:var(--cream);color:var(--ink)}
+
+  .kicker{font-weight:800;font-size:22px;letter-spacing:.06em;margin-bottom:10px}
+  .bg-blue .kicker,.bg-dark .kicker{color:var(--teal)}
+  .bg-teal .kicker,.bg-green .kicker,.bg-cream .kicker{color:rgba(0,0,0,.45)}
+  h1{font-weight:800;font-size:84px;line-height:1.02;margin-bottom:30px}
+  .lede{font-weight:800;font-size:32px;margin-bottom:18px}
+  ol,ul{font-size:28px;line-height:1.5;padding-left:1.3em}
+  li{margin-bottom:10px}
+  b,strong{font-weight:800}
+  a{color:inherit}
+  .foot{position:absolute;left:88px;right:88px;bottom:40px;
+        display:flex;align-items:flex-end;justify-content:space-between}
+  .wordmark{font-weight:800;font-size:20px;opacity:.75;letter-spacing:.02em}
+  .metric .label{font-weight:800;font-size:22px}
+  .metric .value{font-weight:400;font-size:76px;line-height:1}
+  .note{font-size:22px;opacity:.85;margin-top:16px}
+
+  .postit{
+    background:var(--cream);color:var(--ink);border-radius:6px;
+    box-shadow:0 10px 24px rgba(0,0,0,.28);padding:24px 28px;
+  }
+
+  /* S1 — pillars + slots */
+  .toprow{display:flex;justify-content:space-between;align-items:flex-start}
+  .logo{height:88px}
+  .pillars{display:flex;gap:22px;margin:26px 0 30px}
+  .pillar{
+    flex:1;border-radius:16px;padding:24px 22px;background:rgba(255,255,255,.12);
+    text-align:center;
+  }
+  .pillar.today{background:var(--cream);color:var(--ink);position:relative}
+  .pillar .em{font-size:52px;line-height:1;font-family:system-ui}
+  .pillar .nm{font-weight:800;font-size:21px;margin:12px 0 8px;line-height:1.25;min-height:53px;display:flex;align-items:center;justify-content:center}
+  .pillar .stars{font-size:24px;letter-spacing:.15em}
+  .pillar.today .stars b{color:var(--blue)}
+  .chip{
+    position:absolute;top:-16px;left:50%;transform:translateX(-50%) rotate(-2deg);
+    background:var(--green);color:var(--ink);font-weight:800;font-size:17px;
+    padding:5px 16px;border-radius:999px;white-space:nowrap;
+  }
+  .slots{display:flex;gap:22px}
+  .slot{flex:1;border-radius:16px;padding:22px 26px;display:flex;
+        justify-content:space-between;align-items:center}
+  .slot .t{font-weight:800;font-size:26px}
+  .slot .s{font-size:19px;opacity:.85}
+  .slot .m{font-weight:400;font-size:40px}
+  .slot.a{background:rgba(255,255,255,.18);outline:3px solid rgba(255,255,255,.5)}
+  .slot.b{background:rgba(0,0,0,.18)}
+
+  .agenda{display:flex;gap:22px;margin-top:14px}
+  .agenda .item{flex:1;background:rgba(255,255,255,.12);border-radius:14px;padding:24px 22px}
+  .agenda .t{font-weight:800;font-size:26px;margin-bottom:4px}
+  .agenda .m{font-weight:400;font-size:44px}
+
+  /* S3 — QR */
+  .qrwrap{display:flex;gap:56px;align-items:center}
+  .qrcard{background:#fff;border-radius:16px;padding:26px;flex:none}
+  .qrcard svg{display:block}
+  .link{
+    display:block;font-weight:800;font-size:24px;text-decoration:none;
+    background:rgba(255,255,255,.14);border-radius:12px;padding:16px 20px;
+    margin-top:14px;color:#fff;
+  }
+  .link small{display:block;font-weight:400;font-size:17px;opacity:.8;margin-top:2px}
+
+  /* S4 — video */
+  .vidrow{display:flex;gap:48px;align-items:flex-start}
+  .thumb{position:relative;flex:none;width:560px;border-radius:16px;overflow:hidden}
+  .thumb img{display:block;width:100%}
+  .thumb .play{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  }
+  .thumb .play span{
+    width:96px;height:96px;border-radius:50%;background:rgba(27,35,41,.85);
+    display:flex;align-items:center;justify-content:center;color:#fff;font-size:40px;
+    padding-left:8px;
+  }
+
+  /* S5 — warum visual */
+  .lanes{margin-top:22px;display:flex;flex-direction:column;gap:14px}
+  .lane{display:flex;align-items:center;gap:18px;font-size:22px}
+  .lane .tag{font-weight:800;width:250px;flex:none}
+  .lane .bar{height:44px;border-radius:10px;display:flex;align-items:center;
+             padding:0 16px;font-weight:800;font-size:19px;color:#fff}
+
+  /* S8 — take-away cards */
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:0}
+  .card{background:rgba(255,255,255,.13);border-radius:16px;padding:16px 20px;
+        display:flex;gap:16px;align-items:flex-start}
+  .card .em{font-size:40px;line-height:1.1;font-family:system-ui}
+  .card .h{font-weight:800;font-size:22px;margin-bottom:4px}
+  .card .p{font-size:18.5px;line-height:1.4;opacity:.95}
+
+  table.regie{border-collapse:collapse;font-size:23px;width:100%}
+  table.regie td{padding:8px 18px 8px 0;vertical-align:top;border-bottom:1px solid rgba(255,255,255,.14)}
+  table.regie td:first-child{font-weight:800;white-space:nowrap;color:var(--teal)}
+  table.regie a{color:var(--green);text-decoration:none;font-weight:800}
+</style>
+</head>
+<body>
+
+<!-- 1 · DM Hauptfolie: Pillar + Slots -->
+<section class="slide bg-blue">
+  <div class="toprow">
+    <div>
+      <div class="kicker">DEMOCRACY MATTERS × DAY8</div>
+      <h1 style="font-size:66px;margin-bottom:6px">Democracy Matters</h1>
+      <div class="lede" style="margin-bottom:0">Special Topic heute: <span style="color:var(--cream)">Gewaltenteilung</span></div>
+    </div>
+    <img class="logo" src="../assets/img/dm-logo-white.png" alt="DM">
+  </div>
+  <div class="pillars">
+    <div class="pillar today">
+      <div class="chip">HEUTE +★</div>
+      <div class="em">🏛️</div>
+      <div class="nm">Civics &amp; Basic Concepts</div>
+      <div class="stars"><b>★</b>☆☆</div>
+    </div>
+    <div class="pillar">
+      <div class="em">📣</div>
+      <div class="nm">Communication &amp; Social Media</div>
+      <div class="stars">☆☆☆</div>
+    </div>
+    <div class="pillar">
+      <div class="em">✊</div>
+      <div class="nm">Action &amp; Mobilisation</div>
+      <div class="stars">☆☆☆</div>
+    </div>
+  </div>
+  <div class="slots">
+    <div class="slot a">
+      <div><div class="t">1 · Special Topic</div><div class="s">Gewaltenteilung — der Sprint</div></div>
+      <div class="m">30′</div>
+    </div>
+    <div class="slot b">
+      <div><div class="t">2 · Die Runde</div><div class="s">Diskussion &amp; Ausklang</div></div>
+      <div class="m">&nbsp;</div>
+    </div>
+  </div>
+  <div class="foot">
+    <div class="wordmark">The Learning Loop — Learn it. Keep it. · 3 Sterne pro Pillar → DM Master</div>
+  </div>
+</section>
+
+<!-- 2 · Topic-Intro -->
+<section class="slide bg-dark">
+  <div class="kicker">SPECIAL TOPIC</div>
+  <h1>Gewaltenteilung</h1>
+  <div class="lede">Warum Macht Kontrolle braucht — Schweizer Ausgabe</div>
+  <div class="agenda">
+    <div class="item"><div class="t">Einstieg</div><div class="m">5′</div></div>
+    <div class="item"><div class="t">Thema</div><div class="m">10′</div></div>
+    <div class="item"><div class="t">Übung</div><div class="m">5′</div></div>
+    <div class="item"><div class="t">Take-away</div><div class="m">5′</div></div>
+  </div>
+  <div class="foot">
+    <div class="wordmark">Danach: Die Runde</div>
+    <div class="metric"><div class="label">Sprint</div><div class="value">30m</div></div>
+  </div>
+</section>
+
+<!-- 3 · Einstieg: QR direkt ins Spiel -->
+<section class="slide bg-teal">
+  <div class="kicker">1 — EINSTIEG</div>
+  <h1>Handy raus</h1>
+  <div class="qrwrap">
+    <div class="qrcard" id="qr"></div>
+    <div style="flex:1">
+      <div class="lede">QR scannen, Namen eingeben — drei Fragen, alle gleichzeitig.</div>
+      <a class="link" href="https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch">
+        tigerraph.github.io/dm-quiz<small>Mitspielen — falls der QR-Code zickt</small>
+      </a>
+      <a class="link" href="https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch&amp;host=1" style="background:rgba(0,0,0,.22)">
+        Beamer-Ansicht öffnen →<small>Moderation: startet das Spiel und zeigt Fragen, Auflösung, Rangliste</small>
+      </a>
+    </div>
+  </div>
+  <div class="foot">
+    <div class="wordmark">Nach jeder Frage: Auflösung + Erklärung — die App macht das.</div>
+    <div class="metric"><div class="label">Zeit</div><div class="value">5m</div></div>
+  </div>
+</section>
+
+<!-- 4 · Thema: Video -->
+<section class="slide bg-blue">
+  <div class="kicker">2 — THEMA</div>
+  <h1 style="font-size:64px">Schauen, wie es funktioniert</h1>
+  <div class="vidrow">
+    <a class="thumb" href="https://www.youtube.com/watch?v=Nadu4ABEmxQ">
+      <img src="../assets/img/easyvote-thumb.jpg" alt="easyvote — Gewaltenteilung">
+      <span class="play"><span>▶</span></span>
+    </a>
+    <div style="flex:1">
+      <div class="lede" style="font-size:26px">Deine Mission:</div>
+      <ol style="font-size:23px">
+        <li>Prüfe deine drei Quiz-Antworten</li>
+        <li>Erkenne: Wer kontrolliert wen?</li>
+        <li>Merke dir eine Überraschung</li>
+      </ol>
+      <a class="link" style="font-size:20px;padding:12px 16px" href="https://www.youtube.com/watch?v=Nadu4ABEmxQ">▶ easyvote — «Gewaltenteilung»<small>DE · 1:24 · YouTube</small></a>
+      <a class="link" style="font-size:20px;padding:12px 16px" href="https://www.srf.ch/play/tv/srf-school/video/3-gewalten?urn=urn:srf:video:e5e3474b-c7a3-4ab2-ae79-52672cbbb981">▶ Backup: SRF school — «3 Gewalten»<small>DE · Play SRF</small></a>
+      <a class="link" style="font-size:20px;padding:12px 16px" href="https://www.ch.ch/en/political-system/operation-and-organisation-of-switzerland/separation-of-powers/">EN: ch.ch — Separation of powers<small>offizielle Kurzerklärung zum Lesen · 2′</small></a>
+    </div>
+  </div>
+  <div class="foot">
+    <div class="wordmark">Das Video sagt <b>wie</b> — das <b>Warum</b> klären wir gleich selbst.</div>
+  </div>
+</section>
+
+<!-- 5 · Thema: Warum eigentlich -->
+<section class="slide bg-cream">
+  <div class="kicker">2 — THEMA · ZUM DISKUTIEREN</div>
+  <h1 style="color:var(--ink);font-size:64px">Und warum eigentlich?</h1>
+  <div style="font-style:italic;font-weight:400;font-size:29px;line-height:1.4;max-width:1050px">
+    «Mal ehrlich: Eine Autokratie ist schneller. Ein Entscheid, keine Debatte. Warum leisten wir uns diesen langsamen Apparat?»
+  </div>
+  <div class="lanes">
+    <div class="lane">
+      <div class="tag">Autokratie</div>
+      <div class="bar" style="width:640px;background:var(--ink)">schnell —— bis die Macht die Besitzer wechselt&nbsp;&nbsp;✗</div>
+    </div>
+    <div class="lane">
+      <div class="tag">Gewaltenteilung</div>
+      <div class="bar" style="width:640px;background:var(--blue)">✓ Kontrolle&nbsp;&nbsp;·&nbsp;&nbsp;✓ Kontrolle&nbsp;&nbsp;·&nbsp;&nbsp;✓ Kontrolle — egal, wer regiert</div>
+    </div>
+  </div>
+  <div class="note" style="font-size:24px;margin-top:24px;color:var(--ink)">
+    Bremsen sind nicht da, um langsam zu fahren — sondern damit man schnell fahren <b>kann</b>.
+  </div>
+  <div class="foot">
+    <div class="wordmark" style="color:var(--ink)">In die Runde fragen: Wer kauft das Argument — wer nicht?</div>
+    <div class="metric"><div class="label">Zeit</div><div class="value">4m</div></div>
+  </div>
+</section>
+
+<!-- 6 · Übung: Erkläre es in deinen Worten -->
+<section class="slide bg-green">
+  <div class="kicker">3 — ÜBUNG · TEACH-BACK</div>
+  <h1 style="font-size:64px">Erkläre es in<br>deinen Worten</h1>
+  <div class="lede">Zu zweit — ohne Folien, ohne Handy:</div>
+  <ol style="font-size:26px">
+    <li>Die <b>drei Gewalten</b> — erkläre sie in einem Satz.</li>
+    <li>Wo <b>verliert</b> Gewaltenteilung gegen eine schnelle Autokratie?</li>
+    <li>Wo <b>gewinnt</b> sie — und warum zählt das mehr?</li>
+  </ol>
+  <div class="foot">
+    <div class="postit" style="padding:14px 22px;font-weight:800;font-size:20px;transform:rotate(-2deg)">Danach: ein Duo erklärt es dem Raum</div>
+    <div class="metric"><div class="label">Zeit</div><div class="value">5m</div></div>
+  </div>
+</section>
+
+<!-- 7 · Der Check: Wer kontrolliert wen -->
+<section class="slide bg-dark">
+  <div class="kicker">3 — ÜBUNG · DER CHECK</div>
+  <h1 style="font-size:68px">Wer kontrolliert wen?</h1>
+  <div style="display:flex;gap:48px;align-items:flex-start">
+    <svg width="620" height="400" viewBox="0 0 620 400" style="flex:none">
+      <defs>
+        <marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+          <path d="M0,0 L9,4.5 L0,9 z" fill="#5EB9A9"/>
+        </marker>
+        <marker id="ahg" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+          <path d="M0,0 L9,4.5 L0,9 z" fill="#A8D272"/>
+        </marker>
+      </defs>
+      <line x1="250" y1="112" x2="148" y2="242" stroke="#5EB9A9" stroke-width="4" marker-end="url(#ah)"/>
+      <line x1="370" y1="112" x2="472" y2="242" stroke="#5EB9A9" stroke-width="4" marker-end="url(#ah)"/>
+      <line x1="392" y1="288" x2="232" y2="288" stroke="#5EB9A9" stroke-width="4" marker-end="url(#ah)"/>
+      <line x1="310" y1="164" x2="310" y2="118" stroke="#A8D272" stroke-width="5" marker-end="url(#ahg)"/>
+      <g font-family="Poppins" text-anchor="middle">
+        <rect x="210" y="30" width="200" height="76" rx="12" fill="#435CC6"/>
+        <text x="310" y="62" fill="#fff" font-size="24" font-weight="800">Parlament</text>
+        <text x="310" y="90" fill="#fff" font-size="17" opacity=".85">macht die Gesetze</text>
+        <rect x="20" y="250" width="200" height="76" rx="12" fill="#435CC6"/>
+        <text x="120" y="282" fill="#fff" font-size="24" font-weight="800">Bundesrat</text>
+        <text x="120" y="310" fill="#fff" font-size="17" opacity=".85">führt sie aus</text>
+        <rect x="400" y="250" width="200" height="76" rx="12" fill="#435CC6"/>
+        <text x="500" y="282" fill="#fff" font-size="24" font-weight="800">Gerichte</text>
+        <text x="500" y="310" fill="#fff" font-size="17" opacity=".85">wenden sie an</text>
+        <text x="182" y="162" fill="#5EB9A9" font-size="16" font-weight="800" text-anchor="end">wählt &amp;</text>
+        <text x="182" y="182" fill="#5EB9A9" font-size="16" font-weight="800" text-anchor="end">beaufsichtigt</text>
+        <text x="438" y="172" fill="#5EB9A9" font-size="16" font-weight="800" text-anchor="start">wählt</text>
+        <text x="312" y="348" fill="#5EB9A9" font-size="15" font-weight="800">kontrollieren die Verwaltung</text>
+        <rect x="245" y="168" width="130" height="46" rx="23" fill="#A8D272"/>
+        <text x="310" y="198" fill="#22313C" font-size="20" font-weight="800">das Volk</text>
+        <text x="310" y="242" fill="#A8D272" font-size="15">Referendum &amp; Initiative</text>
+      </g>
+    </svg>
+    <div style="display:flex;flex-direction:column;gap:24px;margin-top:10px">
+      <div class="postit" style="font-size:20px;transform:rotate(-2deg)">Das Bundesgericht muss Bundesgesetze <b>anwenden</b> — es hebt sie nicht auf (Art. 190 BV).</div>
+      <div class="postit" style="font-size:20px;transform:rotate(1.5deg)">Niemand schickt das Parlament heim — <b>feste vier Jahre</b>.</div>
+      <div class="postit" style="font-size:20px;transform:rotate(-1deg)">Die letzte Kontrolle ist <b>das Volk</b>: Referendum &amp; Initiative.</div>
+    </div>
+  </div>
+  <div class="foot"><div class="wordmark">Was hattet ihr — was hat gefehlt?</div></div>
+</section>
+
+<!-- 8 · Take-away: Skeptiker-Kit -->
+<section class="slide bg-blue">
+  <div class="kicker">4 — TAKE-AWAY · BOTTOM LINE ★</div>
+  <h1 style="font-size:52px;margin-bottom:14px">«Demokratie? Die sind doch eh alle korrupt.»</h1>
+  <div class="lede" style="font-size:24px;margin-bottom:14px">Dein Kit für genau dieses Gespräch:</div>
+  <div class="cards">
+    <div class="card"><div class="em">🛡️</div><div>
+      <div class="h">Genau darum: Gewaltenteilung</div>
+      <div class="p">Korruption braucht unkontrollierte Macht. Hier kontrolliert jeder jeden — Missbrauch wird teuer.</div>
+    </div></div>
+    <div class="card"><div class="em">⚖️</div><div>
+      <div class="h">Niemand ist beides</div>
+      <div class="p">Wer Gesetze macht, führt sie nicht aus und richtet nicht darüber — eine Person, eine Gewalt.</div>
+    </div></div>
+    <div class="card"><div class="em">🗳️</div><div>
+      <div class="h">Du bist die letzte Instanz</div>
+      <div class="p">Referendum &amp; Initiative: In der Schweiz kontrolliert sogar das Volk den Staat.</div>
+    </div></div>
+    <div class="card"><div class="em">⏱️</div><div>
+      <div class="h">Langsam ist der Preis für sicher</div>
+      <div class="p">Autokratie ist schneller — aber nur gut, solange die Macht wohlwollend bleibt.</div>
+    </div></div>
+  </div>
+  <div class="foot">
+    <div class="wordmark">Bottom Line → Master Checklist · Civics-Stern ★ verdient</div>
+    <div class="metric"><div class="label">Zeit</div><div class="value">5m</div></div>
+  </div>
+</section>
+
+<!-- 9 · Die Runde -->
+<section class="slide bg-teal">
+  <div class="kicker">2 — DIE RUNDE</div>
+  <h1>Die Runde</h1>
+  <div class="lede">Sprint vorbei — jetzt gehört der Abend euch.</div>
+  <ul style="font-size:26px">
+    <li>Was nimmst du aus dem Special Topic mit in die Runde?</li>
+    <li>Wo ist dir Gewaltenteilung diese Woche begegnet — oder ihr Fehlen?</li>
+  </ul>
+  <div class="note">[Platzhalter — Ablauf und Fragen der Runde: Fritz]</div>
+  <div class="foot"><div class="wordmark">Democracy Matters × DAY8</div></div>
+</section>
+
+<!-- 10 · Regie -->
+<section class="slide bg-dark">
+  <div class="kicker">FÜR DIE MODERATION</div>
+  <h1 style="font-size:56px">Regie</h1>
+  <table class="regie">
+    <tr><td>0′–5′</td><td><b>Einstieg</b> — QR-Folie, <a href="https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch&amp;host=1">Beamer-Ansicht öffnen</a>, 3 Fragen spielen. Erklärungen zeigt die App.</td></tr>
+    <tr><td>5′–15′</td><td><b>Thema</b> — Mission ansagen, <a href="https://www.youtube.com/watch?v=Nadu4ABEmxQ">Video easyvote (1:24)</a>, dann die Warum-Folie als Diskussion. Backup: <a href="https://www.srf.ch/play/tv/srf-school/video/3-gewalten?urn=urn:srf:video:e5e3474b-c7a3-4ab2-ae79-52672cbbb981">SRF «3 Gewalten»</a>.</td></tr>
+    <tr><td>15′–20′</td><td><b>Übung</b> — Teach-back zu zweit (3 Prompts), ein Duo erklärt dem Raum. <b>Erst danach</b> die Check-Folie zeigen: Was hattet ihr, was fehlte?</td></tr>
+    <tr><td>20′–25′</td><td><b>Take-away</b> — Skeptiker-Kit durchgehen, Bottom Line in die Master Checklist, Civics-Stern ★ vergeben. Nie streichen.</td></tr>
+    <tr><td>25′–30′</td><td><b>Puffer</b> — dann Übergang in die Runde.</td></tr>
+  </table>
+  <div class="foot">
+    <div class="wordmark">Details: docs/runbook-gewaltenteilung-ch.md · Zum Nachschauen: <a style="color:var(--green);text-decoration:none" href="https://tigerraph.github.io/dm-quiz/content/gewaltenteilung-ch.html">…/content/gewaltenteilung-ch.html</a></div>
+  </div>
+</section>
+
+<script src="../vendor/qrcode.js"></script>
+<script>
+  (function(){
+    var qr = qrcode(0, 'M');
+    qr.addData('https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch');
+    qr.make();
+    document.getElementById('qr').innerHTML = qr.createSvgTag(8, 0);
+  })();
+</script>
+</body>
+</html>
