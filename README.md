@@ -58,6 +58,25 @@ person plays the pack at their own pace on their own device.
 | Option order | identical on every device | shuffled per device |
 | Replayable | yes, **New round** | yes, **Play again** |
 
+## Stars
+
+Participants collect one star per session, in the pillar the session's topic
+belongs to (`pillar` in `packs/sessions.json`: `civics`, `comm` or `action`).
+3 stars in every pillar makes a **DM Champion**, 6 a **DM Master**. Spec:
+[`docs/dm-stars-spec.md`](docs/dm-stars-spec.md).
+
+The same QR does everything. With no game running, a scanned phone rests on
+the **My DM** passport and switches by itself when the host starts a lobby.
+At the end of a session, **Award star ★** on the podium screen opens the
+claim window: every phone (and anyone re-scanning the QR) gets a
+**Collect my star** button. **New round** closes the window.
+
+**Add a star** in the host lobby or claim screen backfills stars by hand —
+pick a person from the roster, pillar required, topic and date optional.
+
+`?demo=1` shows three canned passports (mid-way, Champion, one short of
+Master) without touching the database.
+
 ### Rehearsing
 
 `?session=probe&host=1` is a scratch session pointing at the same pack. Use it
@@ -69,7 +88,9 @@ session's leaderboard.
 No rebuild needed — packs are fetched at runtime.
 
 1. Add `packs/<id>.json`.
-2. Add a line to `packs/sessions.json` pointing at it. `date` is optional
+2. Add a line to `packs/sessions.json` pointing at it. `pillar` (`civics`,
+   `comm` or `action`) decides which pillar the session's star counts
+   toward — without it there is no star to claim. `date` is optional
    (ISO `YYYY-MM-DD`); it shows under the title in the picker, and is left
    out entirely when null.
 

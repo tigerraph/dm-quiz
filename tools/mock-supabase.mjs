@@ -25,17 +25,21 @@ import { extname, join, normalize, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const PORT = Number(process.env.PORT || 4173);
+const PORT = Number(process.argv[2] || process.env.PORT || 4173);
 
-const db = { dm_state: [], dm_players: [], dm_answers: [], dm_kicks: [] };
+const db = { dm_state: [], dm_players: [], dm_answers: [], dm_kicks: [],
+             dm_stars: [], dm_token_links: [], dm_identities: [] };
 let seq = 0;
 
 const MIME = { ".html":"text/html", ".json":"application/json", ".js":"text/javascript",
                ".woff2":"font/woff2", ".css":"text/css", ".svg":"image/svg+xml",
                ".png":"image/png", ".jpg":"image/jpeg" };
 
-// PostgREST filters are "col=eq.value"; that is the only operator this app uses.
+// PostgREST filters: "col=eq.value" and "col=in.(a,b)" are the two operators
+// this app uses.
 const eqVal = v => (v.startsWith("eq.") ? decodeURIComponent(v.slice(3)) : null);
+const inVals = v => (v.startsWith("in.(") && v.endsWith(")")
+  ? v.slice(4, -1).split(",").map(decodeURIComponent) : null);
 
 function query(table, sp) {
   let rows = db[table].slice();
@@ -43,6 +47,8 @@ function query(table, sp) {
     if (["select", "order", "limit", "offset"].includes(k)) continue;
     const want = eqVal(v);
     if (want !== null) rows = rows.filter(r => String(r[k]) === want);
+    const set = inVals(v);
+    if (set) rows = rows.filter(r => set.includes(String(r[k])));
   }
   const order = sp.get("order");
   if (order) {
@@ -66,6 +72,8 @@ const UNIQUE = {
   dm_players: ["session", "token", "round"],
   dm_answers: ["session", "token", "round", "q_index"],
   dm_kicks:   ["session", "token"],
+  dm_stars:   ["session", "token"],
+  dm_token_links: ["token_a", "token_b"],
 };
 
 createServer(async (req, res) => {
@@ -85,13 +93,16 @@ createServer(async (req, res) => {
       for await (const c of req) body += c;
       const row = JSON.parse(body);
       const uq = UNIQUE[table];
-      if (uq && db[table].some(r => uq.every(k => String(r[k]) === String(row[k])))) {
+      // like Postgres, a NULL never collides with anything
+      if (uq && db[table].some(r => uq.every(k =>
+            row[k] != null && r[k] != null && String(r[k]) === String(row[k])))) {
         res.writeHead(409, { "Content-Type": "application/json" });
         return void res.end(JSON.stringify({ code: "23505", message: "duplicate key" }));
       }
       const now = new Date().toISOString();
       db[table].push({ id: "id" + ++seq, _seq: seq, round: 0,
-                       started_at: now, joined_at: now, created_at: now, ...row });
+                       started_at: now, joined_at: now, created_at: now,
+                       awarded_on: now.slice(0, 10), ...row });
       return void res.writeHead(201).end();
     }
     return void res.writeHead(405).end();

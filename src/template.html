@@ -199,6 +199,33 @@ body.host #app{max-width:none; padding:0;}
 .chip.kickable:hover{border-color:var(--wrong); color:var(--wrong);}
 .chip.kickable:hover .x{opacity:1;}
 
+/* ---------- star passport (My DM) ---------- */
+.passgrid{display:flex; flex-direction:column; gap:14px; width:min(94%,420px);}
+.pillcard{background:var(--cream); color:var(--ink); border-radius:4px; box-shadow:var(--paper-shadow);
+          padding:14px 16px; text-align:left;}
+.pillcard:nth-child(odd){transform:rotate(-.6deg);}
+.pillcard:nth-child(even){transform:rotate(.6deg);}
+.pillcard b{display:block; font-weight:800; font-size:.82rem; margin-bottom:9px;}
+.starrow{display:flex; gap:12px; flex-wrap:wrap; align-items:flex-start;}
+.starcol{display:flex; flex-direction:column; align-items:center; gap:2px; font-size:1.55rem; line-height:1;}
+.starcol.on{color:var(--blue);}
+.starcol.off{color:rgba(34,49,60,.22);}
+.starcol small{font-size:.56rem; font-weight:700; color:rgba(34,49,60,.55); white-space:nowrap;}
+.lvlbadge{display:inline-block; font-weight:800; font-size:.95rem; color:var(--ink);
+          background:var(--green); border-radius:999px; padding:7px 18px; box-shadow:var(--paper-shadow);}
+.claimstar{font-size:4.2rem; line-height:1; color:var(--cream); animation:popin .4s ease backwards;}
+/* host: claimed-star chips reuse .roster/.chip */
+.sheet{position:fixed; inset:0; background:rgba(0,0,0,.55); display:flex; align-items:center;
+       justify-content:center; z-index:20; padding:16px;}
+.sheet form{background:var(--dark-2); border-radius:16px; padding:20px; width:min(100%,420px);
+            display:flex; flex-direction:column; gap:10px; box-shadow:var(--paper-shadow);}
+.sheet label{font-weight:800; font-size:.72rem; letter-spacing:.06em; color:var(--teal);
+             text-transform:uppercase; margin-top:2px;}
+.sheet select,.sheet input{border-radius:10px; border:1.5px solid rgba(255,255,255,.28);
+  background:rgba(255,255,255,.08); color:#fff; padding:11px 12px; font:inherit; font-weight:600; width:100%;}
+.sheet select option{color:var(--ink);}
+.sheet .row{display:flex; gap:10px; justify-content:flex-end; margin-top:8px;}
+
 /* ---------- host view (beamer) ---------- */
 body.host{overflow:hidden;}
 .hostwrap{height:100dvh; display:grid; grid-template-columns:minmax(0,42%) minmax(0,1fr);
@@ -359,7 +386,20 @@ const I18N = {
   noSession:"Unknown session", noSessionSub:"That session id is not in the registry.",
   loadFail:"Could not load the session data.",
   hostNeedsDb:"Live mode needs Supabase",
-  hostNeedsDbSub:"The host view coordinates every phone through the database. Add the project URL and anon key to src/config.json, rebuild, and reload. Players can still use the solo mode in the meantime."
+  hostNeedsDbSub:"The host view coordinates every phone through the database. Add the project URL and anon key to src/config.json, rebuild, and reload. Players can still use the solo mode in the meantime.",
+  myDM:"My DM", passportSub:"Your star passport — one star per session.",
+  champion:"DM Champion", master:"DM Master",
+  champRule:"3 stars in every pillar → DM Champion · 6 → DM Master",
+  noStarsYet:"No stars yet. You collect them at the end of each session.",
+  waitingSession:"The session hasn't started yet — this page switches by itself.",
+  claimTitle:"Your star is ready", claimBtn:"Collect my star ★",
+  claimedTitle:"Star collected!",
+  claimScan:"Scan to collect your star", awardStar:"Award star ★",
+  starsCount:n=>`${n} ★ collected`,
+  addStar:"Add a star", mWho:"Person", mPillar:"Pillar",
+  mTopic:"Topic (optional)", mDate:"Date (optional)", mAdd:"Add",
+  starAdded:"Star added ★", cancel:"Cancel", back:"Back",
+  demoNote:"Demo passports — nothing is saved."
  },
  de:{
   brand:"Democracy Matters", quiz:"Quiz",
@@ -386,7 +426,20 @@ const I18N = {
   noSession:"Unbekannte Session", noSessionSub:"Diese Session-ID steht nicht in der Registry.",
   loadFail:"Die Session-Daten konnten nicht geladen werden.",
   hostNeedsDb:"Live-Modus braucht Supabase",
-  hostNeedsDbSub:"Die Host-Ansicht steuert alle Handys über die Datenbank. Projekt-URL und Anon-Key in src/config.json eintragen, neu bauen und neu laden. Solo-Modus funktioniert in der Zwischenzeit."
+  hostNeedsDbSub:"Die Host-Ansicht steuert alle Handys über die Datenbank. Projekt-URL und Anon-Key in src/config.json eintragen, neu bauen und neu laden. Solo-Modus funktioniert in der Zwischenzeit.",
+  myDM:"My DM", passportSub:"Dein Sterne-Pass — ein Stern pro Session.",
+  champion:"DM Champion", master:"DM Master",
+  champRule:"3 Sterne in jedem Pfeiler → DM Champion · 6 → DM Master",
+  noStarsYet:"Noch keine Sterne. Du sammelst sie am Ende jeder Session.",
+  waitingSession:"Die Session hat noch nicht begonnen — diese Seite wechselt von selbst.",
+  claimTitle:"Dein Stern ist bereit", claimBtn:"Stern abholen ★",
+  claimedTitle:"Stern geholt!",
+  claimScan:"Scannen und Stern abholen", awardStar:"Stern vergeben ★",
+  starsCount:n=>`${n} ★ abgeholt`,
+  addStar:"Stern hinzufügen", mWho:"Person", mPillar:"Pfeiler",
+  mTopic:"Thema (optional)", mDate:"Datum (optional)", mAdd:"Hinzufügen",
+  starAdded:"Stern hinzugefügt ★", cancel:"Abbrechen", back:"Zurück",
+  demoNote:"Demo-Pässe — nichts wird gespeichert."
  },
  fr:{
   brand:"Democracy Matters", quiz:"Quiz",
@@ -417,15 +470,38 @@ const I18N = {
   noSession:"Session inconnue", noSessionSub:"Cet identifiant de session n'est pas au registre.",
   loadFail:"Impossible de charger les donn\u00e9es de la session.",
   hostNeedsDb:"Le mode direct n\u00e9cessite Supabase",
-  hostNeedsDbSub:"La vue h\u00f4te coordonne tous les t\u00e9l\u00e9phones via la base de donn\u00e9es. Ajoute l'URL du projet et la cl\u00e9 anon dans src/config.json, reconstruis, puis recharge. Le mode solo reste disponible entre-temps."
+  hostNeedsDbSub:"La vue h\u00f4te coordonne tous les t\u00e9l\u00e9phones via la base de donn\u00e9es. Ajoute l'URL du projet et la cl\u00e9 anon dans src/config.json, reconstruis, puis recharge. Le mode solo reste disponible entre-temps.",
+  myDM:"My DM", passportSub:"Ton passeport d'\u00e9toiles \u2014 une \u00e9toile par session.",
+  champion:"DM Champion", master:"DM Master",
+  champRule:"3 \u00e9toiles dans chaque pilier \u2192 DM Champion \u00b7 6 \u2192 DM Master",
+  noStarsYet:"Pas encore d'\u00e9toiles. Tu les re\u00e7ois \u00e0 la fin de chaque session.",
+  waitingSession:"La session n'a pas encore commenc\u00e9 \u2014 cette page changera toute seule.",
+  claimTitle:"Ton \u00e9toile t'attend", claimBtn:"R\u00e9cup\u00e9rer mon \u00e9toile \u2605",
+  claimedTitle:"\u00c9toile r\u00e9cup\u00e9r\u00e9e\u00a0!",
+  claimScan:"Scanne pour r\u00e9cup\u00e9rer ton \u00e9toile", awardStar:"Attribuer l'\u00e9toile \u2605",
+  starsCount:n=>`${n} \u2605 r\u00e9cup\u00e9r\u00e9es`,
+  addStar:"Ajouter une \u00e9toile", mWho:"Personne", mPillar:"Pilier",
+  mTopic:"Th\u00e8me (optionnel)", mDate:"Date (optionnelle)", mAdd:"Ajouter",
+  starAdded:"\u00c9toile ajout\u00e9e \u2605", cancel:"Annuler", back:"Retour",
+  demoNote:"Passeports de d\u00e9mo \u2014 rien n'est enregistr\u00e9."
  }
 };
 const LANGS = ["en","de","fr"];
+
+/* The three curriculum pillars. Ids are forever — they sit in dm_stars rows. */
+const PILLARS = {
+  civics:{ en:"Civics & Basic Concepts", de:"Staatskunde & Grundbegriffe", fr:"Civisme & concepts de base" },
+  comm:{   en:"Communication & Social Media", de:"Kommunikation & Social Media", fr:"Communication & réseaux sociaux" },
+  action:{ en:"Action & Mobilisation", de:"Aktion & Mobilisierung", fr:"Action & mobilisation" }
+};
+const PILLAR_IDS = ["civics","comm","action"];
+const CHAMPION_PER_PILLAR = 3, MASTER_PER_PILLAR = 6;
 
 /* ---------------- state ---------------- */
 const params  = new URLSearchParams(location.search);
 const SESSION = params.get("session") || "";
 const HOST    = params.get("host") === "1";
+const DEMO    = params.get("demo") === "1";
 
 let lang = store.get("lang", (()=>{
   const n=(navigator.language||"en").slice(0,2);
@@ -440,6 +516,14 @@ let LIVE=false;                // true once the host/player is talking to Supaba
 
 let myToken = "", myName = store.get("name","");
 let roster=[], answers=[], kicked=new Set(), liveState=null, lastKey="";
+/* Stars are keyed by a stable per-device id, unlike the per-session quiz
+   token (which regenerates on a name change). dm_token_links glues the two
+   together, so a star awarded to either lands in the same passport. */
+let DEVICE = store.get("device","");
+if(!DEVICE){ DEVICE = newToken(); store.set("device", DEVICE); }
+let sessionStars=[];           // host: claims for the current session
+let passBack=null;             // where the passport's back button leads
+let justClaimed=false;
 let myAnswer=null;             // answer for the current question
 let myStreak=0;
 let deadline=0, rafId=0, pollId=0, lastSec=99;
@@ -535,6 +619,7 @@ const fetchRoster  = () => sbGet("dm_players?"+qsSession()+"&round=eq."+curRound
 const fetchAnswers = () => sbGet("dm_answers?"+qsSession()+"&round=eq."+curRound()
   +"&select=token,name,q_index,choice,correct,points&limit=2000");
 const fetchKicks   = () => sbGet("dm_kicks?"+qsSession()+"&select=token&limit=500");
+const fetchSessionStars = () => sbGet("dm_stars?"+qsSession()+"&select=token,name&order=created_at.asc&limit=500");
 /* Rounds exist because "New round" has to actually reset. Without one, a
    returning player's answer collides with their old row, their previous score
    stands, and the leaderboard sums every round together. */
@@ -550,6 +635,8 @@ async function boot(){
   document.documentElement.lang = lang;
   try{ registry = await loadJSON("packs/sessions.json"); }
   catch(e){ return fail("loadFail"); }
+
+  if(DEMO && !HOST) return renderPassport();
 
   if(!SESSION || !registry[SESSION]){
     if(SESSION) errKey = "noSessionSub";
@@ -578,6 +665,15 @@ async function boot(){
   order = LIVE
     ? pack.questions.map((q,i)=>seededOrder(q, i, L(q.o).length))
     : pack.questions.map(q=>shuffled(L(q.o).length));
+  /* One QR, three modes: with no game running the phone rests on the
+     passport; a 'stars' phase means the host has opened the claim window.
+     The idle loop keeps watching, so the screen switches by itself the
+     moment the host starts a lobby. */
+  if(LIVE){
+    const ph = liveState && liveState.phase;
+    if(ph === "stars") return startIdleLoop("claim");
+    if(!ph || ph === "done") return startIdleLoop("passport");
+  }
   renderJoin();
 }
 function fail(key){ phase="error"; errKey=key; renderError(); }
@@ -616,8 +712,10 @@ function renderPicker(){
           ${when ? `<small>${esc(when)}</small>` : ""}</a>`;
       }).join("") || `<p class="rules">—</p>`}
     </div>
+    <button class="btn ghost small" id="mydm">${esc(t().myDM)} ★</button>
   </div>`;
   bindLangPills();
+  document.getElementById("mydm").onclick = ()=>{ passBack=renderPicker; renderPassport(); };
 }
 function langPills(){
   return `<div class="pills" role="group" aria-label="Language">
@@ -739,6 +837,7 @@ function myRank(){
 /* ---------------- join ---------------- */
 function renderJoin(){
   phase="join";
+  justClaimed=false;
   const solo = !LIVE;
   app.innerHTML = `<div class="corner">${ctl()}</div>
   <div class="screen">
@@ -753,8 +852,10 @@ function renderJoin(){
     <button class="btn" id="go">${esc(solo ? t().play : t().join)}</button>
     <p class="rules">${esc(t().meta(pack.questions.length, Math.round(TIME/1000)))}</p>
     ${solo ? `<p class="brandline">📱 ${esc(t().soloTitle)}</p>` : ""}
+    <button class="btn ghost small" id="mydm">${esc(t().myDM)} ★</button>
   </div>`;
   bindLangPills(); bindCtl();
+  document.getElementById("mydm").onclick = ()=>{ passBack=renderJoin; renderPassport(); };
   const inp = document.getElementById("pname");
   const go = async ()=>{
     myName = (inp.value||"").trim().slice(0,14) || "???";
@@ -786,6 +887,10 @@ async function joinLive(){
     { session:SESSION, token:myToken, name:myName, round:curRound() }, { conflictOk:true });
   if(!ok){ LIVE=false; return startSolo(); }   // database went away mid-join
   store.set("name_"+SESSION, myName);
+  // glue the per-session quiz token to the stable device id, so a star
+  // awarded to either shows up in the same passport (fire and forget)
+  sbInsert("dm_token_links",
+    { token_a:DEVICE, token_b:myToken, method:"device" }, { conflictOk:true });
   startPlayerLoop();
 }
 
@@ -823,6 +928,7 @@ function onPlayerPhase(st){
   else if(st.phase==="question"){ myAnswer=null; renderPlayerQuestion(); }
   else if(st.phase==="reveal"){ renderPlayerReveal(); }
   else if(st.phase==="done"){ renderPlayerDone(); }
+  else if(st.phase==="stars"){ renderClaim(); }
 }
 function renderPlayerLobby(){
   phase="lobby";
@@ -931,9 +1037,11 @@ function renderPlayerDone(){
     <p class="sub">${esc(t().ofN(row.correct, pack.questions.length))}</p>
     ${r.rank ? `<p class="metriclbl">${esc(t().rank)} ${r.rank}/${r.of}</p>` : ""}
     ${boardHtml(10)}
+    <button class="btn ghost small" id="mydm">${esc(t().myDM)} ★</button>
     ${wordmarkHtml()}
   </div>`;
   bindLangPills(); bindCtl();
+  document.getElementById("mydm").onclick = ()=>{ passBack=renderPlayerDone; renderPassport(); };
 }
 
 /* shared: distribution + leaderboard blocks */
@@ -992,6 +1100,10 @@ async function tickHost(){
   if(k) kicked = new Set(k.map(x=>x.token));
   if(st && st[0]) liveState = st[0];
   if(!liveState) return;
+  if(liveState.phase==="stars"){
+    const s = await fetchSessionStars();
+    if(s) sessionStars = s;
+  }
   if(phase==="question" && deadline && serverNow() > deadline){ goReveal(); return; }
   const key = liveState.round + ":" + liveState.phase + ":" + liveState.q_index;
   if(key !== lastKey){ lastKey = key; renderHost(); }
@@ -1003,11 +1115,13 @@ function renderHost(){
   if(p==="question") renderHostQuestion();
   else if(p==="reveal") renderHostReveal();
   else if(p==="done") renderHostDone();
+  else if(p==="stars") renderHostStars();
   else renderHostLobby();
 }
 function paintHost(){
   if(phase==="lobby") paintHostLobby();
   else if(phase==="question") paintHostAnswered();
+  else if(phase==="hoststars") paintHostStars();
   else if(phase==="reveal" || phase==="done") renderHost();
 }
 function joinUrl(){
@@ -1043,11 +1157,13 @@ function renderHostLobby(){
   </div>
   <div class="hostbar">
     <button class="btn" id="hstart">${esc(t().start)}</button>
+    <button class="btn ghost" id="haddstar">${esc(t().addStar)}</button>
   </div>
   <div class="hostfoot">${esc(CFG.build||"")}</div>`;
   document.getElementById("hstart").onclick = async ()=>{
     A.tap(); await pushState("question", 0); renderHost();
   };
+  document.getElementById("haddstar").onclick = openAddStar;
   paintHostLobby();
 }
 function paintHostLobby(){
@@ -1195,10 +1311,19 @@ function renderHostDone(){
     </div></div>
   </div>
   <div class="hostbar">
+    <button class="btn" id="hstar">${esc(t().awardStar)}</button>
     <button class="btn ghost" id="hagain">${esc(t().restart)}</button>
   </div>
   <div class="hostfoot">${esc(CFG.build||"")}</div>`;
   if(!renderHostDone.fx){ renderHostDone.fx=true; A.fanfare(); }
+  // Award star is the primary button, so the presenter remote's next press
+  // opens the claim window — the Learning Loop's Bottom-line beat.
+  document.getElementById("hstar").onclick = async ()=>{
+    A.tap(); renderHostDone.fx=false;
+    sessionStars = [];
+    await pushState("stars", liveState.q_index);
+    renderHost();
+  };
   document.getElementById("hagain").onclick = async ()=>{
     A.tap(); renderHostDone.fx=false;
     answers = [];                       // the new round starts from zero
@@ -1288,10 +1413,307 @@ function renderSoloDone(){
     <p class="sub">${esc(t().ofN(sCorrect, pack.questions.length))}</p>
     <p class="brandline">📱 ${esc(t().soloTitle)}</p>
     <button class="btn ghost" id="again">${esc(t().again)}</button>
+    <button class="btn ghost small" id="mydm">${esc(t().myDM)} ★</button>
     ${wordmarkHtml()}
   </div>`;
   bindLangPills(); bindCtl();
   document.getElementById("again").onclick = ()=>{ renderSoloDone.fx=false; startSolo(); };
+  document.getElementById("mydm").onclick = ()=>{ passBack=renderSoloDone; renderPassport(); };
+}
+
+/* ================================================================
+   STARS — passport, claim, host award (docs/dm-stars-spec.md)
+   ================================================================ */
+function fmtDate(isoStr){
+  const m = String(isoStr||"").match(/^(\d{4})-(\d{2})-(\d{2})/);
+  return m ? `${+m[3]}.${+m[2]}.${m[1].slice(2)}` : "";
+}
+function todayISO(){
+  const d = new Date(), p = n=>String(n).padStart(2,"0");
+  return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`;
+}
+function localStars(){ return store.get("stars", []); }
+function pillarOf(){ return (registry && registry[SESSION] || {}).pillar || ""; }
+
+/* ---------------- idle loop ----------------
+   Runs while the phone rests on the passport or the claim screen, so the
+   view follows the host: lobby opens -> join screen, claim window opens ->
+   claim screen. */
+let idleKey="";
+function startIdleLoop(mode){
+  clearInterval(pollId);
+  idleKey = liveState ? liveState.round+":"+liveState.phase+":"+liveState.q_index : "";
+  if(mode==="claim") renderClaim(); else renderPassport();
+  pollId = setInterval(tickIdle, POLL_MS*2);
+}
+async function tickIdle(){
+  const st = await fetchState();
+  if(st===null || !st[0]) return;
+  liveState = st[0];
+  const key = liveState.round+":"+liveState.phase+":"+liveState.q_index;
+  if(key === idleKey) return;
+  idleKey = key;
+  const ph = liveState.phase;
+  if(ph==="lobby" || ph==="question" || ph==="reveal"){
+    clearInterval(pollId); pollId=0;
+    renderJoin();
+  } else if(ph==="stars"){
+    if(phase!=="claim") renderClaim();
+  } else if(ph==="done"){
+    if(phase!=="passport") renderPassport();
+  }
+}
+
+/* ---------------- claim ---------------- */
+function renderClaim(){
+  justClaimed=false;
+  const pillar = pillarOf();
+  if(!pillar || store.get("claimed_"+SESSION, false)) return renderPassport();
+  phase="claim";
+  app.innerHTML = `<div class="corner">${ctl()}</div>
+  <div class="screen">
+    ${langPills()}
+    ${wordmarkHtml()}
+    <div class="claimstar">★</div>
+    <h1>${esc(t().claimTitle)}</h1>
+    <p class="sub">${esc(L(PILLARS[pillar]))} · ${esc(sessionTitle())}</p>
+    ${myName ? "" : `<div class="namewrap">
+      <input id="pname" maxlength="14" placeholder="${esc(t().namePh)}"
+             autocomplete="nickname" enterkeyhint="go"></div>`}
+    <button class="btn" id="claim">${esc(t().claimBtn)}</button>
+  </div>`;
+  bindLangPills(); bindCtl();
+  const inp = document.getElementById("pname");
+  const go = ()=>{
+    if(inp){
+      const v = (inp.value||"").trim().slice(0,14);
+      if(!v) return inp.focus();
+      myName = v; store.set("name", myName);
+    }
+    A.ensure(); A.unlock();
+    claimStar();
+  };
+  document.getElementById("claim").onclick = go;
+  if(inp) inp.addEventListener("keydown", e=>{ if(e.key==="Enter") go(); });
+}
+async function claimStar(){
+  const pillar = pillarOf();
+  const reg = registry[SESSION] || {};
+  const topic = (reg.title && reg.title.en) || SESSION;
+  // 409 = this device already has the session's star: same happy outcome.
+  await sbInsert("dm_stars",
+    { session:SESSION, token:DEVICE, name:myName||"???", pillar, topic },
+    { conflictOk:true });
+  // Cache locally too, so the passport shows the star even when the
+  // database is unreachable later.
+  store.set("claimed_"+SESSION, true);
+  const locals = localStars();
+  if(!locals.some(s=>s.session===SESSION)){
+    locals.push({ session:SESSION, pillar, topic, awarded_on: todayISO() });
+    store.set("stars", locals);
+  }
+  justClaimed = true;
+  A.fanfare();
+  renderPassport();
+}
+
+/* ---------------- passport data ----------------
+   A person's stars are the stars of every token connected to this device:
+   the device id, any per-session quiz tokens in localStorage, and whatever
+   dm_token_links joins onto those (the 'device' rows written on join, and
+   later fingerprint/host links). The closure is computed here — a few
+   hundred rows at most. */
+function myTokens(){
+  const toks = new Set([DEVICE]);
+  try{
+    for(let i=0;i<localStorage.length;i++){
+      const k = localStorage.key(i);
+      if(k && k.startsWith("dmq_token_")){
+        try{ const v = JSON.parse(localStorage.getItem(k)); if(v) toks.add(v); }catch(e){}
+      }
+    }
+  }catch(e){}
+  if(myToken) toks.add(myToken);
+  return toks;
+}
+async function fetchMyStars(){
+  const mine = myTokens();
+  const links = await sbGet("dm_token_links?select=token_a,token_b&limit=2000");
+  if(links){
+    let grew=true;
+    while(grew){
+      grew=false;
+      for(const l of links){
+        const a=mine.has(l.token_a), b=mine.has(l.token_b);
+        if(a && !b){ mine.add(l.token_b); grew=true; }
+        else if(b && !a){ mine.add(l.token_a); grew=true; }
+      }
+    }
+  }
+  const list = [...mine].map(encodeURIComponent).join(",");
+  return sbGet("dm_stars?token=in.("+list+")"
+    +"&select=id,pillar,topic,session,awarded_on,source&order=awarded_on.asc&limit=500");
+}
+function mergeStars(local, remote){
+  const by = new Map();
+  for(const s of local) by.set(s.session ? "s:"+s.session : "m:"+(s.id||""), s);
+  for(const s of remote||[]) by.set(s.session ? "s:"+s.session : "m:"+(s.id||""), s);
+  return [...by.values()];
+}
+
+/* ---------------- passport view ---------------- */
+let demoProfile = 1;
+const DEMO_SPECS = [[2,1,0],[3,3,3],[6,6,5]];   // mid-way, Champion, almost Master
+function demoStars(){
+  const spec = DEMO_SPECS[demoProfile];
+  const out=[];
+  let n=0;
+  PILLAR_IDS.forEach((p,pi)=>{
+    for(let i=0;i<spec[pi];i++){
+      const d = new Date(2026, 0 + n, 28);
+      n++;
+      out.push({ pillar:p, topic:"Demo",
+        awarded_on:`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}` });
+    }
+  });
+  return out;
+}
+function renderPassport(){
+  phase="passport";
+  paintPassport(DEMO ? demoStars() : mergeStars(localStars(), null));
+  if(!DEMO && SUPA_URL){
+    fetchMyStars().then(remote=>{
+      if(phase==="passport" && remote) paintPassport(mergeStars(localStars(), remote));
+    });
+  }
+}
+function paintPassport(stars){
+  const byP = {}; PILLAR_IDS.forEach(p=>byP[p]=[]);
+  for(const s of stars) if(byP[s.pillar]) byP[s.pillar].push(s);
+  const counts = PILLAR_IDS.map(p=>byP[p].length);
+  const isMaster   = counts.every(c=>c>=MASTER_PER_PILLAR);
+  const isChampion = counts.every(c=>c>=CHAMPION_PER_PILLAR);
+  const target = c => c>=CHAMPION_PER_PILLAR ? MASTER_PER_PILLAR : CHAMPION_PER_PILLAR;
+  const waiting = !DEMO && SESSION && LIVE && pollId
+    && (!liveState || liveState.phase==="done" || !liveState.phase);
+  app.innerHTML = `<div class="corner">${ctl()}</div>
+  <div class="screen">
+    ${langPills()}
+    ${wordmarkHtml()}
+    <h1>${esc(t().myDM)}</h1>
+    <p class="sub">${myName ? esc(myName)+" · " : ""}${esc(t().passportSub)}</p>
+    ${justClaimed ? `<div class="banner good">${esc(t().claimedTitle)}</div>` : ""}
+    <div class="passgrid">
+      ${PILLAR_IDS.map(p=>{
+        const got = byP[p], tg = target(got.length);
+        return `<div class="pillcard"><b>${esc(L(PILLARS[p]))}</b>
+          <div class="starrow">
+            ${got.map(s=>`<span class="starcol on" title="${esc(s.topic||"")}">★<small>${esc(fmtDate(s.awarded_on))}</small></span>`).join("")}
+            ${Array.from({length:Math.max(0, tg-got.length)},
+              ()=>`<span class="starcol off">☆<small>&nbsp;</small></span>`).join("")}
+          </div></div>`;
+      }).join("")}
+    </div>
+    ${isMaster ? `<span class="lvlbadge">${esc(t().master)} ★★</span>`
+      : isChampion ? `<span class="lvlbadge">${esc(t().champion)} ★</span>` : ""}
+    <p class="rules">${esc(stars.length ? t().champRule : t().noStarsYet)}</p>
+    ${DEMO ? `<div class="pills">${DEMO_SPECS.map((s,i)=>
+        `<button class="pill ${i===demoProfile?"on":""}" data-demo="${i}">${s.reduce((a,b)=>a+b,0)} ★</button>`).join("")}
+      </div><p class="rules">${esc(t().demoNote)}</p>` : ""}
+    ${waiting ? `<p class="rules waitdot">${esc(t().waitingSession)}</p>` : ""}
+    ${passBack ? `<button class="btn ghost small" id="pback">${esc(t().back)}</button>` : ""}
+  </div>`;
+  bindLangPills(); bindCtl();
+  app.querySelectorAll("[data-demo]").forEach(b=>b.onclick=()=>{
+    demoProfile=+b.dataset.demo; renderPassport(); });
+  const pb=document.getElementById("pback");
+  if(pb) pb.onclick=()=>{ const f=passBack; passBack=null; justClaimed=false; f(); };
+}
+
+/* ---------------- host: claim window + manual add ---------------- */
+function renderHostStars(){
+  phase="hoststars";
+  const pillar = pillarOf();
+  app.innerHTML = `<div class="hostwrap">
+    <div class="hostleft">
+      ${wordmarkHtml()}
+      <h1>${esc(sessionTitle())}</h1>
+      <p class="scanlbl">${esc(t().claimScan)}</p>
+      <div class="qrcard">${qrSvg(joinUrl())}</div>
+      <p class="joinurl">${esc(joinUrl())}</p>
+    </div>
+    <div class="hostright">
+      <div class="hoststats">
+        <div><p class="metriclbl">${esc(pillar ? L(PILLARS[pillar]) : "")}</p>
+             <p class="bignum" id="hstars">0</p></div>
+      </div>
+      <p class="scanlbl" id="hstarlbl"></p>
+      <div class="roster" id="hclaimed"></div>
+    </div>
+  </div>
+  <div class="hostbar">
+    <button class="btn" id="hagain">${esc(t().restart)}</button>
+    <button class="btn ghost" id="haddstar">${esc(t().addStar)}</button>
+  </div>
+  <div class="hostfoot">${esc(CFG.build||"")}</div>`;
+  document.getElementById("hagain").onclick = async ()=>{
+    A.tap(); answers=[];
+    await pushState("lobby", -1, curRound()+1);
+    renderHost();
+  };
+  document.getElementById("haddstar").onclick = openAddStar;
+  paintHostStars();
+}
+function paintHostStars(){
+  const c=document.getElementById("hstars"), l=document.getElementById("hstarlbl"),
+        r=document.getElementById("hclaimed");
+  if(c) c.textContent = sessionStars.length;
+  if(l) l.textContent = t().starsCount(sessionStars.length);
+  if(r) r.innerHTML = sessionStars.map(s=>`<span class="chip">★ ${esc(s.name)}</span>`).join("");
+}
+async function openAddStar(){
+  A.tap();
+  // anyone who has ever joined any session, newest first, one entry per device
+  const all = await sbGet("dm_players?select=token,name,session,joined_at"
+    +"&order=joined_at.desc&limit=1000") || [];
+  const seen = new Map();
+  for(const p of all) if(!seen.has(p.token)) seen.set(p.token, p);
+  const people = [...seen.values()];
+  const sheet = document.createElement("div");
+  sheet.className = "sheet";
+  sheet.innerHTML = `<form>
+    <label>${esc(t().mWho)}</label>
+    <select id="mwho">${people.map(p=>
+      `<option value="${esc(p.token)}">${esc(p.name)} — ${esc(p.session)}</option>`).join("")}</select>
+    <label>${esc(t().mPillar)}</label>
+    <select id="mpillar">${PILLAR_IDS.map(p=>
+      `<option value="${p}">${esc(L(PILLARS[p]))}</option>`).join("")}</select>
+    <label>${esc(t().mTopic)}</label><input id="mtopic" maxlength="60">
+    <label>${esc(t().mDate)}</label><input id="mdate" type="date">
+    <div class="row">
+      <button type="button" class="btn ghost small" id="mcancel">${esc(t().cancel)}</button>
+      <button type="submit" class="btn small">${esc(t().mAdd)}</button>
+    </div>
+  </form>`;
+  document.body.appendChild(sheet);
+  const close = ()=>sheet.remove();
+  sheet.addEventListener("click", e=>{ if(e.target===sheet) close(); });
+  sheet.querySelector("#mcancel").onclick = close;
+  sheet.querySelector("form").onsubmit = async e=>{
+    e.preventDefault();
+    const tok = sheet.querySelector("#mwho").value;
+    if(!tok) return;
+    const row = {
+      token: tok,
+      name: (seen.get(tok)||{}).name || "?",
+      pillar: sheet.querySelector("#mpillar").value,
+      topic: sheet.querySelector("#mtopic").value.trim() || null,
+      source: "manual"
+    };
+    const d = sheet.querySelector("#mdate").value;
+    if(d) row.awarded_on = d;
+    if(await sbInsert("dm_stars", row)){ A.tap(); close(); }
+  };
 }
 
 /* ---------------- rerender on language switch ---------------- */
@@ -1299,6 +1721,8 @@ function rerender(){
   if(phase==="picker") renderPicker();
   else if(phase==="error") renderError();
   else if(phase==="join") renderJoin();
+  else if(phase==="passport") renderPassport();
+  else if(phase==="claim") renderClaim();
   else if(HOST) renderHost();
   else if(phase==="lobby") renderPlayerLobby();
   else if(phase==="question") LIVE ? renderPlayerQuestion() : renderSoloQuestion();

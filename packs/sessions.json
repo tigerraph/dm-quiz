@@ -1,6 +1,7 @@
 {
   "gewaltenteilung-ch": {
     "pack": "gewaltenteilung-ch.json",
+    "pillar": "civics",
     "title": {
       "en": "Separation of Powers (CH)",
       "de": "Gewaltenteilung (CH)",
@@ -10,6 +11,7 @@
   },
   "probe": {
     "pack": "gewaltenteilung-ch.json",
+    "pillar": "civics",
     "title": {
       "en": "Scratch — rehearsal",
       "de": "Testlauf",

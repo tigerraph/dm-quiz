@@ -12,6 +12,13 @@
       "runtimeExecutable": "node",
       "runtimeArgs": ["tools/mock-supabase.mjs"],
       "port": 4173
+    },
+    {
+      "name": "dm-quiz-mock-alt",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["tools/mock-supabase.mjs", "4519"],
+      "port": 4519,
+      "autoPort": false
     }
   ]
 }
