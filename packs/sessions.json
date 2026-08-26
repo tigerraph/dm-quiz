@@ -7,5 +7,14 @@
       "fr": "Séparation des pouvoirs (CH)"
     },
     "date": null
+  },
+  "probe": {
+    "pack": "gewaltenteilung-ch.json",
+    "title": {
+      "en": "Scratch — rehearsal",
+      "de": "Testlauf",
+      "fr": "Test — répétition"
+    },
+    "date": null
   }
 }

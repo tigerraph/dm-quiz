@@ -58,6 +58,12 @@ person plays the pack at their own pace on their own device.
 | Option order | identical on every device | shuffled per device |
 | Replayable | yes, **New round** | yes, **Play again** |
 
+### Rehearsing
+
+`?session=probe&host=1` is a scratch session pointing at the same pack. Use it
+to try the flow with real phones without leaving test names on a real
+session's leaderboard.
+
 ## Adding a session
 
 No rebuild needed — packs are fetched at runtime.
