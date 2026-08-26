@@ -28,14 +28,15 @@ create table dm_answers (
   session    text not null,
   token      text not null,
   name       varchar(14) not null,
+  round      int not null default 0,   -- bumped by the host on "New round"
   q_index    int not null,
   choice     int,                      -- null = ran out of time
   correct    boolean not null,
   points     int not null,
   created_at timestamptz default now(),
-  unique (session, token, q_index)
+  unique (session, token, round, q_index)
 );
-create index dm_answers_session_idx on dm_answers (session, q_index);
+create index dm_answers_session_idx on dm_answers (session, round, q_index);
 
 -- ------------------------------------------------------------- game state
 -- Append-only: the host inserts a new row per beat, and every client reads
@@ -46,14 +47,29 @@ create table dm_state (
   session    text not null,
   phase      text not null,
   q_index    int not null default -1,
+  round      int not null default 0,
   started_at timestamptz default now()
 );
 create index dm_state_session_idx on dm_state (session, started_at desc);
+
+-- ------------------------------------------------------------- moderation
+-- Anything typed into the name box is projected to the room, so the host needs
+-- a way to take someone off the screen. Insert-only like the rest: clients
+-- filter kicked tokens out of the roster, leaderboard and answer counts.
+create table dm_kicks (
+  id         uuid primary key default gen_random_uuid(),
+  session    text not null,
+  token      text not null,
+  created_at timestamptz default now(),
+  unique (session, token)
+);
+create index dm_kicks_session_idx on dm_kicks (session);
 
 -- --------------------------------------------------------------------- RLS
 alter table dm_players enable row level security;
 alter table dm_answers enable row level security;
 alter table dm_state   enable row level security;
+alter table dm_kicks   enable row level security;
 
 create policy "anon insert" on dm_players for insert to anon with check (true);
 create policy "anon read"   on dm_players for select to anon using (true);
@@ -61,6 +77,8 @@ create policy "anon insert" on dm_answers for insert to anon with check (true);
 create policy "anon read"   on dm_answers for select to anon using (true);
 create policy "anon insert" on dm_state   for insert to anon with check (true);
 create policy "anon read"   on dm_state   for select to anon using (true);
+create policy "anon insert" on dm_kicks   for insert to anon with check (true);
+create policy "anon read"   on dm_kicks   for select to anon using (true);
 
 -- Trust model: anyone holding the anon key (i.e. anyone who scanned the QR)
 -- can insert a dm_state row and therefore drive the game. That is fine for a

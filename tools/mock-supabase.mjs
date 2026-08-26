@@ -27,7 +27,7 @@ import { fileURLToPath } from "node:url";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const PORT = Number(process.env.PORT || 4173);
 
-const db = { dm_state: [], dm_players: [], dm_answers: [] };
+const db = { dm_state: [], dm_players: [], dm_answers: [], dm_kicks: [] };
 let seq = 0;
 
 const MIME = { ".html":"text/html", ".json":"application/json", ".js":"text/javascript",
@@ -64,7 +64,8 @@ function query(table, sp) {
 // mirrors the unique constraints in docs/supabase.sql
 const UNIQUE = {
   dm_players: ["session", "token"],
-  dm_answers: ["session", "token", "q_index"],
+  dm_answers: ["session", "token", "round", "q_index"],
+  dm_kicks:   ["session", "token"],
 };
 
 createServer(async (req, res) => {
@@ -89,7 +90,7 @@ createServer(async (req, res) => {
         return void res.end(JSON.stringify({ code: "23505", message: "duplicate key" }));
       }
       const now = new Date().toISOString();
-      db[table].push({ id: "id" + ++seq, _seq: seq,
+      db[table].push({ id: "id" + ++seq, _seq: seq, round: 0,
                        started_at: now, joined_at: now, created_at: now, ...row });
       return void res.writeHead(201).end();
     }

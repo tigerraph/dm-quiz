@@ -1,6 +1,10 @@
 {
   "id": "gewaltenteilung-ch",
-  "title": { "en": "Separation of Powers (CH)", "de": "Gewaltenteilung (CH)" },
+  "title": {
+    "en": "Separation of Powers (CH)",
+    "de": "Gewaltenteilung (CH)",
+    "fr": "Séparation des pouvoirs (CH)"
+  },
   "timer_ms": 20000,
   "questions": [
     {
@@ -8,16 +12,28 @@
       "img": null,
       "q": {
         "en": "Who elects the seven members of the Bundesrat?",
-        "de": "Wer wählt die sieben Bundesräte?"
+        "de": "Wer wählt die sieben Bundesräte?",
+        "fr": "Qui élit les sept membres du Conseil fédéral ?"
       },
       "o": {
-        "en": ["The people", "Parliament"],
-        "de": ["Das Volk", "Das Parlament"]
+        "en": [
+          "The people",
+          "Parliament"
+        ],
+        "de": [
+          "Das Volk",
+          "Das Parlament"
+        ],
+        "fr": [
+          "Le peuple",
+          "Le Parlement"
+        ]
       },
       "correct": 1,
       "explanation": {
         "en": "Elected by the united Federal Assembly (both chambers) — not by popular vote.",
-        "de": "Gewählt von der Vereinigten Bundesversammlung (beide Räte) — nicht vom Volk."
+        "de": "Gewählt von der Vereinigten Bundesversammlung (beide Räte) — nicht vom Volk.",
+        "fr": "Élu par l'Assemblée fédérale (Chambres réunies) — pas par le peuple."
       },
       "sure": true
     },
@@ -26,16 +42,28 @@
       "img": null,
       "q": {
         "en": "Can the Bundesgericht overturn a federal law?",
-        "de": "Kann das Bundesgericht ein Bundesgesetz aufheben?"
+        "de": "Kann das Bundesgericht ein Bundesgesetz aufheben?",
+        "fr": "Le Tribunal fédéral peut-il annuler une loi fédérale ?"
       },
       "o": {
-        "en": ["Yes", "No"],
-        "de": ["Ja", "Nein"]
+        "en": [
+          "Yes",
+          "No"
+        ],
+        "de": [
+          "Ja",
+          "Nein"
+        ],
+        "fr": [
+          "Oui",
+          "Non"
+        ]
       },
       "correct": 1,
       "explanation": {
         "en": "No — it must apply federal laws (Art. 190 BV). The check on parliament is the people: the referendum.",
-        "de": "Nein — es muss Bundesgesetze anwenden (Art. 190 BV). Die Kontrolle über das Parlament ist das Volk: das Referendum."
+        "de": "Nein — es muss Bundesgesetze anwenden (Art. 190 BV). Die Kontrolle über das Parlament ist das Volk: das Referendum.",
+        "fr": "Non — il doit appliquer les lois fédérales (art. 190 Cst.). Le contrôle sur le Parlement, c'est le peuple : le référendum."
       },
       "sure": true
     },
@@ -44,16 +72,28 @@
       "img": null,
       "q": {
         "en": "Can anyone dissolve parliament early?",
-        "de": "Kann das Parlament vorzeitig aufgelöst werden?"
+        "de": "Kann das Parlament vorzeitig aufgelöst werden?",
+        "fr": "Le Parlement peut-il être dissous avant terme ?"
       },
       "o": {
-        "en": ["Yes", "No"],
-        "de": ["Ja", "Nein"]
+        "en": [
+          "Yes",
+          "No"
+        ],
+        "de": [
+          "Ja",
+          "Nein"
+        ],
+        "fr": [
+          "Oui",
+          "Non"
+        ]
       },
       "correct": 1,
       "explanation": {
         "en": "No — fixed four-year terms. Nobody sends parliament home.",
-        "de": "Nein — feste vierjährige Legislatur. Niemand schickt das Parlament nach Hause."
+        "de": "Nein — feste vierjährige Legislatur. Niemand schickt das Parlament nach Hause.",
+        "fr": "Non — législature fixe de quatre ans. Personne ne renvoie le Parlement."
       },
       "sure": true
     }

@@ -15,6 +15,10 @@
   --blue:#435CC6; --green:#A8D272; --teal:#5EB9A9;
   --cream:#FDF2D0; --dark:#1B2329; --ink:#22313C;
   --blue-deep:#33489e; --dark-2:#232c33;
+  /* Not from the DM deck — the palette has no red, but a quiz needs a "wrong"
+     signal that reads at a glance. Muted terracotta, tuned to sit beside the
+     green without shouting. Change here if the brand ever settles on one. */
+  --wrong:#DB6A57;
   --paper-shadow:0 6px 18px rgba(0,0,0,.32);
   --radius:14px;
 }
@@ -118,6 +122,8 @@ body.host #app{max-width:none; padding:0;}
   font-weight:800; font-size:.92rem; display:flex; align-items:center; justify-content:center;
 }
 .tile.dim{opacity:.3; filter:saturate(.35);}
+.tile.lose{background:var(--wrong); color:#fff;}
+.tile.lose .badge{background:rgba(0,0,0,.28);}
 .tile.mine{box-shadow:0 0 0 3px var(--teal), var(--paper-shadow);}
 .tile.win{background:var(--green); box-shadow:0 0 0 3px #fff, var(--paper-shadow);}
 .tile.win .badge{background:var(--ink);}
@@ -128,7 +134,7 @@ body.host #app{max-width:none; padding:0;}
 /* ---------- reveal ---------- */
 .banner{text-align:center; border-radius:var(--radius); padding:11px 15px; font-weight:800; font-size:1.02rem;}
 .banner.good{background:rgba(168,210,114,.22); box-shadow:inset 0 0 0 1.5px var(--green); color:var(--green);}
-.banner.bad{background:rgba(255,255,255,.08); box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.3);}
+.banner.bad{background:rgba(219,106,87,.18); box-shadow:inset 0 0 0 1.5px var(--wrong); color:var(--wrong);}
 .banner small{display:block; font-size:.82rem; font-weight:600; color:rgba(255,255,255,.75); margin-top:3px;}
 .banner .pts{color:#fff; font-size:1.2rem;}
 /* the Learning Loop "Check" beat */
@@ -157,8 +163,13 @@ body.host #app{max-width:none; padding:0;}
 .dbar.win .dl{background:var(--green); color:var(--ink);}
 .dbar.win .df{background:var(--green);}
 .dbar.win .dlab{color:var(--ink);}
+/* an empty winning bar has no green behind the text, so ink on the dark
+   track is unreadable — keep the label light until the fill is there */
+.dbar.win.empty .dlab{color:#fff;}
+.dbar.win.empty .dn{color:var(--green);}
 .dbar.win .dn{color:var(--green);}
 .dbar.mine .dl{box-shadow:0 0 0 2.5px var(--teal);}
+.dbar.lose .df{background:rgba(219,106,87,.55);}
 
 /* ---------- end / leaderboard ---------- */
 .bignum{font-weight:800; font-size:clamp(3rem,15vw,4.4rem); line-height:1; margin:0;}
@@ -180,6 +191,10 @@ body.host #app{max-width:none; padding:0;}
 .chip{background:rgba(255,255,255,.09); border:1.5px solid rgba(255,255,255,.16); border-radius:999px;
       padding:7px 15px; font-weight:700; font-size:.9rem; animation:popin .3s ease backwards;}
 .chip.me{background:var(--teal); border-color:var(--teal); color:var(--ink);}
+.chip.kickable{font-family:inherit; color:#fff; cursor:pointer; display:inline-flex; align-items:center; gap:7px;}
+.chip.kickable .x{opacity:.35; font-size:.85em;}
+.chip.kickable:hover{border-color:var(--wrong); color:var(--wrong);}
+.chip.kickable:hover .x{opacity:1;}
 
 /* ---------- host view (beamer) ---------- */
 body.host{overflow:hidden;}
@@ -2591,7 +2606,7 @@ var qrcode = function() {
    Engine carried over from the noeggi-kahoot wedding app: timer,
    speed scoring, streak bonus, i18n, synthesized offline audio.
    ================================================================== */
-const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","build":"build 25.08.2026 19:34"};
+const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","build":"build 26.08.2026 09:24"};
 const SUPA_URL = CFG.supabaseUrl || "";
 const SUPA_KEY = CFG.supabaseAnonKey || "";
 
@@ -2628,6 +2643,8 @@ const I18N = {
   waitNext:"Waiting for the next question",
   done:"That's it", doneSub:"Thanks for playing",
   soloTitle:"Solo mode", soloSub:"No live connection, so you can play at your own pace.",
+  removeHint:"Remove from the session", removeConfirm:n=>`Remove ${n} from the session?`,
+  removed:"You've been removed", removedSub:"The host removed you from this session.",
   noSession:"Unknown session", noSessionSub:"That session id is not in the registry.",
   loadFail:"Could not load the session data.",
   hostNeedsDb:"Live mode needs Supabase",
@@ -2653,20 +2670,56 @@ const I18N = {
   waitNext:"Warten auf die nächste Frage",
   done:"Das war's", doneSub:"Danke fürs Mitmachen",
   soloTitle:"Solo-Modus", soloSub:"Keine Live-Verbindung — du kannst in deinem Tempo spielen.",
+  removeHint:"Aus der Session entfernen", removeConfirm:n=>`${n} aus der Session entfernen?`,
+  removed:"Du wurdest entfernt", removedSub:"Der Host hat dich aus dieser Session entfernt.",
   noSession:"Unbekannte Session", noSessionSub:"Diese Session-ID steht nicht in der Registry.",
   loadFail:"Die Session-Daten konnten nicht geladen werden.",
   hostNeedsDb:"Live-Modus braucht Supabase",
   hostNeedsDbSub:"Die Host-Ansicht steuert alle Handys über die Datenbank. Projekt-URL und Anon-Key in src/config.json eintragen, neu bauen und neu laden. Solo-Modus funktioniert in der Zwischenzeit."
+ },
+ fr:{
+  brand:"Democracy Matters", quiz:"Quiz",
+  pickTitle:"Choisir une session", pickSub:"Choisis la session que tu veux jouer.",
+  namePh:"Ton nom", join:"Participer", play:"Jouer",
+  meta:(n,sec)=>`${n} questions \u00b7 ${sec}s chacune`,
+  qof:(i,n)=>`Question ${i}/${n}`, ptsWord:"points",
+  correct:"Correct\u00a0!", wrong:"Eh non \u2026", timeout:"Temps \u00e9coul\u00e9\u00a0!",
+  noAnswer:"Pas de r\u00e9ponse",
+  answerWas:"La bonne r\u00e9ponse\u00a0:", streak:x=>`S\u00e9rie x${x}`, why:"Pourquoi",
+  next:"Suivant", last:"Voir le r\u00e9sultat", start:"Lancer le quiz", restart:"Nouvelle manche",
+  reveal:"Afficher la r\u00e9ponse", finish:"Terminer",
+  result:"Ton r\u00e9sultat", ofN:(c,n)=>`${c} bonnes r\u00e9ponses sur ${n}`, again:"Rejouer",
+  board:"Classement", noScores:"Pas encore de r\u00e9sultats", rank:"Rang", you:"toi",
+  scanTitle:"Scanne pour participer", players:"Participants", topScore:"Meilleur score",
+  answered:(a,b)=>`${a}/${b} ont r\u00e9pondu`, votes:"r\u00e9ponses",
+  lobbyTitle:"Tu es dans la partie",
+  lobbyWait:"Regarde l'\u00e9cran \u2014 le quiz commence dans un instant",
+  lobbyHost:"En attente des participants",
+  lobbyHostSub:"Scanne le code pour participer. Lance quand tout le monde est l\u00e0.",
+  locked:"R\u00e9ponse enregistr\u00e9e", lockedSub:"En attente des autres",
+  waitNext:"En attente de la prochaine question",
+  done:"C'est fini", doneSub:"Merci d'avoir jou\u00e9",
+  soloTitle:"Mode solo", soloSub:"Pas de connexion en direct \u2014 tu peux jouer \u00e0 ton rythme.",
+  removeHint:"Retirer de la session", removeConfirm:n=>`Retirer ${n} de la session\u00a0?`,
+  removed:"Tu as \u00e9t\u00e9 retir\u00e9",
+  removedSub:"L'h\u00f4te t'a retir\u00e9 de cette session.",
+  noSession:"Session inconnue", noSessionSub:"Cet identifiant de session n'est pas au registre.",
+  loadFail:"Impossible de charger les donn\u00e9es de la session.",
+  hostNeedsDb:"Le mode direct n\u00e9cessite Supabase",
+  hostNeedsDbSub:"La vue h\u00f4te coordonne tous les t\u00e9l\u00e9phones via la base de donn\u00e9es. Ajoute l'URL du projet et la cl\u00e9 anon dans src/config.json, reconstruis, puis recharge. Le mode solo reste disponible entre-temps."
  }
 };
-const LANGS = ["en","de"];
+const LANGS = ["en","de","fr"];
 
 /* ---------------- state ---------------- */
 const params  = new URLSearchParams(location.search);
 const SESSION = params.get("session") || "";
 const HOST    = params.get("host") === "1";
 
-let lang = store.get("lang", (navigator.language||"en").slice(0,2)==="de" ? "de" : "en");
+let lang = store.get("lang", (()=>{
+  const n=(navigator.language||"en").slice(0,2);
+  return LANGS.includes(n) ? n : "en";
+})());
 if(!LANGS.includes(lang)) lang = "en";
 
 let registry=null, pack=null, TIME=20000;
@@ -2675,7 +2728,7 @@ let errKey="";
 let LIVE=false;                // true once the host/player is talking to Supabase
 
 let myToken = "", myName = store.get("name","");
-let roster=[], answers=[], liveState=null, lastKey="";
+let roster=[], answers=[], kicked=new Set(), liveState=null, lastKey="";
 let myAnswer=null;             // answer for the current question
 let myStreak=0;
 let deadline=0, rafId=0, pollId=0, lastSec=99;
@@ -2723,7 +2776,7 @@ function newToken(){
     const r=Math.random()*16|0; return (c==="x"?r:(r&3|8)).toString(16); }); }
 }
 function setLang(l){ lang=l; store.set("lang",l); document.documentElement.lang=l; rerender(); }
-function cycleLang(){ setLang(lang==="en"?"de":"en"); }
+function cycleLang(){ setLang(LANGS[(LANGS.indexOf(lang)+1) % LANGS.length]); }
 
 /* ---------------- server clock ----------------
    Every device counts down from the host's started_at, so the Date header
@@ -2765,9 +2818,15 @@ async function sbInsert(table, row, opts){
   }catch(e){ return false; }
 }
 const qsSession = () => "session=eq."+encodeURIComponent(SESSION);
-const fetchState   = () => sbGet("dm_state?"+qsSession()+"&select=phase,q_index,started_at&order=started_at.desc&limit=1");
+const fetchState   = () => sbGet("dm_state?"+qsSession()+"&select=phase,q_index,round,started_at&order=started_at.desc&limit=1");
 const fetchRoster  = () => sbGet("dm_players?"+qsSession()+"&select=token,name&order=joined_at.asc&limit=200");
-const fetchAnswers = () => sbGet("dm_answers?"+qsSession()+"&select=token,name,q_index,choice,correct,points&limit=2000");
+const fetchAnswers = () => sbGet("dm_answers?"+qsSession()+"&round=eq."+curRound()
+  +"&select=token,name,q_index,choice,correct,points&limit=2000");
+const fetchKicks   = () => sbGet("dm_kicks?"+qsSession()+"&select=token&limit=500");
+/* Rounds exist because "New round" has to actually reset. Without one, a
+   returning player's answer collides with their old row, their previous score
+   stands, and the leaderboard sums every round together. */
+function curRound(){ return (liveState && liveState.round) || 0; }
 
 /* ---------------- boot ---------------- */
 async function loadJSON(path){
@@ -2835,8 +2894,11 @@ function renderPicker(){
     <div class="picker">
       ${ids.map(id=>{
         const s = registry[id];
+        const when = s.date
+          ? new Date(s.date).toLocaleDateString(lang, {year:"numeric", month:"long", day:"numeric"})
+          : "";
         return `<a href="?session=${encodeURIComponent(id)}">${esc(L(s.title)||id)}
-          <small>${esc(s.date || id)}</small></a>`;
+          ${when ? `<small>${esc(when)}</small>` : ""}</a>`;
       }).join("") || `<p class="rules">—</p>`}
     </div>
   </div>`;
@@ -2864,7 +2926,7 @@ function setSound(v){
 }
 function topBar(right){
   return `<div class="top">
-    <button class="langcycle" id="lc" title="EN / DE">${lang.toUpperCase()}</button>
+    <button class="langcycle" id="lc" title="${LANGS.map(l=>l.toUpperCase()).join(" / ")}">${lang.toUpperCase()}</button>
     ${ctl()}
     <span class="qcount">${esc(t().qof(curIndex()+1, pack.questions.length))}</span>
     <span class="scorechip">${right}</span>
@@ -2919,17 +2981,19 @@ function pointsFor(remMs, streak){
 /* ---------------- aggregation ----------------
    PostgREST has no GROUP BY without a view, and a session is a few hundred
    rows at most, so the totals are computed here. */
+function livePlayers(){ return roster.filter(p=>!kicked.has(p.token)); }
 function leaderboard(){
   const by = new Map();
   for(const a of answers){
+    if(kicked.has(a.token)) continue;
     const e = by.get(a.token) || { token:a.token, name:a.name, score:0, correct:0, total:0 };
     e.score += a.points; e.correct += a.correct?1:0; e.total += 1; e.name = a.name;
     by.set(a.token, e);
   }
-  for(const p of roster) if(!by.has(p.token)) by.set(p.token, {token:p.token,name:p.name,score:0,correct:0,total:0});
+  for(const p of livePlayers()) if(!by.has(p.token)) by.set(p.token, {token:p.token,name:p.name,score:0,correct:0,total:0});
   return [...by.values()].sort((a,b)=> b.score-a.score || a.name.localeCompare(b.name));
 }
-function answersFor(qi){ return answers.filter(a=>a.q_index===qi); }
+function answersFor(qi){ return answers.filter(a=>a.q_index===qi && !kicked.has(a.token)); }
 function distributionFor(qi, q){
   const n = L(q.o).length, counts = new Array(n).fill(0);
   let none = 0;
@@ -3004,13 +3068,15 @@ async function tickPlayer(){
   const next = st[0] || null;
   if(!next) return;
   liveState = next;
-  const key = next.phase + ":" + next.q_index;
+  const key = next.round + ":" + next.phase + ":" + next.q_index;
   const changed = key !== lastKey;
   if(changed){ lastKey = key; onPlayerPhase(next); }
   // the leaderboard and the distribution are only needed when they are on screen
   if(next.phase==="reveal" || next.phase==="done" || next.phase==="lobby"){
-    const [r,a] = await Promise.all([fetchRoster(), fetchAnswers()]);
+    const [r,a,k] = await Promise.all([fetchRoster(), fetchAnswers(), fetchKicks()]);
     if(r) roster=r; if(a) answers=a;
+    if(k) kicked = new Set(k.map(x=>x.token));
+    if(kicked.has(myToken)) return renderKicked();
     if(phase==="reveal") paintPlayerReveal();
     else if(phase==="done") renderPlayerDone();
     else if(phase==="lobby") paintLobbyCount();
@@ -3018,7 +3084,7 @@ async function tickPlayer(){
 }
 function onPlayerPhase(st){
   stopTimer();
-  if(st.phase==="lobby"){ myAnswer=null; myStreak=0; renderPlayerLobby(); }
+  if(st.phase==="lobby"){ myAnswer=null; myStreak=0; answers=[]; renderPlayerLobby(); }
   else if(st.phase==="question"){ myAnswer=null; renderPlayerQuestion(); }
   else if(st.phase==="reveal"){ renderPlayerReveal(); }
   else if(st.phase==="done"){ renderPlayerDone(); }
@@ -3036,7 +3102,8 @@ function renderPlayerLobby(){
 }
 function paintLobbyCount(){
   const el = document.getElementById("lobbycount");
-  if(el) el.textContent = roster.length ? `${roster.length} ${t().players}` : "";
+  const n = livePlayers().length;
+  if(el) el.textContent = n ? `${n} ${t().players}` : "";
 }
 function renderPlayerQuestion(){
   phase="question";
@@ -3073,7 +3140,7 @@ async function submitAnswer(oi){
   if(oi===null) A.timeout(); else if(ok) A.correct(myStreak); else A.wrong();
   renderPlayerLocked();
   await sbInsert("dm_answers", {
-    session:SESSION, token:myToken, name:myName, q_index:qi,
+    session:SESSION, token:myToken, name:myName, round:curRound(), q_index:qi,
     choice:oi, correct:ok, points:pts.total
   }, { conflictOk:true });
 }
@@ -3142,7 +3209,8 @@ function distHtml(qi, q, od, picked){
   return `<div class="dist">
     ${od.map((oi,pos)=>{
       const n = d.counts[oi];
-      const cls = (oi===q.correct ? " win" : "") + (oi===picked ? " mine" : "");
+      const cls = (oi===q.correct ? " win" : "") + (oi===picked ? " mine" : "")
+                + (n===0 ? " empty" : "") + (oi!==q.correct && n>0 ? " lose" : "");
       return `<div class="dbar${cls}">
         <span class="dl">${LETTERS[pos]}</span>
         <span class="dt"><span class="df" style="width:${Math.round(n/max*100)}%"></span>
@@ -3166,10 +3234,11 @@ function boardHtml(limit){
 /* ================================================================
    LIVE — host
    ================================================================ */
-async function pushState(ph, qi){
-  const row = { session:SESSION, phase:ph, q_index:qi };
-  const ok = await sbInsert("dm_state", row);
-  if(ok){ liveState = { phase:ph, q_index:qi, started_at:new Date(serverNow()).toISOString() }; }
+async function pushState(ph, qi, round){
+  const rd = round==null ? curRound() : round;
+  const ok = await sbInsert("dm_state", { session:SESSION, phase:ph, q_index:qi, round:rd });
+  if(ok){ liveState = { phase:ph, q_index:qi, round:rd,
+                        started_at:new Date(serverNow()).toISOString() }; }
   return ok;
 }
 function startHostLoop(){
@@ -3178,12 +3247,13 @@ function startHostLoop(){
   pollId = setInterval(tickHost, POLL_MS);
 }
 async function tickHost(){
-  const [st, r, a] = await Promise.all([fetchState(), fetchRoster(), fetchAnswers()]);
+  const [st, r, a, k] = await Promise.all([fetchState(), fetchRoster(), fetchAnswers(), fetchKicks()]);
   if(r) roster=r;
   if(a) answers=a;
+  if(k) kicked = new Set(k.map(x=>x.token));
   if(st && st[0]) liveState = st[0];
   if(!liveState) return;
-  const key = liveState.phase + ":" + liveState.q_index;
+  const key = liveState.round + ":" + liveState.phase + ":" + liveState.q_index;
   if(key !== lastKey){ lastKey = key; renderHost(); }
   else paintHost();
 }
@@ -3243,10 +3313,30 @@ function renderHostLobby(){
 function paintHostLobby(){
   const c = document.getElementById("hplayers");
   const r = document.getElementById("hroster");
-  if(c) c.textContent = roster.length;
-  if(r) r.innerHTML = roster.map(p=>`<span class="chip">${esc(p.name)}</span>`).join("");
+  const live = livePlayers();
+  if(c) c.textContent = live.length;
+  if(r) r.innerHTML = live.map(p=>
+    `<button class="chip kickable" data-tok="${esc(p.token)}" title="${esc(t().removeHint)}"
+      >${esc(p.name)}<span class="x">\u2715</span></button>`).join("");
+  if(r) r.querySelectorAll("[data-tok]").forEach(b=>b.onclick=()=>kickPlayer(b.dataset.tok, b.textContent));
   const b = document.getElementById("hstart");
-  if(b) b.disabled = roster.length===0;
+  if(b) b.disabled = live.length===0;
+}
+async function kickPlayer(token, label){
+  if(!confirm(t().removeConfirm(String(label||"").replace(/\u2715$/,"")))) return;
+  A.tap();
+  kicked.add(token);          // paint immediately, the poll confirms
+  paintHostLobby();
+  await sbInsert("dm_kicks", { session:SESSION, token }, { conflictOk:true });
+}
+function renderKicked(){
+  phase="kicked";
+  stopTimer(); clearInterval(pollId); pollId=0;
+  app.innerHTML = `<div class="screen">
+    ${wordmarkHtml()}
+    <h1>${esc(t().removed)}</h1>
+    <p class="sub">${esc(t().removedSub)}</p>
+  </div>`;
 }
 function renderHostQuestion(){
   phase="question";
@@ -3284,9 +3374,10 @@ async function goReveal(){
 function paintHostAnswered(){
   const el = document.getElementById("hans");
   if(!el) return;
+  const total = livePlayers().length;
   const n = answersFor(liveState.q_index).length;
-  el.textContent = t().answered(n, roster.length);
-  if(hostAutoAdvance && roster.length>0 && n>=roster.length) goReveal();
+  el.textContent = t().answered(n, total);
+  if(hostAutoAdvance && total>0 && n>=total) goReveal();
 }
 function renderHostReveal(){
   phase="reveal";
@@ -3361,7 +3452,10 @@ function renderHostDone(){
   <div class="hostfoot">${esc(CFG.build||"")}</div>`;
   if(!renderHostDone.fx){ renderHostDone.fx=true; A.fanfare(); }
   document.getElementById("hagain").onclick = async ()=>{
-    A.tap(); renderHostDone.fx=false; await pushState("lobby", -1); renderHost();
+    A.tap(); renderHostDone.fx=false;
+    answers = [];                       // the new round starts from zero
+    await pushState("lobby", -1, curRound()+1);
+    renderHost();
   };
 }
 

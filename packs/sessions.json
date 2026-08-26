@@ -1,7 +1,11 @@
 {
   "gewaltenteilung-ch": {
     "pack": "gewaltenteilung-ch.json",
-    "title": { "en": "Separation of Powers (CH)", "de": "Gewaltenteilung (CH)" },
+    "title": {
+      "en": "Separation of Powers (CH)",
+      "de": "Gewaltenteilung (CH)",
+      "fr": "Séparation des pouvoirs (CH)"
+    },
     "date": null
   }
 }

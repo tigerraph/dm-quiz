@@ -32,7 +32,12 @@ Skin: [`docs/design-tokens.md`](docs/design-tokens.md)
    out — or press **Show answer** to cut it short. The reveal shows how the room
    voted, the explanation, and the leaderboard, on the beamer and on every phone.
 5. **Next** moves on. After the last question the beamer shows a podium.
-   **New round** puts everyone back in the lobby with a clean slate.
+   **New round** puts everyone back in the lobby and starts a fresh round —
+   scores reset, and everyone can answer the same questions again.
+
+To take someone off the screen, click their name in the lobby. They are
+removed from the roster, the leaderboard and the answer counts, and their
+device shows a neutral "removed" screen.
 
 Keyboard on the beamer: <kbd>Space</kbd> or <kbd>Enter</kbd> presses whatever
 the current button is, so a presenter remote works.
@@ -51,13 +56,16 @@ person plays the pack at their own pace on their own device.
 | Everyone on the same question | yes | no |
 | Room results and leaderboard | yes | no |
 | Option order | identical on every device | shuffled per device |
+| Replayable | yes, **New round** | yes, **Play again** |
 
 ## Adding a session
 
 No rebuild needed — packs are fetched at runtime.
 
 1. Add `packs/<id>.json`.
-2. Add a line to `packs/sessions.json` pointing at it.
+2. Add a line to `packs/sessions.json` pointing at it. `date` is optional
+   (ISO `YYYY-MM-DD`); it shows under the title in the picker, and is left
+   out entirely when null.
 
 Pack schema:
 
@@ -89,6 +97,8 @@ Pack schema:
 - `timer_ms` defaults to 20000.
 - `sure` is an authoring flag ("we have checked this fact"). It carries over
   from the wedding pack schema and the app does not read it.
+- Languages: `en`, `de`, `fr`. A missing language falls back to `en`, so a pack
+  can ship in two languages and gain the third later.
 
 ## Build
 
@@ -105,10 +115,14 @@ Edit `src/template.html`, never `index.html`.
 
 ## Supabase
 
-Three insert-only tables — `dm_players` (who is in the room), `dm_answers`
-(one row per answer) and `dm_state` (which question the host has up). The SQL,
-including the RLS policies and a note on the trust model, is in
-[`docs/supabase.sql`](docs/supabase.sql).
+Four insert-only tables — `dm_players` (who is in the room), `dm_answers`
+(one row per answer per round), `dm_state` (which question the host has up)
+and `dm_kicks` (players the host removed). The SQL, including the RLS policies
+and a note on the trust model, is in [`docs/supabase.sql`](docs/supabase.sql).
+
+An existing project created before 2026-08-26 needs
+[`docs/supabase-migration-002.sql`](docs/supabase-migration-002.sql), which
+adds rounds and `dm_kicks`.
 
 Put the project URL and the **anon/public** key in `src/config.json` and
 rebuild. Both are public by design — they ship in the client. The database
