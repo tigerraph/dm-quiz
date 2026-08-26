@@ -58,10 +58,13 @@ body.host #app{max-width:none; padding:0;}
   background:rgba(255,255,255,.08); color:#fff; font-size:1rem; cursor:pointer; line-height:1; padding:0;}
 .corner{position:fixed; top:calc(10px + env(safe-area-inset-top)); right:14px; display:flex; gap:8px; z-index:6;}
 
-/* the wordmark — stands in for the logo we do not have yet.
-   Single bold line, matching the deck's "Democracy Matters x DAY8" lockup. */
-.wordmark{font-weight:800; letter-spacing:-.005em; white-space:nowrap;}
+/* The DM/DAY8 mark beside the name, matching the deck's lockup. The mark is
+   white artwork, so it only ever sits on the dark ground or a colour panel. */
+.wordmark{font-weight:800; letter-spacing:-.005em; white-space:nowrap;
+          display:inline-flex; align-items:center; gap:.55em;}
+.wordmark .wmlogo{height:1.75em; width:auto; flex:0 0 auto; display:block;}
 .wordmark .wm2{color:var(--teal);}
+.hostleft .wordmark .wmlogo,.hostq .wordmark .wmlogo{height:2.7em;}
 
 /* ---------- centred screens ---------- */
 .screen{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -586,8 +589,11 @@ function renderError(){
     <div class="err">${esc(big ? t().hostNeedsDbSub : t()[errKey] || "")}</div>
   </div>`;
 }
+const LOGO = "__LOGO__";
 function wordmarkHtml(cls){
-  return `<div class="kicker ${cls||""}"><span class="wordmark">${esc(t().brand)} <span class="wm2">${esc(t().quiz)}</span></span></div>`;
+  return `<div class="kicker ${cls||""}"><span class="wordmark">`
+       + `<img class="wmlogo" src="${LOGO}" alt="">`
+       + `${esc(t().brand)} <span class="wm2">${esc(t().quiz)}</span></span></div>`;
 }
 
 /* ---------------- session picker ---------------- */

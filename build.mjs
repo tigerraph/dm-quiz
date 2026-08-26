@@ -5,6 +5,7 @@
  * The original wedding-app pipeline is gone; this replaces it. It takes
  * src/template.html and injects four things:
  *
+ *   __LOGO__     the DM/DAY8 mark, base64-inlined as a data URI
  *   __FONTS__    @font-face rules with the Poppins subsets base64-inlined
  *   __QRCODE__   vendor/qrcode.js verbatim (MIT), so the host view needs no CDN
  *   __AUDIO__    src/audio.js, the synthesized offline audio engine
@@ -54,13 +55,16 @@ config.build = stamp();
 // Injected inside a <script> block, so no closing tag may survive verbatim.
 const guard = s => s.replace(/<\/script/gi, "<\\/script");
 
+const logo = readFileSync(p("assets", "img", "dm-logo-white.png")).toString("base64");
+
 const html = read("src", "template.html")
+  .replace(/__LOGO__/g, () => `data:image/png;base64,${logo}`)
   .replace("__FONTS__", () => fontCss())
   .replace("__QRCODE__", () => guard(read("vendor", "qrcode.js")))
   .replace("__AUDIO__", () => guard(read("src", "audio.js")))
   .replace("__CONFIG__", () => JSON.stringify(config));
 
-for (const token of ["__FONTS__", "__QRCODE__", "__AUDIO__", "__CONFIG__"]) {
+for (const token of ["__LOGO__", "__FONTS__", "__QRCODE__", "__AUDIO__", "__CONFIG__"]) {
   if (html.includes(token)) throw new Error(`placeholder ${token} was not replaced`);
 }
 

@@ -37,6 +37,13 @@ base64-inlined at build, so there is no runtime font request.
   stronger "wrong" signal, that needs a new colour decision.
 - **No confetti, no polaroids.** Stripped with the rest of the wedding skin,
   per the spec.
-- **No DM or DAY8 logo.** The mark on the deck slides was not part of the
-  handover batch, so the app uses a "Democracy Matters" wordmark in type.
-  Drop the real asset in `assets/` and wire it up when it is available.
+- **The mark is now in.** `assets/img/dm-logo-white.png` is base64-inlined at
+  build time and sits beside the "Democracy Matters Quiz" wordmark. It is white
+  artwork, so it only ever appears on the dark ground or a colour panel — never
+  on cream.
+
+- **A red had to be invented.** The palette has none, so a wrong answer uses
+  `--wrong: #DB6A57`, a muted terracotta tuned to sit beside the green. It is
+  marked in the CSS as the one non-canonical colour. Validated against the DM
+  green: deutan separation ΔE 15.1 against a target of 8, and ✓/✕ marks mean
+  colour is never the only signal.
