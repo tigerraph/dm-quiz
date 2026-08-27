@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Topic Card — Gewaltenteilung CH</title>
+<style>
+  @font-face{font-family:'Poppins';font-style:normal;font-weight:400;
+    src:url(../assets/fonts/poppins-400-latin.woff2) format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F;}
+  @font-face{font-family:'Poppins';font-style:normal;font-weight:400;
+    src:url(../assets/fonts/poppins-400-latin-ext.woff2) format('woff2');
+    unicode-range:U+0100-02BA,U+1E00-1E9F;}
+  @font-face{font-family:'Poppins';font-style:normal;font-weight:800;
+    src:url(../assets/fonts/poppins-800-latin.woff2) format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F;}
+  @font-face{font-family:'Poppins';font-style:normal;font-weight:800;
+    src:url(../assets/fonts/poppins-800-latin-ext.woff2) format('woff2');
+    unicode-range:U+0100-02BA,U+1E00-1E9F;}
+
+  :root{
+    --blue:#435CC6; --green:#A8D272; --teal:#5EB9A9;
+    --cream:#FDF2D0; --dark:#1B2329; --ink:#22313C;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:#101418}
+  body{font-family:'Poppins',system-ui,sans-serif;font-weight:400;color:var(--ink)}
+  @page{size:1280px 720px;margin:0}
+  .card{
+    position:relative;width:1280px;height:720px;overflow:hidden;background:#fff;
+    padding:44px 72px 40px;display:flex;gap:64px;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  @media screen{.card{margin:24px auto;box-shadow:0 8px 40px rgba(0,0,0,.5)}}
+
+  .col-l{flex:1.05}
+  .col-r{flex:1;position:relative}
+  .kicker{color:var(--blue);font-weight:800;font-size:20px}
+  h1{font-weight:800;font-size:50px;line-height:1.05;margin:2px 0 4px}
+  .sub{font-size:20px;opacity:.7}
+  h2{font-weight:800;font-size:22px;margin:12px 0 6px}
+  .box{display:inline-block;width:20px;height:20px;border:2.5px solid var(--ink);
+       border-radius:5px;margin-right:12px;vertical-align:-3px;position:relative}
+  .box.on::after{content:"✓";position:absolute;inset:-6px 0 0 1px;font-weight:800;
+       font-size:22px;color:var(--blue)}
+  .opt{font-size:19px;margin-bottom:6px}
+  .opt.dim{opacity:.5}
+  .fill{
+    border-bottom:2.5px solid var(--ink);padding:2px 0 6px;font-size:19px;
+    color:var(--blue);font-weight:800;
+  }
+  .fill small{display:block;font-weight:400;font-size:15px;color:var(--ink);opacity:.6;margin-top:2px}
+  .hint{font-size:15px;opacity:.5;margin-top:6px}
+
+  .logo{position:absolute;top:-6px;right:0;height:64px}
+  .sprint h2{margin-top:0;padding-right:80px}
+  .bar{border-radius:10px;padding:12px 18px;display:flex;justify-content:space-between;
+       align-items:center;font-weight:800;font-size:20px;margin:10px 0}
+  .bar.blue{background:var(--blue);color:#fff}
+  .bar.cream{background:var(--cream)}
+  .exlabel{font-weight:800;font-size:19px;margin:14px 0 6px}
+  .ex{font-size:17.5px;margin-bottom:7px}
+  .ex .note{color:var(--blue);font-weight:800}
+  .bottom{background:var(--cream);border-radius:10px;padding:16px 18px;margin-top:12px}
+  .bottom .h{font-weight:800;font-size:19px;margin-bottom:6px}
+  .bottom .v{font-size:17px;line-height:1.45;color:var(--blue);font-weight:800}
+  .footer{position:absolute;left:0;right:0;bottom:0;font-size:16px;opacity:.55}
+</style>
+</head>
+<body>
+<section class="card">
+  <div class="col-l">
+    <div class="kicker">Democracy Matters × DAY8</div>
+    <h1>Topic Card</h1>
+    <div class="sub">Fill in. Run. Done.</div>
+
+    <h2>Pillar</h2>
+    <div class="opt"><span class="box on"></span>Civics &amp; Basic Concepts</div>
+    <div class="opt dim"><span class="box"></span>Communication &amp; Social Media</div>
+    <div class="opt dim"><span class="box"></span>Action &amp; Mobilisation</div>
+
+    <h2>Governing question</h2>
+    <div class="fill">Warum leisten wir uns diesen langsamen Apparat — statt einer schnellen Autokratie?</div>
+
+    <h2>Video (≤ 5 min)</h2>
+    <div class="fill">easyvote — «Gewaltenteilung» · 1:24
+      <small>youtube.com/watch?v=Nadu4ABEmxQ · Backup: SRF school «3 Gewalten»</small>
+    </div>
+
+    <h2>HMW seed</h2>
+    <div class="fill">erklären + Gewaltenteilung + so, dass ein Skeptiker sie verteidigt
+      <small>Warm-up: dm-quiz QR — ?session=gewaltenteilung-ch</small>
+    </div>
+  </div>
+
+  <div class="col-r sprint">
+    <img class="logo" src="../assets/img/dm-logo-dark.png" alt="DM">
+    <h2>The Sprint (30′)</h2>
+    <div class="bar blue"><span>Expert Video</span><span>5m</span></div>
+
+    <div class="exlabel">Pick 1–2 exercises (20′)</div>
+    <div class="ex"><b>To discuss:</b>&nbsp; <span class="box"></span>HMW + #wall + vote &nbsp; <span class="box on"></span>Why it matters</div>
+    <div class="ex" style="padding-left:8px"><span class="note">→ 2′ Duos: «Ist uns das den Apparat wert?» · 3′ Runde: 1 Argument pro Gruppe</span></div>
+    <div class="ex"><b>To make it stick:</b>&nbsp; <span class="box"></span>TRIAD listening &nbsp; <span class="box"></span>Teach-back</div>
+
+    <div class="bar cream"><span>Bottom Line ★</span><span>5m</span></div>
+    <div class="bottom">
+      <div class="h">Bottom line → Master Checklist</div>
+      <div class="v">«Gewaltenteilung ist das Anti-Korruptions-Design: keine Macht bleibt unkontrolliert — in CH kontrolliert sogar das Volk den Staat.» — Civics-Stern ★</div>
+    </div>
+    <div class="footer">One card per topic — no new deck. Ever.</div>
+  </div>
+</section>
+</body>
+</html>

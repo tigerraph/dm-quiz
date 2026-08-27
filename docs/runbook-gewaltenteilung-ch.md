@@ -69,5 +69,6 @@ damit man schnell fahren kann.
   sie enthält alles, was das Video zeigt.
 - **Zeit läuft davon**: Teach-back auf 3' kürzen (nur Prompt 1 und 3).
   Take-away nie streichen — das ist der Block, der bleibt.
-- **Gar keine Folien / kein Beamer**: Topic Card ausfüllen und danach laufen
-  (docs/reference/DM_Template_V3_Topic-Card.pdf) — eine Karte pro Topic.
+- **Gar keine Folien / kein Beamer**: die ausgefüllte Topic Card verwenden
+  ([`slides/topic-card-gewaltenteilung-ch.pdf`](../slides/topic-card-gewaltenteilung-ch.pdf));
+  Blanko-Vorlage: docs/reference/DM_Template_V3_Topic-Card.pdf.
