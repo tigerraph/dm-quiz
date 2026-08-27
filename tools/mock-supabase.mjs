@@ -76,9 +76,71 @@ const UNIQUE = {
   dm_token_links: ["token_a", "token_b"],
 };
 
+// ------------------------- mock GoTrue (email+password) + edge function ---
+const authUsers = new Map();   // email -> {id, email, password}
+const sessions  = new Map();   // access/refresh token -> user id
+function authSession(u) {
+  const at = "at-" + ++seq, rt = "rt-" + ++seq;
+  sessions.set(at, u.id); sessions.set(rt, u.id);
+  return { access_token: at, refresh_token: rt, token_type: "bearer",
+           user: { id: u.id, email: u.email } };
+}
+function bearerUser(req) {
+  const m = /^Bearer (.+)$/.exec(req.headers.authorization || "");
+  const uid = m && sessions.get(m[1]);
+  return uid ? [...authUsers.values()].find(u => u.id === uid) : null;
+}
+async function readJson(req) {
+  let b = ""; for await (const c of req) b += c;
+  try { return JSON.parse(b); } catch { return {}; }
+}
+
 createServer(async (req, res) => {
   const url = new URL(req.url, "http://x");
   res.setHeader("Date", new Date().toUTCString());
+
+  if (url.pathname.startsWith("/auth/v1/")) {
+    const ep = url.pathname.slice("/auth/v1/".length);
+    const body = req.method === "GET" ? {} : await readJson(req);
+    res.setHeader("Content-Type", "application/json");
+    if (ep === "signup" && req.method === "POST") {
+      if (authUsers.has(body.email)) return void res.writeHead(422).end('{"msg":"exists"}');
+      const u = { id: "u" + ++seq, email: body.email, password: body.password };
+      authUsers.set(u.email, u);
+      return void res.writeHead(200).end(JSON.stringify(authSession(u)));
+    }
+    if (ep === "token" && req.method === "POST") {
+      const grant = url.searchParams.get("grant_type");
+      if (grant === "password") {
+        const u = authUsers.get(body.email);
+        if (!u || u.password !== body.password)
+          return void res.writeHead(400).end('{"error":"invalid_grant"}');
+        return void res.writeHead(200).end(JSON.stringify(authSession(u)));
+      }
+      if (grant === "refresh_token") {
+        const uid = sessions.get(body.refresh_token);
+        const u = uid && [...authUsers.values()].find(x => x.id === uid);
+        if (!u) return void res.writeHead(400).end('{"error":"invalid_grant"}');
+        return void res.writeHead(200).end(JSON.stringify(authSession(u)));
+      }
+    }
+    if (ep === "user" && req.method === "PUT") {
+      const u = bearerUser(req);
+      if (!u) return void res.writeHead(401).end('{"msg":"no"}');
+      if (body.password) u.password = body.password;
+      return void res.writeHead(200).end(JSON.stringify({ id: u.id, email: u.email }));
+    }
+    if (ep === "logout" && req.method === "POST") return void res.writeHead(204).end();
+    return void res.writeHead(404).end('{"msg":"unknown auth endpoint"}');
+  }
+
+  if (url.pathname === "/functions/v1/delete-account" && req.method === "POST") {
+    const u = bearerUser(req);
+    if (!u) return void res.writeHead(401).end("unauthorized");
+    db.dm_identities = db.dm_identities.filter(r => r.user_id !== u.id);
+    authUsers.delete(u.email);
+    return void res.writeHead(200).end("ok");
+  }
 
   if (url.pathname.startsWith("/rest/v1/")) {
     const table = url.pathname.slice("/rest/v1/".length);

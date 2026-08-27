@@ -225,6 +225,25 @@ body.host #app{max-width:none; padding:0;}
   background:rgba(255,255,255,.08); color:#fff; padding:11px 12px; font:inherit; font-weight:600; width:100%;}
 .sheet select option{color:var(--ink);}
 .sheet .row{display:flex; gap:10px; justify-content:flex-end; margin-top:8px;}
+/* account block on the passport */
+.acct{display:flex; flex-direction:column; gap:9px; width:min(94%,360px);}
+.acct input{border-radius:12px; border:1.5px solid rgba(255,255,255,.28);
+  background:rgba(255,255,255,.08); color:#fff; padding:12px 14px; font:inherit; font-weight:600; width:100%;}
+.acct input::placeholder{color:rgba(255,255,255,.55);}
+.acct .row{display:flex; gap:9px; justify-content:center; flex-wrap:wrap;}
+.acct .msg{font-size:.85rem; font-weight:700; color:var(--teal); margin:0; min-height:1.2em;}
+.acct .msg.err{color:var(--wrong);}
+.btn.danger{box-shadow:inset 0 0 0 2px var(--wrong); color:var(--wrong); background:transparent;}
+/* fingerprint rescue banner */
+.rescue{background:var(--cream); color:var(--ink); border-radius:var(--radius); padding:13px 16px;
+        box-shadow:var(--paper-shadow); width:min(94%,380px); text-align:center;}
+.rescue p{margin:0 0 10px; font-weight:700; font-size:.95rem;}
+.rescue .row{display:flex; gap:9px; justify-content:center;}
+/* the claimed star flies up off the claim screen, then pops into the passport */
+@keyframes starfly{to{transform:translateY(-46vh) scale(.45); opacity:0;}}
+.claimstar.fly{animation:starfly .6s cubic-bezier(.5,-.2,.8,.6) forwards;}
+@keyframes starpop{0%{transform:scale(0) rotate(-30deg);} 70%{transform:scale(1.35);} 100%{transform:scale(1);}}
+.starcol.on.new{animation:starpop .7s cubic-bezier(.2,1.4,.4,1) both; animation-delay:.15s;}
 
 /* ---------- host view (beamer) ---------- */
 body.host{overflow:hidden;}
@@ -359,6 +378,11 @@ function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,
 
 const LETTERS = ["A","B","C","D"];
 const POLL_MS = 1200;
+/* How long a session must be untouched before reopening the beamer counts as
+   a new sitting rather than a reload. Long enough to survive a projector
+   dropping out or a coffee break, short enough that next month's session
+   never inherits this one's roster. */
+const SITTING_IDLE_MS = 2 * 60 * 60 * 1000;
 
 const I18N = {
  en:{
@@ -370,6 +394,7 @@ const I18N = {
   correct:"Correct!", wrong:"Not quite …", timeout:"Time's up!", noAnswer:"No answer",
   answerWas:"The right answer:", streak:x=>`Streak x${x}`, why:"Why",
   next:"Next", last:"See results", start:"Start the quiz", restart:"New round",
+  clearPlayers:"Clear players", clearConfirm:n=>`Remove all ${n} players and start with an empty lobby?`,
   reveal:"Show answer", finish:"Finish",
   result:"Your result", ofN:(c,n)=>`${c} of ${n} correct`, again:"Play again",
   board:"Leaderboard", noScores:"No scores yet", rank:"Rank", you:"you",
@@ -400,7 +425,22 @@ const I18N = {
   addStar:"Add a star", mWho:"Person", mPillar:"Pillar",
   mTopic:"Topic (optional)", mDate:"Date (optional)", mAdd:"Add",
   starAdded:"Star added ★", cancel:"Cancel", back:"Back",
-  demoNote:"Demo passports — nothing is saved."
+  demoNote:"Demo passports — nothing is saved.",
+  account:"Account", email:"Email", pw:"Password",
+  accountHint:"An account keeps your stars if you switch or lose your phone.",
+  signup:"Create account", login:"Log in", logout:"Log out",
+  loggedInAs:e=>`Signed in as ${e}`,
+  changePw:"Change password", newPw:"New password", pwChanged:"Password changed ✓",
+  save:"Save",
+  deleteAccount:"Delete account",
+  deleteConfirm:"Delete your account? Your stars then live only on this phone again.",
+  deleted:"Account deleted",
+  deleteFailed:"Deletion isn't available yet — ask the moderator.",
+  authFailed:"That didn't work — check email and password.",
+  confirmSent:"Almost there — confirm the email we sent you, then log in.",
+  rescueQ:(n,d,c)=>`Are you the ${n} with ${c} ★ (last: ${d})?`,
+  rescueYes:"Yes, restore my stars", rescueNo:"Not me",
+  rescued:"Stars restored ★"
  },
  de:{
   brand:"Democracy Matters", quiz:"Quiz",
@@ -411,6 +451,7 @@ const I18N = {
   correct:"Richtig!", wrong:"Leider nein …", timeout:"Zeit abgelaufen!", noAnswer:"Keine Antwort",
   answerWas:"Richtig wäre gewesen:", streak:x=>`Serie x${x}`, why:"Warum",
   next:"Weiter", last:"Zum Resultat", restart:"Neue Runde", start:"Quiz starten",
+  clearPlayers:"Alle entfernen", clearConfirm:n=>`Alle ${n} Mitspielenden entfernen und leer starten?`,
   reveal:"Auflösen", finish:"Abschliessen",
   result:"Dein Resultat", ofN:(c,n)=>`${c} von ${n} richtig`, again:"Nochmals spielen",
   board:"Rangliste", noScores:"Noch keine Resultate", rank:"Rang", you:"du",
@@ -441,7 +482,22 @@ const I18N = {
   addStar:"Stern hinzufügen", mWho:"Person", mPillar:"Pfeiler",
   mTopic:"Thema (optional)", mDate:"Datum (optional)", mAdd:"Hinzufügen",
   starAdded:"Stern hinzugefügt ★", cancel:"Abbrechen", back:"Zurück",
-  demoNote:"Demo-Pässe — nichts wird gespeichert."
+  demoNote:"Demo-Pässe — nichts wird gespeichert.",
+  account:"Account", email:"E-Mail", pw:"Passwort",
+  accountHint:"Ein Account sichert deine Sterne, wenn du das Handy wechselst oder verlierst.",
+  signup:"Account erstellen", login:"Anmelden", logout:"Abmelden",
+  loggedInAs:e=>`Angemeldet als ${e}`,
+  changePw:"Passwort ändern", newPw:"Neues Passwort", pwChanged:"Passwort geändert ✓",
+  save:"Speichern",
+  deleteAccount:"Account löschen",
+  deleteConfirm:"Account löschen? Deine Sterne leben dann wieder nur auf diesem Handy.",
+  deleted:"Account gelöscht",
+  deleteFailed:"Löschen ist noch nicht verfügbar — melde dich bei der Moderation.",
+  authFailed:"Das hat nicht geklappt — prüfe E-Mail und Passwort.",
+  confirmSent:"Fast geschafft — bestätige zuerst die E-Mail in deinem Posteingang, dann anmelden.",
+  rescueQ:(n,d,c)=>`Bist du ${n} mit ${c} ★ (zuletzt: ${d})?`,
+  rescueYes:"Ja, Sterne übernehmen", rescueNo:"Nicht ich",
+  rescued:"Sterne übernommen ★"
  },
  fr:{
   brand:"Democracy Matters", quiz:"Quiz",
@@ -453,6 +509,7 @@ const I18N = {
   noAnswer:"Pas de r\u00e9ponse",
   answerWas:"La bonne r\u00e9ponse\u00a0:", streak:x=>`S\u00e9rie x${x}`, why:"Pourquoi",
   next:"Suivant", last:"Voir le r\u00e9sultat", start:"Lancer le quiz", restart:"Nouvelle manche",
+  clearPlayers:"Vider la liste", clearConfirm:n=>`Retirer les ${n} participants et repartir \u00e0 vide\u00a0?`,
   reveal:"Afficher la r\u00e9ponse", finish:"Terminer",
   result:"Ton r\u00e9sultat", ofN:(c,n)=>`${c} bonnes r\u00e9ponses sur ${n}`, again:"Rejouer",
   board:"Classement", noScores:"Pas encore de r\u00e9sultats", rank:"Rang", you:"toi",
@@ -486,7 +543,22 @@ const I18N = {
   addStar:"Ajouter une \u00e9toile", mWho:"Personne", mPillar:"Pilier",
   mTopic:"Th\u00e8me (optionnel)", mDate:"Date (optionnelle)", mAdd:"Ajouter",
   starAdded:"\u00c9toile ajout\u00e9e \u2605", cancel:"Annuler", back:"Retour",
-  demoNote:"Passeports de d\u00e9mo \u2014 rien n'est enregistr\u00e9."
+  demoNote:"Passeports de d\u00e9mo \u2014 rien n'est enregistr\u00e9.",
+  account:"Compte", email:"E-mail", pw:"Mot de passe",
+  accountHint:"Un compte garde tes \u00e9toiles si tu changes ou perds ton t\u00e9l\u00e9phone.",
+  signup:"Cr\u00e9er un compte", login:"Se connecter", logout:"Se d\u00e9connecter",
+  loggedInAs:e=>`Connect\u00e9 comme ${e}`,
+  changePw:"Changer le mot de passe", newPw:"Nouveau mot de passe", pwChanged:"Mot de passe chang\u00e9 \u2713",
+  save:"Enregistrer",
+  deleteAccount:"Supprimer le compte",
+  deleteConfirm:"Supprimer ton compte ? Tes \u00e9toiles ne vivront alors plus que sur ce t\u00e9l\u00e9phone.",
+  deleted:"Compte supprim\u00e9",
+  deleteFailed:"La suppression n'est pas encore disponible \u2014 contacte la mod\u00e9ration.",
+  authFailed:"\u00c7a n'a pas march\u00e9 \u2014 v\u00e9rifie e-mail et mot de passe.",
+  confirmSent:"Presque fini \u2014 confirme d'abord l'e-mail re\u00e7u, puis connecte-toi.",
+  rescueQ:(n,d,c)=>`Tu es ${n} avec ${c} \u2605 (dernier : ${d}) ?`,
+  rescueYes:"Oui, r\u00e9cup\u00e9rer mes \u00e9toiles", rescueNo:"Pas moi",
+  rescued:"\u00c9toiles r\u00e9cup\u00e9r\u00e9es \u2605"
  }
 };
 const LANGS = ["en","de","fr"];
@@ -636,6 +708,7 @@ async function loadJSON(path){
 }
 async function boot(){
   document.documentElement.lang = lang;
+  authRefresh();                       // keep a stored login alive; fire and forget
   try{ registry = await loadJSON("packs/sessions.json"); }
   catch(e){ return fail("loadFail"); }
 
@@ -657,13 +730,17 @@ async function boot(){
     if(st===null) return fail("hostNeedsDb");
     LIVE = true;
     liveState = st[0] || null;
-    /* A session starts with nobody in it: opening the beamer begins a fresh
-       sitting on a new round, so last time's players are not sitting in the
-       lobby. The one exception is a game already under way — reloading the
-       beamer mid-question must not empty the room. */
-    const midGame = liveState &&
-      (liveState.phase === "question" || liveState.phase === "reveal");
-    if(!midGame) await pushState("lobby", -1, liveState ? (liveState.round||0)+1 : 0);
+    /* A sitting is a thing you rejoin, not something a reload destroys.
+       Reopening the beamer resumes whatever is running; only a session that
+       has been idle long enough to be last time's starts fresh, so a monthly
+       session never opens with the previous group still in the lobby. The
+       host can force a clean slate at any time with "Clear players". */
+    const idleMs = liveState
+      ? serverNow() - Date.parse(liveState.started_at)
+      : Infinity;
+    if(!liveState || idleMs > SITTING_IDLE_MS){
+      await pushState("lobby", -1, liveState ? (liveState.round||0)+1 : 0);
+    }
     return startHostLoop();
   }
 
@@ -897,7 +974,8 @@ async function joinLive(){
     store.set("token_"+SESSION, myToken);
   }
   const ok = await sbInsert("dm_players",
-    { session:SESSION, token:myToken, name:myName, round:curRound() }, { conflictOk:true });
+    { session:SESSION, token:myToken, name:myName, round:curRound(), fp:canvasFp() },
+    { conflictOk:true });
   if(!ok){ LIVE=false; return startSolo(); }   // database went away mid-join
   store.set("name_"+SESSION, myName);
   // glue the per-session quiz token to the stable device id, so a star
@@ -905,6 +983,7 @@ async function joinLive(){
   sbInsert("dm_token_links",
     { token_a:DEVICE, token_b:myToken, method:"device" }, { conflictOk:true });
   startPlayerLoop();
+  checkRescue();
 }
 
 /* ================================================================
@@ -945,14 +1024,18 @@ function onPlayerPhase(st){
 }
 function renderPlayerLobby(){
   phase="lobby";
-  app.innerHTML = `<div class="corner">${ctl()}</div>
+  app.innerHTML = `<div class="corner">${ctl()}
+    <button class="iconbtn" id="mydmbtn" title="My DM">★</button></div>
   <div class="screen">
     ${wordmarkHtml()}
     <h1>${esc(t().lobbyTitle)}, ${esc(myName)}</h1>
     <p class="sub waitdot">${esc(t().lobbyWait)}</p>
     <p class="metriclbl" id="lobbycount"></p>
+    <div id="rescueslot">${rescueHtml()}</div>
   </div>`;
-  bindCtl(); paintLobbyCount();
+  bindCtl(); paintLobbyCount(); if(rescue) paintRescue();
+  document.getElementById("mydmbtn").onclick =
+    ()=>{ passBack=renderPlayerLobby; renderPassport(); };
 }
 function paintLobbyCount(){
   const el = document.getElementById("lobbycount");
@@ -1171,12 +1254,21 @@ function renderHostLobby(){
   <div class="hostbar">
     <button class="btn" id="hstart">${esc(t().start)}</button>
     <button class="btn ghost" id="haddstar">${esc(t().addStar)}</button>
+    <button class="btn ghost" id="hclear">${esc(t().clearPlayers)}</button>
   </div>
   <div class="hostfoot">${esc(CFG.build||"")}</div>`;
   document.getElementById("hstart").onclick = async ()=>{
     A.tap(); await pushState("question", 0); renderHost();
   };
   document.getElementById("haddstar").onclick = openAddStar;
+  document.getElementById("hclear").onclick = async ()=>{
+    if(!livePlayers().length) return;
+    if(!confirm(t().clearConfirm(livePlayers().length))) return;
+    A.tap();
+    roster = []; answers = [];
+    await pushState("lobby", -1, curRound()+1);
+    renderHost();
+  };
   paintHostLobby();
 }
 function paintHostLobby(){
@@ -1526,16 +1618,236 @@ async function claimStar(){
     store.set("stars", locals);
   }
   justClaimed = true;
+  justClaimedPillar = pillar;
   A.fanfare();
+  // the star visibly leaves the claim screen and lands in the passport
+  const cs = document.querySelector(".claimstar");
+  if(cs){ cs.classList.add("fly"); await new Promise(res=>setTimeout(res, 600)); }
   renderPassport();
+}
+let justClaimedPillar = "";
+
+/* ---------------- canvas fingerprint ----------------
+   A rescue HINT, never an identity: Safari and iOS add noise to canvas
+   output on purpose, so equal hashes mean "probably the same browser" and
+   unequal hashes mean nothing. Everything it triggers asks the person first. */
+let _fp = null;
+function canvasFp(){
+  if(_fp !== null) return _fp;
+  try{
+    const c = document.createElement("canvas");
+    c.width = 240; c.height = 60;
+    const x = c.getContext("2d");
+    x.textBaseline = "top";
+    x.font = "16px 'Poppins', sans-serif";
+    x.fillStyle = "#f60"; x.fillRect(120, 5, 60, 30);
+    x.fillStyle = "#069"; x.fillText("DM ★ passport 🇨🇭", 4, 8);
+    x.fillStyle = "rgba(102,204,0,.7)"; x.fillText("DM ★ passport 🇨🇭", 8, 28);
+    const g = x.createLinearGradient(0, 0, 240, 0);
+    g.addColorStop(0, "#a8d272"); g.addColorStop(1, "#435cc6");
+    x.fillStyle = g; x.fillRect(0, 44, 240, 12);
+    x.beginPath(); x.arc(60, 30, 20, 0, Math.PI*1.7); x.stroke();
+    _fp = "c" + hash32(c.toDataURL()).toString(36);
+  }catch(e){ _fp = ""; }
+  return _fp;
+}
+
+/* ---------------- fingerprint rescue ----------------
+   After a join, look for players with the same name and the same
+   fingerprint whose tokens are not yet connected to this device and who
+   own stars. If found, offer — never assume — to link them. */
+let rescue = null;    // {tokens, count, date}
+async function checkRescue(){
+  rescue = null;
+  const fp = canvasFp();
+  if(!fp || !myName) return;
+  const rows = await sbGet("dm_players?name=eq."+encodeURIComponent(myName)
+    +"&select=token,fp&limit=200");
+  if(!rows) return;
+  const mine = await tokenClosure();
+  const dismissed = new Set(store.get("rescue_no", []));
+  const cand = [...new Set(rows
+    .filter(r => r.fp === fp && !mine.has(r.token) && !dismissed.has(r.token))
+    .map(r => r.token))];
+  if(!cand.length) return;
+  const stars = await sbGet("dm_stars?token=in.("
+    + cand.map(encodeURIComponent).join(",") + ")&select=token,awarded_on&limit=200");
+  if(!stars || !stars.length) return;
+  rescue = {
+    tokens: [...new Set(stars.map(s=>s.token))],
+    count: stars.length,
+    date: fmtDate(stars.map(s=>s.awarded_on).sort().pop())
+  };
+  paintRescue();
+}
+function rescueHtml(){
+  if(!rescue) return "";
+  return `<div class="rescue" id="rescue">
+    <p>${esc(t().rescueQ(myName, rescue.date, rescue.count))}</p>
+    <div class="row">
+      <button class="btn small" id="ryes">${esc(t().rescueYes)}</button>
+      <button class="btn ghost small" id="rno">${esc(t().rescueNo)}</button>
+    </div></div>`;
+}
+function paintRescue(){
+  const slot = document.getElementById("rescueslot");
+  if(!slot || !rescue) return;
+  slot.innerHTML = rescueHtml();
+  document.getElementById("ryes").onclick = async ()=>{
+    A.tap();
+    for(const tok of rescue.tokens){
+      await sbInsert("dm_token_links",
+        { token_a: DEVICE, token_b: tok, method:"fingerprint" }, { conflictOk:true });
+    }
+    rescue = null;
+    slot.innerHTML = `<div class="banner good">${esc(t().rescued)}</div>`;
+  };
+  document.getElementById("rno").onclick = ()=>{
+    const no = store.get("rescue_no", []);
+    store.set("rescue_no", [...new Set(no.concat(rescue.tokens))]);
+    rescue = null;
+    slot.innerHTML = "";
+  };
+}
+
+/* ---------------- account (Supabase Auth, email + password) ----------------
+   Raw GoTrue REST, no SDK — matches the app's dependency-free style. The
+   account's only job is to link this device id to a user, so stars survive
+   a lost phone: dm_identities rows are written on signup/login, and the
+   passport closure picks up every token the account has ever touched. */
+let AUTH = store.get("auth", null);   // {at, rt, uid, email}
+async function authReq(path, body, bearer){
+  try{
+    const r = await fetch(SUPA_URL+"/auth/v1/"+path, {
+      method: body === undefined ? "GET" : (path === "user" ? "PUT" : "POST"),
+      headers: Object.assign({ apikey:SUPA_KEY, "Content-Type":"application/json" },
+        bearer ? { Authorization:"Bearer "+bearer } : {}),
+      body: body === undefined ? undefined : JSON.stringify(body)
+    });
+    let j = null;
+    try{ j = await r.json(); }catch(e){}
+    return { ok:r.ok, status:r.status, j };
+  }catch(e){ return null; }
+}
+function setAuth(j){
+  AUTH = { at:j.access_token, rt:j.refresh_token,
+           uid:j.user && j.user.id, email:j.user && j.user.email };
+  store.set("auth", AUTH);
+  linkDeviceToUser();
+}
+function clearAuth(){ AUTH = null; store.set("auth", null); }
+async function linkDeviceToUser(){
+  if(!AUTH || !AUTH.uid) return;
+  try{
+    await fetch(SUPA_URL+"/rest/v1/dm_identities", {
+      method:"POST",
+      headers:{ apikey:SUPA_KEY, Authorization:"Bearer "+AUTH.at,
+                "Content-Type":"application/json", Prefer:"return=minimal" },
+      body: JSON.stringify({ user_id:AUTH.uid, token:DEVICE })
+    });
+  }catch(e){}
+}
+async function authRefresh(){
+  if(!AUTH || !AUTH.rt) return;
+  const r = await authReq("token?grant_type=refresh_token", { refresh_token:AUTH.rt });
+  if(r && r.ok && r.j && r.j.access_token) setAuth(r.j);
+  else if(r && (r.status===400 || r.status===401)) clearAuth();
+}
+
+/* account block on the My DM page (sketch: name, email, change PW, delete) */
+let acctMode = "";    // "" | "pw"
+let acctMsg = null;   // {text, err}
+function acctHtml(){
+  const msg = `<p class="msg ${acctMsg && acctMsg.err ? "err" : ""}">${esc(acctMsg ? acctMsg.text : "")}</p>`;
+  if(AUTH){
+    return `<div class="acct">
+      <p class="rules">${esc(t().loggedInAs(AUTH.email || ""))}</p>
+      ${acctMode==="pw" ? `
+        <input id="anewpw" type="password" autocomplete="new-password" placeholder="${esc(t().newPw)}">
+        <div class="row">
+          <button class="btn small" id="asavepw">${esc(t().save)}</button>
+          <button class="btn ghost small" id="acancel">${esc(t().cancel)}</button>
+        </div>` : `
+        <div class="row">
+          <button class="btn ghost small" id="achangepw">${esc(t().changePw)}</button>
+          <button class="btn ghost small" id="alogout">${esc(t().logout)}</button>
+          <button class="btn small danger" id="adelete">${esc(t().deleteAccount)}</button>
+        </div>`}
+      ${msg}
+    </div>`;
+  }
+  return `<div class="acct">
+    <p class="rules">${esc(t().accountHint)}</p>
+    <input id="aemail" type="email" autocomplete="email" placeholder="${esc(t().email)}">
+    <input id="apw" type="password" autocomplete="current-password" placeholder="${esc(t().pw)}">
+    <div class="row">
+      <button class="btn small" id="alogin">${esc(t().login)}</button>
+      <button class="btn ghost small" id="asignup">${esc(t().signup)}</button>
+    </div>
+    ${msg}
+  </div>`;
+}
+function setAcctMsg(text, err){ acctMsg = text ? { text, err } : null; renderPassport(); }
+function bindAcct(){
+  const el = id => document.getElementById(id);
+  const creds = ()=>{
+    const e = (el("aemail").value || "").trim(), p = el("apw").value || "";
+    if(!e || p.length < 6){ setAcctMsg(t().authFailed, true); return null; }
+    return { email:e, password:p };
+  };
+  if(el("alogin")) el("alogin").onclick = async ()=>{
+    const c = creds(); if(!c) return;
+    const r = await authReq("token?grant_type=password", c);
+    if(r && r.ok && r.j && r.j.access_token){ setAuth(r.j); setAcctMsg(""); }
+    else setAcctMsg(t().authFailed, true);
+  };
+  if(el("asignup")) el("asignup").onclick = async ()=>{
+    const c = creds(); if(!c) return;
+    const r = await authReq("signup", c);
+    if(r && r.ok && r.j && r.j.access_token){ setAuth(r.j); setAcctMsg(""); }
+    // "Confirm email" on: signup returns a user but no session yet
+    else if(r && r.ok && r.j && (r.j.confirmation_sent_at
+          || (r.j.user && r.j.user.confirmation_sent_at))) setAcctMsg(t().confirmSent);
+    else setAcctMsg(t().authFailed, true);
+  };
+  if(el("achangepw")) el("achangepw").onclick = ()=>{ acctMode="pw"; renderPassport(); };
+  if(el("acancel"))   el("acancel").onclick   = ()=>{ acctMode="";   renderPassport(); };
+  if(el("asavepw"))   el("asavepw").onclick   = async ()=>{
+    const p = el("anewpw").value || "";
+    if(p.length < 6) return setAcctMsg(t().authFailed, true);
+    let r = await authReq("user", { password:p }, AUTH.at);
+    if(r && r.status === 401){          // access token expired: refresh, retry once
+      await authRefresh();
+      if(AUTH) r = await authReq("user", { password:p }, AUTH.at);
+    }
+    if(r && r.ok){ acctMode=""; setAcctMsg(t().pwChanged); }
+    else setAcctMsg(t().authFailed, true);
+  };
+  if(el("alogout")) el("alogout").onclick = async ()=>{
+    try{ await authReq("logout", {}, AUTH.at); }catch(e){}
+    clearAuth(); acctMode=""; setAcctMsg("");
+  };
+  if(el("adelete")) el("adelete").onclick = async ()=>{
+    if(!confirm(t().deleteConfirm)) return;
+    // The database is insert-only for anon, so deletion runs behind the
+    // delete-account edge function (service role). Not deployed -> soft fail.
+    let ok = false;
+    try{
+      const r = await fetch(SUPA_URL+"/functions/v1/delete-account", {
+        method:"POST", headers:{ apikey:SUPA_KEY, Authorization:"Bearer "+AUTH.at } });
+      ok = r.ok;
+    }catch(e){}
+    if(ok){ clearAuth(); acctMode=""; setAcctMsg(t().deleted); }
+    else setAcctMsg(t().deleteFailed, true);
+  };
 }
 
 /* ---------------- passport data ----------------
    A person's stars are the stars of every token connected to this device:
-   the device id, any per-session quiz tokens in localStorage, and whatever
-   dm_token_links joins onto those (the 'device' rows written on join, and
-   later fingerprint/host links). The closure is computed here — a few
-   hundred rows at most. */
+   the device id, any per-session quiz tokens in localStorage, the tokens
+   the account has linked (dm_identities), and whatever dm_token_links
+   joins onto those. The closure is computed here — a few hundred rows at
+   most. */
 function myTokens(){
   const toks = new Set([DEVICE]);
   try{
@@ -1549,8 +1861,13 @@ function myTokens(){
   if(myToken) toks.add(myToken);
   return toks;
 }
-async function fetchMyStars(){
+async function tokenClosure(){
   const mine = myTokens();
+  if(AUTH && AUTH.uid){
+    const ids = await sbGet("dm_identities?user_id=eq."+encodeURIComponent(AUTH.uid)
+      +"&select=token&limit=200");
+    if(ids) ids.forEach(r=>mine.add(r.token));
+  }
   const links = await sbGet("dm_token_links?select=token_a,token_b&limit=2000");
   if(links){
     let grew=true;
@@ -1563,6 +1880,10 @@ async function fetchMyStars(){
       }
     }
   }
+  return mine;
+}
+async function fetchMyStars(){
+  const mine = await tokenClosure();
   const list = [...mine].map(encodeURIComponent).join(",");
   return sbGet("dm_stars?token=in.("+list+")"
     +"&select=id,pillar,topic,session,awarded_on,source&order=awarded_on.asc&limit=500");
@@ -1595,18 +1916,42 @@ function renderPassport(){
   phase="passport";
   paintPassport(DEMO ? demoStars() : mergeStars(localStars(), null));
   if(!DEMO && SUPA_URL){
+    // Refresh only the star grid when the data lands — a full repaint here
+    // would wipe whatever the user is typing into the account form.
     fetchMyStars().then(remote=>{
-      if(phase==="passport" && remote) paintPassport(mergeStars(localStars(), remote));
+      if(phase==="passport" && remote) paintPassGrid(mergeStars(localStars(), remote));
     });
   }
 }
-function paintPassport(stars){
+function passGridHtml(stars){
   const byP = {}; PILLAR_IDS.forEach(p=>byP[p]=[]);
   for(const s of stars) if(byP[s.pillar]) byP[s.pillar].push(s);
   const counts = PILLAR_IDS.map(p=>byP[p].length);
   const isMaster   = counts.every(c=>c>=MASTER_PER_PILLAR);
   const isChampion = counts.every(c=>c>=CHAMPION_PER_PILLAR);
   const target = c => c>=CHAMPION_PER_PILLAR ? MASTER_PER_PILLAR : CHAMPION_PER_PILLAR;
+  return `<div class="passgrid">
+      ${PILLAR_IDS.map(p=>{
+        const got = byP[p], tg = target(got.length);
+        return `<div class="pillcard"><b>${esc(L(PILLARS[p]))}</b>
+          <div class="starrow">
+            ${got.map((s,i)=>`<span class="starcol on${
+                justClaimed && p===justClaimedPillar && i===got.length-1 ? " new" : ""
+              }" title="${esc(s.topic||"")}">★<small>${esc(fmtDate(s.awarded_on))}</small></span>`).join("")}
+            ${Array.from({length:Math.max(0, tg-got.length)},
+              ()=>`<span class="starcol off">☆<small>&nbsp;</small></span>`).join("")}
+          </div></div>`;
+      }).join("")}
+    </div>
+    ${isMaster ? `<span class="lvlbadge">${esc(t().master)} ★★</span>`
+      : isChampion ? `<span class="lvlbadge">${esc(t().champion)} ★</span>` : ""}
+    <p class="rules">${esc(stars.length ? t().champRule : t().noStarsYet)}</p>`;
+}
+function paintPassGrid(stars){
+  const slot = document.getElementById("passgridslot");
+  if(slot) slot.innerHTML = passGridHtml(stars);
+}
+function paintPassport(stars){
   const waiting = !DEMO && SESSION && LIVE && pollId
     && (!liveState || liveState.phase==="done" || !liveState.phase);
   app.innerHTML = `<div class="corner">${ctl()}</div>
@@ -1616,27 +1961,15 @@ function paintPassport(stars){
     <h1>${esc(t().myDM)}</h1>
     <p class="sub">${myName ? esc(myName)+" · " : ""}${esc(t().passportSub)}</p>
     ${justClaimed ? `<div class="banner good">${esc(t().claimedTitle)}</div>` : ""}
-    <div class="passgrid">
-      ${PILLAR_IDS.map(p=>{
-        const got = byP[p], tg = target(got.length);
-        return `<div class="pillcard"><b>${esc(L(PILLARS[p]))}</b>
-          <div class="starrow">
-            ${got.map(s=>`<span class="starcol on" title="${esc(s.topic||"")}">★<small>${esc(fmtDate(s.awarded_on))}</small></span>`).join("")}
-            ${Array.from({length:Math.max(0, tg-got.length)},
-              ()=>`<span class="starcol off">☆<small>&nbsp;</small></span>`).join("")}
-          </div></div>`;
-      }).join("")}
-    </div>
-    ${isMaster ? `<span class="lvlbadge">${esc(t().master)} ★★</span>`
-      : isChampion ? `<span class="lvlbadge">${esc(t().champion)} ★</span>` : ""}
-    <p class="rules">${esc(stars.length ? t().champRule : t().noStarsYet)}</p>
+    <div id="passgridslot" style="display:contents">${passGridHtml(stars)}</div>
     ${DEMO ? `<div class="pills">${DEMO_SPECS.map((s,i)=>
         `<button class="pill ${i===demoProfile?"on":""}" data-demo="${i}">${s.reduce((a,b)=>a+b,0)} ★</button>`).join("")}
       </div><p class="rules">${esc(t().demoNote)}</p>` : ""}
+    ${DEMO ? "" : acctHtml()}
     ${waiting ? `<p class="rules waitdot">${esc(t().waitingSession)}</p>` : ""}
     ${passBack ? `<button class="btn ghost small" id="pback">${esc(t().back)}</button>` : ""}
   </div>`;
-  bindLangPills(); bindCtl();
+  bindLangPills(); bindCtl(); bindAcct();
   app.querySelectorAll("[data-demo]").forEach(b=>b.onclick=()=>{
     demoProfile=+b.dataset.demo; renderPassport(); });
   const pb=document.getElementById("pback");
@@ -1675,6 +2008,14 @@ function renderHostStars(){
     renderHost();
   };
   document.getElementById("haddstar").onclick = openAddStar;
+  document.getElementById("hclear").onclick = async ()=>{
+    if(!livePlayers().length) return;
+    if(!confirm(t().clearConfirm(livePlayers().length))) return;
+    A.tap();
+    roster = []; answers = [];
+    await pushState("lobby", -1, curRound()+1);
+    renderHost();
+  };
   paintHostStars();
 }
 function paintHostStars(){
