@@ -387,7 +387,8 @@ const I18N = {
   loadFail:"Could not load the session data.",
   hostNeedsDb:"Live mode needs Supabase",
   hostNeedsDbSub:"The host view coordinates every phone through the database. Add the project URL and anon key to src/config.json, rebuild, and reload. Players can still use the solo mode in the meantime.",
-  myDM:"My DM", passportSub:"Your star passport — one star per session.",
+  myDM:"My DM", curriculum:"Curriculum",
+  passportSub:"Your star passport — one star per session.",
   champion:"DM Champion", master:"DM Master",
   champRule:"3 stars in every pillar → DM Champion · 6 → DM Master",
   noStarsYet:"No stars yet. You collect them at the end of each session.",
@@ -427,7 +428,8 @@ const I18N = {
   loadFail:"Die Session-Daten konnten nicht geladen werden.",
   hostNeedsDb:"Live-Modus braucht Supabase",
   hostNeedsDbSub:"Die Host-Ansicht steuert alle Handys über die Datenbank. Projekt-URL und Anon-Key in src/config.json eintragen, neu bauen und neu laden. Solo-Modus funktioniert in der Zwischenzeit.",
-  myDM:"My DM", passportSub:"Dein Sterne-Pass — ein Stern pro Session.",
+  myDM:"My DM", curriculum:"Curriculum",
+  passportSub:"Dein Sterne-Pass — ein Stern pro Session.",
   champion:"DM Champion", master:"DM Master",
   champRule:"3 Sterne in jedem Pfeiler → DM Champion · 6 → DM Master",
   noStarsYet:"Noch keine Sterne. Du sammelst sie am Ende jeder Session.",
@@ -471,7 +473,8 @@ const I18N = {
   loadFail:"Impossible de charger les donn\u00e9es de la session.",
   hostNeedsDb:"Le mode direct n\u00e9cessite Supabase",
   hostNeedsDbSub:"La vue h\u00f4te coordonne tous les t\u00e9l\u00e9phones via la base de donn\u00e9es. Ajoute l'URL du projet et la cl\u00e9 anon dans src/config.json, reconstruis, puis recharge. Le mode solo reste disponible entre-temps.",
-  myDM:"My DM", passportSub:"Ton passeport d'\u00e9toiles \u2014 une \u00e9toile par session.",
+  myDM:"My DM", curriculum:"Curriculum",
+  passportSub:"Ton passeport d'\u00e9toiles \u2014 une \u00e9toile par session.",
   champion:"DM Champion", master:"DM Master",
   champRule:"3 \u00e9toiles dans chaque pilier \u2192 DM Champion \u00b7 6 \u2192 DM Master",
   noStarsYet:"Pas encore d'\u00e9toiles. Tu les re\u00e7ois \u00e0 la fin de chaque session.",
@@ -654,7 +657,13 @@ async function boot(){
     if(st===null) return fail("hostNeedsDb");
     LIVE = true;
     liveState = st[0] || null;
-    if(!liveState) await pushState("lobby", -1);
+    /* A session starts with nobody in it: opening the beamer begins a fresh
+       sitting on a new round, so last time's players are not sitting in the
+       lobby. The one exception is a game already under way — reloading the
+       beamer mid-question must not empty the room. */
+    const midGame = liveState &&
+      (liveState.phase === "question" || liveState.phase === "reveal");
+    if(!midGame) await pushState("lobby", -1, liveState ? (liveState.round||0)+1 : 0);
     return startHostLoop();
   }
 
@@ -686,10 +695,14 @@ function renderError(){
   </div>`;
 }
 const LOGO = "__LOGO__";
-function wordmarkHtml(cls){
+/* The star screens are Curriculum, not Quiz — the passport outlives any
+   single quiz session — and they drop the dP mark, which is DAY8's, not
+   Democracy Matters'. */
+function wordmarkHtml(cls, word){
+  const logo = word ? "" : `<img class="wmlogo" src="${LOGO}" alt="">`;
   return `<div class="kicker ${cls||""}"><span class="wordmark">`
-       + `<img class="wmlogo" src="${LOGO}" alt="">`
-       + `${esc(t().brand)} <span class="wm2">${esc(t().quiz)}</span></span></div>`;
+       + logo
+       + `${esc(t().brand)} <span class="wm2">${esc(word||t().quiz)}</span></span></div>`;
 }
 
 /* ---------------- session picker ---------------- */
@@ -1473,7 +1486,7 @@ function renderClaim(){
   app.innerHTML = `<div class="corner">${ctl()}</div>
   <div class="screen">
     ${langPills()}
-    ${wordmarkHtml()}
+    ${wordmarkHtml("", t().curriculum)}
     <div class="claimstar">★</div>
     <h1>${esc(t().claimTitle)}</h1>
     <p class="sub">${esc(L(PILLARS[pillar]))} · ${esc(sessionTitle())}</p>
@@ -1599,7 +1612,7 @@ function paintPassport(stars){
   app.innerHTML = `<div class="corner">${ctl()}</div>
   <div class="screen">
     ${langPills()}
-    ${wordmarkHtml()}
+    ${wordmarkHtml("", t().curriculum)}
     <h1>${esc(t().myDM)}</h1>
     <p class="sub">${myName ? esc(myName)+" · " : ""}${esc(t().passportSub)}</p>
     ${justClaimed ? `<div class="banner good">${esc(t().claimedTitle)}</div>` : ""}
@@ -1636,7 +1649,7 @@ function renderHostStars(){
   const pillar = pillarOf();
   app.innerHTML = `<div class="hostwrap">
     <div class="hostleft">
-      ${wordmarkHtml()}
+      ${wordmarkHtml("", t().curriculum)}
       <h1>${esc(sessionTitle())}</h1>
       <p class="scanlbl">${esc(t().claimScan)}</p>
       <div class="qrcard">${qrSvg(joinUrl())}</div>
