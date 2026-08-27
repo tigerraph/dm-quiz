@@ -183,10 +183,25 @@ anything real, claims move behind an edge function.
 
 ## Build order
 
-1. Migration 004 (Rafa runs it — [SQL editor](https://supabase.com/dashboard/project/bvglvdcndhqrvpnghrkp/sql/new)).
-2. Passport view + mode switch + `stars` phase + claim flow + host button.
-3. Manual add form in the host view.
-4. Fingerprint hint + rescue prompt.
-5. Accounts (Supabase Auth email+password, link on login, change PW).
-6. Delete-account edge function.
-7. Update Learning Loop slide (Champion), add demo mode.
+1. ~~Migration 004~~ — applied.
+2. ~~Passport view + mode switch + `stars` phase + claim flow + host button.~~ Live.
+3. ~~Manual add form in the host view.~~ Live.
+4. ~~Fingerprint hint + rescue prompt.~~ Built — join stores a canvas-hash in
+   `dm_players.fp`; a fresh device joining with a known name + matching hash
+   is offered "Are you the Anna with n ★?"; accepting writes a
+   `dm_token_links` row (`method: fingerprint`). Never automatic.
+5. ~~Accounts.~~ Built — email+password via GoTrue REST, no SDK. Signup/login
+   links the device id into `dm_identities`; the passport closure follows
+   the account across devices. Change password inline; logout.
+   **Rafa, once:** in the
+   [Auth settings](https://supabase.com/dashboard/project/bvglvdcndhqrvpnghrkp/auth/providers)
+   either disable "Confirm email" (zero-friction, recommended for workshops)
+   or leave it on — the UI copes ("confirm your email, then log in"), but
+   Supabase's default mailer sends only a few mails per hour.
+6. ~~Delete-account edge function.~~ Written at
+   `supabase/functions/delete-account/index.ts` — deletes the calling user
+   plus their identity links (star rows stay; they are pseudonymous tokens).
+   **Rafa, once:** `supabase functions deploy delete-account --project-ref
+   bvglvdcndhqrvpnghrkp`. Until deployed, the button soft-fails with "ask
+   the moderator".
+7. Update Learning Loop slide (Champion) — still open. Demo mode shipped.
