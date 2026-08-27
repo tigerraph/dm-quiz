@@ -209,3 +209,18 @@ anything real, claims move behind an edge function.
 7. ~~Update Learning Loop slide (Champion).~~ Done in the live deck
    (`slides/gewaltenteilung-ch.html`, babc10d). Demo mode shipped.
    **Everything in this spec is now live.**
+
+## Open items (post-v1, Rafa 2026-08-27)
+
+- **Forgot password** — decided: build later. Logged-in change-password
+  exists; a forgotten password currently has no recovery. Needs GoTrue
+  `/recover` plus redirect handling back into the app.
+- **Rescue only fires at lobby join.** Someone who scans only during the
+  claim window enters a name there but is never offered the restore prompt.
+  Small extension if it ever bites.
+- **Trust hardening, when stars gate something real.** Today anyone with the
+  anon key can insert stars (same open model as the quiz). Escalation path,
+  cheapest first: (a) a short claim code shown on the beamer during the
+  claim window, required to collect; (b) awards behind an edge function
+  with a host secret, removing the anon insert on `dm_stars` entirely.
+  Decision deferred until it matters.

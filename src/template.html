@@ -440,7 +440,7 @@ const I18N = {
   confirmSent:"Almost there — confirm the email we sent you, then log in.",
   rescueQ:(n,d,c)=>`Are you the ${n} with ${c} ★ (last: ${d})?`,
   rescueYes:"Yes, restore my stars", rescueNo:"Not me",
-  rescued:"Stars restored ★"
+  rescued:"Stars restored ★", rename:"Change name"
  },
  de:{
   brand:"Democracy Matters", quiz:"Quiz",
@@ -497,7 +497,7 @@ const I18N = {
   confirmSent:"Fast geschafft — bestätige zuerst die E-Mail in deinem Posteingang, dann anmelden.",
   rescueQ:(n,d,c)=>`Bist du ${n} mit ${c} ★ (zuletzt: ${d})?`,
   rescueYes:"Ja, Sterne übernehmen", rescueNo:"Nicht ich",
-  rescued:"Sterne übernommen ★"
+  rescued:"Sterne übernommen ★", rename:"Namen ändern"
  },
  fr:{
   brand:"Democracy Matters", quiz:"Quiz",
@@ -558,7 +558,7 @@ const I18N = {
   confirmSent:"Presque fini \u2014 confirme d'abord l'e-mail re\u00e7u, puis connecte-toi.",
   rescueQ:(n,d,c)=>`Tu es ${n} avec ${c} \u2605 (dernier : ${d}) ?`,
   rescueYes:"Oui, r\u00e9cup\u00e9rer mes \u00e9toiles", rescueNo:"Pas moi",
-  rescued:"\u00c9toiles r\u00e9cup\u00e9r\u00e9es \u2605"
+  rescued:"\u00c9toiles r\u00e9cup\u00e9r\u00e9es \u2605", rename:"Changer de nom"
  }
 };
 const LANGS = ["en","de","fr"];
@@ -1959,7 +1959,15 @@ function paintPassport(stars){
     ${langPills()}
     ${wordmarkHtml("", t().curriculum)}
     <h1>${esc(t().myDM)}</h1>
-    <p class="sub">${myName ? esc(myName)+" · " : ""}${esc(t().passportSub)}</p>
+    <p class="sub">${myName && !nameEdit ? esc(myName)+" · " : ""}${esc(t().passportSub)}</p>
+    ${DEMO ? "" : nameEdit ? `
+      <div class="namewrap"><input id="pname" maxlength="14" value="${esc(myName)}"
+        placeholder="${esc(t().namePh)}" autocomplete="nickname" enterkeyhint="done"></div>
+      <div class="pills">
+        <button class="btn small" id="nsave">${esc(t().save)}</button>
+        <button class="btn ghost small" id="ncancel">${esc(t().cancel)}</button>
+      </div>`
+      : `<button class="btn ghost small" id="nedit">✎ ${esc(t().rename)}</button>`}
     ${justClaimed ? `<div class="banner good">${esc(t().claimedTitle)}</div>` : ""}
     <div id="passgridslot" style="display:contents">${passGridHtml(stars)}</div>
     ${DEMO ? `<div class="pills">${DEMO_SPECS.map((s,i)=>
@@ -1974,7 +1982,23 @@ function paintPassport(stars){
     demoProfile=+b.dataset.demo; renderPassport(); });
   const pb=document.getElementById("pback");
   if(pb) pb.onclick=()=>{ const f=passBack; passBack=null; justClaimed=false; f(); };
+  // name editing (sketch: Name field on My DM). Local only — the next join
+  // writes the new name to the roster, newest row wins.
+  const ne=document.getElementById("nedit");
+  if(ne) ne.onclick=()=>{ nameEdit=true; renderPassport(); };
+  const saveName=()=>{
+    const v=(document.getElementById("pname").value||"").trim().slice(0,14);
+    if(v){ myName=v; store.set("name", v); }
+    nameEdit=false; renderPassport();
+  };
+  const ns=document.getElementById("nsave");
+  if(ns) ns.onclick=saveName;
+  const ni=document.getElementById("pname");
+  if(ni && nameEdit) ni.addEventListener("keydown", e=>{ if(e.key==="Enter") saveName(); });
+  const nc=document.getElementById("ncancel");
+  if(nc) nc.onclick=()=>{ nameEdit=false; renderPassport(); };
 }
+let nameEdit=false;
 
 /* ---------------- host: claim window + manual add ---------------- */
 function renderHostStars(){
