@@ -2644,7 +2644,7 @@ var qrcode = function() {
    Engine carried over from the noeggi-kahoot wedding app: timer,
    speed scoring, streak bonus, i18n, synthesized offline audio.
    ================================================================== */
-const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","build":"build 26.08.2026 19:05"};
+const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","build":"build 27.08.2026 11:41"};
 const SUPA_URL = CFG.supabaseUrl || "";
 const SUPA_KEY = CFG.supabaseAnonKey || "";
 
@@ -2957,7 +2957,13 @@ async function boot(){
     if(st===null) return fail("hostNeedsDb");
     LIVE = true;
     liveState = st[0] || null;
-    if(!liveState) await pushState("lobby", -1);
+    /* A session starts with nobody in it: opening the beamer begins a fresh
+       sitting on a new round, so last time's players are not sitting in the
+       lobby. The one exception is a game already under way — reloading the
+       beamer mid-question must not empty the room. */
+    const midGame = liveState &&
+      (liveState.phase === "question" || liveState.phase === "reveal");
+    if(!midGame) await pushState("lobby", -1, liveState ? (liveState.round||0)+1 : 0);
     return startHostLoop();
   }
 
