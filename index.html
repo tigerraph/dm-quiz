@@ -2644,7 +2644,7 @@ var qrcode = function() {
    Engine carried over from the noeggi-kahoot wedding app: timer,
    speed scoring, streak bonus, i18n, synthesized offline audio.
    ================================================================== */
-const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","build":"build 27.08.2026 11:41"};
+const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","build":"build 27.08.2026 12:00"};
 const SUPA_URL = CFG.supabaseUrl || "";
 const SUPA_KEY = CFG.supabaseAnonKey || "";
 
@@ -2659,6 +2659,11 @@ function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,
 
 const LETTERS = ["A","B","C","D"];
 const POLL_MS = 1200;
+/* How long a session must be untouched before reopening the beamer counts as
+   a new sitting rather than a reload. Long enough to survive a projector
+   dropping out or a coffee break, short enough that next month's session
+   never inherits this one's roster. */
+const SITTING_IDLE_MS = 2 * 60 * 60 * 1000;
 
 const I18N = {
  en:{
@@ -2670,6 +2675,7 @@ const I18N = {
   correct:"Correct!", wrong:"Not quite …", timeout:"Time's up!", noAnswer:"No answer",
   answerWas:"The right answer:", streak:x=>`Streak x${x}`, why:"Why",
   next:"Next", last:"See results", start:"Start the quiz", restart:"New round",
+  clearPlayers:"Clear players", clearConfirm:n=>`Remove all ${n} players and start with an empty lobby?`,
   reveal:"Show answer", finish:"Finish",
   result:"Your result", ofN:(c,n)=>`${c} of ${n} correct`, again:"Play again",
   board:"Leaderboard", noScores:"No scores yet", rank:"Rank", you:"you",
@@ -2711,6 +2717,7 @@ const I18N = {
   correct:"Richtig!", wrong:"Leider nein …", timeout:"Zeit abgelaufen!", noAnswer:"Keine Antwort",
   answerWas:"Richtig wäre gewesen:", streak:x=>`Serie x${x}`, why:"Warum",
   next:"Weiter", last:"Zum Resultat", restart:"Neue Runde", start:"Quiz starten",
+  clearPlayers:"Alle entfernen", clearConfirm:n=>`Alle ${n} Mitspielenden entfernen und leer starten?`,
   reveal:"Auflösen", finish:"Abschliessen",
   result:"Dein Resultat", ofN:(c,n)=>`${c} von ${n} richtig`, again:"Nochmals spielen",
   board:"Rangliste", noScores:"Noch keine Resultate", rank:"Rang", you:"du",
@@ -2753,6 +2760,7 @@ const I18N = {
   noAnswer:"Pas de r\u00e9ponse",
   answerWas:"La bonne r\u00e9ponse\u00a0:", streak:x=>`S\u00e9rie x${x}`, why:"Pourquoi",
   next:"Suivant", last:"Voir le r\u00e9sultat", start:"Lancer le quiz", restart:"Nouvelle manche",
+  clearPlayers:"Vider la liste", clearConfirm:n=>`Retirer les ${n} participants et repartir \u00e0 vide\u00a0?`,
   reveal:"Afficher la r\u00e9ponse", finish:"Terminer",
   result:"Ton r\u00e9sultat", ofN:(c,n)=>`${c} bonnes r\u00e9ponses sur ${n}`, again:"Rejouer",
   board:"Classement", noScores:"Pas encore de r\u00e9sultats", rank:"Rang", you:"toi",
@@ -2957,13 +2965,17 @@ async function boot(){
     if(st===null) return fail("hostNeedsDb");
     LIVE = true;
     liveState = st[0] || null;
-    /* A session starts with nobody in it: opening the beamer begins a fresh
-       sitting on a new round, so last time's players are not sitting in the
-       lobby. The one exception is a game already under way — reloading the
-       beamer mid-question must not empty the room. */
-    const midGame = liveState &&
-      (liveState.phase === "question" || liveState.phase === "reveal");
-    if(!midGame) await pushState("lobby", -1, liveState ? (liveState.round||0)+1 : 0);
+    /* A sitting is a thing you rejoin, not something a reload destroys.
+       Reopening the beamer resumes whatever is running; only a session that
+       has been idle long enough to be last time's starts fresh, so a monthly
+       session never opens with the previous group still in the lobby. The
+       host can force a clean slate at any time with "Clear players". */
+    const idleMs = liveState
+      ? serverNow() - Date.parse(liveState.started_at)
+      : Infinity;
+    if(!liveState || idleMs > SITTING_IDLE_MS){
+      await pushState("lobby", -1, liveState ? (liveState.round||0)+1 : 0);
+    }
     return startHostLoop();
   }
 
@@ -3471,12 +3483,21 @@ function renderHostLobby(){
   <div class="hostbar">
     <button class="btn" id="hstart">${esc(t().start)}</button>
     <button class="btn ghost" id="haddstar">${esc(t().addStar)}</button>
+    <button class="btn ghost" id="hclear">${esc(t().clearPlayers)}</button>
   </div>
   <div class="hostfoot">${esc(CFG.build||"")}</div>`;
   document.getElementById("hstart").onclick = async ()=>{
     A.tap(); await pushState("question", 0); renderHost();
   };
   document.getElementById("haddstar").onclick = openAddStar;
+  document.getElementById("hclear").onclick = async ()=>{
+    if(!livePlayers().length) return;
+    if(!confirm(t().clearConfirm(livePlayers().length))) return;
+    A.tap();
+    roster = []; answers = [];
+    await pushState("lobby", -1, curRound()+1);
+    renderHost();
+  };
   paintHostLobby();
 }
 function paintHostLobby(){
@@ -3975,6 +3996,14 @@ function renderHostStars(){
     renderHost();
   };
   document.getElementById("haddstar").onclick = openAddStar;
+  document.getElementById("hclear").onclick = async ()=>{
+    if(!livePlayers().length) return;
+    if(!confirm(t().clearConfirm(livePlayers().length))) return;
+    A.tap();
+    roster = []; answers = [];
+    await pushState("lobby", -1, curRound()+1);
+    renderHost();
+  };
   paintHostStars();
 }
 function paintHostStars(){
