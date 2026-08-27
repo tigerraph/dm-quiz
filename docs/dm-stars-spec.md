@@ -23,8 +23,10 @@ Three pillars, ids fixed forever (they go into the database):
 - **DM Master** — the second lap: at least **6 stars in every pillar**.
   Any 6, not 6 distinct topics.
 
-The Learning Loop deck (page 8) still says "3 stars per pillar → DM Master" —
-update it to Champion once this ships.
+The live deck (`slides/gewaltenteilung-ch.html`) says it right: 3★ per pillar
+→ Champion, 6★ → Master. The old "3 → Master" wording survives only in
+Fritz's original Canva export (`reference/DM_Format_Learning-Loop_…pdf`),
+which has no editable source and stays as-is as a historical reference.
 
 ## One QR, three modes
 
@@ -204,4 +206,21 @@ anything real, claims move behind an edge function.
    **Rafa, once:** `supabase functions deploy delete-account --project-ref
    bvglvdcndhqrvpnghrkp`. Until deployed, the button soft-fails with "ask
    the moderator".
-7. Update Learning Loop slide (Champion) — still open. Demo mode shipped.
+7. ~~Update Learning Loop slide (Champion).~~ Done in the live deck
+   (`slides/gewaltenteilung-ch.html`, babc10d). Demo mode shipped.
+   **Everything in this spec is now live.**
+
+## Open items (post-v1, Rafa 2026-08-27)
+
+- **Forgot password** — decided: build later. Logged-in change-password
+  exists; a forgotten password currently has no recovery. Needs GoTrue
+  `/recover` plus redirect handling back into the app.
+- **Rescue only fires at lobby join.** Someone who scans only during the
+  claim window enters a name there but is never offered the restore prompt.
+  Small extension if it ever bites.
+- **Trust hardening, when stars gate something real.** Today anyone with the
+  anon key can insert stars (same open model as the quiz). Escalation path,
+  cheapest first: (a) a short claim code shown on the beamer during the
+  claim window, required to collect; (b) awards behind an edge function
+  with a host secret, removing the anon insert on `dm_stars` entirely.
+  Decision deferred until it matters.
