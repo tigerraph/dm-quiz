@@ -26,17 +26,20 @@ Kein-Folien-Fallback: [`docs/reference/DM_Template_V3_Topic-Card.pdf`](reference
 | — | Ankommen | 1 DM-Hauptfolie | Pillar zeigen: heute gibt es den ersten **Civics-Stern**. Zwei Slots: Sprint (30′), dann die Runde. |
 | 0'–5' | **Einstieg** | 3 QR | «Handy raus.» QR scannen, Beamer-Ansicht per Klick öffnen, 3 Fragen spielen. Erklärungen zeigt die App — nicht doppelt erklären. |
 | 5'–15' | **Thema** | 4 Video, 5 Check | Mission VOR dem Video ansagen (Antworten prüfen, wer kontrolliert wen, Überraschung merken — die kommt in die Diskussion). Video ab Folie anklicken. Danach Check-Folie: Dreieck kurz durchgehen, Überraschungen abholen. |
-| 15'–20' | **Übung** | 6 Warum-Diskussion | Die Provokation steht auf der Folie. **2′** zu zweit/dritt: Ist uns das den langsamen Apparat wert? Dann **3′** Runde: pro Gruppe **ein** stärkstes Argument. Nach 2′ hart unterbrechen — sonst frisst die Runde die Zeit. |
-| 20'–25' | **Take-away** | 7 Skeptiker-Kit | Die vier Karten sind Antworten auf «die sind doch eh alle korrupt». Laut lesen lassen. Bottom Line auf die Master Checklist, Civics-Stern ★ vergeben. Nie streichen. |
-| 25'–30' | Puffer | — | Überzieher abfedern, dann Folie 8: Übergang in die Runde. |
-| danach | **Die Runde** | 8 | Nur die Titelfolie — die Runde gehört dem Raum. |
+| 15'–20' | **Übung** | 6 Warum-Diskussion, 7 Auflösung | Die Provokation steht auf der Folie. **2′** zu zweit/dritt: Ist uns das den langsamen Apparat wert? Dann **3′** Runde: pro Gruppe **ein** stärkstes Argument. Nach 2′ hart unterbrechen. **Erst danach** Folie 7: der faule Apfel (Autokratie vs. Gewaltenteilung) + Bremsen-Satz — die Auflösung nie vor der Diskussion zeigen. |
+| 20'–25' | **Take-away** | 8 Skeptiker-Kit | Die vier Karten sind Antworten auf «die sind doch eh alle korrupt». Laut lesen lassen. Bottom Line auf die Master Checklist, Civics-Stern ★ vergeben. Nie streichen. |
+| 25'–30' | Puffer | — | Überzieher abfedern, dann Folie 9: Übergang in die Runde. |
+| danach | **Die Runde** | 9 | Nur die Titelfolie — die Runde gehört dem Raum. |
 
 ## Die Dramaturgie
 
 Das Video sagt **wie**, absichtlich nicht **warum**. Der Check direkt danach
 sichert die Mechanik (Dreieck), die Übung ist dann die Warum-Diskussion mit
 hartem Timeboxing (2′ + 3′) — eine offene Runde ohne Auftrag ist nicht zu
-stoppen, darum steht der Auftrag auf der Folie.
+stoppen, darum steht der Auftrag auf der Folie. Die Auflösung (fauler Apfel:
+in der Autokratie wird die Fäulnis System, in der Gewaltenteilung bleibt der
+Schaden lokal — und der Bremsen-Satz) kommt bewusst **nach** der Diskussion,
+damit der Raum das Argument erst selbst baut (Fritz, 2026-08-27).
 
 ## Die Provokation (Thema, ~Minute 12)
 
