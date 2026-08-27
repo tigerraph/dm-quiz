@@ -77,6 +77,15 @@ pick a person from the roster, pillar required, topic and date optional.
 `?demo=1` shows three canned passports (mid-way, Champion, one short of
 Master) without touching the database.
 
+Stars stick to the phone's browser by default. Two ways they survive a lost
+or new phone: an **account** (email + password, created on the My DM page —
+stars then follow the login anywhere), and the **fingerprint rescue** — a
+new device joining with a known name and a matching canvas fingerprint is
+asked "Are you the Anna with n ★?" and can restore them with one tap, never
+automatically. The host's **Add a star** remains the manual fallback.
+Account deletion runs through the `delete-account` edge function
+(`supabase/functions/`), since the database is insert-only for clients.
+
 ### Rehearsing
 
 `?session=probe&host=1` is a scratch session pointing at the same pack. Use it
