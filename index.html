@@ -236,6 +236,28 @@ body.host #app{max-width:none; padding:0;}
 .acct .row{display:flex; gap:9px; justify-content:center; flex-wrap:wrap;}
 .acct .msg{font-size:.85rem; font-weight:700; color:var(--teal); margin:0; min-height:1.2em;}
 .acct .msg.err{color:var(--wrong);}
+/* Visible labels + real form semantics, so iOS/Android/1Password recognise the
+   fields and offer a generated password on signup (Rafa review, 28.8.). */
+.acct label{font-weight:800; font-size:.72rem; letter-spacing:.06em; color:var(--teal);
+            text-transform:uppercase; text-align:left; display:block; margin-bottom:-4px;}
+/* materials link under a star's topic in the passport */
+.pillcard .matlink{display:inline-block; margin:8px 10px 0 0; font-weight:700; font-size:.8rem;
+  color:var(--blue); text-decoration:none; border-bottom:1.5px solid rgba(67,92,198,.4);}
+/* ---------- quiz review (My DM) ---------- */
+.revlist{display:flex; flex-direction:column; gap:14px; width:min(94%,440px);}
+.revcard{background:var(--cream); color:var(--ink); border-radius:4px; box-shadow:var(--paper-shadow);
+         padding:14px 16px; text-align:left; font-size:.92rem; line-height:1.4;}
+.revcard:nth-child(odd){transform:rotate(-.4deg);}
+.revcard:nth-child(even){transform:rotate(.4deg);}
+.revcard .rk{display:block; font-weight:800; font-size:.7rem; letter-spacing:.12em;
+             text-transform:uppercase; color:var(--blue); margin-bottom:4px;}
+.revcard .okmark{color:#5f8f2c;}
+.revcard .badmark{color:var(--wrong);}
+.revcard .rq{font-weight:800; margin:0 0 8px;}
+.revcard .ra{margin:0 0 4px;}
+.revcard .rw{margin:8px 0 0; padding-top:8px; border-top:1.5px dashed rgba(34,49,60,.25);}
+.revcard .rw b{color:var(--blue); font-weight:800; font-size:.7rem; letter-spacing:.12em;
+               text-transform:uppercase; display:block; margin-bottom:3px;}
 .btn.danger{box-shadow:inset 0 0 0 2px var(--wrong); color:var(--wrong); background:transparent;}
 /* fingerprint rescue banner */
 .rescue{background:var(--cream); color:var(--ink); border-radius:var(--radius); padding:13px 16px;
@@ -2663,7 +2685,7 @@ var qrcode = function() {
    Engine carried over from the noeggi-kahoot wedding app: timer,
    speed scoring, streak bonus, i18n, synthesized offline audio.
    ================================================================== */
-const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","build":"build 27.08.2026 13:41"};
+const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","build":"build 28.08.2026 11:09"};
 const SUPA_URL = CFG.supabaseUrl || "";
 const SUPA_KEY = CFG.supabaseAnonKey || "";
 
@@ -2737,7 +2759,10 @@ const I18N = {
   deleted:"Account deleted",
   deleteFailed:"Deletion isn't available yet — ask the moderator.",
   authFailed:"That didn't work — check email and password.",
+  emailTaken:"That email already has an account — log in instead.",
+  pwShort:"Password: at least 6 characters.",
   confirmSent:"Almost there — confirm the email we sent you, then log in.",
+  reviewBtn:"My answers", reviewTitle:"Quiz review", yourAnswer:"Your answer:",
   rescueQ:(n,d,c)=>`Are you the ${n} with ${c} ★ (last: ${d})?`,
   rescueYes:"Yes, restore my stars", rescueNo:"Not me",
   rescued:"Stars restored ★", rename:"Change name"
@@ -2794,7 +2819,10 @@ const I18N = {
   deleted:"Account gelöscht",
   deleteFailed:"Löschen ist noch nicht verfügbar — melde dich bei der Moderation.",
   authFailed:"Das hat nicht geklappt — prüfe E-Mail und Passwort.",
+  emailTaken:"Diese E-Mail hat schon einen Account — melde dich an.",
+  pwShort:"Passwort: mindestens 6 Zeichen.",
   confirmSent:"Fast geschafft — bestätige zuerst die E-Mail in deinem Posteingang, dann anmelden.",
+  reviewBtn:"Meine Antworten", reviewTitle:"Quiz-Rückblick", yourAnswer:"Deine Antwort:",
   rescueQ:(n,d,c)=>`Bist du ${n} mit ${c} ★ (zuletzt: ${d})?`,
   rescueYes:"Ja, Sterne übernehmen", rescueNo:"Nicht ich",
   rescued:"Sterne übernommen ★", rename:"Namen ändern"
@@ -2855,7 +2883,10 @@ const I18N = {
   deleted:"Compte supprim\u00e9",
   deleteFailed:"La suppression n'est pas encore disponible \u2014 contacte la mod\u00e9ration.",
   authFailed:"\u00c7a n'a pas march\u00e9 \u2014 v\u00e9rifie e-mail et mot de passe.",
+  emailTaken:"Cet e-mail a d\u00e9j\u00e0 un compte \u2014 connecte-toi.",
+  pwShort:"Mot de passe\u00a0: au moins 6 caract\u00e8res.",
   confirmSent:"Presque fini \u2014 confirme d'abord l'e-mail re\u00e7u, puis connecte-toi.",
+  reviewBtn:"Mes r\u00e9ponses", reviewTitle:"Retour sur le quiz", yourAnswer:"Ta r\u00e9ponse\u00a0:",
   rescueQ:(n,d,c)=>`Tu es ${n} avec ${c} \u2605 (dernier : ${d}) ?`,
   rescueYes:"Oui, r\u00e9cup\u00e9rer mes \u00e9toiles", rescueNo:"Pas moi",
   rescued:"\u00c9toiles r\u00e9cup\u00e9r\u00e9es \u2605", rename:"Changer de nom"
@@ -3181,6 +3212,23 @@ function pointsFor(remMs, streak){
   return { base, bonus, total: base+bonus };
 }
 
+/* ---------------- answer log for the review view ----------------
+   The phone remembers what it answered, so My DM can show the player's own
+   answers next to the right ones during the video block. Local only, one
+   log per session, reset when a new round (or solo run) starts. */
+function recordReview(qi, choice){
+  if(!SESSION) return;
+  const r = store.get("review_"+SESSION, null) || { answers:{} };
+  r.on = todayISO();
+  r.answers[qi] = choice;
+  store.set("review_"+SESSION, r);
+}
+function clearReview(){ if(SESSION) store.set("review_"+SESSION, null); }
+function reviewData(){
+  const r = SESSION ? store.get("review_"+SESSION, null) : null;
+  return r && r.answers && Object.keys(r.answers).length ? r : null;
+}
+
 /* ---------------- aggregation ----------------
    PostgREST has no GROUP BY without a view, and a session is a few hundred
    rows at most, so the totals are computed here. */
@@ -3316,7 +3364,7 @@ async function tickPlayer(){
 }
 function onPlayerPhase(st){
   stopTimer();
-  if(st.phase==="lobby"){ myAnswer=null; myStreak=0; answers=[]; rejoinRound(); renderPlayerLobby(); }
+  if(st.phase==="lobby"){ myAnswer=null; myStreak=0; answers=[]; clearReview(); rejoinRound(); renderPlayerLobby(); }
   else if(st.phase==="question"){ myAnswer=null; renderPlayerQuestion(); }
   else if(st.phase==="reveal"){ renderPlayerReveal(); }
   else if(st.phase==="done"){ renderPlayerDone(); }
@@ -3373,6 +3421,7 @@ async function submitAnswer(oi){
   myStreak = ok ? myStreak+1 : 0;
   const pts = ok ? pointsFor(rem, myStreak) : {base:0,bonus:0,total:0};
   myAnswer = { choice:oi, correct:ok, points:pts.total, base:pts.base, bonus:pts.bonus };
+  recordReview(qi, oi);
   stopTimer();
   if(oi===null) A.timeout(); else if(ok) A.correct(myStreak); else A.wrong();
   renderPlayerLocked();
@@ -3742,6 +3791,7 @@ function renderHostDone(){
    ================================================================ */
 function startSolo(){
   sQi=0; sScore=0; sStreak=0; sCorrect=0;
+  clearReview();
   sOrder = pack.questions.map(q=>shuffled(L(q.o).length));   // solo: fresh each round
   order = sOrder;
   if(soundOn) A.music();
@@ -3751,7 +3801,8 @@ function soloBegin(){
   sPicked=-1; sTimedOut=false; sGain=0; sBonus=0; lastSec=99;
   deadline = performance.now() + TIME;
   renderSoloQuestion();
-  runTimer(()=>{ if(phase==="question"){ sTimedOut=true; sPicked=-1; sStreak=0; A.timeout(); renderSoloReveal(); } });
+  runTimer(()=>{ if(phase==="question"){ sTimedOut=true; sPicked=-1; sStreak=0;
+    recordReview(sQi, null); A.timeout(); renderSoloReveal(); } });
 }
 function renderSoloQuestion(){
   phase="question";
@@ -3771,6 +3822,7 @@ function soloPick(oi){
   const rem = Math.max(0, deadline - performance.now());
   sPicked = oi;
   const q = pack.questions[sQi];
+  recordReview(sQi, oi);
   if(oi===q.correct){
     sStreak++; sCorrect++;
     const p = pointsFor(rem, sStreak);
@@ -4054,20 +4106,31 @@ async function authRefresh(){
   else if(r && (r.status===400 || r.status===401)) clearAuth();
 }
 
-/* account block on the My DM page (sketch: name, email, change PW, delete) */
+/* account block on the My DM page (sketch: name, email, change PW, delete)
+   A real <form> with visible labels, name attributes and the right
+   autocomplete pair per mode — username + new-password on signup,
+   username + current-password on login — is what makes iOS/Android/1Password
+   offer a generated password and later autofill (Rafa review, 28.8.). */
 let acctMode = "";    // "" | "pw"
 let acctMsg = null;   // {text, err}
+let acctAuth = "";    // "" (decide on first render) | "signup" | "login"
+let acctEmail = "";   // survives re-renders, so an error never wipes the field
 function acctHtml(){
   const msg = `<p class="msg ${acctMsg && acctMsg.err ? "err" : ""}">${esc(acctMsg ? acctMsg.text : "")}</p>`;
   if(AUTH){
     return `<div class="acct">
       <p class="rules">${esc(t().loggedInAs(AUTH.email || ""))}</p>
       ${acctMode==="pw" ? `
-        <input id="anewpw" type="password" autocomplete="new-password" placeholder="${esc(t().newPw)}">
-        <div class="row">
-          <button class="btn small" id="asavepw">${esc(t().save)}</button>
-          <button class="btn ghost small" id="acancel">${esc(t().cancel)}</button>
-        </div>` : `
+        <form id="apwform" style="display:contents">
+          <input type="email" name="email" autocomplete="username" value="${esc(AUTH.email||"")}" hidden>
+          <label for="anewpw">${esc(t().newPw)}</label>
+          <input id="anewpw" name="password" type="password" autocomplete="new-password"
+                 required minlength="6" placeholder="${esc(t().newPw)}">
+          <div class="row">
+            <button type="submit" class="btn small">${esc(t().save)}</button>
+            <button type="button" class="btn ghost small" id="acancel">${esc(t().cancel)}</button>
+          </div>
+        </form>` : `
         <div class="row">
           <button class="btn ghost small" id="achangepw">${esc(t().changePw)}</button>
           <button class="btn ghost small" id="alogout">${esc(t().logout)}</button>
@@ -4076,45 +4139,65 @@ function acctHtml(){
       ${msg}
     </div>`;
   }
-  return `<div class="acct">
+  if(!acctAuth) acctAuth = store.get("had_auth", false) ? "login" : "signup";
+  const su = acctAuth==="signup";
+  return `<form class="acct" id="aform">
     <p class="rules">${esc(t().accountHint)}</p>
-    <input id="aemail" type="email" autocomplete="email" placeholder="${esc(t().email)}">
-    <input id="apw" type="password" autocomplete="current-password" placeholder="${esc(t().pw)}">
+    <label for="aemail">${esc(t().email)}</label>
+    <input id="aemail" name="email" type="email" autocomplete="username" inputmode="email"
+           autocapitalize="none" spellcheck="false" required
+           value="${esc(acctEmail)}" placeholder="${esc(t().email)}">
+    <label for="apw">${esc(t().pw)}</label>
+    <input id="apw" name="password" type="password" required minlength="6"
+           autocomplete="${su ? "new-password" : "current-password"}" placeholder="${esc(t().pw)}">
     <div class="row">
-      <button class="btn small" id="alogin">${esc(t().login)}</button>
-      <button class="btn ghost small" id="asignup">${esc(t().signup)}</button>
+      <button type="submit" class="btn small">${esc(su ? t().signup : t().login)}</button>
+      <button type="button" class="btn ghost small" id="aswitch">${esc(su ? t().login : t().signup)}</button>
     </div>
     ${msg}
-  </div>`;
+  </form>`;
 }
 function setAcctMsg(text, err){ acctMsg = text ? { text, err } : null; renderPassport(); }
+function authOk(j){ store.set("had_auth", true); acctEmail=""; setAuth(j); setAcctMsg(""); }
 function bindAcct(){
   const el = id => document.getElementById(id);
-  const creds = ()=>{
-    const e = (el("aemail").value || "").trim(), p = el("apw").value || "";
-    if(!e || p.length < 6){ setAcctMsg(t().authFailed, true); return null; }
-    return { email:e, password:p };
+  if(el("aform")) el("aform").onsubmit = async e=>{
+    e.preventDefault();
+    const em = (el("aemail").value || "").trim(), p = el("apw").value || "";
+    acctEmail = em;
+    if(!em) return setAcctMsg(t().authFailed, true);
+    if(p.length < 6) return setAcctMsg(t().pwShort, true);
+    if(acctAuth==="signup"){
+      const r = await authReq("signup", { email:em, password:p });
+      if(r && r.ok && r.j && r.j.access_token) authOk(r.j);
+      // "Confirm email" on: signup returns a user but no session yet
+      else if(r && r.ok && r.j && (r.j.confirmation_sent_at
+            || (r.j.user && r.j.user.confirmation_sent_at))) setAcctMsg(t().confirmSent);
+      // tell the person what actually went wrong — the generic line sent
+      // Rafa in circles when his email already had an account
+      else if(r && r.j && (r.j.error_code==="user_already_exists"
+            || /already registered/i.test(r.j.msg||""))){
+        acctAuth="login"; setAcctMsg(t().emailTaken, true);
+      }
+      else if(r && r.j && r.j.error_code==="weak_password") setAcctMsg(t().pwShort, true);
+      else setAcctMsg(t().authFailed, true);
+    } else {
+      const r = await authReq("token?grant_type=password", { email:em, password:p });
+      if(r && r.ok && r.j && r.j.access_token) authOk(r.j);
+      else setAcctMsg(t().authFailed, true);
+    }
   };
-  if(el("alogin")) el("alogin").onclick = async ()=>{
-    const c = creds(); if(!c) return;
-    const r = await authReq("token?grant_type=password", c);
-    if(r && r.ok && r.j && r.j.access_token){ setAuth(r.j); setAcctMsg(""); }
-    else setAcctMsg(t().authFailed, true);
-  };
-  if(el("asignup")) el("asignup").onclick = async ()=>{
-    const c = creds(); if(!c) return;
-    const r = await authReq("signup", c);
-    if(r && r.ok && r.j && r.j.access_token){ setAuth(r.j); setAcctMsg(""); }
-    // "Confirm email" on: signup returns a user but no session yet
-    else if(r && r.ok && r.j && (r.j.confirmation_sent_at
-          || (r.j.user && r.j.user.confirmation_sent_at))) setAcctMsg(t().confirmSent);
-    else setAcctMsg(t().authFailed, true);
+  if(el("aswitch")) el("aswitch").onclick = ()=>{
+    acctEmail = (el("aemail").value || "").trim();
+    acctAuth = acctAuth==="signup" ? "login" : "signup";
+    acctMsg = null; renderPassport();
   };
   if(el("achangepw")) el("achangepw").onclick = ()=>{ acctMode="pw"; renderPassport(); };
   if(el("acancel"))   el("acancel").onclick   = ()=>{ acctMode="";   renderPassport(); };
-  if(el("asavepw"))   el("asavepw").onclick   = async ()=>{
+  if(el("apwform"))   el("apwform").onsubmit  = async e=>{
+    e.preventDefault();
     const p = el("anewpw").value || "";
-    if(p.length < 6) return setAcctMsg(t().authFailed, true);
+    if(p.length < 6) return setAcctMsg(t().pwShort, true);
     let r = await authReq("user", { password:p }, AUTH.at);
     if(r && r.status === 401){          // access token expired: refresh, retry once
       await authRefresh();
@@ -4233,6 +4316,9 @@ function passGridHtml(stars){
   return `<div class="passgrid">
       ${PILLAR_IDS.map(p=>{
         const got = byP[p], tg = target(got.length);
+        // session materials, linked under the stars that have a content page
+        const mats = [...new Set(got.map(s=>s.session)
+          .filter(id=>id && registry && registry[id] && registry[id].materials))];
         return `<div class="pillcard"><b>${esc(L(PILLARS[p]))}</b>
           <div class="starrow">
             ${got.map((s,i)=>`<span class="starcol on${
@@ -4240,7 +4326,10 @@ function passGridHtml(stars){
               }" title="${esc(s.topic||"")}">★<small>${esc(fmtDate(s.awarded_on))}</small></span>`).join("")}
             ${Array.from({length:Math.max(0, tg-got.length)},
               ()=>`<span class="starcol off">☆<small>&nbsp;</small></span>`).join("")}
-          </div></div>`;
+          </div>
+          ${mats.map(id=>`<a class="matlink" target="_blank" rel="noopener"
+            href="content/${encodeURIComponent(id)}.html">📖 ${esc(L(registry[id].title)||id)}</a>`).join("")}
+          </div>`;
       }).join("")}
     </div>
     ${isMaster ? `<span class="lvlbadge">${esc(t().master)} ★★</span>`
@@ -4270,6 +4359,7 @@ function paintPassport(stars){
       : `<button class="btn ghost small" id="nedit">✎ ${esc(t().rename)}</button>`}
     ${justClaimed ? `<div class="banner good">${esc(t().claimedTitle)}</div>` : ""}
     <div id="passgridslot" style="display:contents">${passGridHtml(stars)}</div>
+    ${!DEMO && pack && reviewData() ? `<button class="btn ghost small" id="reviewbtn">📝 ${esc(t().reviewBtn)}</button>` : ""}
     ${DEMO ? `<div class="pills">${DEMO_SPECS.map((s,i)=>
         `<button class="pill ${i===demoProfile?"on":""}" data-demo="${i}">${s.reduce((a,b)=>a+b,0)} ★</button>`).join("")}
       </div><p class="rules">${esc(t().demoNote)}</p>` : ""}
@@ -4278,6 +4368,8 @@ function paintPassport(stars){
     ${passBack ? `<button class="btn ghost small" id="pback">${esc(t().back)}</button>` : ""}
   </div>`;
   bindLangPills(); bindCtl(); bindAcct();
+  const rb=document.getElementById("reviewbtn");
+  if(rb) rb.onclick=()=>renderReview();
   app.querySelectorAll("[data-demo]").forEach(b=>b.onclick=()=>{
     demoProfile=+b.dataset.demo; renderPassport(); });
   const pb=document.getElementById("pback");
@@ -4299,6 +4391,41 @@ function paintPassport(stars){
   if(nc) nc.onclick=()=>{ nameEdit=false; renderPassport(); };
 }
 let nameEdit=false;
+
+/* ---------------- quiz review (My DM) ----------------
+   The player's own answers vs. the right ones, with each question's Why —
+   for reading back through the quiz during the video block. */
+function renderReview(){
+  phase="review";
+  const rev = reviewData() || { answers:{} };
+  app.innerHTML = `<div class="corner">${ctl()}</div>
+  <div class="screen">
+    ${langPills()}
+    ${wordmarkHtml()}
+    <h1>${esc(t().reviewTitle)}</h1>
+    <p class="sub">${esc(sessionTitle())}</p>
+    <div class="revlist">
+      ${pack.questions.map((q,qi)=>{
+        const opts = L(q.o);
+        const has = Object.prototype.hasOwnProperty.call(rev.answers, qi);
+        const choice = has ? rev.answers[qi] : null;
+        const ok = choice!=null && choice===q.correct;
+        const why = L(q.explanation);
+        return `<div class="revcard">
+          <b class="rk">${esc(t().qof(qi+1, pack.questions.length))}
+            <span class="${ok?"okmark":"badmark"}">${ok?"✓":"✕"}</span></b>
+          <p class="rq">${esc(L(q.q))}</p>
+          <p class="ra">${esc(t().yourAnswer)} <b>${esc(choice==null ? t().noAnswer : opts[choice])}</b></p>
+          ${ok ? "" : `<p class="ra">${esc(t().answerWas)} <b>${esc(opts[q.correct])}</b></p>`}
+          ${why ? `<p class="rw"><b>${esc(t().why)}</b>${esc(why)}</p>` : ""}
+        </div>`;
+      }).join("")}
+    </div>
+    <button class="btn ghost small" id="rback">${esc(t().back)}</button>
+  </div>`;
+  bindLangPills(); bindCtl();
+  document.getElementById("rback").onclick = ()=>renderPassport();
+}
 
 /* ---------------- host: claim window + manual add ---------------- */
 function renderHostStars(){
@@ -4400,6 +4527,7 @@ function rerender(){
   else if(phase==="error") renderError();
   else if(phase==="join") renderJoin();
   else if(phase==="passport") renderPassport();
+  else if(phase==="review") renderReview();
   else if(phase==="claim") renderClaim();
   else if(HOST) renderHost();
   else if(phase==="lobby") renderPlayerLobby();
