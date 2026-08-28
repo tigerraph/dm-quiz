@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DM Timer</title>
+<style>
+  @font-face{font-family:'Poppins';font-style:normal;font-weight:400;
+    src:url(../assets/fonts/poppins-400-latin.woff2) format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F;}
+  @font-face{font-family:'Poppins';font-style:normal;font-weight:800;
+    src:url(../assets/fonts/poppins-800-latin.woff2) format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F;}
+  :root{--blue:#435CC6;--green:#A8D272;--teal:#5EB9A9;--cream:#FDF2D0;--dark:#1B2329;--ink:#22313C}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{background:var(--dark);color:#fff;font-family:'Poppins',system-ui,sans-serif;
+       display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+       user-select:none}
+  #label{font-weight:800;font-size:clamp(22px,4vw,40px);color:var(--teal);letter-spacing:.04em}
+  #disk{width:min(62vh,80vw);height:min(62vh,80vw)}
+  #digits{font-weight:800;font-size:clamp(40px,8vh,72px);font-variant-numeric:tabular-nums}
+  body.done #digits{color:var(--green)}
+  .row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+  button{
+    font-family:inherit;font-weight:800;font-size:20px;padding:12px 26px;
+    border-radius:12px;border:0;cursor:pointer;background:rgba(255,255,255,.14);color:#fff;
+  }
+  button.primary{background:var(--green);color:var(--ink);font-size:24px;padding:14px 40px}
+  button.preset.on{background:var(--teal);color:var(--ink)}
+</style>
+</head>
+<body>
+  <div id="label"></div>
+  <svg id="disk" viewBox="0 0 200 200">
+    <circle cx="100" cy="100" r="96" fill="rgba(255,255,255,.08)"/>
+    <path id="wedge" fill="#5EB9A9"/>
+    <circle cx="100" cy="100" r="7" fill="#1B2329"/>
+    <line id="hand" x1="100" y1="100" x2="100" y2="10" stroke="#FDF2D0" stroke-width="3" stroke-linecap="round"/>
+  </svg>
+  <div id="digits">0:00</div>
+  <div class="row">
+    <button class="primary" id="startbtn">Start</button>
+    <button id="resetbtn">Reset</button>
+  </div>
+  <div class="row" id="presets">
+    <button class="preset" data-m="2">2′</button>
+    <button class="preset" data-m="3">3′</button>
+    <button class="preset" data-m="5">5′</button>
+    <button class="preset" data-m="10">10′</button>
+  </div>
+<script>
+(function(){
+  var q = new URLSearchParams(location.search);
+  var total = Math.max(5, (parseFloat(q.get('m')||'5')*60 + parseFloat(q.get('s')||'0'))|0);
+  var label = q.get('label')||'';
+  var left = total, running = false, endAt = 0, raf = 0, beeped = false;
+  var wedge = document.getElementById('wedge'), hand = document.getElementById('hand');
+  var digits = document.getElementById('digits'), lab = document.getElementById('label');
+  var startbtn = document.getElementById('startbtn');
+  lab.textContent = label;
+  document.title = (label ? label + ' — ' : '') + 'DM Timer';
+
+  function fmt(s){ s=Math.max(0,Math.ceil(s)); return (s/60|0) + ':' + ('0'+(s%60)).slice(-2); }
+  // Time-Timer style: the remaining wedge shrinks clockwise from 12 o'clock
+  function draw(frac){
+    var a = frac * 2*Math.PI;
+    var x = 100 + 96*Math.sin(a), y = 100 - 96*Math.cos(a);
+    if (frac <= 0){ wedge.setAttribute('d',''); }
+    else if (frac >= 1){ wedge.setAttribute('d','M100,100 m0,-96 a96,96 0 1,1 -0.01,0 z'); }
+    else {
+      wedge.setAttribute('d','M100,100 L100,4 A96,96 0 '+(a>Math.PI?1:0)+',1 '+x+','+y+' z');
+    }
+    hand.setAttribute('x2', 100 + 90*Math.sin(a));
+    hand.setAttribute('y2', 100 - 90*Math.cos(a));
+  }
+  function render(){
+    digits.textContent = fmt(left);
+    draw(left/total);
+  }
+  function beep(){
+    try{
+      var ctx = new (window.AudioContext||window.webkitAudioContext)();
+      [0,0.35,0.7,1.05].forEach(function(t,i){
+        var o = ctx.createOscillator(), g = ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.frequency.value = i===3 ? 1318 : 880;
+        g.gain.setValueAtTime(0.0001, ctx.currentTime+t);
+        g.gain.exponentialRampToValueAtTime(0.4, ctx.currentTime+t+0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+t+(i===3?0.6:0.25));
+        o.start(ctx.currentTime+t); o.stop(ctx.currentTime+t+(i===3?0.65:0.3));
+      });
+    }catch(e){}
+  }
+  function tick(){
+    if(!running) return;
+    left = (endAt - Date.now())/1000;
+    if(left <= 0){
+      left = 0; running = false; beeped || beep(); beeped = true;
+      document.body.classList.add('done');
+      startbtn.textContent = 'Start';
+    }
+    render();
+    if(running) raf = requestAnimationFrame(tick);
+  }
+  function start(){
+    if(running){ running = false; startbtn.textContent = 'Weiter'; cancelAnimationFrame(raf); return; }
+    if(left <= 0) reset(total);
+    endAt = Date.now() + left*1000;
+    running = true; beeped = false; startbtn.textContent = 'Pause';
+    document.body.classList.remove('done');
+    raf = requestAnimationFrame(tick);
+  }
+  function reset(t){
+    running = false; cancelAnimationFrame(raf);
+    total = t || total; left = total; beeped = false;
+    document.body.classList.remove('done');
+    startbtn.textContent = 'Start';
+    markPreset(); render();
+  }
+  function markPreset(){
+    document.querySelectorAll('.preset').forEach(function(b){
+      b.classList.toggle('on', parseInt(b.dataset.m,10)*60 === total);
+    });
+  }
+  startbtn.onclick = start;
+  document.getElementById('resetbtn').onclick = function(){ reset(); };
+  document.querySelectorAll('.preset').forEach(function(b){
+    b.onclick = function(){ reset(parseInt(b.dataset.m,10)*60); };
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.code==='Space'||e.code==='Enter'){ e.preventDefault(); start(); }
+  });
+  markPreset(); render();
+})();
+</script>
+</body>
+</html>

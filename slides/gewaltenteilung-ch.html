@@ -106,6 +106,10 @@
     margin-top:14px;color:#fff;
   }
   .link small{display:block;font-weight:400;font-size:17px;opacity:.8;margin-top:2px}
+  .tlink{display:block;font-weight:800;font-size:16px;margin-top:6px;color:inherit;
+         text-decoration:underline;opacity:.85}
+  .qrmini{background:#fff;border-radius:10px;padding:10px;display:inline-block}
+  .qrmini svg,.qrcard svg{display:block}
 
   /* S4 — video */
   .vidrow{display:flex;gap:48px;align-items:flex-start}
@@ -154,7 +158,6 @@
       <h1 style="font-size:66px;margin-bottom:6px">Democracy Matters</h1>
       <div class="lede" style="margin-bottom:0">Special Topic heute: <span style="color:var(--cream)">Gewaltenteilung</span></div>
     </div>
-    <img class="logo" src="../assets/img/dm-logo-white.png" alt="DM">
   </div>
   <div class="pillars">
     <div class="pillar today">
@@ -200,8 +203,13 @@
     <div class="item"><div class="t">Übung</div><div class="m">5′</div></div>
     <div class="item"><div class="t">Take-away</div><div class="m">5′</div></div>
   </div>
+  <div class="note" style="font-size:23px;max-width:900px">
+    <b>Warum dieses Thema?</b> Gewaltenteilung ist der Grundbauplan jeder
+    Demokratie — und weltweit gerade unter Druck. Wer den Bauplan kennt,
+    merkt, wenn jemand daran sägt.
+  </div>
   <div class="foot">
-    <div class="wordmark">Danach: Die Runde</div>
+    <div></div>
     <div class="metric"><div class="label">Sprint</div><div class="value">30m</div></div>
   </div>
 </section>
@@ -223,7 +231,8 @@
     </div>
   </div>
   <div class="foot">
-    <div class="wordmark">Nach jeder Frage: Auflösung + Erklärung — die App macht das.</div>
+    <div class="wordmark">Nach jeder Frage: Auflösung + Erklärung — die App macht das.
+      <a class="tlink" href="https://tigerraph.github.io/dm-quiz/content/timer.html?m=5&amp;label=Einstieg">▶ Timer starten</a></div>
     <div class="metric"><div class="label">Zeit</div><div class="value">5m</div></div>
   </div>
 </section>
@@ -317,7 +326,8 @@
   </div>
   <div class="foot">
     <div class="wordmark" style="color:var(--ink)">Moderation: nach 2′ hart unterbrechen — ein Argument pro Gruppe, dann weiter.</div>
-    <div class="metric"><div class="label">Zeit</div><div class="value">5m</div></div>
+    <div class="metric"><div class="label">Zeit</div><div class="value">5m</div>
+      <a class="tlink" href="https://tigerraph.github.io/dm-quiz/content/timer.html?m=2&amp;label=Duos">▶ Timer starten</a></div>
   </div>
 </section>
 
@@ -365,13 +375,18 @@
   </div>
   <div class="foot">
     <div class="wordmark" style="color:var(--ink)">Erst nach der Diskussion zeigen — nicht vorher verraten.</div>
+    <a class="tlink" style="color:var(--ink)" href="https://tigerraph.github.io/dm-quiz/content/fauler-apfel.html">▶ Als Animation zeigen</a>
   </div>
 </section>
 
 <!-- 8 · Take-away: Skeptiker-Kit -->
 <section class="slide bg-blue">
   <div class="kicker">4 — TAKE-AWAY · BOTTOM LINE ★</div>
-  <h1 style="font-size:52px;margin-bottom:14px">«Demokratie? Die sind doch eh alle korrupt.»</h1>
+  <div style="position:absolute;top:56px;right:88px;text-align:center">
+    <div class="qrmini" id="qr-star"></div>
+    <div style="font-weight:800;font-size:15px;margin-top:5px">★ Stern jetzt sichern</div>
+  </div>
+  <h1 style="font-size:52px;margin-bottom:14px;max-width:960px">«Demokratie? Die sind doch eh alle korrupt.»</h1>
   <div class="lede" style="font-size:24px;margin-bottom:14px">Dein Kit für genau dieses Gespräch:</div>
   <div class="cards">
     <div class="card"><div class="em">🛡️</div><div>
@@ -402,7 +417,20 @@
   <h1 style="margin:0">Die Runde</h1>
 </section>
 
-<!-- 10 · Regie -->
+<!-- 10 · Abspann -->
+<section class="slide bg-blue" style="align-items:center;justify-content:center;text-align:center">
+  <div class="kicker">DEMOCRACY MATTERS × DAY8</div>
+  <h1 style="font-size:56px;margin-bottom:10px">Merci!</h1>
+  <div style="font-size:24px;max-width:820px;line-height:1.5;margin-bottom:26px">
+    The Learning Loop — Design &amp; Konzept des gamifizierten
+    Workshop-Formats: <b>DAY8 GmbH</b>
+  </div>
+  <div class="qrcard" id="qr-content" style="padding:18px"></div>
+  <div style="font-weight:800;font-size:20px;margin-top:12px">Folien, Video, Quiz &amp; Stern — alles zum Nachschauen</div>
+  <div style="font-size:17px;opacity:.8;margin-top:4px">tigerraph.github.io/dm-quiz/content/gewaltenteilung-ch.html</div>
+</section>
+
+<!-- 11 · Regie -->
 <section class="slide bg-dark">
   <div class="kicker">FÜR DIE MODERATION</div>
   <h1 style="font-size:56px">Regie</h1>
@@ -421,10 +449,15 @@
 <script src="../vendor/qrcode.js"></script>
 <script>
   (function(){
-    var qr = qrcode(0, 'M');
-    qr.addData('https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch');
-    qr.make();
-    document.getElementById('qr').innerHTML = qr.createSvgTag(8, 0);
+    function make(id, url, cell){
+      var qr = qrcode(0, 'M');
+      qr.addData(url);
+      qr.make();
+      document.getElementById(id).innerHTML = qr.createSvgTag(cell, 0);
+    }
+    make('qr', 'https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch', 8);
+    make('qr-star', 'https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch', 3);
+    make('qr-content', 'https://tigerraph.github.io/dm-quiz/content/gewaltenteilung-ch.html', 5);
   })();
 </script>
 </body>
