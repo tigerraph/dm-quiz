@@ -26,11 +26,18 @@ Kein-Folien-Fallback: [`docs/reference/DM_Template_V3_Topic-Card.pdf`](reference
 | — | Ankommen | 1 DM-Hauptfolie | Pillar zeigen: heute gibt es den ersten **Civics-Stern**. Zwei Slots: Sprint (30′), dann die Runde. |
 | 0'–5' | **Einstieg** | 3 QR | «Handy raus.» QR scannen, Beamer-Ansicht per Klick öffnen, 3 Fragen spielen. Erklärungen zeigt die App — nicht doppelt erklären. |
 | 5'–15' | **Thema** | 4 Video, 5 Check | Mission VOR dem Video ansagen (Antworten prüfen, wer kontrolliert wen, Überraschung merken — die kommt in die Diskussion). Video ab Folie anklicken. Danach Check-Folie: Dreieck kurz durchgehen, Überraschungen abholen. |
-| 15'–20' | **Übung** | 6 Warum-Diskussion, 7 Auflösung | Die Provokation steht auf der Folie. **2′** zu zweit/dritt: Ist uns das den langsamen Apparat wert? Dann **3′** Runde: pro Gruppe **ein** stärkstes Argument. Nach 2′ hart unterbrechen. **Erst danach** Folie 7: der faule Apfel (Autokratie vs. Gewaltenteilung) + Bremsen-Satz — die Auflösung nie vor der Diskussion zeigen. |
+| 15'–20' | **Übung** | 6 Warum-Diskussion, 7 Übergang, 8 Auflösung | Die Provokation steht auf der Folie. **2′** zu zweit/dritt, dann **3′** Runde: pro Gruppe **ein** stärkstes Argument. **Nach 2′ hart unterbrechen** — steht bewusst NICHT auf der Folie. **Erst danach** weiter: Folie 7 trägt nur den Animations-Link (Auflösung öffnen, ohne die statische Folie zu zeigen), Folie 8 ist der faule Apfel statisch + Bremsen-Satz. Nie vor der Diskussion zeigen. |
 | 20'–25' | **Take-away** | 8 Skeptiker-Kit | Die vier Karten sind Antworten auf «die sind doch eh alle korrupt». Laut lesen lassen. Bottom Line auf die Master Checklist, Civics-Stern ★ vergeben. Nie streichen. |
 | 25'–30' | Puffer | — | Überzieher abfedern, dann Folie 9: Übergang in die Runde. |
 | danach | **Die Runde** | 9 | Nur die Titelfolie — die Runde gehört dem Raum. |
-| Schluss | Abspann | 10 | Merci-Folie: DAY8-Credit + QR auf die Teilnehmerseite (Folien, Video, Quiz, Stern). |
+| Schluss | Abspann | 11 | Merci-Folie: DAY8-Credit + QR auf die Teilnehmerseite (Folien, Video, Quiz, Stern). |
+
+## Regieanweisungen
+
+Alle Anweisungen an die Moderation stehen NUR hier und auf der Regie-Folie
+(letzte Seite) — die projizierten Folien sind sauber. Die zwei wichtigsten:
+nach 2′ Diskussion hart unterbrechen, und die Auflösung (Folien 7/8) nie vor
+der Diskussion zeigen.
 
 ## Werkzeuge auf den Folien
 
