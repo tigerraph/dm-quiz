@@ -15,37 +15,30 @@
   *{margin:0;padding:0;box-sizing:border-box}
   body{background:var(--cream);color:var(--ink);font-family:'Poppins',system-ui,sans-serif;
        min-height:100vh;display:flex;flex-direction:column;align-items:center;
-       justify-content:center;padding:28px;gap:20px}
+       justify-content:center;padding:24px;gap:18px;cursor:pointer}
   h1{font-weight:800;font-size:clamp(30px,5vw,54px)}
   .panels{display:flex;gap:22px;flex-wrap:wrap;justify-content:center}
   .panel{width:min(480px,92vw);border-radius:16px;padding:20px 24px;color:#fff}
   .panel.a{background:var(--ink)} .panel.b{background:var(--blue)}
   .panel .t{font-weight:800;font-size:24px;margin-bottom:6px}
-  .panel .c{font-size:17px;line-height:1.45;margin-top:8px;min-height:76px;opacity:0;transition:opacity .6s}
+  .panel .c{font-size:17px;line-height:1.45;margin-top:8px;min-height:76px}
   svg{width:100%;display:block}
   .punch{
     background:#fff;border-radius:8px;box-shadow:0 8px 22px rgba(0,0,0,.18);
     padding:16px 26px;font-size:clamp(17px,2.4vw,23px);max-width:820px;text-align:center;
-    transform:rotate(-1deg);opacity:0;transition:opacity .8s}
+    transform:rotate(-1deg)}
   b{font-weight:800}
-  button{font-family:inherit;font-weight:800;font-size:18px;padding:11px 26px;border-radius:12px;
+  .controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center}
+  button{font-family:inherit;font-weight:800;font-size:17px;padding:10px 22px;border-radius:12px;
     border:0;cursor:pointer;background:var(--blue);color:#fff}
+  button.alt{background:none;border:2px solid var(--blue);color:var(--blue)}
+  .hint{font-size:14px;opacity:.55;font-weight:800}
 
-  /* stage timings (JS restarts by toggling .play) */
-  .apple,.eye,.volk,.check{opacity:0}
-  .play .apple.first{animation:drop .8s .6s forwards}
-  .play .a .rot1{animation:fade .7s 2.2s forwards}
-  .play .a .rot2{animation:fade .7s 2.9s forwards}
-  .play .a .rot3{animation:fade .7s 3.6s forwards}
-  .play .a .c{transition-delay:4.4s;opacity:1}
-  .play .b .eye{animation:fade .5s 2.2s forwards}
-  .play .b .volk{animation:fade .5s 2.8s forwards}
-  .play .b .apple.out{animation:eject 1s 3.6s forwards}
-  .play .b .check{animation:fade .5s 4.4s forwards}
-  .play .b .c{transition-delay:4.8s;opacity:1}
-  .play .punch{transition-delay:5.6s;opacity:1}
+  .step{opacity:0;transition:opacity .5s}
+  .step.on{opacity:1}
+  .apple.first.on{animation:drop .7s}
+  .apple.out.ej{animation:eject .9s forwards}
   @keyframes drop{from{opacity:0;transform:translateY(-46px)}to{opacity:1;transform:none}}
-  @keyframes fade{to{opacity:1}}
   @keyframes eject{
     0%{opacity:1;transform:none}
     100%{opacity:0;transform:translate(150px,-110px) rotate(70deg)}
@@ -65,12 +58,12 @@
         <rect x="35" y="104" width="80" height="38" rx="8" fill="#5a6b78" opacity=".55"/>
         <rect x="120" y="104" width="80" height="38" rx="8" fill="#5a6b78" opacity=".55"/>
         <rect x="205" y="104" width="80" height="38" rx="8" fill="#5a6b78" opacity=".55"/>
-        <text class="apple first" x="160" y="40" text-anchor="middle" font-size="26">🍎</text>
-        <text class="apple rot1" x="75" y="130" text-anchor="middle" font-size="18">🍎</text>
-        <text class="apple rot2" x="160" y="130" text-anchor="middle" font-size="18">🍎</text>
-        <text class="apple rot3" x="245" y="130" text-anchor="middle" font-size="18">🍎</text>
+        <text class="step apple first" data-at="1" x="160" y="40" text-anchor="middle" font-size="26">🍎</text>
+        <text class="step" data-at="2" x="75" y="130" text-anchor="middle" font-size="18">🍎</text>
+        <text class="step" data-at="3" x="160" y="130" text-anchor="middle" font-size="18">🍎</text>
+        <text class="step" data-at="4" x="245" y="130" text-anchor="middle" font-size="18">🍎</text>
       </svg>
-      <div class="c">Der faule Apfel sitzt oben. Niemand darf ihn prüfen, niemand kann ihn ersetzen — die Fäulnis wird System.</div>
+      <div class="c step" data-at="5">Der faule Apfel sitzt oben. Niemand darf ihn prüfen, niemand kann ihn ersetzen — die Fäulnis wird System.</div>
     </div>
     <div class="panel b">
       <div class="t">Gewaltenteilung</div>
@@ -80,29 +73,60 @@
         <rect x="221" y="30" width="85" height="46" rx="10" fill="#5EB9A9"/>
         <line x1="102" y1="53" x2="114" y2="53" stroke="#5EB9A9" stroke-width="4"/>
         <line x1="219" y1="53" x2="207" y2="53" stroke="#5EB9A9" stroke-width="4"/>
-        <text class="apple first out" x="160" y="62" text-anchor="middle" font-size="26">🍎</text>
-        <text class="eye" x="57" y="60" text-anchor="middle" font-size="24">👀</text>
-        <text class="eye" x="263" y="60" text-anchor="middle" font-size="24">👀</text>
-        <g class="volk">
+        <text class="step apple out" data-at="6" data-ej="9" x="160" y="62" text-anchor="middle" font-size="26">🍎</text>
+        <text class="step" data-at="7" x="57" y="60" text-anchor="middle" font-size="24">👀</text>
+        <text class="step" data-at="7" x="263" y="60" text-anchor="middle" font-size="24">👀</text>
+        <g class="step" data-at="8">
           <rect x="120" y="102" width="80" height="34" rx="17" fill="#A8D272"/>
           <text x="160" y="125" text-anchor="middle" font-size="16" font-weight="800" fill="#22313C">das Volk</text>
           <line x1="160" y1="100" x2="160" y2="82" stroke="#A8D272" stroke-width="4"/>
         </g>
-        <text class="check" x="160" y="64" text-anchor="middle" font-size="30" fill="#A8D272" font-weight="800">✓</text>
+        <text class="step" data-at="9" x="160" y="64" text-anchor="middle" font-size="30" fill="#A8D272" font-weight="800">✓</text>
       </svg>
-      <div class="c">Der faule Apfel wird gesehen: zwei Gewalten und das Volk können ihn stoppen und ersetzen. Der Schaden bleibt lokal.</div>
+      <div class="c step" data-at="10">Der faule Apfel wird gesehen: zwei Gewalten und das Volk können ihn stoppen und ersetzen. Der Schaden bleibt lokal.</div>
     </div>
   </div>
-  <div class="punch">Bremsen sind nicht da, um langsam zu fahren — sondern damit man schnell fahren <b>kann</b>.</div>
-  <button id="replay">▶ Nochmal</button>
+  <div class="punch step" data-at="11">Bremsen sind nicht da, um langsam zu fahren — sondern damit man schnell fahren <b>kann</b>.</div>
+  <div class="controls">
+    <button id="autobtn">▶ Auto abspielen</button>
+    <button id="resetbtn" class="alt">Zurücksetzen</button>
+    <span class="hint">Klick / → weiter · ← zurück</span>
+  </div>
 <script>
-  function play(){
-    document.body.classList.remove('play');
-    void document.body.offsetWidth;
-    document.body.classList.add('play');
+(function(){
+  var STEPS = 11, step = 0, timer = null;
+  var delays = [500,1000,800,800,1100,1400,900,900,1100,1100,1100];
+
+  function apply(){
+    document.querySelectorAll('.step').forEach(function(el){
+      el.classList.toggle('on', step >= +el.dataset.at);
+      if(el.dataset.ej) el.classList.toggle('ej', step >= +el.dataset.ej);
+    });
   }
-  document.getElementById('replay').onclick = play;
-  play();
+  function stopAuto(){ if(timer){ clearTimeout(timer); timer = null; } }
+  function next(){ stopAuto(); if(step < STEPS){ step++; apply(); } }
+  function prev(){ stopAuto(); if(step > 0){ step--; apply(); } }
+  function reset(){ stopAuto(); step = 0; apply(); }
+  function auto(){
+    stopAuto(); step = 0; apply();
+    var i = 0;
+    (function run(){
+      if(i >= delays.length){ timer = null; return; }
+      timer = setTimeout(function(){ step++; apply(); i++; run(); }, delays[i]);
+    })();
+  }
+
+  document.getElementById('autobtn').onclick = function(e){ e.stopPropagation(); auto(); };
+  document.getElementById('resetbtn').onclick = function(e){ e.stopPropagation(); reset(); };
+  document.body.addEventListener('click', function(){ next(); });
+  document.addEventListener('keydown', function(e){
+    if(e.code==='ArrowRight'||e.code==='Space'||e.code==='Enter'){ e.preventDefault(); next(); }
+    if(e.code==='ArrowLeft'){ e.preventDefault(); prev(); }
+  });
+
+  apply();
+  if(new URLSearchParams(location.search).get('mode') !== 'click') auto();
+})();
 </script>
 </body>
 </html>
