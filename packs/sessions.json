@@ -2,6 +2,7 @@
   "gewaltenteilung-ch": {
     "pack": "gewaltenteilung-ch.json",
     "pillar": "civics",
+    "materials": true,
     "title": {
       "en": "Separation of Powers (CH)",
       "de": "Gewaltenteilung (CH)",
