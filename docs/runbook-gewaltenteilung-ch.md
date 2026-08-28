@@ -21,14 +21,14 @@ Kein-Folien-Fallback: [`docs/reference/DM_Template_V3_Topic-Card.pdf`](reference
 
 ## Ablauf
 
-| Zeit | Block | Folie | Moderation |
+| Zeit (Start 15:00) | Block | Folie | Moderation |
 |---|---|---|---|
 | — | Ankommen | 1 DM-Hauptfolie | Pillar zeigen: heute gibt es den ersten **Civics-Stern**. Zwei Slots: Sprint (30′), dann die Runde. |
-| 0'–5' | **Einstieg** | 3 QR | «Handy raus.» QR scannen, Beamer-Ansicht per Klick öffnen, 3 Fragen spielen. Erklärungen zeigt die App — nicht doppelt erklären. |
-| 5'–15' | **Thema** | 4 Video, 5 Check | Mission VOR dem Video ansagen (Antworten prüfen, wer kontrolliert wen, Überraschung merken — die kommt in die Diskussion). Video ab Folie anklicken. Danach Check-Folie: Dreieck kurz durchgehen, Überraschungen abholen. |
-| 15'–20' | **Übung** | 6 Warum-Diskussion, 7 Übergang, 8 Auflösung | Die Provokation steht auf der Folie. **2′** zu zweit/dritt, dann **3′** Runde: pro Gruppe **ein** stärkstes Argument. **Nach 2′ hart unterbrechen** — steht bewusst NICHT auf der Folie. **Erst danach** weiter: Folie 7 trägt nur den Animations-Link (Auflösung öffnen, ohne die statische Folie zu zeigen), Folie 8 ist der faule Apfel statisch + Bremsen-Satz. Nie vor der Diskussion zeigen. |
-| 20'–25' | **Take-away** | 9 Skeptiker-Kit | Die vier Karten sind Antworten auf «die sind doch eh alle korrupt». Laut lesen lassen. Bottom Line auf die Master Checklist, Civics-Stern ★ vergeben. Nie streichen. |
-| 25'–30' | Puffer | — | Überzieher abfedern, dann Folie 10: Übergang in die Runde. |
+| 15:00 (5′) | **Einstieg** | 3 QR | «Handy raus.» QR scannen, Beamer-Ansicht per Klick öffnen, 3 Fragen spielen. Erklärungen zeigt die App — nicht doppelt erklären. |
+| 15:05 (10′) | **Thema** | 4 Video, 5 Check | Mission VOR dem Video ansagen (Antworten prüfen, wer kontrolliert wen, Überraschung merken — die kommt in die Diskussion). Video ab Folie anklicken. Danach Check-Folie: Dreieck kurz durchgehen, Überraschungen abholen. |
+| 15:15 (5′) | **Übung** | 6 Warum-Diskussion, 7 Übergang, 8 Auflösung | Die Provokation steht auf der Folie. **2′** zu zweit/dritt, dann **3′** Runde: pro Gruppe **ein** stärkstes Argument. **Nach 2′ hart unterbrechen** — steht bewusst NICHT auf der Folie. **Erst danach** weiter: Folie 7 trägt nur den Animations-Link (Auflösung öffnen, ohne die statische Folie zu zeigen), Folie 8 ist der faule Apfel statisch + Bremsen-Satz. Nie vor der Diskussion zeigen. |
+| 15:20 (5′) | **Take-away** | 9 Skeptiker-Kit | Die vier Karten sind Antworten auf «die sind doch eh alle korrupt». Laut lesen lassen. Bottom Line auf die Master Checklist, Civics-Stern ★ vergeben. Nie streichen. |
+| 15:25 (5′) | Puffer | — | Überzieher abfedern, dann Folie 10: Übergang in die Runde. |
 | danach | **Die Runde** | 10 | Nur die Titelfolie — die Runde gehört dem Raum. |
 | Schluss | Abspann | 11 | Merci-Folie: DAY8-Credit + QR auf die Teilnehmerseite (Folien, Video, Quiz, Stern). |
 
@@ -41,7 +41,7 @@ der Diskussion zeigen.
 
 ## Werkzeuge auf den Folien
 
-- **Timer**: «▶ Timer starten» auf der QR- und der Übungs-Folie öffnet
+- **Timer**: «▶ Timer starten» auf der Übungs-Folie öffnet
   [`content/timer.html`](../content/timer.html) — Time-Timer-Scheibe mit
   Presets (2′/3′/5′/10′), Piepton am Ende, Space/Enter = Start/Pause.
 - **Animation**: «▶ Als Animation zeigen» auf der Auflösungs-Folie öffnet

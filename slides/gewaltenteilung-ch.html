@@ -143,8 +143,8 @@
   .card .h{font-weight:800;font-size:22px;margin-bottom:4px}
   .card .p{font-size:18.5px;line-height:1.4;opacity:.95}
 
-  table.regie{border-collapse:collapse;font-size:23px;width:100%}
-  table.regie td{padding:8px 18px 8px 0;vertical-align:top;border-bottom:1px solid rgba(255,255,255,.14)}
+  table.regie{border-collapse:collapse;font-size:20.5px;width:100%}
+  table.regie td{padding:6px 16px 6px 0;vertical-align:top;border-bottom:1px solid rgba(255,255,255,.14)}
   table.regie td:first-child{font-weight:800;white-space:nowrap;color:var(--teal)}
   table.regie a{color:var(--green);text-decoration:none;font-weight:800}
 </style>
@@ -232,8 +232,7 @@
     </div>
   </div>
   <div class="foot">
-    <div class="wordmark"><span data-i18n="s3.foot">Nach jeder Frage: Auflösung + Erklärung — die App macht das.</span>
-      <a class="tlink" id="timer1" data-i18n="t.start" href="https://tigerraph.github.io/dm-quiz/content/timer.html?m=5">▶ Timer starten</a></div>
+    <div class="wordmark"><span data-i18n="s3.foot">Nach jeder Frage: Auflösung + Erklärung — die App macht das.</span></div>
     <div class="metric"><div class="label" data-i18n="t.zeit">Zeit</div><div class="value">5m</div></div>
   </div>
 </section>
@@ -442,11 +441,11 @@
   <div class="kicker" data-i18n="s11.kick">FÜR DIE MODERATION</div>
   <h1 style="font-size:56px" data-i18n="s11.h1">Regie</h1>
   <table class="regie">
-    <tr><td>0′–5′</td><td data-i18n="s11.r1"><b>Einstieg</b> — QR-Folie, <a href="https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch&amp;host=1">Beamer-Ansicht öffnen</a>, 3 Fragen spielen. Erklärungen zeigt die App.</td></tr>
-    <tr><td>5′–15′</td><td data-i18n="s11.r2"><b>Thema</b> — Mission ansagen, <a href="https://www.youtube.com/watch?v=Nadu4ABEmxQ">Video easyvote (1:24)</a> ab Folie anklicken, danach Check-Folie: Dreieck kurz durchgehen, Überraschungen abholen. Backup: <a href="https://www.srf.ch/play/tv/srf-school/video/3-gewalten?urn=urn:srf:video:e5e3474b-c7a3-4ab2-ae79-52672cbbb981">SRF «3 Gewalten»</a>.</td></tr>
-    <tr><td>15′–20′</td><td data-i18n="s11.r3"><b>Übung</b> — Warum-Diskussion: 2′ zu zweit/dritt, dann 3′ Runde, <b>ein</b> Argument pro Gruppe. Nach 2′ hart unterbrechen. <b>Erst danach</b> die Auflösung zeigen: fauler Apfel + Bremsen-Satz.</td></tr>
-    <tr><td>20′–25′</td><td data-i18n="s11.r4"><b>Take-away</b> — Skeptiker-Kit durchgehen, Bottom Line in die Master Checklist, Civics-Stern ★ vergeben. Nie streichen.</td></tr>
-    <tr><td>25′–30′</td><td data-i18n="s11.r5"><b>Puffer</b> — dann Übergang in die Runde.</td></tr>
+    <tr><td>15:00 (5′)</td><td data-i18n="s11.r1"><b>Einstieg</b> — QR-Folie, <a href="https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch&amp;host=1">Beamer-Ansicht öffnen</a>, 3 Fragen spielen. Erklärungen zeigt die App.</td></tr>
+    <tr><td>15:05 (10′)</td><td data-i18n="s11.r2"><b>Thema</b> — Mission ansagen, <a href="https://www.youtube.com/watch?v=Nadu4ABEmxQ">Video easyvote (1:24)</a> ab Folie anklicken, danach Check-Folie: Dreieck kurz durchgehen, Überraschungen abholen. Backup: <a href="https://www.srf.ch/play/tv/srf-school/video/3-gewalten?urn=urn:srf:video:e5e3474b-c7a3-4ab2-ae79-52672cbbb981">SRF «3 Gewalten»</a>.</td></tr>
+    <tr><td>15:15 (5′)</td><td data-i18n="s11.r3"><b>Übung</b> — Warum-Diskussion: 2′ zu zweit/dritt, dann 3′ Runde, <b>ein</b> Argument pro Gruppe. Nach 2′ hart unterbrechen. <b>Erst danach</b> die Auflösung zeigen: fauler Apfel + Bremsen-Satz.</td></tr>
+    <tr><td>15:20 (5′)</td><td data-i18n="s11.r4"><b>Take-away</b> — Skeptiker-Kit durchgehen, Bottom Line in die Master Checklist, Civics-Stern ★ vergeben. Nie streichen.</td></tr>
+    <tr><td>15:25 (5′)</td><td data-i18n="s11.r5"><b>Puffer</b> — dann Übergang in die Runde.</td></tr>
   </table>
   <div class="foot">
     <div class="wordmark"><span data-i18n="s11.foot">Details: docs/runbook-gewaltenteilung-ch.md · Zum Nachschauen:</span> <a style="color:var(--green);text-decoration:none" href="https://tigerraph.github.io/dm-quiz/content/gewaltenteilung-ch.html">…/content/gewaltenteilung-ch.html</a></div>
@@ -650,8 +649,6 @@
   // the read-more line always points at the language-matched ch.ch page
   document.querySelector('[data-i18n="s4.alt"]').innerHTML = alt(READ[L], CHNAME[L]);
   // language-aware tool links
-  var TL = {de:'Einstieg', en:'Warm-up', fr:'Intro', it:'Intro'};
-  document.getElementById('timer1').href += '&label=' + encodeURIComponent(TL[L]) + '&lang=' + L;
   document.getElementById('timer2').href += '&label=Duos&lang=' + L;
   document.getElementById('animlink').href += '?lang=' + L;
   document.getElementById('animlink2').href += '?lang=' + L;
