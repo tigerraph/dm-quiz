@@ -47,6 +47,8 @@
   .bg-blue .kicker,.bg-dark .kicker{color:var(--teal)}
   .bg-teal .kicker,.bg-green .kicker,.bg-cream .kicker{color:rgba(0,0,0,.45)}
   h1{font-weight:800;font-size:84px;line-height:1.02;margin-bottom:30px}
+  /* long FR/IT/EN titles need one step down */
+  html:not([lang=de]) h1.fit{font-size:64px !important}
   .lede{font-weight:800;font-size:32px;margin-bottom:18px}
   ol,ul{font-size:28px;line-height:1.5;padding-left:1.3em}
   li{margin-bottom:10px}
@@ -66,7 +68,6 @@
 
   /* S1 — pillars + slots */
   .toprow{display:flex;justify-content:space-between;align-items:flex-start}
-  .logo{height:88px}
   .pillars{display:flex;gap:22px;margin:26px 0 30px}
   .pillar{
     flex:1;border-radius:16px;padding:24px 22px;background:rgba(255,255,255,.12);
@@ -134,7 +135,7 @@
     font-size:23px;line-height:1.45;margin:20px 0 4px;
   }
 
-  /* S7 — take-away cards */
+  /* S8 — take-away cards */
   .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:0}
   .card{background:rgba(255,255,255,.13);border-radius:16px;padding:16px 20px;
         display:flex;gap:16px;align-items:flex-start}
@@ -156,12 +157,12 @@
     <div>
       <div class="kicker">DEMOCRACY MATTERS × DAY8</div>
       <h1 style="font-size:66px;margin-bottom:6px">Democracy Matters</h1>
-      <div class="lede" style="margin-bottom:0">Special Topic heute: <span style="color:var(--cream)">Gewaltenteilung</span></div>
+      <div class="lede" style="margin-bottom:0" data-i18n="s1.lede">Special Topic heute: <span style="color:var(--cream)">Gewaltenteilung</span></div>
     </div>
   </div>
   <div class="pillars">
     <div class="pillar today">
-      <div class="chip">HEUTE +★</div>
+      <div class="chip" data-i18n="s1.chip">HEUTE +★</div>
       <div class="em">🏛️</div>
       <div class="nm">Civics &amp; Basic Concepts</div>
       <div class="stars"><b>★</b>☆☆</div>
@@ -179,31 +180,31 @@
   </div>
   <div class="slots">
     <div class="slot a">
-      <div><div class="t">1 · Special Topic</div><div class="s">Gewaltenteilung — der Sprint</div></div>
+      <div><div class="t">1 · Special Topic</div><div class="s" data-i18n="s1.slota">Gewaltenteilung — der Sprint</div></div>
       <div class="m">30′</div>
     </div>
     <div class="slot b">
-      <div><div class="t">2 · Die Runde</div><div class="s">Diskussion &amp; Ausklang</div></div>
+      <div><div class="t">2 · Die Runde</div><div class="s" data-i18n="s1.slotb">Diskussion &amp; Ausklang</div></div>
       <div class="m">&nbsp;</div>
     </div>
   </div>
   <div class="foot">
-    <div class="wordmark">The Learning Loop — Learn it. Keep it. · 3★ pro Pillar → DM Champion · 6★ → DM Master</div>
+    <div class="wordmark" data-i18n="s1.foot">The Learning Loop — Learn it. Keep it. · 3★ pro Pillar → DM Champion · 6★ → DM Master</div>
   </div>
 </section>
 
 <!-- 2 · Topic-Intro -->
 <section class="slide bg-dark">
   <div class="kicker">SPECIAL TOPIC</div>
-  <h1>Gewaltenteilung</h1>
-  <div class="lede">Warum Macht Kontrolle braucht — Schweizer Ausgabe</div>
+  <h1 class="fit" data-i18n="s2.h1">Gewaltenteilung</h1>
+  <div class="lede" data-i18n="s2.lede">Warum Macht Kontrolle braucht — Schweizer Ausgabe</div>
   <div class="agenda">
-    <div class="item"><div class="t">Einstieg</div><div class="m">5′</div></div>
-    <div class="item"><div class="t">Thema</div><div class="m">10′</div></div>
-    <div class="item"><div class="t">Übung</div><div class="m">5′</div></div>
-    <div class="item"><div class="t">Take-away</div><div class="m">5′</div></div>
+    <div class="item"><div class="t" data-i18n="ag.1">Einstieg</div><div class="m">5′</div></div>
+    <div class="item"><div class="t" data-i18n="ag.2">Thema</div><div class="m">10′</div></div>
+    <div class="item"><div class="t" data-i18n="ag.3">Übung</div><div class="m">5′</div></div>
+    <div class="item"><div class="t" data-i18n="ag.4">Take-away</div><div class="m">5′</div></div>
   </div>
-  <div class="note" style="font-size:23px;max-width:900px">
+  <div class="note" style="font-size:23px;max-width:900px" data-i18n="s2.why">
     <b>Warum dieses Thema?</b> Gewaltenteilung ist der Grundbauplan jeder
     Demokratie — und weltweit gerade unter Druck. Wer den Bauplan kennt,
     merkt, wenn jemand daran sägt.
@@ -216,61 +217,61 @@
 
 <!-- 3 · Einstieg: QR direkt ins Spiel -->
 <section class="slide bg-teal">
-  <div class="kicker">1 — EINSTIEG</div>
-  <h1>Handy raus</h1>
+  <div class="kicker" data-i18n="s3.kick">1 — EINSTIEG</div>
+  <h1 class="fit" data-i18n="s3.h1">Handy raus</h1>
   <div class="qrwrap">
     <div class="qrcard" id="qr"></div>
     <div style="flex:1">
-      <div class="lede">QR scannen, Namen eingeben — drei Fragen, alle gleichzeitig.</div>
+      <div class="lede" data-i18n="s3.lede">QR scannen, Namen eingeben — drei Fragen, alle gleichzeitig.</div>
       <a class="link" href="https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch">
-        tigerraph.github.io/dm-quiz<small>Mitspielen — falls der QR-Code zickt</small>
+        tigerraph.github.io/dm-quiz<small data-i18n="s3.l1">Mitspielen — falls der QR-Code zickt</small>
       </a>
       <a class="link" href="https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch&amp;host=1" style="background:rgba(0,0,0,.22)">
-        Beamer-Ansicht öffnen →<small>Moderation: startet das Spiel und zeigt Fragen, Auflösung, Rangliste</small>
+        <span data-i18n="s3.l2">Beamer-Ansicht öffnen →</span><small data-i18n="s3.l2s">Moderation: startet das Spiel und zeigt Fragen, Auflösung, Rangliste</small>
       </a>
     </div>
   </div>
   <div class="foot">
-    <div class="wordmark">Nach jeder Frage: Auflösung + Erklärung — die App macht das.
-      <a class="tlink" href="https://tigerraph.github.io/dm-quiz/content/timer.html?m=5&amp;label=Einstieg">▶ Timer starten</a></div>
-    <div class="metric"><div class="label">Zeit</div><div class="value">5m</div></div>
+    <div class="wordmark"><span data-i18n="s3.foot">Nach jeder Frage: Auflösung + Erklärung — die App macht das.</span>
+      <a class="tlink" id="timer1" data-i18n="t.start" href="https://tigerraph.github.io/dm-quiz/content/timer.html?m=5">▶ Timer starten</a></div>
+    <div class="metric"><div class="label" data-i18n="t.zeit">Zeit</div><div class="value">5m</div></div>
   </div>
 </section>
 
 <!-- 4 · Thema: Video -->
 <section class="slide bg-blue">
-  <div class="kicker">2 — THEMA</div>
-  <h1 style="font-size:64px">Schauen, wie es funktioniert</h1>
+  <div class="kicker" data-i18n="s4.kick">2 — THEMA</div>
+  <h1 style="font-size:64px" data-i18n="s4.h1">Schauen, wie es funktioniert</h1>
   <div class="vidrow">
     <div style="flex:none;width:560px">
       <a class="thumb" href="https://www.youtube.com/watch?v=Nadu4ABEmxQ">
         <img src="../assets/img/easyvote-thumb.jpg" alt="easyvote — Gewaltenteilung">
         <span class="play"><span>▶</span></span>
       </a>
-      <a class="vidcap" href="https://www.youtube.com/watch?v=Nadu4ABEmxQ">▶ easyvote — «Gewaltenteilung» <span>· DE · 1:24</span></a>
-      <div class="vidalt">
+      <a class="vidcap" href="https://www.youtube.com/watch?v=Nadu4ABEmxQ" data-i18n="s4.cap">▶ easyvote — «Gewaltenteilung» <span>· DE · 1:24</span></a>
+      <div class="vidalt" data-i18n="s4.alt">
         Backup: <a href="https://www.srf.ch/play/tv/srf-school/video/3-gewalten?urn=urn:srf:video:e5e3474b-c7a3-4ab2-ae79-52672cbbb981">SRF school — «3 Gewalten»</a><br>
-        EN zum Lesen: <a href="https://www.ch.ch/en/political-system/operation-and-organisation-of-switzerland/separation-of-powers/">ch.ch — Separation of powers</a>
+        Zum Lesen: <a href="https://www.ch.ch/de/politisches-system/gewaltenteilung/">ch.ch — Gewaltenteilung</a>
       </div>
     </div>
     <div style="flex:1">
-      <div class="lede" style="font-size:26px">Deine Mission:</div>
+      <div class="lede" style="font-size:26px" data-i18n="s4.lede">Deine Mission:</div>
       <ol style="font-size:23px">
-        <li>Prüfe deine drei Quiz-Antworten</li>
-        <li>Erkenne: Wer kontrolliert wen?</li>
-        <li>Merke dir, was dich überrascht —<br>das kommt gleich in die Diskussion</li>
+        <li data-i18n="s4.m1">Prüfe deine drei Quiz-Antworten</li>
+        <li data-i18n="s4.m2">Erkenne: Wer kontrolliert wen?</li>
+        <li data-i18n="s4.m3">Merke dir, was dich überrascht —<br>das kommt gleich in die Diskussion</li>
       </ol>
     </div>
   </div>
   <div class="foot">
-    <div class="wordmark">Das Video sagt <b>wie</b> — das <b>Warum</b> klären wir gleich selbst.</div>
+    <div class="wordmark" data-i18n="s4.foot">Das Video sagt <b>wie</b> — das <b>Warum</b> klären wir gleich selbst.</div>
   </div>
 </section>
 
 <!-- 5 · Thema: Der Check — Wer kontrolliert wen -->
 <section class="slide bg-dark">
-  <div class="kicker">2 — THEMA · DER CHECK</div>
-  <h1 style="font-size:68px">Wer kontrolliert wen?</h1>
+  <div class="kicker" data-i18n="s5.kick">2 — THEMA · DER CHECK</div>
+  <h1 style="font-size:68px" data-i18n="s5.h1">Wer kontrolliert wen?</h1>
   <div style="display:flex;gap:48px;align-items:flex-start">
     <svg width="620" height="400" viewBox="0 0 620 400" style="flex:none">
       <defs>
@@ -287,57 +288,57 @@
       <line x1="310" y1="164" x2="310" y2="118" stroke="#A8D272" stroke-width="5" marker-end="url(#ahg)"/>
       <g font-family="Poppins" text-anchor="middle">
         <rect x="210" y="30" width="200" height="76" rx="12" fill="#435CC6"/>
-        <text x="310" y="62" fill="#fff" font-size="24" font-weight="800">Parlament</text>
-        <text x="310" y="90" fill="#fff" font-size="17" opacity=".85">macht die Gesetze</text>
+        <text class="nodename" x="310" y="62" fill="#fff" font-size="24" font-weight="800" data-i18n="d.parl">Parlament</text>
+        <text x="310" y="90" fill="#fff" font-size="17" opacity=".85" data-i18n="d.parl2">macht die Gesetze</text>
         <rect x="20" y="250" width="200" height="76" rx="12" fill="#435CC6"/>
-        <text x="120" y="282" fill="#fff" font-size="24" font-weight="800">Bundesrat</text>
-        <text x="120" y="310" fill="#fff" font-size="17" opacity=".85">führt sie aus</text>
+        <text class="nodename" x="120" y="282" fill="#fff" font-size="24" font-weight="800" data-i18n="d.br">Bundesrat</text>
+        <text x="120" y="310" fill="#fff" font-size="17" opacity=".85" data-i18n="d.br2">führt sie aus</text>
         <rect x="400" y="250" width="200" height="76" rx="12" fill="#435CC6"/>
-        <text x="500" y="282" fill="#fff" font-size="24" font-weight="800">Gerichte</text>
-        <text x="500" y="310" fill="#fff" font-size="17" opacity=".85">wenden sie an</text>
-        <text x="182" y="162" fill="#5EB9A9" font-size="16" font-weight="800" text-anchor="end">wählt &amp;</text>
-        <text x="182" y="182" fill="#5EB9A9" font-size="16" font-weight="800" text-anchor="end">beaufsichtigt</text>
-        <text x="438" y="172" fill="#5EB9A9" font-size="16" font-weight="800" text-anchor="start">wählt</text>
-        <text x="312" y="348" fill="#5EB9A9" font-size="15" font-weight="800">kontrollieren die Verwaltung</text>
+        <text class="nodename" x="500" y="282" fill="#fff" font-size="24" font-weight="800" data-i18n="d.ger">Gerichte</text>
+        <text x="500" y="310" fill="#fff" font-size="17" opacity=".85" data-i18n="d.ger2">wenden sie an</text>
+        <text x="182" y="162" fill="#5EB9A9" font-size="16" font-weight="800" text-anchor="end" data-i18n="d.w1">wählt &amp;</text>
+        <text x="182" y="182" fill="#5EB9A9" font-size="16" font-weight="800" text-anchor="end" data-i18n="d.w2">beaufsichtigt</text>
+        <text x="438" y="172" fill="#5EB9A9" font-size="16" font-weight="800" text-anchor="start" data-i18n="d.w3">wählt</text>
+        <text x="312" y="348" fill="#5EB9A9" font-size="15" font-weight="800" data-i18n="d.adm">kontrollieren die Verwaltung</text>
         <rect x="245" y="168" width="130" height="46" rx="23" fill="#A8D272"/>
-        <text x="310" y="198" fill="#22313C" font-size="20" font-weight="800">das Volk</text>
-        <text x="310" y="242" fill="#A8D272" font-size="15">Referendum &amp; Initiative</text>
+        <text x="310" y="198" fill="#22313C" font-size="20" font-weight="800" data-i18n="d.volk">das Volk</text>
+        <text x="310" y="242" fill="#A8D272" font-size="15" data-i18n="d.ri">Referendum &amp; Initiative</text>
       </g>
     </svg>
     <div style="display:flex;flex-direction:column;gap:24px;margin-top:10px">
-      <div class="postit" style="font-size:20px;transform:rotate(-2deg)">Das Bundesgericht muss Bundesgesetze <b>anwenden</b> — es hebt sie nicht auf (Art. 190 BV).</div>
-      <div class="postit" style="font-size:20px;transform:rotate(1.5deg)">Niemand schickt das Parlament heim — <b>feste vier Jahre</b>.</div>
-      <div class="postit" style="font-size:20px;transform:rotate(-1deg)">Die letzte Kontrolle ist <b>das Volk</b>: Referendum &amp; Initiative.</div>
+      <div class="postit" style="font-size:20px;transform:rotate(-2deg)" data-i18n="s5.p1">Das Bundesgericht muss Bundesgesetze <b>anwenden</b> — es hebt sie nicht auf (Art. 190 BV).</div>
+      <div class="postit" style="font-size:20px;transform:rotate(1.5deg)" data-i18n="s5.p2">Niemand schickt das Parlament heim — <b>feste vier Jahre</b>.</div>
+      <div class="postit" style="font-size:20px;transform:rotate(-1deg)" data-i18n="s5.p3">Die letzte Kontrolle ist <b>das Volk</b>: Referendum &amp; Initiative.</div>
     </div>
   </div>
-  <div class="foot"><div class="wordmark">Mission 2 aufgelöst — was hat euch überrascht?</div></div>
+  <div class="foot"><div class="wordmark" data-i18n="s5.foot">Mission 2 aufgelöst — was hat euch überrascht?</div></div>
 </section>
 
 <!-- 6 · Übung: Warum-Diskussion -->
 <section class="slide bg-cream">
-  <div class="kicker">3 — ÜBUNG · DISKUSSION</div>
-  <h1 style="color:var(--ink);font-size:64px">Und warum eigentlich?</h1>
-  <div style="font-style:italic;font-weight:400;font-size:28px;line-height:1.4;max-width:1050px">
+  <div class="kicker" data-i18n="s6.kick">3 — ÜBUNG · DISKUSSION</div>
+  <h1 style="color:var(--ink);font-size:64px" data-i18n="s6.h1">Und warum eigentlich?</h1>
+  <div style="font-style:italic;font-weight:400;font-size:28px;line-height:1.4;max-width:1050px" data-i18n="s6.q">
     «Mal ehrlich: Eine Autokratie ist schneller. Ein Entscheid, keine Debatte. Warum leisten wir uns diesen langsamen Apparat?»
   </div>
-  <div class="task">
+  <div class="task" data-i18n="s6.task">
     <b>2′</b> zu zweit oder zu dritt: Ist uns das den langsamen Apparat wert — ja oder nein?<br>
     <b>3′</b> in der Runde: pro Gruppe <b>ein</b> stärkstes Argument — dafür oder dagegen.
   </div>
   <div class="foot">
-    <div class="wordmark" style="color:var(--ink)">Moderation: nach 2′ hart unterbrechen — ein Argument pro Gruppe, dann weiter.</div>
-    <div class="metric"><div class="label">Zeit</div><div class="value">5m</div>
-      <a class="tlink" href="https://tigerraph.github.io/dm-quiz/content/timer.html?m=2&amp;label=Duos">▶ Timer starten</a></div>
+    <div class="wordmark" style="color:var(--ink)"><span data-i18n="s6.foot">Moderation: nach 2′ hart unterbrechen — ein Argument pro Gruppe, dann weiter.</span></div>
+    <div class="metric"><div class="label" data-i18n="t.zeit">Zeit</div><div class="value">5m</div>
+      <a class="tlink" id="timer2" data-i18n="t.start" href="https://tigerraph.github.io/dm-quiz/content/timer.html?m=2">▶ Timer starten</a></div>
   </div>
 </section>
 
 <!-- 7 · Übung: Die Auflösung — der faule Apfel -->
 <section class="slide bg-cream">
-  <div class="kicker">3 — ÜBUNG · DIE AUFLÖSUNG</div>
-  <h1 style="color:var(--ink);font-size:60px;margin-bottom:22px">Der faule Apfel</h1>
+  <div class="kicker" data-i18n="s7.kick">3 — ÜBUNG · DIE AUFLÖSUNG</div>
+  <h1 style="color:var(--ink);font-size:60px;margin-bottom:22px" data-i18n="s7.h1">Der faule Apfel</h1>
   <div style="display:flex;gap:24px">
     <div style="flex:1;border-radius:16px;padding:20px 24px;color:#fff;background:var(--ink)">
-      <div style="font-weight:800;font-size:24px;margin-bottom:6px">Autokratie</div>
+      <div style="font-weight:800;font-size:24px;margin-bottom:6px" data-i18n="s7.ta">Autokratie</div>
       <svg viewBox="0 0 320 150" style="width:100%;height:170px;display:block">
         <rect x="115" y="8" width="90" height="46" rx="10" fill="#5a6b78"/>
         <text x="160" y="40" text-anchor="middle" font-size="26">🍎</text>
@@ -351,10 +352,10 @@
         <text x="160" y="130" text-anchor="middle" font-size="18">🍎</text>
         <text x="245" y="130" text-anchor="middle" font-size="18">🍎</text>
       </svg>
-      <div style="font-size:18px;line-height:1.45;margin-top:8px">Der faule Apfel sitzt oben. Niemand darf ihn prüfen, niemand kann ihn ersetzen — die Fäulnis wird System.</div>
+      <div style="font-size:18px;line-height:1.45;margin-top:8px" data-i18n="s7.ca">Der faule Apfel sitzt oben. Niemand darf ihn prüfen, niemand kann ihn ersetzen — die Fäulnis wird System.</div>
     </div>
     <div style="flex:1;border-radius:16px;padding:20px 24px;color:#fff;background:var(--blue)">
-      <div style="font-weight:800;font-size:24px;margin-bottom:6px">Gewaltenteilung</div>
+      <div style="font-weight:800;font-size:24px;margin-bottom:6px" data-i18n="s7.tb">Gewaltenteilung</div>
       <svg viewBox="0 0 320 150" style="width:100%;height:170px;display:block">
         <rect x="15" y="30" width="85" height="46" rx="10" fill="#5EB9A9"/>
         <rect x="118" y="30" width="85" height="46" rx="10" fill="#5a6b78"/>
@@ -365,17 +366,16 @@
         <line x1="102" y1="53" x2="114" y2="53" stroke="#5EB9A9" stroke-width="4"/>
         <line x1="219" y1="53" x2="207" y2="53" stroke="#5EB9A9" stroke-width="4"/>
         <rect x="120" y="102" width="80" height="34" rx="17" fill="#A8D272"/>
-        <text x="160" y="125" text-anchor="middle" font-size="16" font-weight="800" fill="#22313C" font-family="Poppins">das Volk</text>
+        <text x="160" y="125" text-anchor="middle" font-size="16" font-weight="800" fill="#22313C" font-family="Poppins" data-i18n="d.volk2">das Volk</text>
         <line x1="160" y1="100" x2="160" y2="82" stroke="#A8D272" stroke-width="4"/>
       </svg>
-      <div style="font-size:18px;line-height:1.45;margin-top:8px">Der faule Apfel wird gesehen: zwei Gewalten und das Volk können ihn stoppen und ersetzen. Der Schaden bleibt lokal.</div>
+      <div style="font-size:18px;line-height:1.45;margin-top:8px" data-i18n="s7.cb">Der faule Apfel wird gesehen: zwei Gewalten und das Volk können ihn stoppen und ersetzen. Der Schaden bleibt lokal.</div>
     </div>
   </div>
-  <div class="postit" style="margin-top:14px;max-width:880px;font-size:21px;padding:16px 24px;transform:rotate(-1deg)">Bremsen sind nicht da, um langsam zu fahren — sondern damit man schnell fahren <b>kann</b>.
-  </div>
+  <div class="postit" style="margin-top:14px;max-width:880px;font-size:21px;padding:16px 24px;transform:rotate(-1deg)" data-i18n="s7.punch">Bremsen sind nicht da, um langsam zu fahren — sondern damit man schnell fahren <b>kann</b>.</div>
   <div class="foot">
-    <div class="wordmark" style="color:var(--ink)">Erst nach der Diskussion zeigen — nicht vorher verraten.</div>
-    <a class="tlink" style="color:var(--ink)" href="https://tigerraph.github.io/dm-quiz/content/fauler-apfel.html">▶ Als Animation zeigen</a>
+    <div class="wordmark" style="color:var(--ink)" data-i18n="s7.foot">Erst nach der Diskussion zeigen — nicht vorher verraten.</div>
+    <a class="tlink" style="color:var(--ink)" id="animlink" data-i18n="s7.anim" href="https://tigerraph.github.io/dm-quiz/content/fauler-apfel.html">▶ Als Animation zeigen</a>
   </div>
 </section>
 
@@ -384,31 +384,31 @@
   <div class="kicker">4 — TAKE-AWAY · BOTTOM LINE ★</div>
   <div style="position:absolute;top:56px;right:88px;text-align:center">
     <div class="qrmini" id="qr-star"></div>
-    <div style="font-weight:800;font-size:15px;margin-top:5px">★ Stern jetzt sichern</div>
+    <div style="font-weight:800;font-size:15px;margin-top:5px" data-i18n="s8.star">★ Stern jetzt sichern</div>
   </div>
-  <h1 style="font-size:52px;margin-bottom:14px;max-width:960px">«Demokratie? Die sind doch eh alle korrupt.»</h1>
-  <div class="lede" style="font-size:24px;margin-bottom:14px">Dein Kit für genau dieses Gespräch:</div>
+  <h1 style="font-size:52px;margin-bottom:14px;max-width:960px" data-i18n="s8.h1">«Demokratie? Die sind doch eh alle korrupt.»</h1>
+  <div class="lede" style="font-size:24px;margin-bottom:14px" data-i18n="s8.lede">Dein Kit für genau dieses Gespräch:</div>
   <div class="cards">
     <div class="card"><div class="em">🛡️</div><div>
-      <div class="h">Genau darum: Gewaltenteilung</div>
-      <div class="p">Korruption braucht unkontrollierte Macht. Hier kontrolliert jeder jeden — Missbrauch wird teuer.</div>
+      <div class="h" data-i18n="s8.c1h">Genau darum: Gewaltenteilung</div>
+      <div class="p" data-i18n="s8.c1p">Korruption braucht unkontrollierte Macht. Hier kontrolliert jeder jeden — Missbrauch wird teuer.</div>
     </div></div>
     <div class="card"><div class="em">⚖️</div><div>
-      <div class="h">Niemand ist beides</div>
-      <div class="p">Wer Gesetze macht, führt sie nicht aus und richtet nicht darüber — eine Person, eine Gewalt.</div>
+      <div class="h" data-i18n="s8.c2h">Niemand ist beides</div>
+      <div class="p" data-i18n="s8.c2p">Wer Gesetze macht, führt sie nicht aus und richtet nicht darüber — eine Person, eine Gewalt.</div>
     </div></div>
     <div class="card"><div class="em">🗳️</div><div>
-      <div class="h">Du bist die letzte Instanz</div>
-      <div class="p">Referendum &amp; Initiative: In der Schweiz kontrolliert sogar das Volk den Staat.</div>
+      <div class="h" data-i18n="s8.c3h">Du bist die letzte Instanz</div>
+      <div class="p" data-i18n="s8.c3p">Referendum &amp; Initiative: In der Schweiz kontrolliert sogar das Volk den Staat.</div>
     </div></div>
     <div class="card"><div class="em">⏱️</div><div>
-      <div class="h">Langsam ist der Preis für sicher</div>
-      <div class="p">Autokratie ist schneller — aber nur gut, solange die Macht wohlwollend bleibt.</div>
+      <div class="h" data-i18n="s8.c4h">Langsam ist der Preis für sicher</div>
+      <div class="p" data-i18n="s8.c4p">Autokratie ist schneller — aber nur gut, solange die Macht wohlwollend bleibt.</div>
     </div></div>
   </div>
   <div class="foot">
-    <div class="wordmark">Bottom Line → Master Checklist · Civics-Stern ★ verdient</div>
-    <div class="metric"><div class="label">Zeit</div><div class="value">5m</div></div>
+    <div class="wordmark" data-i18n="s8.foot">Bottom Line → Master Checklist · Civics-Stern ★ verdient</div>
+    <div class="metric"><div class="label" data-i18n="t.zeit">Zeit</div><div class="value">5m</div></div>
   </div>
 </section>
 
@@ -421,44 +421,244 @@
 <section class="slide bg-blue" style="align-items:center;justify-content:center;text-align:center">
   <div class="kicker">DEMOCRACY MATTERS × DAY8</div>
   <h1 style="font-size:56px;margin-bottom:10px">Merci!</h1>
-  <div style="font-size:24px;max-width:820px;line-height:1.5;margin-bottom:26px">
+  <div style="font-size:24px;max-width:820px;line-height:1.5;margin-bottom:26px" data-i18n="s10.body">
     The Learning Loop — Design &amp; Konzept des gamifizierten
     Workshop-Formats: <b>DAY8 GmbH</b>
   </div>
   <div class="qrcard" id="qr-content" style="padding:18px"></div>
-  <div style="font-weight:800;font-size:20px;margin-top:12px">Folien, Video, Quiz &amp; Stern — alles zum Nachschauen</div>
+  <div style="font-weight:800;font-size:20px;margin-top:12px" data-i18n="s10.cap">Folien, Video, Quiz &amp; Stern — alles zum Nachschauen</div>
   <div style="font-size:17px;opacity:.8;margin-top:4px">tigerraph.github.io/dm-quiz/content/gewaltenteilung-ch.html</div>
 </section>
 
 <!-- 11 · Regie -->
 <section class="slide bg-dark">
-  <div class="kicker">FÜR DIE MODERATION</div>
-  <h1 style="font-size:56px">Regie</h1>
+  <div class="kicker" data-i18n="s11.kick">FÜR DIE MODERATION</div>
+  <h1 style="font-size:56px" data-i18n="s11.h1">Regie</h1>
   <table class="regie">
-    <tr><td>0′–5′</td><td><b>Einstieg</b> — QR-Folie, <a href="https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch&amp;host=1">Beamer-Ansicht öffnen</a>, 3 Fragen spielen. Erklärungen zeigt die App.</td></tr>
-    <tr><td>5′–15′</td><td><b>Thema</b> — Mission ansagen, <a href="https://www.youtube.com/watch?v=Nadu4ABEmxQ">Video easyvote (1:24)</a> ab Folie anklicken, danach Check-Folie: Dreieck kurz durchgehen, Überraschungen abholen. Backup: <a href="https://www.srf.ch/play/tv/srf-school/video/3-gewalten?urn=urn:srf:video:e5e3474b-c7a3-4ab2-ae79-52672cbbb981">SRF «3 Gewalten»</a>.</td></tr>
-    <tr><td>15′–20′</td><td><b>Übung</b> — Warum-Diskussion: 2′ zu zweit/dritt, dann 3′ Runde, <b>ein</b> Argument pro Gruppe. Nach 2′ hart unterbrechen. <b>Erst danach</b> die Auflösung zeigen: fauler Apfel + Bremsen-Satz.</td></tr>
-    <tr><td>20′–25′</td><td><b>Take-away</b> — Skeptiker-Kit durchgehen, Bottom Line in die Master Checklist, Civics-Stern ★ vergeben. Nie streichen.</td></tr>
-    <tr><td>25′–30′</td><td><b>Puffer</b> — dann Übergang in die Runde.</td></tr>
+    <tr><td>0′–5′</td><td data-i18n="s11.r1"><b>Einstieg</b> — QR-Folie, <a href="https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch&amp;host=1">Beamer-Ansicht öffnen</a>, 3 Fragen spielen. Erklärungen zeigt die App.</td></tr>
+    <tr><td>5′–15′</td><td data-i18n="s11.r2"><b>Thema</b> — Mission ansagen, <a href="https://www.youtube.com/watch?v=Nadu4ABEmxQ">Video easyvote (1:24)</a> ab Folie anklicken, danach Check-Folie: Dreieck kurz durchgehen, Überraschungen abholen. Backup: <a href="https://www.srf.ch/play/tv/srf-school/video/3-gewalten?urn=urn:srf:video:e5e3474b-c7a3-4ab2-ae79-52672cbbb981">SRF «3 Gewalten»</a>.</td></tr>
+    <tr><td>15′–20′</td><td data-i18n="s11.r3"><b>Übung</b> — Warum-Diskussion: 2′ zu zweit/dritt, dann 3′ Runde, <b>ein</b> Argument pro Gruppe. Nach 2′ hart unterbrechen. <b>Erst danach</b> die Auflösung zeigen: fauler Apfel + Bremsen-Satz.</td></tr>
+    <tr><td>20′–25′</td><td data-i18n="s11.r4"><b>Take-away</b> — Skeptiker-Kit durchgehen, Bottom Line in die Master Checklist, Civics-Stern ★ vergeben. Nie streichen.</td></tr>
+    <tr><td>25′–30′</td><td data-i18n="s11.r5"><b>Puffer</b> — dann Übergang in die Runde.</td></tr>
   </table>
   <div class="foot">
-    <div class="wordmark">Details: docs/runbook-gewaltenteilung-ch.md · Zum Nachschauen: <a style="color:var(--green);text-decoration:none" href="https://tigerraph.github.io/dm-quiz/content/gewaltenteilung-ch.html">…/content/gewaltenteilung-ch.html</a></div>
+    <div class="wordmark"><span data-i18n="s11.foot">Details: docs/runbook-gewaltenteilung-ch.md · Zum Nachschauen:</span> <a style="color:var(--green);text-decoration:none" href="https://tigerraph.github.io/dm-quiz/content/gewaltenteilung-ch.html">…/content/gewaltenteilung-ch.html</a></div>
   </div>
 </section>
 
 <script src="../vendor/qrcode.js"></script>
 <script>
-  (function(){
-    function make(id, url, cell){
-      var qr = qrcode(0, 'M');
-      qr.addData(url);
-      qr.make();
-      document.getElementById(id).innerHTML = qr.createSvgTag(cell, 0);
-    }
-    make('qr', 'https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch', 8);
-    make('qr-star', 'https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch', 3);
-    make('qr-content', 'https://tigerraph.github.io/dm-quiz/content/gewaltenteilung-ch.html', 5);
-  })();
+(function(){
+  var L = (new URLSearchParams(location.search).get('lang') || 'de').toLowerCase();
+  if (['de','en','fr','it'].indexOf(L) < 0) L = 'de';
+  document.documentElement.setAttribute('lang', L);
+
+  var SRF = 'https://www.srf.ch/play/tv/srf-school/video/3-gewalten?urn=urn:srf:video:e5e3474b-c7a3-4ab2-ae79-52672cbbb981';
+  var CH = {
+    de: 'https://www.ch.ch/de/politisches-system/gewaltenteilung/',
+    en: 'https://www.ch.ch/en/political-system/separation-of-powers/',
+    fr: 'https://www.ch.ch/fr/systeme-politique/separation-des-pouvoirs/',
+    it: 'https://www.ch.ch/it/sistema-politico/separazione-dei-poteri/'
+  };
+  function alt(read, name){
+    return 'Backup: <a href="' + SRF + '">SRF school — «3 Gewalten»</a><br>' +
+           read + ' <a href="' + CH[L] + '">ch.ch — ' + name + '</a>';
+  }
+
+  var T = {
+  en: {
+    's1.lede':'Today’s Special Topic: <span style="color:var(--cream)">Separation of Powers</span>',
+    's1.chip':'TODAY +★','s1.slota':'Separation of powers — the sprint','s1.slotb':'Discussion &amp; wind-down',
+    's1.foot':'The Learning Loop — Learn it. Keep it. · 3★ per pillar → DM Champion · 6★ → DM Master',
+    's2.h1':'Separation of Powers','s2.lede':'Why power needs checks — Swiss edition',
+    'ag.1':'Warm-up','ag.2':'Topic','ag.3':'Exercise','ag.4':'Take-away',
+    's2.why':'<b>Why this topic?</b> Separation of powers is the basic blueprint of every democracy — and under pressure worldwide. If you know the blueprint, you notice when someone saws at it.',
+    's3.kick':'1 — WARM-UP','s3.h1':'Phones out','s3.lede':'Scan the QR, enter a name — three questions, everyone at once.',
+    's3.l1':'Join — if the QR code acts up','s3.l2':'Open the beamer view →','s3.l2s':'Host: starts the game and shows questions, answers, leaderboard',
+    's3.foot':'After each question: answer + explanation — the app does that.',
+    't.start':'▶ Start timer','t.zeit':'Time',
+    's4.kick':'2 — TOPIC','s4.h1':'Watch how it works',
+    's4.cap':'▶ easyvote — «Gewaltenteilung» <span>· video in German · 1:24</span>',
+    's4.alt': null,
+    's4.lede':'Your mission:','s4.m1':'Check your three quiz answers','s4.m2':'Spot it: who checks whom?',
+    's4.m3':'Note what surprises you —<br>it feeds the discussion in a minute',
+    's4.foot':'The video says <b>how</b> — the <b>why</b> we settle ourselves.',
+    's5.kick':'2 — TOPIC · THE CHECK','s5.h1':'Who checks whom?',
+    'd.parl':'Parliament','d.parl2':'makes the laws','d.br':'Federal Council','d.br2':'carries them out',
+    'd.ger':'Courts','d.ger2':'apply them','d.w1':'elects &amp;','d.w2':'oversees','d.w3':'elects',
+    'd.adm':'check the administration','d.volk':'the people','d.volk2':'the people','d.ri':'referendum &amp; initiative',
+    's5.p1':'The Federal Supreme Court must <b>apply</b> federal laws — it does not overturn them (Art. 190 Const.).',
+    's5.p2':'Nobody sends parliament home — <b>fixed four-year terms</b>.',
+    's5.p3':'The last check is <b>the people</b>: referendum &amp; initiative.',
+    's5.foot':'Mission 2 solved — what surprised you?',
+    's6.kick':'3 — EXERCISE · DISCUSSION','s6.h1':'But why, actually?',
+    's6.q':'“Honestly: an autocracy is faster. One decision, no debate. Why do we afford this slow apparatus?”',
+    's6.task':'<b>2′</b> in twos or threes: is the slow apparatus worth it — yes or no?<br><b>3′</b> in the round: per group <b>one</b> strongest argument — for or against.',
+    's6.foot':'Moderation: cut hard after 2′ — one argument per group, then move on.',
+    's7.kick':'3 — EXERCISE · THE REVEAL','s7.h1':'The rotten apple','s7.ta':'Autocracy','s7.tb':'Separation of powers',
+    's7.ca':'The rotten apple sits at the top. Nobody may check it, nobody can replace it — the rot becomes the system.',
+    's7.cb':'The rotten apple is seen: two branches and the people can stop and replace it. The damage stays local.',
+    's7.punch':'Brakes aren’t there to drive slowly — they’re there so you <b>can</b> drive fast.',
+    's7.foot':'Show only after the discussion — don’t spoil it.','s7.anim':'▶ Show as animation',
+    's8.star':'★ Claim your star now','s8.h1':'“Democracy? They’re all corrupt anyway.”',
+    's8.lede':'Your kit for exactly that conversation:',
+    's8.c1h':'That’s exactly why','s8.c1p':'Corruption needs unchecked power. Here everyone checks everyone — abuse gets expensive.',
+    's8.c2h':'Nobody is both','s8.c2p':'Whoever makes laws doesn’t execute them and doesn’t judge them — one person, one branch.',
+    's8.c3h':'You are the last resort','s8.c3p':'Referendum &amp; initiative: in Switzerland even the people check the state.',
+    's8.c4h':'Slow is the price of safe','s8.c4p':'Autocracy is faster — but only good as long as the power stays benevolent.',
+    's8.foot':'Bottom line → Master Checklist · Civics star ★ earned',
+    's10.body':'The Learning Loop — design &amp; concept of the gamified workshop format: <b>DAY8 GmbH</b>',
+    's10.cap':'Slides, video, quiz &amp; star — everything to revisit',
+    's11.kick':'FOR THE MODERATOR','s11.h1':'Run sheet',
+    's11.r1':'<b>Warm-up</b> — QR slide, <a href="https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch&amp;host=1">open the beamer view</a>, play the 3 questions. The app shows the explanations.',
+    's11.r2':'<b>Topic</b> — announce the mission, <a href="https://www.youtube.com/watch?v=Nadu4ABEmxQ">easyvote video (1:24, German)</a> from the slide, then the check slide: walk the triangle, collect surprises. Backup: <a href="'+SRF+'">SRF «3 Gewalten»</a>.',
+    's11.r3':'<b>Exercise</b> — why-discussion: 2′ in twos/threes, then 3′ round, <b>one</b> argument per group. Cut hard after 2′. <b>Only then</b> show the reveal: rotten apple + brakes line.',
+    's11.r4':'<b>Take-away</b> — go through the skeptic kit, bottom line onto the Master Checklist, award the Civics star ★. Never cut.',
+    's11.r5':'<b>Buffer</b> — then transition into the round.',
+    's11.foot':'Details: docs/runbook-gewaltenteilung-ch.md · To revisit:'
+  },
+  fr: {
+    's1.lede':'Special Topic du jour : <span style="color:var(--cream)">La séparation des pouvoirs</span>',
+    's1.chip':'AUJOURD’HUI +★','s1.slota':'La séparation des pouvoirs — le sprint','s1.slotb':'Discussion &amp; clôture',
+    's1.foot':'The Learning Loop — Learn it. Keep it. · 3★ par pilier → DM Champion · 6★ → DM Master',
+    's2.h1':'Séparation des pouvoirs','s2.lede':'Pourquoi le pouvoir a besoin de contrôle — édition suisse',
+    'ag.1':'Intro','ag.2':'Thème','ag.3':'Exercice','ag.4':'À retenir',
+    's2.why':'<b>Pourquoi ce thème ?</b> La séparation des pouvoirs est le plan de base de toute démocratie — et elle est sous pression dans le monde entier. Qui connaît le plan remarque quand on commence à le scier.',
+    's3.kick':'1 — INTRO','s3.h1':'Sortez vos téléphones','s3.lede':'Scannez le QR, entrez un nom — trois questions, tous en même temps.',
+    's3.l1':'Participer — si le code QR fait des siennes','s3.l2':'Ouvrir la vue beamer →','s3.l2s':'Modération : lance le jeu et affiche questions, réponses, classement',
+    's3.foot':'Après chaque question : réponse + explication — l’app s’en charge.',
+    't.start':'▶ Lancer le timer','t.zeit':'Temps',
+    's4.kick':'2 — THÈME','s4.h1':'Voir comment ça marche',
+    's4.cap':'▶ easyvote — «Gewaltenteilung» <span>· vidéo en allemand · 1:24</span>',
+    's4.alt': null,
+    's4.lede':'Ta mission :','s4.m1':'Vérifie tes trois réponses du quiz','s4.m2':'Repère : qui contrôle qui ?',
+    's4.m3':'Retiens ce qui te surprend —<br>on en discute juste après',
+    's4.foot':'La vidéo dit <b>comment</b> — le <b>pourquoi</b>, on le règle nous-mêmes.',
+    's5.kick':'2 — THÈME · LE CHECK','s5.h1':'Qui contrôle qui ?',
+    'd.parl':'Parlement','d.parl2':'fait les lois','d.br':'Conseil fédéral','d.br2':'les exécute',
+    'd.ger':'Tribunaux','d.ger2':'les appliquent','d.w1':'élit &amp;','d.w2':'surveille','d.w3':'élit',
+    'd.adm':'contrôlent l’administration','d.volk':'le peuple','d.volk2':'le peuple','d.ri':'référendum &amp; initiative',
+    's5.p1':'Le Tribunal fédéral doit <b>appliquer</b> les lois fédérales — il ne les annule pas (art. 190 Cst.).',
+    's5.p2':'Personne ne renvoie le Parlement — <b>quatre ans fixes</b>.',
+    's5.p3':'Le dernier contrôle, c’est <b>le peuple</b> : référendum &amp; initiative.',
+    's5.foot':'Mission 2 résolue — qu’est-ce qui vous a surpris ?',
+    's6.kick':'3 — EXERCICE · DISCUSSION','s6.h1':'Mais pourquoi, au fond ?',
+    's6.q':'«Soyons honnêtes : une autocratie est plus rapide. Une décision, pas de débat. Pourquoi s’offrir cet appareil si lent ?»',
+    's6.task':'<b>2′</b> à deux ou trois : cet appareil lent en vaut-il la peine — oui ou non ?<br><b>3′</b> en plénière : par groupe, <b>un</b> argument le plus fort — pour ou contre.',
+    's6.foot':'Modération : couper net après 2′ — un argument par groupe, puis on avance.',
+    's7.kick':'3 — EXERCICE · LA RÉSOLUTION','s7.h1':'La pomme pourrie','s7.ta':'Autocratie','s7.tb':'Séparation des pouvoirs',
+    's7.ca':'La pomme pourrie est tout en haut. Personne ne peut la contrôler ni la remplacer — la pourriture devient le système.',
+    's7.cb':'La pomme pourrie est repérée : deux pouvoirs et le peuple peuvent l’arrêter et la remplacer. Les dégâts restent locaux.',
+    's7.punch':'Les freins ne sont pas là pour rouler lentement — mais pour <b>pouvoir</b> rouler vite.',
+    's7.foot':'À montrer après la discussion — pas avant.','s7.anim':'▶ Montrer en animation',
+    's8.star':'★ Récupère ton étoile','s8.h1':'«La démocratie ? Ils sont tous corrompus de toute façon.»',
+    's8.lede':'Ton kit pour exactement cette discussion :',
+    's8.c1h':'Justement : la séparation des pouvoirs','s8.c1p':'La corruption a besoin d’un pouvoir sans contrôle. Ici, chacun contrôle chacun — l’abus coûte cher.',
+    's8.c2h':'Personne n’est les deux','s8.c2p':'Qui fait les lois ne les exécute pas et n’en juge pas — une personne, un pouvoir.',
+    's8.c3h':'Tu es la dernière instance','s8.c3p':'Référendum &amp; initiative : en Suisse, même le peuple contrôle l’État.',
+    's8.c4h':'La lenteur, prix de la sécurité','s8.c4p':'L’autocratie est plus rapide — mais bonne seulement tant que le pouvoir reste bienveillant.',
+    's8.foot':'Bottom line → Master Checklist · étoile Civics ★ gagnée',
+    's10.body':'The Learning Loop — design &amp; concept du format d’atelier gamifié : <b>DAY8 GmbH</b>',
+    's10.cap':'Slides, vidéo, quiz &amp; étoile — tout pour y revenir',
+    's11.kick':'POUR LA MODÉRATION','s11.h1':'Régie',
+    's11.r1':'<b>Intro</b> — slide QR, <a href="https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch&amp;host=1">ouvrir la vue beamer</a>, jouer les 3 questions. L’app affiche les explications.',
+    's11.r2':'<b>Thème</b> — annoncer la mission, <a href="https://www.youtube.com/watch?v=Nadu4ABEmxQ">vidéo easyvote (1:24, en allemand)</a> depuis la slide, puis la slide check : parcourir le triangle, recueillir les surprises. Backup : <a href="'+SRF+'">SRF «3 Gewalten»</a>.',
+    's11.r3':'<b>Exercice</b> — discussion du pourquoi : 2′ à deux/trois, puis 3′ en plénière, <b>un</b> argument par groupe. Couper net après 2′. <b>Ensuite seulement</b>, la résolution : pomme pourrie + phrase des freins.',
+    's11.r4':'<b>À retenir</b> — parcourir le kit sceptique, bottom line sur la Master Checklist, remettre l’étoile Civics ★. Ne jamais couper.',
+    's11.r5':'<b>Tampon</b> — puis transition vers la Runde.',
+    's11.foot':'Détails : docs/runbook-gewaltenteilung-ch.md · Pour y revenir :'
+  },
+  it: {
+    's1.lede':'Special Topic di oggi: <span style="color:var(--cream)">La separazione dei poteri</span>',
+    's1.chip':'OGGI +★','s1.slota':'La separazione dei poteri — lo sprint','s1.slotb':'Discussione &amp; chiusura',
+    's1.foot':'The Learning Loop — Learn it. Keep it. · 3★ per pilastro → DM Champion · 6★ → DM Master',
+    's2.h1':'Separazione dei poteri','s2.lede':'Perché il potere ha bisogno di controllo — edizione svizzera',
+    'ag.1':'Intro','ag.2':'Tema','ag.3':'Esercizio','ag.4':'Da ricordare',
+    's2.why':'<b>Perché questo tema?</b> La separazione dei poteri è il progetto di base di ogni democrazia — e nel mondo è sotto pressione. Chi conosce il progetto si accorge quando qualcuno lo sega.',
+    's3.kick':'1 — INTRO','s3.h1':'Telefoni alla mano','s3.lede':'Scansiona il QR, inserisci un nome — tre domande, tutti insieme.',
+    's3.l1':'Partecipa — se il codice QR fa i capricci','s3.l2':'Apri la vista beamer →','s3.l2s':'Moderazione: avvia il gioco e mostra domande, risposte, classifica',
+    's3.foot':'Dopo ogni domanda: risposta + spiegazione — ci pensa l’app.',
+    't.start':'▶ Avvia il timer','t.zeit':'Tempo',
+    's4.kick':'2 — TEMA','s4.h1':'Guarda come funziona',
+    's4.cap':'▶ easyvote — «Gewaltenteilung» <span>· video in tedesco · 1:24</span>',
+    's4.alt': null,
+    's4.lede':'La tua missione:','s4.m1':'Controlla le tue tre risposte del quiz','s4.m2':'Individua: chi controlla chi?',
+    's4.m3':'Ricorda ciò che ti sorprende —<br>ne parliamo subito dopo',
+    's4.foot':'Il video dice <b>come</b> — il <b>perché</b> lo chiariamo noi.',
+    's5.kick':'2 — TEMA · IL CHECK','s5.h1':'Chi controlla chi?',
+    'd.parl':'Parlamento','d.parl2':'fa le leggi','d.br':'Consiglio federale','d.br2':'le esegue',
+    'd.ger':'Tribunali','d.ger2':'le applicano','d.w1':'elegge &amp;','d.w2':'sorveglia','d.w3':'elegge',
+    'd.adm':'controllano l’amministrazione','d.volk':'il popolo','d.volk2':'il popolo','d.ri':'referendum e iniziativa',
+    's5.p1':'Il Tribunale federale deve <b>applicare</b> le leggi federali — non le annulla (art. 190 Cost.).',
+    's5.p2':'Nessuno manda a casa il Parlamento — <b>quattro anni fissi</b>.',
+    's5.p3':'L’ultimo controllo è <b>il popolo</b>: referendum e iniziativa.',
+    's5.foot':'Missione 2 risolta — che cosa vi ha sorpreso?',
+    's6.kick':'3 — ESERCIZIO · DISCUSSIONE','s6.h1':'Ma perché, in fondo?',
+    's6.q':'«Siamo onesti: un’autocrazia è più veloce. Una decisione, niente dibattito. Perché ci permettiamo questo apparato così lento?»',
+    's6.task':'<b>2′</b> in due o tre: questo apparato lento ne vale la pena — sì o no?<br><b>3′</b> in plenaria: per gruppo <b>un</b> argomento più forte — a favore o contro.',
+    's6.foot':'Moderazione: interrompere dopo 2′ — un argomento per gruppo, poi avanti.',
+    's7.kick':'3 — ESERCIZIO · LA SOLUZIONE','s7.h1':'La mela marcia','s7.ta':'Autocrazia','s7.tb':'Separazione dei poteri',
+    's7.ca':'La mela marcia sta in cima. Nessuno può controllarla né sostituirla — il marcio diventa sistema.',
+    's7.cb':'La mela marcia viene vista: due poteri e il popolo possono fermarla e sostituirla. Il danno resta locale.',
+    's7.punch':'I freni non servono ad andare piano — servono a <b>poter</b> andare veloce.',
+    's7.foot':'Da mostrare solo dopo la discussione — niente spoiler.','s7.anim':'▶ Mostra come animazione',
+    's8.star':'★ Prenditi la stella','s8.h1':'«La democrazia? Tanto sono tutti corrotti.»',
+    's8.lede':'Il tuo kit proprio per quella discussione:',
+    's8.c1h':'Proprio per questo','s8.c1p':'La corruzione ha bisogno di potere senza controllo. Qui ognuno controlla l’altro — l’abuso costa caro.',
+    's8.c2h':'Nessuno è entrambi','s8.c2p':'Chi fa le leggi non le esegue e non le giudica — una persona, un potere.',
+    's8.c3h':'Sei tu l’ultima istanza','s8.c3p':'Referendum e iniziativa: in Svizzera perfino il popolo controlla lo Stato.',
+    's8.c4h':'La lentezza è il prezzo della sicurezza','s8.c4p':'L’autocrazia è più veloce — ma buona solo finché il potere resta benevolo.',
+    's8.foot':'Bottom line → Master Checklist · stella Civics ★ guadagnata',
+    's10.body':'The Learning Loop — design e concetto del formato di workshop gamificato: <b>DAY8 GmbH</b>',
+    's10.cap':'Slide, video, quiz e stella — tutto da rivedere',
+    's11.kick':'PER LA MODERAZIONE','s11.h1':'Regia',
+    's11.r1':'<b>Intro</b> — slide QR, <a href="https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch&amp;host=1">apri la vista beamer</a>, gioca le 3 domande. Le spiegazioni le mostra l’app.',
+    's11.r2':'<b>Tema</b> — annuncia la missione, <a href="https://www.youtube.com/watch?v=Nadu4ABEmxQ">video easyvote (1:24, in tedesco)</a> dalla slide, poi la slide check: percorrere il triangolo, raccogliere le sorprese. Backup: <a href="'+SRF+'">SRF «3 Gewalten»</a>.',
+    's11.r3':'<b>Esercizio</b> — discussione del perché: 2′ in due/tre, poi 3′ in plenaria, <b>un</b> argomento per gruppo. Interrompere dopo 2′. <b>Solo dopo</b> mostrare la soluzione: mela marcia + frase dei freni.',
+    's11.r4':'<b>Da ricordare</b> — kit dello scettico, bottom line sulla Master Checklist, assegnare la stella Civics ★. Mai tagliare.',
+    's11.r5':'<b>Cuscinetto</b> — poi passaggio alla Runde.',
+    's11.foot':'Dettagli: docs/runbook-gewaltenteilung-ch.md · Da rivedere:'
+  }};
+
+  // "Zum Lesen" line per language (built with the right ch.ch link)
+  var READ = {
+    de: 'Zum Lesen:', en: 'To read:', fr: 'À lire :', it: 'Da leggere:'
+  };
+  var CHNAME = {
+    de: 'Gewaltenteilung', en: 'Separation of powers',
+    fr: 'La séparation des pouvoirs', it: 'La separazione dei poteri'
+  };
+
+  if (L !== 'de' && T[L]) {
+    var dict = T[L];
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var v = dict[el.getAttribute('data-i18n')];
+      if (v) el.innerHTML = v;
+    });
+    // long names need a smaller node font in the diagram
+    document.querySelectorAll('svg .nodename').forEach(function(el){
+      el.setAttribute('font-size','20');
+    });
+  }
+  // the read-more line always points at the language-matched ch.ch page
+  document.querySelector('[data-i18n="s4.alt"]').innerHTML = alt(READ[L], CHNAME[L]);
+  // language-aware tool links
+  var TL = {de:'Einstieg', en:'Warm-up', fr:'Intro', it:'Intro'};
+  document.getElementById('timer1').href += '&label=' + encodeURIComponent(TL[L]) + '&lang=' + L;
+  document.getElementById('timer2').href += '&label=Duos&lang=' + L;
+  document.getElementById('animlink').href += '?lang=' + L;
+
+  function make(id, url, cell){
+    var qr = qrcode(0, 'M');
+    qr.addData(url);
+    qr.make();
+    document.getElementById(id).innerHTML = qr.createSvgTag(cell, 0);
+  }
+  var contentUrl = 'https://tigerraph.github.io/dm-quiz/content/gewaltenteilung-ch.html' + (L !== 'de' ? '?lang=' + L : '');
+  make('qr', 'https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch', 8);
+  make('qr-star', 'https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch', 3);
+  make('qr-content', contentUrl, 5);
+})();
 </script>
 </body>
 </html>

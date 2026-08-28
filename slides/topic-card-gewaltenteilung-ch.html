@@ -80,15 +80,15 @@
     <div class="opt dim"><span class="box"></span>Action &amp; Mobilisation</div>
 
     <h2>Governing question</h2>
-    <div class="fill">Warum leisten wir uns diesen langsamen Apparat — statt einer schnellen Autokratie?</div>
+    <div class="fill" data-i18n="gov">Warum leisten wir uns diesen langsamen Apparat — statt einer schnellen Autokratie?</div>
 
     <h2>Video (≤ 5 min)</h2>
-    <div class="fill">easyvote — «Gewaltenteilung» · 1:24
+    <div class="fill" data-i18n="vid">easyvote — «Gewaltenteilung» · 1:24
       <small>youtube.com/watch?v=Nadu4ABEmxQ · Backup: SRF school «3 Gewalten»</small>
     </div>
 
     <h2>HMW seed</h2>
-    <div class="fill">erklären + Gewaltenteilung + so, dass ein Skeptiker sie verteidigt
+    <div class="fill" data-i18n="hmw">erklären + Gewaltenteilung + so, dass ein Skeptiker sie verteidigt
       <small>Warm-up: dm-quiz QR — ?session=gewaltenteilung-ch</small>
     </div>
   </div>
@@ -100,16 +100,52 @@
 
     <div class="exlabel">Pick 1–2 exercises (20′)</div>
     <div class="ex"><b>To discuss:</b>&nbsp; <span class="box"></span>HMW + #wall + vote &nbsp; <span class="box on"></span>Why it matters</div>
-    <div class="ex" style="padding-left:8px"><span class="note">→ 2′ Duos: «Ist uns das den Apparat wert?» · 3′ Runde: 1 Argument pro Gruppe</span></div>
+    <div class="ex" style="padding-left:8px"><span class="note" data-i18n="ex">→ 2′ Duos: «Ist uns das den Apparat wert?» · 3′ Runde: 1 Argument pro Gruppe</span></div>
     <div class="ex"><b>To make it stick:</b>&nbsp; <span class="box"></span>TRIAD listening &nbsp; <span class="box"></span>Teach-back</div>
 
     <div class="bar cream"><span>Bottom Line ★</span><span>5m</span></div>
     <div class="bottom">
       <div class="h">Bottom line → Master Checklist</div>
-      <div class="v">«Gewaltenteilung ist das Anti-Korruptions-Design: keine Macht bleibt unkontrolliert — in CH kontrolliert sogar das Volk den Staat.» — Civics-Stern ★</div>
+      <div class="v" data-i18n="bl">«Gewaltenteilung ist das Anti-Korruptions-Design: keine Macht bleibt unkontrolliert — in CH kontrolliert sogar das Volk den Staat.» — Civics-Stern ★</div>
     </div>
     <div class="footer">One card per topic — no new deck. Ever.</div>
   </div>
 </section>
+<script>
+(function(){
+  var L = (new URLSearchParams(location.search).get('lang') || 'de').toLowerCase();
+  if (['de','en','fr','it'].indexOf(L) < 0) L = 'de';
+  document.documentElement.setAttribute('lang', L);
+  var T = {
+  en: {
+    gov:'Why do we afford this slow apparatus — instead of a fast autocracy?',
+    vid:'easyvote — «Gewaltenteilung» · 1:24 · video in German<small>youtube.com/watch?v=Nadu4ABEmxQ · Backup: SRF school «3 Gewalten» · to read: ch.ch/en → separation of powers</small>',
+    hmw:'explain + separation of powers + so that a skeptic defends it<small>Warm-up: dm-quiz QR — ?session=gewaltenteilung-ch</small>',
+    ex:'→ 2′ duos: “Is the slow apparatus worth it?” · 3′ round: 1 argument per group',
+    bl:'“Separation of powers is the anti-corruption design: no power goes unchecked — in CH even the people check the state.” — Civics star ★'
+  },
+  fr: {
+    gov:'Pourquoi s’offrir cet appareil si lent — plutôt qu’une autocratie rapide ?',
+    vid:'easyvote — «Gewaltenteilung» · 1:24 · vidéo en allemand<small>youtube.com/watch?v=Nadu4ABEmxQ · Backup : SRF school «3 Gewalten» · à lire : ch.ch/fr → séparation des pouvoirs</small>',
+    hmw:'expliquer + la séparation des pouvoirs + pour qu’un sceptique la défende<small>Warm-up : dm-quiz QR — ?session=gewaltenteilung-ch</small>',
+    ex:'→ 2′ duos : «Cet appareil en vaut-il la peine ?» · 3′ plénière : 1 argument par groupe',
+    bl:'«La séparation des pouvoirs est le design anti-corruption : aucun pouvoir sans contrôle — en Suisse, même le peuple contrôle l’État.» — étoile Civics ★'
+  },
+  it: {
+    gov:'Perché permetterci questo apparato così lento — invece di un’autocrazia veloce?',
+    vid:'easyvote — «Gewaltenteilung» · 1:24 · video in tedesco<small>youtube.com/watch?v=Nadu4ABEmxQ · Backup: SRF school «3 Gewalten» · da leggere: ch.ch/it → separazione dei poteri</small>',
+    hmw:'spiegare + la separazione dei poteri + così che uno scettico la difenda<small>Warm-up: dm-quiz QR — ?session=gewaltenteilung-ch</small>',
+    ex:'→ 2′ coppie: «Ne vale la pena?» · 3′ plenaria: 1 argomento per gruppo',
+    bl:'«La separazione dei poteri è il design anti-corruzione: nessun potere senza controllo — in Svizzera perfino il popolo controlla lo Stato.» — stella Civics ★'
+  }};
+  if (T[L]) {
+    var d = T[L];
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var v = d[el.getAttribute('data-i18n')];
+      if (v) el.innerHTML = v;
+    });
+  }
+})();
+</script>
 </body>
 </html>

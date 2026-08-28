@@ -52,6 +52,8 @@
 <script>
 (function(){
   var q = new URLSearchParams(location.search);
+  var LG = (q.get('lang')||'de').toLowerCase();
+  var RES = {de:'Weiter',en:'Resume',fr:'Reprendre',it:'Riprendi'}[LG] || 'Weiter';
   var total = Math.max(5, (parseFloat(q.get('m')||'5')*60 + parseFloat(q.get('s')||'0'))|0);
   var label = q.get('label')||'';
   var left = total, running = false, endAt = 0, raf = 0, beeped = false;
@@ -104,7 +106,7 @@
     if(running) raf = requestAnimationFrame(tick);
   }
   function start(){
-    if(running){ running = false; startbtn.textContent = 'Weiter'; cancelAnimationFrame(raf); return; }
+    if(running){ running = false; startbtn.textContent = RES; cancelAnimationFrame(raf); return; }
     if(left <= 0) reset(total);
     endAt = Date.now() + left*1000;
     running = true; beeped = false; startbtn.textContent = 'Pause';

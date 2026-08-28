@@ -26,7 +26,7 @@
   body{background:var(--dark);color:#fff;font-family:'Poppins',system-ui,sans-serif}
   .wrap{max-width:780px;margin:0 auto;padding:40px 22px 80px}
   .kicker{color:var(--teal);font-weight:800;font-size:15px;letter-spacing:.06em}
-  h1{font-weight:800;font-size:clamp(38px,8vw,60px);line-height:1.05;margin:8px 0 10px}
+  h1{font-weight:800;font-size:clamp(34px,7vw,56px);line-height:1.05;margin:8px 0 10px}
   .sub{font-size:18px;opacity:.85;margin-bottom:28px}
   h2{font-weight:800;font-size:24px;margin:44px 0 14px;color:var(--teal)}
   p,li{font-size:17px;line-height:1.6}
@@ -36,7 +36,7 @@
   a{color:var(--green)}
   .langbar{display:flex;justify-content:flex-end;gap:8px;margin-bottom:12px}
   .langbar button{
-    font-family:inherit;font-weight:800;font-size:14px;padding:7px 16px;
+    font-family:inherit;font-weight:800;font-size:14px;padding:7px 14px;
     border-radius:999px;border:2px solid var(--teal);background:none;
     color:var(--teal);cursor:pointer;
   }
@@ -63,9 +63,14 @@
   .small{font-size:14px;opacity:.7;margin-top:8px}
   .diagram{width:100%;max-width:620px;display:block;margin:10px auto}
   footer{margin-top:60px;font-size:14px;opacity:.6}
-  [lang-en]{display:none}
-  html.en [lang-de]{display:none}
-  html.en [lang-en]{display:revert}
+
+  [lang-en],[lang-fr],[lang-it]{display:none}
+  html[data-l=en] [lang-de],html[data-l=en] [lang-fr],html[data-l=en] [lang-it]{display:none}
+  html[data-l=en] [lang-en]{display:revert}
+  html[data-l=fr] [lang-de],html[data-l=fr] [lang-en],html[data-l=fr] [lang-it]{display:none}
+  html[data-l=fr] [lang-fr]{display:revert}
+  html[data-l=it] [lang-de],html[data-l=it] [lang-en],html[data-l=it] [lang-fr]{display:none}
+  html[data-l=it] [lang-it]{display:revert}
 </style>
 </head>
 <body>
@@ -73,15 +78,24 @@
   <div class="langbar">
     <button id="btn-de" class="on" onclick="setLang('de')">DE</button>
     <button id="btn-en" onclick="setLang('en')">EN</button>
+    <button id="btn-fr" onclick="setLang('fr')">FR</button>
+    <button id="btn-it" onclick="setLang('it')">IT</button>
   </div>
 
   <div class="kicker">DEMOCRACY MATTERS × DAY8 · THE LEARNING LOOP</div>
-  <h1>Gewaltenteilung</h1>
+  <h1 lang-de>Gewaltenteilung</h1>
+  <h1 lang-en>Separation of Powers</h1>
+  <h1 lang-fr>La séparation des pouvoirs</h1>
+  <h1 lang-it>La separazione dei poteri</h1>
   <p class="sub" lang-de>Warum Macht Kontrolle braucht — Schweizer Ausgabe. Alles aus der Session zum Nachschauen, Nachspielen und Weitergeben.</p>
   <p class="sub" lang-en>Why power needs checks — Swiss edition. Everything from the session, to rewatch, replay, and pass on.</p>
+  <p class="sub" lang-fr>Pourquoi le pouvoir a besoin de contrôle — édition suisse. Tout ce qu'il faut pour revoir, rejouer et transmettre la session.</p>
+  <p class="sub" lang-it>Perché il potere ha bisogno di controllo — edizione svizzera. Tutto della sessione, da rivedere, rigiocare e condividere.</p>
 
   <h2 lang-de>Der Merksatz</h2>
   <h2 lang-en>The bottom line</h2>
+  <h2 lang-fr>La phrase à retenir</h2>
+  <h2 lang-it>La frase da ricordare</h2>
   <div class="postit" lang-de>
     Gewaltenteilung ist das <b>Anti-Korruptions-Design</b>: keine Macht bleibt
     unkontrolliert — in der Schweiz kontrolliert sogar das Volk den Staat.
@@ -90,19 +104,33 @@
     Separation of powers is the <b>anti-corruption design</b>: no power goes
     unchecked — in Switzerland, even the people check the state.
   </div>
+  <div class="postit" lang-fr>
+    La séparation des pouvoirs est le <b>design anti-corruption</b> : aucun
+    pouvoir sans contrôle — en Suisse, même le peuple contrôle l'État.
+  </div>
+  <div class="postit" lang-it>
+    La separazione dei poteri è il <b>design anti-corruzione</b>: nessun potere
+    senza controllo — in Svizzera perfino il popolo controlla lo Stato.
+  </div>
 
   <h2 lang-de>Das Video</h2>
   <h2 lang-en>The video</h2>
+  <h2 lang-fr>La vidéo</h2>
+  <h2 lang-it>Il video</h2>
   <div class="video">
     <iframe src="https://www.youtube-nocookie.com/embed/Nadu4ABEmxQ?rel=0"
             title="easyvote — Gewaltenteilung" loading="lazy"
             allow="encrypted-media; picture-in-picture" allowfullscreen></iframe>
   </div>
-  <p class="small" lang-de>easyvote — «Gewaltenteilung» (1:24, Deutsch). Alternative: <a href="https://www.srf.ch/play/tv/srf-school/video/3-gewalten?urn=urn:srf:video:e5e3474b-c7a3-4ab2-ae79-52672cbbb981">SRF school — «3 Gewalten»</a>.</p>
-  <p class="small" lang-en>easyvote — “Gewaltenteilung” (1:24, German). Alternative: <a href="https://www.srf.ch/play/tv/srf-school/video/3-gewalten?urn=urn:srf:video:e5e3474b-c7a3-4ab2-ae79-52672cbbb981">SRF school — “3 Gewalten”</a>.</p>
+  <p class="small" lang-de>easyvote — «Gewaltenteilung» (1:24, Deutsch). Alternative: <a href="https://www.srf.ch/play/tv/srf-school/video/3-gewalten?urn=urn:srf:video:e5e3474b-c7a3-4ab2-ae79-52672cbbb981">SRF school — «3 Gewalten»</a> · Zum Lesen: <a href="https://www.ch.ch/de/politisches-system/gewaltenteilung/">ch.ch — Gewaltenteilung</a>.</p>
+  <p class="small" lang-en>easyvote — “Gewaltenteilung” (1:24, German). Alternative: <a href="https://www.srf.ch/play/tv/srf-school/video/3-gewalten?urn=urn:srf:video:e5e3474b-c7a3-4ab2-ae79-52672cbbb981">SRF school — “3 Gewalten”</a> (German) · To read in English: <a href="https://www.ch.ch/en/political-system/separation-of-powers/">ch.ch — Separation of powers</a>.</p>
+  <p class="small" lang-fr>easyvote — «Gewaltenteilung» (1:24, en allemand). Alternative : <a href="https://www.srf.ch/play/tv/srf-school/video/3-gewalten?urn=urn:srf:video:e5e3474b-c7a3-4ab2-ae79-52672cbbb981">SRF school — «3 Gewalten»</a> (en allemand) · À lire en français : <a href="https://www.ch.ch/fr/systeme-politique/separation-des-pouvoirs/">ch.ch — La séparation des pouvoirs</a>.</p>
+  <p class="small" lang-it>easyvote — «Gewaltenteilung» (1:24, in tedesco). Alternativa: <a href="https://www.srf.ch/play/tv/srf-school/video/3-gewalten?urn=urn:srf:video:e5e3474b-c7a3-4ab2-ae79-52672cbbb981">SRF school — «3 Gewalten»</a> (in tedesco) · Da leggere in italiano: <a href="https://www.ch.ch/it/sistema-politico/separazione-dei-poteri/">ch.ch — La separazione dei poteri</a>.</p>
 
   <h2 lang-de>Wer kontrolliert wen?</h2>
   <h2 lang-en>Who checks whom?</h2>
+  <h2 lang-fr>Qui contrôle qui ?</h2>
+  <h2 lang-it>Chi controlla chi?</h2>
   <svg class="diagram" viewBox="0 0 620 400" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
@@ -118,39 +146,68 @@
     <line x1="310" y1="164" x2="310" y2="118" stroke="#A8D272" stroke-width="5" marker-end="url(#ahg)"/>
     <g font-family="Poppins,system-ui,sans-serif" text-anchor="middle">
       <rect x="210" y="30" width="200" height="76" rx="12" fill="#435CC6"/>
-      <text x="310" y="62" fill="#fff" font-size="24" font-weight="800">Parlament</text>
+      <text x="310" y="62" fill="#fff" font-size="24" font-weight="800" lang-de>Parlament</text>
+      <text x="310" y="62" fill="#fff" font-size="24" font-weight="800" lang-en>Parliament</text>
+      <text x="310" y="62" fill="#fff" font-size="22" font-weight="800" lang-fr>Parlement</text>
+      <text x="310" y="62" fill="#fff" font-size="22" font-weight="800" lang-it>Parlamento</text>
       <text x="310" y="90" fill="#fff" font-size="17" opacity=".85" lang-de>macht die Gesetze</text>
       <text x="310" y="90" fill="#fff" font-size="17" opacity=".85" lang-en>makes the laws</text>
+      <text x="310" y="90" fill="#fff" font-size="17" opacity=".85" lang-fr>fait les lois</text>
+      <text x="310" y="90" fill="#fff" font-size="17" opacity=".85" lang-it>fa le leggi</text>
       <rect x="20" y="250" width="200" height="76" rx="12" fill="#435CC6"/>
-      <text x="120" y="282" fill="#fff" font-size="24" font-weight="800">Bundesrat</text>
+      <text x="120" y="282" fill="#fff" font-size="24" font-weight="800" lang-de>Bundesrat</text>
+      <text x="120" y="282" fill="#fff" font-size="20" font-weight="800" lang-en>Federal Council</text>
+      <text x="120" y="282" fill="#fff" font-size="20" font-weight="800" lang-fr>Conseil fédéral</text>
+      <text x="120" y="282" fill="#fff" font-size="18" font-weight="800" lang-it>Consiglio federale</text>
       <text x="120" y="310" fill="#fff" font-size="17" opacity=".85" lang-de>führt sie aus</text>
       <text x="120" y="310" fill="#fff" font-size="17" opacity=".85" lang-en>carries them out</text>
+      <text x="120" y="310" fill="#fff" font-size="17" opacity=".85" lang-fr>les exécute</text>
+      <text x="120" y="310" fill="#fff" font-size="17" opacity=".85" lang-it>le esegue</text>
       <rect x="400" y="250" width="200" height="76" rx="12" fill="#435CC6"/>
       <text x="500" y="282" fill="#fff" font-size="24" font-weight="800" lang-de>Gerichte</text>
       <text x="500" y="282" fill="#fff" font-size="24" font-weight="800" lang-en>Courts</text>
+      <text x="500" y="282" fill="#fff" font-size="22" font-weight="800" lang-fr>Tribunaux</text>
+      <text x="500" y="282" fill="#fff" font-size="22" font-weight="800" lang-it>Tribunali</text>
       <text x="500" y="310" fill="#fff" font-size="17" opacity=".85" lang-de>wenden sie an</text>
       <text x="500" y="310" fill="#fff" font-size="17" opacity=".85" lang-en>apply them</text>
+      <text x="500" y="310" fill="#fff" font-size="17" opacity=".85" lang-fr>les appliquent</text>
+      <text x="500" y="310" fill="#fff" font-size="17" opacity=".85" lang-it>le applicano</text>
       <text x="182" y="162" fill="#5EB9A9" font-size="16" font-weight="800" text-anchor="end" lang-de>wählt &amp;</text>
       <text x="182" y="182" fill="#5EB9A9" font-size="16" font-weight="800" text-anchor="end" lang-de>beaufsichtigt</text>
       <text x="182" y="162" fill="#5EB9A9" font-size="16" font-weight="800" text-anchor="end" lang-en>elects &amp;</text>
       <text x="182" y="182" fill="#5EB9A9" font-size="16" font-weight="800" text-anchor="end" lang-en>oversees</text>
+      <text x="182" y="162" fill="#5EB9A9" font-size="16" font-weight="800" text-anchor="end" lang-fr>élit &amp;</text>
+      <text x="182" y="182" fill="#5EB9A9" font-size="16" font-weight="800" text-anchor="end" lang-fr>surveille</text>
+      <text x="182" y="162" fill="#5EB9A9" font-size="16" font-weight="800" text-anchor="end" lang-it>elegge &amp;</text>
+      <text x="182" y="182" fill="#5EB9A9" font-size="16" font-weight="800" text-anchor="end" lang-it>sorveglia</text>
       <text x="438" y="172" fill="#5EB9A9" font-size="16" font-weight="800" text-anchor="start" lang-de>wählt</text>
       <text x="438" y="172" fill="#5EB9A9" font-size="16" font-weight="800" text-anchor="start" lang-en>elects</text>
+      <text x="438" y="172" fill="#5EB9A9" font-size="16" font-weight="800" text-anchor="start" lang-fr>élit</text>
+      <text x="438" y="172" fill="#5EB9A9" font-size="16" font-weight="800" text-anchor="start" lang-it>elegge</text>
       <text x="312" y="348" fill="#5EB9A9" font-size="15" font-weight="800" lang-de>kontrollieren die Verwaltung</text>
       <text x="312" y="348" fill="#5EB9A9" font-size="15" font-weight="800" lang-en>check the administration</text>
+      <text x="312" y="348" fill="#5EB9A9" font-size="15" font-weight="800" lang-fr>contrôlent l'administration</text>
+      <text x="312" y="348" fill="#5EB9A9" font-size="15" font-weight="800" lang-it>controllano l'amministrazione</text>
       <rect x="245" y="168" width="130" height="46" rx="23" fill="#A8D272"/>
       <text x="310" y="198" fill="#22313C" font-size="20" font-weight="800" lang-de>das Volk</text>
       <text x="310" y="198" fill="#22313C" font-size="20" font-weight="800" lang-en>the people</text>
+      <text x="310" y="198" fill="#22313C" font-size="20" font-weight="800" lang-fr>le peuple</text>
+      <text x="310" y="198" fill="#22313C" font-size="20" font-weight="800" lang-it>il popolo</text>
       <text x="310" y="242" fill="#A8D272" font-size="15" lang-de>Referendum &amp; Initiative</text>
       <text x="310" y="242" fill="#A8D272" font-size="15" lang-en>referendum &amp; initiative</text>
+      <text x="310" y="242" fill="#A8D272" font-size="15" lang-fr>référendum &amp; initiative</text>
+      <text x="310" y="242" fill="#A8D272" font-size="15" lang-it>referendum e iniziativa</text>
     </g>
   </svg>
-
-  <p class="small" lang-de>Warum das schützt: <a href="fauler-apfel.html">«Der faule Apfel» — als Animation</a>.</p>
-  <p class="small" lang-en>Why this protects: <a href="fauler-apfel.html">“The rotten apple” — as an animation</a>.</p>
+  <p class="small" lang-de>Warum das schützt: <a class="animlink" href="fauler-apfel.html">«Der faule Apfel» — als Animation</a>.</p>
+  <p class="small" lang-en>Why this protects: <a class="animlink" href="fauler-apfel.html">“The rotten apple” — as an animation</a>.</p>
+  <p class="small" lang-fr>Pourquoi ça protège : <a class="animlink" href="fauler-apfel.html">«La pomme pourrie» — en animation</a>.</p>
+  <p class="small" lang-it>Perché protegge: <a class="animlink" href="fauler-apfel.html">«La mela marcia» — come animazione</a>.</p>
 
   <h2 lang-de>Die Hauptpunkte</h2>
   <h2 lang-en>The main points</h2>
+  <h2 lang-fr>Les points essentiels</h2>
+  <h2 lang-it>I punti principali</h2>
   <ol lang-de>
     <li><b>Drei Gewalten:</b> Das Parlament macht die Gesetze, der Bundesrat führt sie aus, die Gerichte wenden sie an — und niemand darf gleichzeitig in zwei Gewalten sitzen.</li>
     <li>Der Bundesrat (7 Mitglieder) wird von der <b>Vereinigten Bundesversammlung</b> gewählt — nicht vom Volk.</li>
@@ -165,57 +222,69 @@
     <li>Parliament <b>cannot be dissolved</b> early — fixed four-year terms.</li>
     <li>And the why: an autocracy is faster — but only good <b>as long as</b> the power stays benevolent. Separation of powers is the insurance against the bad case.</li>
   </ol>
+  <ol lang-fr>
+    <li><b>Trois pouvoirs :</b> le Parlement fait les lois, le Conseil fédéral les exécute, les tribunaux les appliquent — et personne ne peut siéger dans deux pouvoirs à la fois.</li>
+    <li>Le Conseil fédéral (7 membres) est élu par l'<b>Assemblée fédérale réunie</b> — pas par le peuple.</li>
+    <li>Le Tribunal fédéral <b>ne peut pas annuler</b> les lois fédérales — il doit les appliquer (art. 190 Cst.). Le contrôle du Parlement, c'est le peuple : le référendum.</li>
+    <li>Le Parlement <b>ne peut pas être dissous</b> avant terme — législature fixe de quatre ans.</li>
+    <li>Et le pourquoi : une autocratie est plus rapide — mais bonne seulement <b>tant que</b> le pouvoir reste bienveillant. La séparation des pouvoirs est l'assurance contre le mauvais cas.</li>
+  </ol>
+  <ol lang-it>
+    <li><b>Tre poteri:</b> il Parlamento fa le leggi, il Consiglio federale le esegue, i tribunali le applicano — e nessuno può sedere in due poteri contemporaneamente.</li>
+    <li>Il Consiglio federale (7 membri) è eletto dall'<b>Assemblea federale plenaria</b> — non dal popolo.</li>
+    <li>Il Tribunale federale <b>non può annullare</b> le leggi federali — deve applicarle (art. 190 Cost.). Il controllo sul Parlamento è il popolo: il referendum.</li>
+    <li>Il Parlamento <b>non può essere sciolto</b> in anticipo — legislatura fissa di quattro anni.</li>
+    <li>E il perché: un'autocrazia è più veloce — ma buona solo <b>finché</b> il potere resta benevolo. La separazione dei poteri è l'assicurazione contro il caso peggiore.</li>
+  </ol>
 
   <h2 lang-de>Selber spielen &amp; nachlesen</h2>
   <h2 lang-en>Play &amp; look it up</h2>
+  <h2 lang-fr>Jouer &amp; relire</h2>
+  <h2 lang-it>Gioca &amp; rileggi</h2>
   <p lang-de>Der Quiz aus der Session läuft jederzeit auch solo auf deinem Handy.</p>
   <p lang-en>The session quiz also runs solo on your phone, any time.</p>
+  <p lang-fr>Le quiz de la session se joue aussi en solo sur ton téléphone, à tout moment.</p>
+  <p lang-it>Il quiz della sessione si gioca anche da soli sul telefono, in qualsiasi momento.</p>
   <div class="btnrow">
     <a class="btn" href="../?session=gewaltenteilung-ch" lang-de>Quiz spielen</a>
     <a class="btn" href="../?session=gewaltenteilung-ch" lang-en>Play the quiz</a>
+    <a class="btn" href="../?session=gewaltenteilung-ch" lang-fr>Jouer au quiz</a>
+    <a class="btn" href="../?session=gewaltenteilung-ch" lang-it>Gioca al quiz</a>
     <a class="btn alt" href="../slides/gewaltenteilung-ch.pdf" lang-de>Folien (PDF)</a>
-    <a class="btn alt" href="../slides/gewaltenteilung-ch.pdf" lang-en>Slides (PDF)</a>
+    <a class="btn alt" href="../slides/gewaltenteilung-ch.en.pdf" lang-en>Slides (PDF)</a>
+    <a class="btn alt" href="../slides/gewaltenteilung-ch.fr.pdf" lang-fr>Slides (PDF)</a>
+    <a class="btn alt" href="../slides/gewaltenteilung-ch.it.pdf" lang-it>Slide (PDF)</a>
     <a class="btn alt" href="../slides/topic-card-gewaltenteilung-ch.pdf" lang-de>Topic Card (PDF)</a>
-    <a class="btn alt" href="../slides/topic-card-gewaltenteilung-ch.pdf" lang-en>Topic card (PDF)</a>
+    <a class="btn alt" href="../slides/topic-card-gewaltenteilung-ch.en.pdf" lang-en>Topic card (PDF)</a>
+    <a class="btn alt" href="../slides/topic-card-gewaltenteilung-ch.fr.pdf" lang-fr>Topic card (PDF)</a>
+    <a class="btn alt" href="../slides/topic-card-gewaltenteilung-ch.it.pdf" lang-it>Topic card (PDF)</a>
   </div>
   <p class="small" lang-de>Die Topic Card ist die Ein-Blatt-Version der Session — für Durchführungen ohne Folien.</p>
   <p class="small" lang-en>The topic card is the one-page version of the session — for runs without slides.</p>
+  <p class="small" lang-fr>La topic card est la version une-page de la session — pour animer sans slides.</p>
+  <p class="small" lang-it>La topic card è la versione in una pagina della sessione — per condurla senza slide.</p>
 
-  <footer>
-    <span lang-de>Democracy Matters × DAY8 — The Learning Loop. Learn it. Keep it.</span>
-    <span lang-en>Democracy Matters × DAY8 — The Learning Loop. Learn it. Keep it.</span>
-  </footer>
+  <footer>Democracy Matters × DAY8 — The Learning Loop. Learn it. Keep it.</footer>
 </div>
 <script>
   function setLang(l){
-    document.documentElement.classList.toggle('en', l === 'en');
+    if(['de','en','fr','it'].indexOf(l) < 0) l = 'de';
+    if(l === 'de') document.documentElement.removeAttribute('data-l');
+    else document.documentElement.setAttribute('data-l', l);
     document.documentElement.setAttribute('lang', l);
-    document.getElementById('btn-de').classList.toggle('on', l === 'de');
-    document.getElementById('btn-en').classList.toggle('on', l === 'en');
+    ['de','en','fr','it'].forEach(function(x){
+      document.getElementById('btn-'+x).classList.toggle('on', x === l);
+    });
+    document.querySelectorAll('.animlink').forEach(function(a){
+      a.href = 'fauler-apfel.html' + (l !== 'de' ? '?lang=' + l : '');
+    });
     try{localStorage.setItem('dm-lang', l);}catch(e){}
   }
   try{
     var q = new URLSearchParams(location.search).get('lang');
     var saved = q || localStorage.getItem('dm-lang');
-    if(saved === 'en') setLang('en');
+    if(saved && saved !== 'de') setLang(saved);
   }catch(e){}
-</script>
-<script>
-/* Opened straight off the disk, a YouTube embed has no origin to report and
-   the player refuses with "Error 153". Nothing can fix that inside the frame,
-   so swap it for a poster that opens the video in a real tab. Served over
-   http(s) — which is how the slides link to this page — the embed is used. */
-(function(){
-  if (location.protocol !== "file:") return;
-  var box = document.querySelector(".video");
-  if (!box) return;
-  box.innerHTML =
-    '<a class="videofallback" href="https://www.youtube.com/watch?v=Nadu4ABEmxQ" '
-  + 'target="_blank" rel="noopener">'
-  + '<img src="../assets/img/easyvote-thumb.jpg" alt="">'
-  + '<span class="playbtn" aria-hidden="true">&#9654;</span>'
-  + '<span class="vfcap">easyvote — «Gewaltenteilung» · auf YouTube öffnen</span></a>';
-})();
 </script>
 </body>
 </html>
