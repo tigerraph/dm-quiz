@@ -13,11 +13,11 @@ and the Learning Loop deck (Bottom-line beat: "Collect your pillar star ★").
 
 Three pillars, ids fixed forever (they go into the database):
 
-| id | EN | DE | FR |
-|---|---|---|---|
-| `civics` | Civics & Basic Concepts | Staatskunde & Grundbegriffe | Civisme & concepts de base |
-| `comm` | Communication & Social Media | Kommunikation & Social Media | Communication & réseaux sociaux |
-| `action` | Action & Mobilisation | Aktion & Mobilisierung | Action & mobilisation |
+| id | EN | DE | FR | IT |
+|---|---|---|---|---|
+| `civics` | Civics & Basic Concepts | Staatskunde & Grundbegriffe | Civisme & concepts de base | Educazione civica & concetti di base |
+| `comm` | Communication & Social Media | Kommunikation & Social Media | Communication & réseaux sociaux | Comunicazione & social media |
+| `action` | Action & Mobilisation | Aktion & Mobilisierung | Action & mobilisation | Azione & mobilitazione |
 
 - **DM Champion** — at least **3 stars in every pillar** (9+ total).
 - **DM Master** — the second lap: at least **6 stars in every pillar**.

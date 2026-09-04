@@ -133,8 +133,9 @@ Pack schema:
 - `timer_ms` defaults to 20000.
 - `sure` is an authoring flag ("we have checked this fact"). It carries over
   from the wedding pack schema and the app does not read it.
-- Languages: `en`, `de`, `fr`. A missing language falls back to `en`, so a pack
-  can ship in two languages and gain the third later.
+- Languages: `en`, `de`, `fr`, `it` — the four the slide decks speak. A missing
+  language falls back to `en`, so a pack can ship in two languages and gain the
+  rest later.
 
 ## Build
 

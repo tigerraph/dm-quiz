@@ -590,15 +590,81 @@ const I18N = {
   rescueQ:(n,d,c)=>`Tu es ${n} avec ${c} \u2605 (dernier : ${d}) ?`,
   rescueYes:"Oui, r\u00e9cup\u00e9rer mes \u00e9toiles", rescueNo:"Pas moi",
   rescued:"\u00c9toiles r\u00e9cup\u00e9r\u00e9es \u2605", rename:"Changer de nom"
+ },
+ it:{
+  brand:"Democracy Matters", quiz:"Quiz",
+  pickTitle:"Scegli una sessione", pickSub:"Scegli la sessione che vuoi giocare.",
+  namePh:"Il tuo nome", join:"Partecipa", play:"Gioca",
+  meta:(n,sec)=>`${n} domande \u00b7 ${sec}s ciascuna`,
+  qof:(i,n)=>`Domanda ${i}/${n}`, ptsWord:"punti",
+  correct:"Esatto!", wrong:"Purtroppo no \u2026", timeout:"Tempo scaduto!",
+  noAnswer:"Nessuna risposta",
+  answerWas:"La risposta giusta:", streak:x=>`Serie x${x}`, why:"Perch\u00e9",
+  next:"Avanti", last:"Vedi il risultato", start:"Avvia il quiz", restart:"Nuovo giro",
+  clearPlayers:"Svuota la lista", clearConfirm:n=>`Rimuovere tutti i ${n} partecipanti e ripartire da zero?`,
+  reveal:"Mostra la risposta", finish:"Concludi",
+  /* not «${c} risposte giuste su ${n}» — that reads "1 risposte giuste" for
+     everyone who gets exactly one right, which on this quiz is common. */
+  result:"Il tuo risultato", ofN:(c,n)=>`Risposte giuste: ${c} su ${n}`, again:"Gioca ancora",
+  board:"Classifica", noScores:"Ancora nessun risultato", rank:"Posizione", you:"tu",
+  scanTitle:"Scansiona per partecipare", players:"Partecipanti", topScore:"Miglior punteggio",
+  answered:(a,b)=>`${a}/${b} hanno risposto`, votes:"risposte",
+  lobbyTitle:"Ci sei",
+  lobbyWait:"Guarda lo schermo grande \u2014 il quiz inizia tra un attimo",
+  lobbyHost:"In attesa dei partecipanti",
+  lobbyHostSub:"Scansiona il codice per partecipare. Avvia quando ci sono tutti.",
+  locked:"Risposta registrata", lockedSub:"In attesa degli altri",
+  waitNext:"In attesa della prossima domanda",
+  done:"\u00c8 tutto", doneSub:"Grazie per aver giocato",
+  soloTitle:"Modalit\u00e0 solo", soloSub:"Nessun collegamento dal vivo \u2014 puoi giocare al tuo ritmo.",
+  removeHint:"Rimuovi dalla sessione", removeConfirm:n=>`Rimuovere ${n} dalla sessione?`,
+  removed:"Non sei pi\u00f9 nella sessione",
+  removedSub:"La moderazione ti ha rimosso da questa sessione.",
+  noSession:"Sessione sconosciuta", noSessionSub:"Questo ID di sessione non \u00e8 nel registro.",
+  loadFail:"Impossibile caricare i dati della sessione.",
+  hostNeedsDb:"La modalit\u00e0 dal vivo richiede Supabase",
+  hostNeedsDbSub:"La vista beamer coordina tutti i telefoni attraverso il database. Inserisci l'URL del progetto e la chiave anon in src/config.json, ricostruisci e ricarica. Nel frattempo resta disponibile la modalit\u00e0 solo.",
+  myDM:"My DM", curriculum:"Curriculum",
+  passportSub:"Il tuo passaporto delle stelle \u2014 una stella per sessione.",
+  champion:"DM Champion", master:"DM Master",
+  champRule:"3 stelle in ogni pilastro \u2192 DM Champion \u00b7 6 \u2192 DM Master",
+  noStarsYet:"Ancora nessuna stella. Le raccogli alla fine di ogni sessione.",
+  waitingSession:"La sessione non \u00e8 ancora iniziata \u2014 questa pagina cambia da sola.",
+  claimTitle:"La tua stella \u00e8 pronta", claimBtn:"Prendi la tua stella \u2605",
+  claimedTitle:"Stella presa!",
+  claimScan:"Scansiona e prendi la tua stella", awardStar:"Assegna la stella \u2605",
+  starsCount:n=>`${n} \u2605 ${n===1?"raccolta":"raccolte"}`,
+  addStar:"Aggiungi una stella", mWho:"Persona", mPillar:"Pilastro",
+  mTopic:"Tema (facoltativo)", mDate:"Data (facoltativa)", mAdd:"Aggiungi",
+  starAdded:"Stella aggiunta \u2605", cancel:"Annulla", back:"Indietro",
+  demoNote:"Passaporti demo \u2014 non viene salvato nulla.",
+  account:"Account", email:"E-mail", pw:"Password",
+  accountHint:"Un account conserva le tue stelle se cambi o perdi il telefono.",
+  signup:"Crea un account", login:"Accedi", logout:"Esci",
+  loggedInAs:e=>`Connesso come ${e}`,
+  changePw:"Cambia password", newPw:"Nuova password", pwChanged:"Password cambiata \u2713",
+  save:"Salva",
+  deleteAccount:"Elimina l'account",
+  deleteConfirm:"Eliminare il tuo account? Le tue stelle vivranno di nuovo solo su questo telefono.",
+  deleted:"Account eliminato",
+  deleteFailed:"L'eliminazione non \u00e8 ancora disponibile \u2014 rivolgiti alla moderazione.",
+  authFailed:"Non ha funzionato \u2014 controlla e-mail e password.",
+  emailTaken:"Questa e-mail ha gi\u00e0 un account \u2014 accedi.",
+  pwShort:"Password: almeno 6 caratteri.",
+  confirmSent:"Ci siamo quasi \u2014 conferma prima l'e-mail che ti abbiamo inviato, poi accedi.",
+  reviewBtn:"Le mie risposte", reviewTitle:"Riepilogo del quiz", yourAnswer:"La tua risposta:",
+  rescueQ:(n,d,c)=>`Sei tu ${n} con ${c} \u2605 (ultima: ${d})?`,
+  rescueYes:"S\u00ec, recupera le mie stelle", rescueNo:"Non sono io",
+  rescued:"Stelle recuperate \u2605", rename:"Cambia nome"
  }
 };
-const LANGS = ["en","de","fr"];
+const LANGS = ["en","de","fr","it"];
 
 /* The three curriculum pillars. Ids are forever — they sit in dm_stars rows. */
 const PILLARS = {
-  civics:{ en:"Civics & Basic Concepts", de:"Staatskunde & Grundbegriffe", fr:"Civisme & concepts de base" },
-  comm:{   en:"Communication & Social Media", de:"Kommunikation & Social Media", fr:"Communication & réseaux sociaux" },
-  action:{ en:"Action & Mobilisation", de:"Aktion & Mobilisierung", fr:"Action & mobilisation" }
+  civics:{ en:"Civics & Basic Concepts", de:"Staatskunde & Grundbegriffe", fr:"Civisme & concepts de base", it:"Educazione civica & concetti di base" },
+  comm:{   en:"Communication & Social Media", de:"Kommunikation & Social Media", fr:"Communication & réseaux sociaux", it:"Comunicazione & social media" },
+  action:{ en:"Action & Mobilisation", de:"Aktion & Mobilisierung", fr:"Action & mobilisation", it:"Azione & mobilitazione" }
 };
 const PILLAR_IDS = ["civics","comm","action"];
 const CHAMPION_PER_PILLAR = 3, MASTER_PER_PILLAR = 6;
