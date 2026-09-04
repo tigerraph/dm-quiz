@@ -36,6 +36,9 @@
 
   .step{opacity:0;transition:opacity .5s}
   .step.on{opacity:1}
+  /* data-off blendet ein Element ab einem Schritt wieder aus — die Fäulnis­pfeile
+     verschwinden mit dem Apfel, der herausfliegt. */
+  .step.off{opacity:0}
   .apple.first.on{animation:drop .7s}
   .apple.out.ej{animation:eject .9s forwards}
   @keyframes drop{from{opacity:0;transform:translateY(-46px)}to{opacity:1;transform:none}}
@@ -50,40 +53,111 @@
   <div class="panels">
     <div class="panel a">
       <div class="t" id="ta">Autokratie</div>
-      <svg viewBox="0 0 320 150">
-        <rect x="115" y="8" width="90" height="46" rx="10" fill="#5a6b78"/>
-        <line x1="140" y1="58" x2="75" y2="102" stroke="#5a6b78" stroke-width="4"/>
-        <line x1="160" y1="58" x2="160" y2="102" stroke="#5a6b78" stroke-width="4"/>
-        <line x1="180" y1="58" x2="245" y2="102" stroke="#5a6b78" stroke-width="4"/>
-        <rect x="35" y="104" width="80" height="38" rx="8" fill="#5a6b78" opacity=".55"/>
-        <rect x="120" y="104" width="80" height="38" rx="8" fill="#5a6b78" opacity=".55"/>
-        <rect x="205" y="104" width="80" height="38" rx="8" fill="#5a6b78" opacity=".55"/>
-        <text class="step apple first" data-at="1" x="160" y="40" text-anchor="middle" font-size="26">🍎</text>
-        <text class="step" data-at="2" x="75" y="130" text-anchor="middle" font-size="18">🍎</text>
-        <text class="step" data-at="3" x="160" y="130" text-anchor="middle" font-size="18">🍎</text>
-        <text class="step" data-at="4" x="245" y="130" text-anchor="middle" font-size="18">🍎</text>
+      <!-- Drei gesunde Äpfel stehen von Anfang an unten. Schritt 1 setzt den
+           faulen an die Spitze, die Schritte 2–4 lassen die Fäulnis einen nach
+           dem anderen erreichen — das ist der Vorgang, den die statische Folie
+           nur als Endzustand zeigen kann. -->
+      <svg viewBox="0 0 320 152">
+        <defs>
+          <path id="bodyC" d="M0,-7 C-5.5,-13.5 -13,-9.5 -13,-2 C-13,6 -7.5,13 -3,13 C-1.4,13 -1,12 0,12 C1,12 1.4,13 3,13 C7.5,13 13,6 13,-2 C13,-9.5 5.5,-13.5 0,-7 Z"/>
+          <g id="apC"><use href="#bodyC"/>
+            <path d="M0,-7.5 C0.5,-11 2,-13.5 5,-15.5" fill="none" stroke="#31241A"
+                  stroke-width="2" stroke-linecap="round"/></g>
+          <marker id="rotC" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13"
+                  refX="10" refY="6.5" orient="auto">
+            <path d="M0,0 L13,6.5 L0,13 z" fill="#C58E4E"/>
+          </marker>
+          <clipPath id="clL2"><use href="#bodyC" x="73" y="121"/></clipPath>
+          <clipPath id="clM2"><use href="#bodyC" x="160" y="121"/></clipPath>
+          <clipPath id="clR2"><use href="#bodyC" x="247" y="121"/></clipPath>
+        </defs>
+        <rect x="112" y="6" width="96" height="50" rx="10" fill="#5a6b78"/>
+        <rect x="32" y="101" width="82" height="45" rx="8" fill="#5a6b78" opacity=".55"/>
+        <rect x="119" y="101" width="82" height="45" rx="8" fill="#5a6b78" opacity=".55"/>
+        <rect x="206" y="101" width="82" height="45" rx="8" fill="#5a6b78" opacity=".55"/>
+        <use href="#apC" x="73" y="121" fill="#FDF2D0"/>
+        <use href="#apC" x="160" y="121" fill="#FDF2D0"/>
+        <use href="#apC" x="247" y="121" fill="#FDF2D0"/>
+        <g class="step apple first" data-at="1">
+          <use href="#apC" x="160" y="31" fill="#8A5A2E"/>
+          <circle cx="154" cy="28" r="4.2" fill="#432913"/>
+          <circle cx="166" cy="35" r="3.2" fill="#432913"/>
+          <circle cx="158" cy="39" r="2.2" fill="#432913"/>
+        </g>
+        <g class="step" data-at="2">
+          <path d="M141,60 L88,96" stroke="#C58E4E" stroke-width="4" fill="none" marker-end="url(#rotC)"/>
+          <g clip-path="url(#clL2)">
+            <ellipse cx="73" cy="121" rx="16" ry="16" fill="#8A5A2E"/>
+            <circle cx="68" cy="118" r="3.8" fill="#432913"/>
+            <circle cx="78" cy="126" r="3" fill="#432913"/>
+          </g>
+        </g>
+        <g class="step" data-at="3">
+          <path d="M160,60 L160,96" stroke="#C58E4E" stroke-width="4" fill="none" marker-end="url(#rotC)"/>
+          <g clip-path="url(#clM2)">
+            <ellipse cx="163" cy="124" rx="15" ry="15" fill="#8A5A2E"/>
+            <circle cx="164" cy="120" r="3.4" fill="#432913"/>
+            <circle cx="157" cy="128" r="2.6" fill="#432913"/>
+          </g>
+        </g>
+        <g class="step" data-at="4">
+          <path d="M179,60 L232,96" stroke="#C58E4E" stroke-width="4" fill="none" marker-end="url(#rotC)"/>
+          <g clip-path="url(#clR2)">
+            <ellipse cx="250" cy="125" rx="12.5" ry="12.5" fill="#8A5A2E"/>
+            <circle cx="251" cy="123" r="3" fill="#432913"/>
+            <circle cx="245" cy="129" r="2.2" fill="#432913"/>
+          </g>
+        </g>
       </svg>
-      <div class="c step" data-at="5" id="ca">Der faule Apfel sitzt oben. Niemand darf ihn prüfen, niemand kann ihn ersetzen — die Fäulnis wird System.</div>
+      <div class="c step" data-at="5" id="ca">Der faule Apfel sitzt oben — und niemand darf ihn prüfen. Die Fäulnis wandert nach unten, einer nach dem anderen wird angesteckt.</div>
     </div>
     <div class="panel b">
       <div class="t" id="tb">Gewaltenteilung</div>
-      <svg viewBox="0 0 320 150">
-        <rect x="15" y="30" width="85" height="46" rx="10" fill="#5EB9A9"/>
-        <rect x="118" y="30" width="85" height="46" rx="10" fill="#5a6b78"/>
-        <rect x="221" y="30" width="85" height="46" rx="10" fill="#5EB9A9"/>
-        <line x1="102" y1="53" x2="114" y2="53" stroke="#5EB9A9" stroke-width="4"/>
-        <line x1="219" y1="53" x2="207" y2="53" stroke="#5EB9A9" stroke-width="4"/>
-        <text class="step apple out" data-at="6" data-ej="9" x="160" y="62" text-anchor="middle" font-size="26">🍎</text>
-        <text class="step" data-at="7" x="57" y="60" text-anchor="middle" font-size="24">👀</text>
-        <text class="step" data-at="7" x="263" y="60" text-anchor="middle" font-size="24">👀</text>
-        <g class="step" data-at="8">
-          <rect x="108" y="102" width="104" height="34" rx="17" fill="#A8D272"/>
-          <text x="160" y="125" text-anchor="middle" font-size="16" font-weight="800" fill="#22313C" id="volktxt">das Volk</text>
-          <line x1="160" y1="100" x2="160" y2="82" stroke="#A8D272" stroke-width="4"/>
+      <!-- Dieselbe Fäulnis drückt hier nach aussen (Schritt 7) und läuft in die
+           grünen Riegel (Schritt 8). Schritt 9 wirft den faulen Apfel heraus. -->
+      <svg viewBox="0 0 320 152">
+        <defs>
+          <path id="bodyD" d="M0,-7 C-5.5,-13.5 -13,-9.5 -13,-2 C-13,6 -7.5,13 -3,13 C-1.4,13 -1,12 0,12 C1,12 1.4,13 3,13 C7.5,13 13,6 13,-2 C13,-9.5 5.5,-13.5 0,-7 Z"/>
+          <g id="apD"><use href="#bodyD"/>
+            <path d="M0,-7.5 C0.5,-11 2,-13.5 5,-15.5" fill="none" stroke="#31241A"
+                  stroke-width="2" stroke-linecap="round"/></g>
+          <marker id="rotD" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13"
+                  refX="10" refY="6.5" orient="auto">
+            <path d="M0,0 L13,6.5 L0,13 z" fill="#C58E4E"/>
+          </marker>
+          <marker id="upD" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13"
+                  refX="10" refY="6.5" orient="auto">
+            <path d="M0,0 L13,6.5 L0,13 z" fill="#A8D272"/>
+          </marker>
+        </defs>
+        <rect x="12" y="26" width="88" height="52" rx="10" fill="#5EB9A9"/>
+        <rect x="116" y="26" width="88" height="52" rx="10" fill="#5a6b78"/>
+        <rect x="220" y="26" width="88" height="52" rx="10" fill="#5EB9A9"/>
+        <g class="step apple out" data-at="6" data-ej="9">
+          <use href="#apD" x="160" y="52" fill="#8A5A2E"/>
+          <circle cx="154" cy="49" r="4" fill="#432913"/>
+          <circle cx="166" cy="56" r="3" fill="#432913"/>
         </g>
-        <text class="step" data-at="9" x="160" y="64" text-anchor="middle" font-size="30" fill="#A8D272" font-weight="800">✓</text>
+        <g class="step" data-at="7">
+          <path d="M40,52 C48,41 64,41 72,52 C64,63 48,63 40,52 Z" fill="#FDF2D0"/>
+          <circle cx="56" cy="52" r="5.6" fill="#22313C"/>
+          <path d="M248,52 C256,41 272,41 280,52 C272,63 256,63 248,52 Z" fill="#FDF2D0"/>
+          <circle cx="264" cy="52" r="5.6" fill="#22313C"/>
+        </g>
+        <g class="step" data-at="7" data-off="9">
+          <path d="M141,52 L114,52" stroke="#C58E4E" stroke-width="4" fill="none" marker-end="url(#rotD)"/>
+          <path d="M179,52 L206,52" stroke="#C58E4E" stroke-width="4" fill="none" marker-end="url(#rotD)"/>
+        </g>
+        <g class="step" data-at="8">
+          <rect x="102" y="34" width="8" height="36" rx="4" fill="#A8D272"/>
+          <rect x="210" y="34" width="8" height="36" rx="4" fill="#A8D272"/>
+          <rect x="108" y="104" width="104" height="34" rx="17" fill="#A8D272"/>
+          <text x="160" y="127" text-anchor="middle" font-size="16" font-weight="800" fill="#22313C" id="volktxt">das Volk</text>
+          <path d="M160,102 L160,86" stroke="#A8D272" stroke-width="4" fill="none" marker-end="url(#upD)"/>
+        </g>
+        <text class="step" data-at="9" x="160" y="62" text-anchor="middle" font-size="30" fill="#A8D272" font-weight="800">✓</text>
       </svg>
-      <div class="c step" data-at="10" id="cb">Der faule Apfel wird gesehen: zwei Gewalten und das Volk können ihn stoppen und ersetzen. Der Schaden bleibt lokal.</div>
+      <div class="c step" data-at="10" id="cb">Hier wird er gesehen: zwei Gewalten und das Volk halten die Fäulnis auf. Sie springt nicht über — der Schaden bleibt lokal.</div>
     </div>
   </div>
   <div class="punch step" data-at="11" id="pu">Bremsen sind nicht da, um langsam zu fahren — sondern damit man schnell fahren <b>kann</b>.</div>
@@ -99,18 +173,18 @@
   document.documentElement.setAttribute('lang', L);
   var TX = {
     en:{ttl:'The rotten apple',ta:'Autocracy',tb:'Separation of powers',
-        ca:'The rotten apple sits at the top. Nobody may check it, nobody can replace it — the rot becomes the system.',
-        cb:'The rotten apple is seen: two branches and the people can stop and replace it. The damage stays local.',
+        ca:'The rotten apple sits at the top — and nobody may check it. The rot travels down, one after another gets infected.',
+        cb:'Here it is seen: two branches and the people stop the rot. It does not spread — the damage stays local.',
         pu:'Brakes aren\u2019t there to drive slowly \u2014 they\u2019re there so you <b>can</b> drive fast.',
         volktxt:'the people',autobtn:'\u25B6 Play auto',resetbtn:'Reset',hint:'Click / \u2192 next \u00B7 \u2190 back'},
     fr:{ttl:'La pomme pourrie',ta:'Autocratie',tb:'S\u00E9paration des pouvoirs',
-        ca:'La pomme pourrie est tout en haut. Personne ne peut la contr\u00F4ler ni la remplacer \u2014 la pourriture devient le syst\u00E8me.',
-        cb:'La pomme pourrie est rep\u00E9r\u00E9e : deux pouvoirs et le peuple peuvent l\u2019arr\u00EAter et la remplacer. Les d\u00E9g\u00E2ts restent locaux.',
+        ca:'La pomme pourrie est tout en haut \u2014 et personne ne peut la contr\u00F4ler. La pourriture descend, l\u2019une apr\u00E8s l\u2019autre est contamin\u00E9e.',
+        cb:'Ici, elle est rep\u00E9r\u00E9e : deux pouvoirs et le peuple arr\u00EAtent la pourriture. Elle ne se propage pas \u2014 les d\u00E9g\u00E2ts restent locaux.',
         pu:'Les freins ne sont pas l\u00E0 pour rouler lentement \u2014 mais pour <b>pouvoir</b> rouler vite.',
         volktxt:'le peuple',autobtn:'\u25B6 Lecture auto',resetbtn:'R\u00E9initialiser',hint:'Clic / \u2192 suivant \u00B7 \u2190 retour'},
     it:{ttl:'La mela marcia',ta:'Autocrazia',tb:'Separazione dei poteri',
-        ca:'La mela marcia sta in cima. Nessuno pu\u00F2 controllarla n\u00E9 sostituirla \u2014 il marcio diventa sistema.',
-        cb:'La mela marcia viene vista: due poteri e il popolo possono fermarla e sostituirla. Il danno resta locale.',
+        ca:'La mela marcia sta in cima \u2014 e nessuno pu\u00F2 controllarla. Il marcio scende, una dopo l\u2019altra vengono contagiate.',
+        cb:'Qui viene vista: due poteri e il popolo fermano il marcio. Non si propaga \u2014 il danno resta locale.',
         pu:'I freni non servono ad andare piano \u2014 servono a <b>poter</b> andare veloce.',
         volktxt:'il popolo',autobtn:'\u25B6 Riproduci auto',resetbtn:'Azzera',hint:'Clic / \u2192 avanti \u00B7 \u2190 indietro'}
   };
@@ -129,6 +203,7 @@
     document.querySelectorAll('.step').forEach(function(el){
       el.classList.toggle('on', step >= +el.dataset.at);
       if(el.dataset.ej) el.classList.toggle('ej', step >= +el.dataset.ej);
+      if(el.dataset.off) el.classList.toggle('off', step >= +el.dataset.off);
     });
   }
   function stopAuto(){ if(timer){ clearTimeout(timer); timer = null; } }
