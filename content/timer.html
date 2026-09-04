@@ -57,6 +57,17 @@
   var total = Math.max(5, (parseFloat(q.get('m')||'5')*60 + parseFloat(q.get('s')||'0'))|0);
   var label = q.get('label')||'';
   var left = total, running = false, endAt = 0, raf = 0, beeped = false;
+  /* Der AudioContext wird beim Start-Klick angelegt und entsperrt, nicht erst beim
+     Ablauf. Ein Kontext, der ohne frische Nutzergeste entsteht, startet in Safari und
+     Chrome suspendiert — der Alarm lief, war aber stumm (Rafa nach der Session am
+     04.09.2026: «no alarm when timer ends»). */
+  var actx = null;
+  function unlockAudio(){
+    try{
+      actx = actx || new (window.AudioContext||window.webkitAudioContext)();
+      if (actx.state === 'suspended') actx.resume();
+    }catch(e){}
+  }
   var wedge = document.getElementById('wedge'), hand = document.getElementById('hand');
   var digits = document.getElementById('digits'), lab = document.getElementById('label');
   var startbtn = document.getElementById('startbtn');
@@ -82,15 +93,17 @@
   }
   function beep(){
     try{
-      var ctx = new (window.AudioContext||window.webkitAudioContext)();
-      [0,0.35,0.7,1.05].forEach(function(t,i){
+      unlockAudio();
+      var ctx = actx;
+      if (!ctx) return;
+      [0,0.3,0.6,0.9,1.2,1.5].forEach(function(t,i){
         var o = ctx.createOscillator(), g = ctx.createGain();
         o.connect(g); g.connect(ctx.destination);
-        o.frequency.value = i===3 ? 1318 : 880;
+        o.frequency.value = i===5 ? 660 : (i%2 ? 1318 : 988);
         g.gain.setValueAtTime(0.0001, ctx.currentTime+t);
-        g.gain.exponentialRampToValueAtTime(0.4, ctx.currentTime+t+0.02);
-        g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+t+(i===3?0.6:0.25));
-        o.start(ctx.currentTime+t); o.stop(ctx.currentTime+t+(i===3?0.65:0.3));
+        g.gain.exponentialRampToValueAtTime(0.7, ctx.currentTime+t+0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+t+(i===5?1.1:0.24));
+        o.start(ctx.currentTime+t); o.stop(ctx.currentTime+t+(i===5?1.15:0.3));
       });
     }catch(e){}
   }
@@ -106,6 +119,7 @@
     if(running) raf = requestAnimationFrame(tick);
   }
   function start(){
+    unlockAudio();
     if(running){ running = false; startbtn.textContent = RES; cancelAnimationFrame(raf); return; }
     if(left <= 0) reset(total);
     endAt = Date.now() + left*1000;

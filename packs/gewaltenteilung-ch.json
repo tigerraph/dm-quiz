@@ -5,7 +5,7 @@
   "de": "Gewaltenteilung (CH)",
   "fr": "Séparation des pouvoirs (CH)"
  },
- "timer_ms": 20000,
+ "timer_ms": 30000,
  "questions": [
   {
    "id": "was-widerspricht",

@@ -110,6 +110,16 @@
   .tlink{display:block;font-weight:800;font-size:16px;margin-top:6px;color:inherit;
          text-decoration:underline;opacity:.85}
   .qrmini{background:#fff;border-radius:10px;padding:10px;display:inline-block}
+  .groups{display:flex;align-items:center;gap:16px;margin:18px 0 4px;font-size:26px;
+    font-weight:700;color:var(--ink)}
+  .groups .gnum{background:var(--ink);color:#fff;border-radius:12px;padding:4px 16px;
+    font-size:34px;line-height:1.15}
+  .ontimer{display:flex;align-items:center;gap:18px}
+  .ontimer .tval{font-size:52px;font-weight:800;font-variant-numeric:tabular-nums;
+    color:var(--ink);min-width:150px}
+  .ontimer .tval.over{color:#C0392B}
+  .tgo{font:inherit;font-size:20px;font-weight:700;padding:10px 20px;border-radius:12px;
+    border:2px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
   .hostqr{position:absolute;top:40px;right:48px;text-align:center;font-size:13px;
     font-weight:700;opacity:.85}
   .hostqr span{display:block;margin-top:6px;max-width:96px;line-height:1.25}
@@ -324,14 +334,16 @@
   <div style="font-style:italic;font-weight:400;font-size:28px;line-height:1.4;max-width:1050px" data-i18n="s6.q">
     «Mal ehrlich: Eine Autokratie ist schneller. Ein Entscheid, keine Debatte. Warum leisten wir uns diesen langsamen Apparat?»
   </div>
+  <div class="groups"><span class="gnum">2–3</span>
+    <span data-i18n="s6.groups">Bildet Gruppen zu zweit oder zu dritt</span></div>
   <div class="task" data-i18n="s6.task">
-    <b>2′</b> zu zweit oder zu dritt: Ist uns das den langsamen Apparat wert — ja oder nein?<br>
+    <b>2′</b> in der Gruppe: Ist uns das den langsamen Apparat wert — ja oder nein?<br>
     <b>3′</b> in der Runde: pro Gruppe <b>ein</b> stärkstes Argument — dafür oder dagegen.
   </div>
   <div class="foot">
-    <div></div>
-    <div class="metric"><div class="label" data-i18n="t.zeit">Zeit</div><div class="value">5m</div>
-      <a class="tlink" id="timer2" data-i18n="t.start" href="https://tigerraph.github.io/dm-quiz/content/timer.html?m=2">▶ Timer starten</a></div>
+    <div class="ontimer"><span id="t2" class="tval">2:00</span>
+      <button id="t2go" class="tgo" data-i18n="t.start">▶ Timer starten</button></div>
+    <div class="metric"><div class="label" data-i18n="t.zeit">Zeit</div><div class="value">5m</div></div>
   </div>
 </section>
 
@@ -504,7 +516,8 @@
     's5.foot':'Mission 2 solved — what surprised you?',
     's6.kick':'3 — EXERCISE · DISCUSSION','s6.h1':'But why, actually?',
     's6.q':'“Honestly: an autocracy is faster. One decision, no debate. Why do we afford this slow apparatus?”',
-    's6.task':'<b>2′</b> in twos or threes: is the slow apparatus worth it — yes or no?<br><b>3′</b> in the round: per group <b>one</b> strongest argument — for or against.',
+    's6.groups':'Form groups of two or three',
+    's6.task':'<b>2′</b> in your group: is the slow apparatus worth it — yes or no?<br><b>3′</b> in the round: per group <b>one</b> strongest argument — for or against.',
     
     's7.kick':'3 — EXERCISE · THE REVEAL','s6b.h1':'The reveal','s7.h1':'The rotten apple','s7.ta':'Autocracy','s7.tb':'Separation of powers',
     's7.ca':'The rotten apple sits at the top. Nobody may check it, nobody can replace it — the rot becomes the system.',
@@ -555,7 +568,8 @@
     's5.foot':'Mission 2 résolue — qu’est-ce qui vous a surpris ?',
     's6.kick':'3 — EXERCICE · DISCUSSION','s6.h1':'Mais pourquoi, au fond ?',
     's6.q':'«Soyons honnêtes : une autocratie est plus rapide. Une décision, pas de débat. Pourquoi s’offrir cet appareil si lent ?»',
-    's6.task':'<b>2′</b> à deux ou trois : cet appareil lent en vaut-il la peine — oui ou non ?<br><b>3′</b> en plénière : par groupe, <b>un</b> argument le plus fort — pour ou contre.',
+    's6.groups':'Formez des groupes de deux ou trois',
+    's6.task':'<b>2′</b> en groupe : cet appareil lent en vaut-il la peine — oui ou non ?<br><b>3′</b> en plénière : par groupe, <b>un</b> argument le plus fort — pour ou contre.',
     
     's7.kick':'3 — EXERCICE · LA RÉSOLUTION','s6b.h1':'La résolution','s7.h1':'La pomme pourrie','s7.ta':'Autocratie','s7.tb':'Séparation des pouvoirs',
     's7.ca':'La pomme pourrie est tout en haut. Personne ne peut la contrôler ni la remplacer — la pourriture devient le système.',
@@ -606,7 +620,8 @@
     's5.foot':'Missione 2 risolta — che cosa vi ha sorpreso?',
     's6.kick':'3 — ESERCIZIO · DISCUSSIONE','s6.h1':'Ma perché, in fondo?',
     's6.q':'«Siamo onesti: un’autocrazia è più veloce. Una decisione, niente dibattito. Perché ci permettiamo questo apparato così lento?»',
-    's6.task':'<b>2′</b> in due o tre: questo apparato lento ne vale la pena — sì o no?<br><b>3′</b> in plenaria: per gruppo <b>un</b> argomento più forte — a favore o contro.',
+    's6.groups':'Formate gruppi da due o tre',
+    's6.task':'<b>2′</b> in gruppo: questo apparato lento ne vale la pena — sì o no?<br><b>3′</b> in plenaria: per gruppo <b>un</b> argomento più forte — a favore o contro.',
     
     's7.kick':'3 — ESERCIZIO · LA SOLUZIONE','s6b.h1':'La soluzione','s7.h1':'La mela marcia','s7.ta':'Autocrazia','s7.tb':'Separazione dei poteri',
     's7.ca':'La mela marcia sta in cima. Nessuno può controllarla né sostituirla — il marcio diventa sistema.',
@@ -676,6 +691,44 @@
   ['vid-thumb','vid-cap'].forEach(function(id){
     var el = document.getElementById(id); if (el) el.href = vid;
   });
+  /* Timer auf der Übungsfolie: die Folie bleibt sichtbar, die Aufgabe steht daneben.
+     Vorher ersetzte eine eigene Timer-Seite die Folie, und die Gruppe sah die Aufgabe
+     nicht mehr. Der Ton wird beim Klick entsperrt, sonst bleibt er stumm. */
+  (function(){
+    var el = document.getElementById('t2'), go = document.getElementById('t2go');
+    if (!el || !go) return;
+    var TOTAL = 120, left = TOTAL, id = 0, ac = null;
+    function fmt(n){ var m = Math.floor(n/60), s = Math.floor(n%60);
+      return m + ':' + (s<10?'0':'') + s; }
+    function alarm(){
+      try{
+        ac = ac || new (window.AudioContext||window.webkitAudioContext)();
+        if (ac.state === 'suspended') ac.resume();
+        [0,0.3,0.6,0.9,1.2,1.5].forEach(function(t,i){
+          var o = ac.createOscillator(), g = ac.createGain();
+          o.connect(g); g.connect(ac.destination);
+          o.frequency.value = i===5 ? 660 : (i%2 ? 1318 : 988);
+          g.gain.setValueAtTime(0.0001, ac.currentTime+t);
+          g.gain.exponentialRampToValueAtTime(0.7, ac.currentTime+t+0.02);
+          g.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime+t+(i===5?1.1:0.24));
+          o.start(ac.currentTime+t); o.stop(ac.currentTime+t+(i===5?1.15:0.3));
+        });
+      }catch(e){}
+    }
+    go.addEventListener('click', function(){
+      try{ ac = ac || new (window.AudioContext||window.webkitAudioContext)();
+           if (ac.state === 'suspended') ac.resume(); }catch(e){}
+      if (id) { clearInterval(id); id = 0; go.textContent = '▶'; return; }
+      var end = Date.now() + left*1000;
+      go.textContent = '⏸';
+      id = setInterval(function(){
+        left = Math.max(0, (end - Date.now())/1000);
+        el.textContent = fmt(left);
+        if (left <= 0){ clearInterval(id); id = 0; el.classList.add('over');
+                        go.textContent = '▶'; left = TOTAL; alarm(); }
+      }, 200);
+    });
+  })();
   make('qr-host', 'https://tigerraph.github.io/dm-quiz/content/regie-gewaltenteilung-ch.html', 2);
 })();
 </script>
