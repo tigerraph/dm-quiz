@@ -68,7 +68,7 @@
 
   /* S1 — pillars + slots */
   .toprow{display:flex;justify-content:space-between;align-items:flex-start}
-  .pillars{display:flex;gap:22px;margin:26px 0 30px}
+  .pillars{display:flex;gap:22px;margin:24px 0 12px}
   .pillar{
     flex:1;border-radius:16px;padding:24px 22px;background:rgba(255,255,255,.12);
     text-align:center;
@@ -76,8 +76,10 @@
   .pillar.today{background:var(--cream);color:var(--ink);position:relative}
   .pillar .em{font-size:52px;line-height:1;font-family:system-ui}
   .pillar .nm{font-weight:800;font-size:21px;margin:12px 0 8px;line-height:1.25;min-height:53px;display:flex;align-items:center;justify-content:center}
-  .pillar .stars{font-size:24px;letter-spacing:.15em}
-  .pillar.today .stars b{color:var(--blue)}
+  /* Drei leere Plätze pro Pillar — das Ziel, nicht ein Punktestand. Keiner ist
+     gefüllt, weil die Folie den Stand niemandes Passes kennen kann (s. u.). */
+  .pillar .stars{font-size:24px;letter-spacing:.15em;opacity:.7}
+  .passnote{font-size:19px;opacity:.85;margin:0 0 18px 2px}
   .chip{
     position:absolute;top:-16px;left:50%;transform:translateX(-50%) rotate(-2deg);
     background:var(--green);color:var(--ink);font-weight:800;font-size:17px;
@@ -174,12 +176,22 @@
       <div class="lede" style="margin-bottom:0" data-i18n="s1.lede">Special Topic heute: <span style="color:var(--cream)">Gewaltenteilung</span></div>
     </div>
   </div>
+  <!-- Die Sterne sind Plätze, kein Punktestand. Ein Stern gehört einer Person:
+       er liegt als Zeile in dm_stars, verschlüsselt über das Gerätetoken im
+       localStorage des jeweiligen Handys (docs/dm-stars-spec.md). Die Folie
+       läuft auf dem Beamer-Laptop und wird zusätzlich als PDF verteilt — sie
+       kennt weder ein einzelnes Handy noch einen Raumstand, und der einzige
+       Wert, den sie live holen könnte (die heute abgeholten Sterne), ist auf
+       dieser ersten Folie per Definition null. Vorher stand hier ein festes
+       ★☆☆: eine erfundene Zahl für alle im Raum. Jetzt stehen drei leere
+       Plätze in jedem Pillar — das Ziel — und der Hinweis, wo der echte
+       Stand liegt. Nicht wieder füllen. -->
   <div class="pillars">
     <div class="pillar today">
       <div class="chip" data-i18n="s1.chip">HEUTE +★</div>
       <div class="em">🏛️</div>
       <div class="nm">Civics &amp; Basic Concepts</div>
-      <div class="stars"><b>★</b>☆☆</div>
+      <div class="stars">☆☆☆</div>
     </div>
     <div class="pillar">
       <div class="em">📣</div>
@@ -192,6 +204,7 @@
       <div class="stars">☆☆☆</div>
     </div>
   </div>
+  <div class="passnote" data-i18n="s1.pass">☆☆☆ sind die Plätze pro Pillar. Jede Person sammelt selbst — deinen Stand zeigt dir «My DM».</div>
   <div class="slots">
     <div class="slot a">
       <div><div class="t">1 · Special Topic</div><div class="s" data-i18n="s1.slota">Gewaltenteilung — der Sprint</div></div>
@@ -491,6 +504,7 @@
   var T = {
   en: {
     's1.lede':'Today’s Special Topic: <span style="color:var(--cream)">Separation of Powers</span>',
+    's1.pass':'☆☆☆ are the slots per pillar. Everyone collects their own — My DM shows where you stand.',
     's1.slotbt':'2 · The round','s10b.title':'The round','s1.chip':'TODAY +★','s1.slota':'Separation of powers — the sprint','s1.slotb':'Discussion &amp; wind-down',
     's1.foot':'The Learning Loop — Learn it. Keep it. · 3★ per pillar → DM Champion · 6★ → DM Master',
     's2.h1':'Separation of Powers','s2.lede':'Why power needs checks — Swiss edition',
@@ -543,6 +557,7 @@
   },
   fr: {
     's1.lede':'Special Topic du jour : <span style="color:var(--cream)">La séparation des pouvoirs</span>',
+    's1.pass':'☆☆☆ sont les cases par pilier. Chacun collectionne les siennes — My DM montre où tu en es.',
     's1.slotbt':'2 · La ronde','s10b.title':'La ronde','s1.chip':'AUJOURD’HUI +★','s1.slota':'La séparation des pouvoirs — le sprint','s1.slotb':'Discussion &amp; clôture',
     's1.foot':'The Learning Loop — Learn it. Keep it. · 3★ par pilier → DM Champion · 6★ → DM Master',
     's2.h1':'Séparation des pouvoirs','s2.lede':'Pourquoi le pouvoir a besoin de contrôle — édition suisse',
@@ -595,6 +610,7 @@
   },
   it: {
     's1.lede':'Special Topic di oggi: <span style="color:var(--cream)">La separazione dei poteri</span>',
+    's1.pass':'☆☆☆ sono le caselle per pilastro. Ognuno colleziona le proprie — My DM mostra a che punto sei.',
     's1.slotbt':'2 · Il giro','s10b.title':'Il giro','s1.chip':'OGGI +★','s1.slota':'La separazione dei poteri — lo sprint','s1.slotb':'Discussione &amp; chiusura',
     's1.foot':'The Learning Loop — Learn it. Keep it. · 3★ per pilastro → DM Champion · 6★ → DM Master',
     's2.h1':'Separazione dei poteri','s2.lede':'Perché il potere ha bisogno di controllo — edizione svizzera',
