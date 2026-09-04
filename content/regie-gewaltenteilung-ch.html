@@ -30,42 +30,98 @@
     padding:12px 14px;font-size:15px;font-weight:700;text-decoration:none;display:block}
   .links a span{display:block;font-weight:400;font-size:13px;color:var(--muted);margin-top:2px}
   footer{margin-top:20px;font-size:12.5px;color:var(--muted)}
+  .langs{display:flex;gap:6px;margin-bottom:14px}
+  .langs a{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--muted);
+    text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:5px 10px}
+  .langs a[aria-current]{background:var(--mint);color:#0F1B2A;border-color:var(--mint)}
 </style></head><body>
 
-<div class="kick">Für die Moderation</div>
-<h1>Regie</h1>
-<div class="sub">Gewaltenteilung (CH) · Start 15:00 · 30 Minuten</div>
+<nav class="langs" aria-label="Sprache">
+  <a href="?lang=de" data-l="de">DE</a><a href="?lang=en" data-l="en">EN</a>
+  <a href="?lang=fr" data-l="fr">FR</a><a href="?lang=it" data-l="it">IT</a>
+</nav>
+<div class="kick" data-i18n="kick">Für die Moderation</div>
+<h1 data-i18n="h1">Regie</h1>
+<div class="sub" data-i18n="sub">Gewaltenteilung (CH) · Start 15:00 · 30 Minuten</div>
 
-<div class="step"><div class="t"><span class="clock">15:00</span><span class="dur">5 Min</span></div>
-  <b>Einstieg</b><p>QR-Folie zeigen, Beamer-Ansicht öffnen, 3 Fragen spielen.
+<div class="step"><div class="t"><span class="clock">15:00</span><span class="dur" data-i18n="d5">5 Min</span></div>
+  <b data-i18n="s1">Einstieg</b><p data-i18n="p1">QR-Folie zeigen, Beamer-Ansicht öffnen, 3 Fragen spielen.
   Die Erklärungen zeigt die App selbst.</p></div>
 
-<div class="step"><div class="t"><span class="clock">15:05</span><span class="dur">10 Min</span></div>
-  <b>Thema</b><p>Mission ansagen, dann
+<div class="step"><div class="t"><span class="clock">15:05</span><span class="dur" data-i18n="d10">10 Min</span></div>
+  <b data-i18n="s2">Thema</b><p data-i18n="p2">Mission ansagen, dann
   <a href="https://www.youtube.com/watch?v=Nadu4ABEmxQ">Video easyvote (1:24)</a>
   ab Folie anklicken. Danach Check-Folie: Dreieck kurz durchgehen, Überraschungen abholen.<br>
   Backup: <a href="https://www.srf.ch/play/tv/srf-school/video/3-gewalten?urn=urn:srf:video:e5e3474b-c7a3-4ab2-ae79-52672cbbb981">SRF «3 Gewalten»</a></p></div>
 
-<div class="step"><div class="t"><span class="clock">15:15</span><span class="dur">5 Min</span></div>
-  <b>Übung</b><p>Warum-Diskussion: 2 Min zu zweit oder dritt, dann 3 Min Runde,
+<div class="step"><div class="t"><span class="clock">15:15</span><span class="dur" data-i18n="d5">5 Min</span></div>
+  <b data-i18n="s3">Übung</b><p data-i18n="p3">Warum-Diskussion: 2 Min zu zweit oder dritt, dann 3 Min Runde,
   <b>ein</b> Argument pro Gruppe. <span class="warn">Nach 2 Min hart unterbrechen.</span>
   Erst danach die Auflösung zeigen: fauler Apfel und der Bremsen-Satz.</p></div>
 
-<div class="step"><div class="t"><span class="clock">15:20</span><span class="dur">5 Min</span></div>
-  <b>Take-away</b><p>Skeptiker-Kit durchgehen, Bottom Line in die Master Checklist,
+<div class="step"><div class="t"><span class="clock">15:20</span><span class="dur" data-i18n="d5">5 Min</span></div>
+  <b data-i18n="s4">Take-away</b><p data-i18n="p4">Skeptiker-Kit durchgehen, Bottom Line in die Master Checklist,
   Civics-Stern vergeben. <span class="warn">Nie streichen.</span></p></div>
 
-<div class="step"><div class="t"><span class="clock">15:25</span><span class="dur">5 Min</span></div>
-  <b>Puffer</b><p>Dann Übergang in die Runde.</p></div>
+<div class="step"><div class="t"><span class="clock">15:25</span><span class="dur" data-i18n="d5">5 Min</span></div>
+  <b data-i18n="s5">Puffer</b><p data-i18n="p5">Dann Übergang in die Runde.</p></div>
 
 <div class="links">
-  <a href="../?session=gewaltenteilung-ch&host=1">Beamer-Ansicht öffnen
-    <span>Steuert das Spiel — auf dem Präsentationsrechner, nicht hier</span></a>
-  <a href="gewaltenteilung-ch.html">Teilnehmerseite
-    <span>Folien, Video, Quiz und Stern zum Nachschauen</span></a>
-  <a href="../slides/gewaltenteilung-ch.pdf">Folien als PDF</a>
+  <a href="../?session=gewaltenteilung-ch&host=1"><span data-i18n="l1t">Beamer-Ansicht öffnen</span>
+    <span data-i18n="l1">Steuert das Spiel — auf dem Präsentationsrechner, nicht hier</span></a>
+  <a href="gewaltenteilung-ch.html"><span data-i18n="l2t">Teilnehmerseite</span>
+    <span data-i18n="l2">Folien, Video, Quiz und Stern zum Nachschauen</span></a>
+  <a href="../slides/gewaltenteilung-ch.pdf" data-i18n="l3">Folien als PDF</a>
 </div>
 
-<footer>Democracy Matters · Regie-Blatt für das Telefon.
+<footer data-i18n="foot">Democracy Matters · Regie-Blatt für das Telefon.
 Die Beamer-Ansicht gehört auf den Präsentationsrechner.</footer>
+
+<script>
+/* Dieselbe Mechanik wie in den Folien: Deutsch steht im Markup, die anderen drei
+   Sprachen kommen aus Wörterbüchern über data-i18n. Ein Element ohne den Haken
+   bliebe in jeder Sprache deutsch — tools/check-i18n.py findet so etwas. */
+(function(){
+  var L = (new URLSearchParams(location.search).get('lang') || 'de').toLowerCase();
+  if (!['de','en','fr','it'].includes(L)) L = 'de';
+  document.documentElement.lang = L;
+  var A = document.querySelector('.langs a[data-l="' + L + '"]');
+  if (A) A.setAttribute('aria-current', 'page');
+
+  var T = {
+   en:{l1t:'Open the beamer view', l1:'Runs the game — on the presentation machine, not here', l2t:'Participant page', l2:'Slides, video, quiz and star to revisit', l3:'Slides as PDF', foot:'Democracy Matters · run sheet for the phone. The beamer view belongs on the presentation machine.', kick:'For the moderator', h1:'Run sheet',
+     sub:'Separation of Powers (CH) · start 15:00 · 30 minutes',
+     d5:'5 min', d10:'10 min',
+     s1:'Warm-up', s2:'Topic', s3:'Exercise', s4:'Take-away', s5:'Buffer',
+     p1:'Show the QR slide, open the beamer view, play the 3 questions. The app shows the explanations itself.',
+     p2:'Announce the mission, then click the <a href="https://www.youtube.com/watch?v=e1cN5KuB5s0">explainity video (3:04)</a> from the slide. Then the check slide: walk the triangle, collect the surprises.<br>Backup: <a href="https://www.srf.ch/play/tv/srf-school/video/3-gewalten?urn=urn:srf:video:e5e3474b-c7a3-4ab2-ae79-52672cbbb981">SRF «3 Gewalten»</a> (German)',
+     p3:'Why-discussion: 2 min in twos or threes, then a 3 min round, <b>one</b> argument per group. <span class="warn">Cut hard after 2 min.</span> Only then show the reveal: rotten apple and the brakes line.',
+     p4:'Go through the skeptic kit, bottom line onto the Master Checklist, award the Civics star. <span class="warn">Never cut.</span>',
+     p5:'Then transition into the round.'},
+   fr:{l1t:'Ouvrir la vue beamer', l1:'Pilote le jeu — sur l’ordinateur de présentation, pas ici', l2t:'Page des participants', l2:'Diapos, vidéo, quiz et étoile à revoir', l3:'Diapos en PDF', foot:'Democracy Matters · déroulé pour le téléphone. La vue beamer va sur l’ordinateur de présentation.', kick:'Pour l’animation', h1:'Déroulé',
+     sub:'Séparation des pouvoirs (CH) · début 15:00 · 30 minutes',
+     d5:'5 min', d10:'10 min',
+     s1:'Ouverture', s2:'Thème', s3:'Exercice', s4:'À retenir', s5:'Réserve',
+     p1:'Montrer la diapo QR, ouvrir la vue beamer, jouer les 3 questions. L’app affiche les explications.',
+     p2:'Annoncer la mission, puis lancer la <a href="https://www.youtube.com/watch?v=Nadu4ABEmxQ">vidéo easyvote (1:24, en allemand)</a> depuis la diapo. Ensuite la diapo de contrôle : parcourir le triangle, récolter les surprises.<br>Secours : <a href="https://www.srf.ch/play/tv/srf-school/video/3-gewalten?urn=urn:srf:video:e5e3474b-c7a3-4ab2-ae79-52672cbbb981">SRF «3 Gewalten»</a>',
+     p3:'Discussion du pourquoi : 2 min à deux ou trois, puis 3 min en cercle, <b>un</b> argument par groupe. <span class="warn">Couper net après 2 min.</span> Seulement ensuite la résolution : la pomme pourrie et la phrase des freins.',
+     p4:'Parcourir le kit du sceptique, la conclusion sur la Master Checklist, décerner l’étoile Civics. <span class="warn">Ne jamais supprimer.</span>',
+     p5:'Puis transition vers la ronde.'},
+   it:{l1t:'Apri la vista beamer', l1:'Comanda il gioco — sul computer di presentazione, non qui', l2t:'Pagina dei partecipanti', l2:'Slide, video, quiz e stella da rivedere', l3:'Slide in PDF', foot:'Democracy Matters · regia per il telefono. La vista beamer va sul computer di presentazione.', kick:'Per la moderazione', h1:'Regia',
+     sub:'Separazione dei poteri (CH) · inizio 15:00 · 30 minuti',
+     d5:'5 min', d10:'10 min',
+     s1:'Avvio', s2:'Tema', s3:'Esercizio', s4:'Da portare a casa', s5:'Riserva',
+     p1:'Mostrare la slide con il QR, aprire la vista beamer, giocare le 3 domande. Le spiegazioni le mostra l’app.',
+     p2:'Annunciare la missione, poi avviare il <a href="https://www.youtube.com/watch?v=Nadu4ABEmxQ">video easyvote (1:24, in tedesco)</a> dalla slide. Poi la slide di controllo: percorrere il triangolo, raccogliere le sorprese.<br>Backup: <a href="https://www.srf.ch/play/tv/srf-school/video/3-gewalten?urn=urn:srf:video:e5e3474b-c7a3-4ab2-ae79-52672cbbb981">SRF «3 Gewalten»</a>',
+     p3:'Discussione sul perché: 2 min in due o tre, poi 3 min in cerchio, <b>un</b> argomento per gruppo. <span class="warn">Interrompere netto dopo 2 min.</span> Solo dopo mostrare la soluzione: la mela marcia e la frase dei freni.',
+     p4:'Passare in rassegna il kit dello scettico, la conclusione sulla Master Checklist, assegnare la stella Civics. <span class="warn">Mai tagliare.</span>',
+     p5:'Poi il passaggio al giro.'}
+  };
+  var d = T[L]; if (!d) return;
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var v = d[el.getAttribute('data-i18n')];
+    if (v) el.innerHTML = v;
+  });
+})();
+</script>
 </body></html>
