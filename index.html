@@ -2685,7 +2685,7 @@ var qrcode = function() {
    Engine carried over from the noeggi-kahoot wedding app: timer,
    speed scoring, streak bonus, i18n, synthesized offline audio.
    ================================================================== */
-const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","build":"build 28.08.2026 11:09"};
+const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","build":"build 04.09.2026 14:48"};
 const SUPA_URL = CFG.supabaseUrl || "";
 const SUPA_KEY = CFG.supabaseAnonKey || "";
 
@@ -2908,6 +2908,11 @@ const params  = new URLSearchParams(location.search);
 const SESSION = params.get("session") || "";
 const HOST    = params.get("host") === "1";
 const DEMO    = params.get("demo") === "1";
+/* ?view=mydm öffnet den Sterne-Pass direkt, auch während eine Session läuft.
+   Die Spezifikation sieht einen QR für drei Zustände vor — solange eine Runde
+   aktiv ist, gewinnt aber das Spiel, und der Stern-QR auf der Schlussfolie
+   landete deshalb im Spielfenster statt im Pass (Rafa, 04.09.2026). */
+const VIEW    = params.get("view") || "";
 
 let lang = store.get("lang", (()=>{
   const n=(navigator.language||"en").slice(0,2);
@@ -3044,6 +3049,7 @@ async function boot(){
   catch(e){ return fail("loadFail"); }
 
   if(DEMO && !HOST) return renderPassport();
+  if(VIEW === "mydm" && !HOST) return renderPassport();
 
   if(!SESSION || !registry[SESSION]){
     if(SESSION) errKey = "noSessionSub";

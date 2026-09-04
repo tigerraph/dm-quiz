@@ -110,9 +110,10 @@
   .tlink{display:block;font-weight:800;font-size:16px;margin-top:6px;color:inherit;
          text-decoration:underline;opacity:.85}
   .qrmini{background:#fff;border-radius:10px;padding:10px;display:inline-block}
-  .hostqr{position:absolute;top:44px;right:56px;text-align:center;font-size:15px;
-    font-weight:700;opacity:.9}
-  .hostqr span{display:block;margin-top:8px;max-width:120px}
+  .hostqr{position:absolute;top:40px;right:48px;text-align:center;font-size:13px;
+    font-weight:700;opacity:.85}
+  .hostqr span{display:block;margin-top:6px;max-width:96px;line-height:1.25}
+  .hostqr .qrmini{padding:7px;border-radius:8px}
   .qrmini svg,.qrcard svg{display:block}
 
   /* S4 — video */
@@ -442,7 +443,7 @@
 <section class="slide bg-dark">
   <div class="kicker" data-i18n="s11.kick">FÜR DIE MODERATION</div>
   <div class="hostqr"><div class="qrmini" id="qr-host"></div>
-    <span data-i18n="s11.qr">Beamer-Ansicht aufs Handy</span></div>
+    <span data-i18n="s11.qr">Regie aufs Handy</span></div>
   <h1 style="font-size:56px" data-i18n="s11.h1">Regie</h1>
   <table class="regie">
     <tr><td>15:00 (5′)</td><td data-i18n="s11.r1"><b>Einstieg</b> — QR-Folie, <a href="https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch&amp;host=1">Beamer-Ansicht öffnen</a>, 3 Fragen spielen. Erklärungen zeigt die App.</td></tr>
@@ -519,7 +520,7 @@
     's8.foot':'Bottom line → Master Checklist · Civics star ★ earned',
     's10.body':'The Learning Loop — design &amp; concept of the gamified workshop format',
     's10.cap':'Slides, video, quiz &amp; star — everything to revisit',
-    's11.qr':'Beamer view on your phone','s11.kick':'FOR THE MODERATOR','s11.h1':'Run sheet',
+    's11.qr':'Run sheet on your phone','s11.kick':'FOR THE MODERATOR','s11.h1':'Run sheet',
     's11.r1':'<b>Warm-up</b> — QR slide, <a href="https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch&amp;host=1">open the beamer view</a>, play the 3 questions. The app shows the explanations.',
     's11.r2':'<b>Topic</b> — announce the mission, <a href="https://www.youtube.com/watch?v=Nadu4ABEmxQ">easyvote video (1:24, German)</a> from the slide, then the check slide: walk the triangle, collect surprises. Backup: <a href="'+SRF+'">SRF «3 Gewalten»</a>.',
     's11.r3':'<b>Exercise</b> — why-discussion: 2′ in twos/threes, then 3′ round, <b>one</b> argument per group. Cut hard after 2′. <b>Only then</b> show the reveal: rotten apple + brakes line.',
@@ -621,7 +622,7 @@
     's8.foot':'Bottom line → Master Checklist · stella Civics ★ guadagnata',
     's10.body':'The Learning Loop — design e concetto del formato di workshop gamificato',
     's10.cap':'Slide, video, quiz e stella — tutto da rivedere',
-    's11.qr':'Vista beamer sul telefono','s11.kick':'PER LA MODERAZIONE','s11.h1':'Regia',
+    's11.qr':'La regia sul telefono','s11.kick':'PER LA MODERAZIONE','s11.h1':'Regia',
     's11.r1':'<b>Intro</b> — slide QR, <a href="https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch&amp;host=1">apri la vista beamer</a>, gioca le 3 domande. Le spiegazioni le mostra l’app.',
     's11.r2':'<b>Tema</b> — annuncia la missione, <a href="https://www.youtube.com/watch?v=Nadu4ABEmxQ">video easyvote (1:24, in tedesco)</a> dalla slide, poi la slide check: percorrere il triangolo, raccogliere le sorprese. Backup: <a href="'+SRF+'">SRF «3 Gewalten»</a>.',
     's11.r3':'<b>Esercizio</b> — discussione del perché: 2′ in due/tre, poi 3′ in plenaria, <b>un</b> argomento per gruppo. Interrompere dopo 2′. <b>Solo dopo</b> mostrare la soluzione: mela marcia + frase dei freni.',
@@ -665,7 +666,7 @@
   }
   var contentUrl = 'https://tigerraph.github.io/dm-quiz/content/gewaltenteilung-ch.html' + (L !== 'de' ? '?lang=' + L : '');
   make('qr', 'https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch', 8);
-  make('qr-star', 'https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch', 3);
+  make('qr-star', 'https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch&view=mydm', 3);
   make('qr-content', contentUrl, 5);
   // Ein deutsches Video unter einer englischen Folie ist dieselbe Sprachmischung wie
   // ein nicht übersetzter Text — nur auffälliger. explainity erklärt die Gewaltenteilung
@@ -675,7 +676,7 @@
   ['vid-thumb','vid-cap'].forEach(function(id){
     var el = document.getElementById(id); if (el) el.href = vid;
   });
-  make('qr-host', 'https://tigerraph.github.io/dm-quiz/?session=gewaltenteilung-ch&host=1', 3);
+  make('qr-host', 'https://tigerraph.github.io/dm-quiz/content/regie-gewaltenteilung-ch.html', 2);
 })();
 </script>
 </body>
