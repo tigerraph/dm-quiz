@@ -668,8 +668,8 @@
   }
   // the read-more line always points at the language-matched ch.ch page
   document.querySelector('[data-i18n="s4.alt"]').innerHTML = alt(READ[L], CHNAME[L]);
-  // language-aware tool links
-  document.getElementById('timer2').href += '&label=Duos&lang=' + L;
+  // language-aware tool links (the old timer.html link is gone — the timer runs
+  // on the slide now; looking it up here threw and killed everything below)
   document.getElementById('animlink').href += '?lang=' + L;
   document.getElementById('animlink2').href += '?lang=' + L;
 
