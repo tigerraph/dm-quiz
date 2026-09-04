@@ -48,16 +48,48 @@ class Scan(HTMLParser):
         self.hits.append((self.getpos()[0], t[:78]))
 
 
+def missing_keys(src):
+    """Schlüssel, die im Markup stehen, aber in einem Wörterbuch fehlen.
+
+    Der Haken oben findet nur Text *ohne* `data-i18n`. Ein Element mit Haken,
+    dessen Schlüssel in einem der Wörterbücher fehlt, ist genauso deutsch —
+    `if (v) el.innerHTML = v` lässt das Markup dann einfach stehen. Genau so
+    stand «Regie aufs Handy» am 04.09.2026 in der französischen Fassung, sechs
+    Wochen nachdem EN und IT die Zeile bekommen hatten.
+
+    Gesucht wird pro Sprachblock nach «schluessel:» — mit oder ohne
+    Anführungszeichen, die Folien schreiben 's1.lede': und die Topic Card gov:.
+    Die Schlüssel werden nicht aus dem JavaScript geparst, sondern aus dem
+    Markup genommen und im Block nachgeschlagen. Das kommt ohne JS-Parser aus
+    und kann keine Zeichenkette im Wert für einen Schlüssel halten.
+    """
+    keys = sorted(set(re.findall(r'data-i18n="([^"]+)"', src)))
+    if not keys or "var T = {" not in src:
+        return []
+    body = src[src.index("var T = {"):]
+    out = []
+    for lang, blk in re.findall(r"\n  ([a-z]{2}): \{(.*?)\n  \}", body, re.S):
+        for k in keys:
+            e = re.escape(k)
+            if not re.search(r"(?:^|[{,\s])(?:'%s'|%s)\s*:" % (e, e), blk, re.M):
+                out.append((lang, k))
+    return out
+
+
 bad = 0
 for f in sorted(pathlib.Path("slides").glob("*.html")):
+    src = f.read_text(encoding="utf-8")
     s = Scan()
-    s.feed(f.read_text(encoding="utf-8"))
+    s.feed(src)
     seen = set()
     for ln, t in s.hits:
         if t in seen:
             continue
         seen.add(t)
         print(f"🔴 {f}:{ln}  deutsch ohne data-i18n — «{t}»")
+        bad += 1
+    for lang, k in missing_keys(src):
+        print(f"🔴 {f}  «{k}» fehlt im Wörterbuch {lang} — bleibt dort deutsch")
         bad += 1
 
 print("Keine Sprachmischung gefunden." if not bad else
