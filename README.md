@@ -137,6 +137,27 @@ Pack schema:
   language falls back to `en`, so a pack can ship in two languages and gain the
   rest later.
 
+## Backend: one project, two schemas, never crossed
+
+Since 18.09.2026 the Supabase project `bvglvdcndhqrvpnghrkp` also hosts the noeggi-kahoot
+wedding quiz (the free plan allows two active projects). Each app has its own schema:
+
+| | DM quiz | Wedding quiz |
+|---|---|---|
+| Schema | `public` (tables and functions `dm_*`) | `noeggi` (`scores`, `players`, `feedback`, `bonus`, `player_*`, `feedback_list`) |
+| Roles | `anon`: join, answer, claim, and the narrow `dm_*` functions; logged-in admins (`dm_admins`) read everything | `anon` only, exactly what the quiz uses; `authenticated` has no access to `noeggi` |
+| Auth | email + password (My DM); admin = row in `dm_admins` | not used |
+| Storage | none | none |
+
+- DM never sets a schema profile: every request goes to `public`. The quiz selects `noeggi`
+  per request (`Accept-Profile` / `Content-Profile`).
+- **Never cross:** CI runs `tools/check-schema.sh`, which fails if DM's code references
+  `noeggi.…`, sends a profile header, or calls the quiz's tables or functions. The quiz's
+  repo has the mirror check.
+- Auth is shared per project: DM accounts mean nothing to the quiz. An app that needs logins
+  gates them with its own membership table, as DM does with `dm_admins`.
+- Moving DM into its own `dm` schema as well is filed for later; until then `public` is DM's.
+
 ## Adding a topic
 
 One command scaffolds a whole Special Topic; the skill `.claude/skills/dm-topic` writes its content.
