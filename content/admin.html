@@ -44,8 +44,22 @@
   .btn.ghost:hover{border-color:var(--mint)}
   select{font:700 14px Poppins,system-ui,sans-serif;color:#fff;background:var(--bg);border:1px solid var(--line);
     border-radius:12px;padding:0 10px;min-height:48px;cursor:pointer}
-  .copied{font-size:13px;color:var(--mint);align-self:center}
-  .copied:empty{display:none}
+  /* copy icon: square like the other controls; the tooltip shows on hover and keyboard focus, and
+     turns into the «Copied» confirmation for a moment after a copy */
+  .icon{position:relative;width:48px;min-height:48px;padding:0;flex:0 0 auto}
+  .icon svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .icon .ok{display:none}
+  .icon.done{border-color:var(--mint);color:var(--mint)}
+  .icon.done .ok{display:block}
+  .icon.done .cp{display:none}
+  .tip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#fff;color:var(--ink);
+    font:700 12px Poppins,system-ui,sans-serif;border-radius:8px;padding:5px 9px;white-space:nowrap;pointer-events:none;
+    opacity:0;transition:opacity .15s}
+  .icon:hover .tip,.icon:focus-visible .tip,.icon.done .tip,.icon.fail .tip{opacity:1}
+  .icon.fail .tip{background:var(--amber)}
+  .back{display:inline-flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:14px;
+    min-height:44px;margin:-10px 0 4px}
+  .back:hover,.back:focus-visible{color:#fff}
   h3{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mint);margin:22px 0 8px}
   ul{list-style:none;display:flex;flex-direction:column;gap:8px}
   li a{color:#fff;text-decoration:none;font-size:15px;border-bottom:1px solid var(--line)}
@@ -62,6 +76,7 @@
   .qrcap a{color:#fff}
   .pending{font-size:13px;color:var(--muted);border-top:1px dashed var(--line);padding-top:14px;margin-top:8px}
   .err{color:var(--amber)}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
   /* phone: one column; the Regie QR is for another device, so on a phone it becomes a plain link */
   @media (max-width:640px){
     :root{--pad:18px;--gap:14px}
@@ -70,8 +85,8 @@
     .topic h2{font-size:19px}
     .body{grid-template-columns:minmax(0,1fr)}
     .actions .primary{flex:1 1 100%}
-    .actions select,.actions .ghost{flex:1 1 0;min-width:0}
-    .copied{flex:1 1 100%}
+    .actions select{flex:1 1 0;min-width:0}
+    .tip{left:auto;right:0;transform:none;bottom:auto;top:calc(100% + 8px)}   /* below: above it would cover Slides */
     .qr{display:none}
     .qrbox{text-align:left}
     .qrcap{margin-top:0}
@@ -80,6 +95,7 @@
 <script src="../vendor/qrcode.js"></script>
 </head><body>
 <header>
+  <a class="back" href="../?view=mydm">← My DM</a>
   <div class="kick">Democracy Matters · Admin</div><h1>My DM — Sessions</h1>
   <p class="sub">Review a new topic, then run it: open the slides or copy their link for the moderator.</p>
 </header>
@@ -136,8 +152,11 @@
             '<a class="btn primary" data-act="slides" href="' + esc(slides) + '"' + draft + ' target="_blank" rel="noopener">Slides ↗</a>' +
             '<select aria-label="Slide language" data-act="lang">' + langs.map(function(l){
               return '<option value="' + l + '"' + (l === lang ? ' selected' : '') + '>' + NAME[l] + '</option>'; }).join('') + '</select>' +
-            '<button type="button" class="btn ghost" data-act="copy" data-url="' + esc(slides) + '">Copy link</button>' +
-            '<span class="copied" aria-live="polite"></span>' +
+            '<button type="button" class="btn ghost icon" data-act="copy" data-url="' + esc(slides) + '" aria-label="Copy slides link">' +
+              '<svg class="cp" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>' +
+              '<svg class="ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>' +
+              '<span class="tip" aria-hidden="true">Copy slides link</span></button>' +
+            '<span class="sr" role="status" aria-live="polite"></span>' +
           '</div>' +
           '<h3>Topic materials</h3><ul>' +
             games +
@@ -156,13 +175,19 @@
       var box = el.querySelector('[data-qr]');
       var code = qrcode(0, 'M'); code.addData(regie); code.make(); box.innerHTML = code.createSvgTag(5, 0);
       el.querySelector('[data-act=lang]').addEventListener('change', function(e){ lang = e.target.value; render(); });
-      el.querySelector('[data-act=copy]').addEventListener('click', function(e){ copy(e.currentTarget.getAttribute('data-url'), el.querySelector('.copied')); });
+      el.querySelector('[data-act=copy]').addEventListener('click', function(e){ copy(e.currentTarget, el.querySelector('.sr')); });
     }
     render();
   }
 
-  function copy(text, note){
-    var done = function(ok){ note.textContent = ok ? 'Copied ✓' : 'Copy failed — long-press the Slides button'; setTimeout(function(){ note.textContent = ''; }, 2500); };
+  function copy(btn, live){
+    var text = btn.getAttribute('data-url'), tip = btn.querySelector('.tip');
+    var done = function(ok){
+      var msg = ok ? 'Copied' : 'Copy failed: long-press Slides';
+      btn.classList.add(ok ? 'done' : 'fail'); tip.textContent = msg; live.textContent = msg;   // live region reads it out
+      clearTimeout(btn._t);
+      btn._t = setTimeout(function(){ btn.classList.remove('done', 'fail'); tip.textContent = 'Copy slides link'; live.textContent = ''; }, 1600);
+    };
     if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(function(){ done(true); }, function(){ done(legacy(text)); });
     else done(legacy(text));
   }
