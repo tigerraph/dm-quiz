@@ -900,7 +900,8 @@ function wordmarkHtml(cls, word){
 /* ---------------- session picker ---------------- */
 function renderPicker(){
   phase="picker";
-  const ids = Object.keys(registry||{});
+  // A draft topic (new-topic sets "draft": true) is reachable by its ?session= link but not listed.
+  const ids = Object.keys(registry||{}).filter(id=>!registry[id].draft);
   app.innerHTML = `<div class="screen">
     ${langPills()}
     ${wordmarkHtml()}

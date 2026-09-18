@@ -137,6 +137,33 @@ Pack schema:
   language falls back to `en`, so a pack can ship in two languages and gain the
   rest later.
 
+## Adding a topic
+
+One command scaffolds a whole Special Topic; the skill `.claude/skills/dm-topic` writes its content.
+
+```bash
+npm run new-topic -- <id> --pillar civics --title "Deutscher Titel"
+```
+
+1. **Drop the raw material** (PDFs, notes, links) in `topics/<id>/source/` — not in `~/Claude`,
+   whose sync does not know DM. The folder is gitignored: the Pages site is public.
+   Fill the brief in `topics/<id>/README.md`.
+2. The scaffold creates, from `gewaltenteilung-ch` as the template: `packs/<id>.json` (3 placeholder
+   questions), `slides/<id>.html`, `slides/topic-card-<id>.html`, `content/<id>.html`,
+   `content/regie-<id>.html`, `docs/runbook-<id>.md` (5/10/5/5), and a `packs/sessions.json`
+   line with `"draft": true` — reachable at `?session=<id>`, hidden in the picker.
+   Every copied file carries a SCAFFOLD line and the golden topic's text until it is rewritten.
+3. **Write the content** (DE first; other languages only when asked). Each question needs
+   `explanation` (the Check beat), `unique` (why every other option is wrong) and `sure: true`.
+4. `npm run render-topic -- <id>` renders deck and topic card to PDF per language and records a
+   stamp; **look at every page**.
+5. `npm run check-topic -- <id>` must pass; then remove `"draft": true`.
+
+`check-topic` enforces what the git log learned the hard way: no second defensible answer (52598c5),
+complete i18n dictionaries (0f9587a, via `tools/check-i18n.py`), no PDF older than its slides
+(54f47e8, 4944325), QR codes and the timer alive on the deck in a real browser (9c77b9f), no ß, and
+no scaffold line or golden-topic text left. CI runs `npm run check-topic -- --all`.
+
 ## Build
 
 ```bash
