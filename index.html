@@ -71,6 +71,7 @@ body.host #app{max-width:none; padding:0;}
 .pill.on{color:var(--ink); background:var(--teal); border-color:var(--teal);}
 .iconbtn{width:36px; height:36px; border-radius:11px; border:1.5px solid rgba(255,255,255,.28);
   background:rgba(255,255,255,.08); color:#fff; font-size:1rem; cursor:pointer; line-height:1; padding:0;}
+a.iconbtn{display:grid; place-items:center; text-decoration:none; box-sizing:border-box;}
 .corner{position:fixed; top:calc(10px + env(safe-area-inset-top)); right:14px; display:flex; gap:8px; z-index:6;}
 
 /* The DM/DAY8 mark beside the name, matching the deck's lockup. The mark is
@@ -2697,7 +2698,7 @@ var qrcode = function() {
    Engine carried over from the noeggi-kahoot wedding app: timer,
    speed scoring, streak bonus, i18n, synthesized offline audio.
    ================================================================== */
-const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","build":"build 18.09.2026 09:38"};
+const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","build":"build 18.09.2026 10:29"};
 const SUPA_URL = CFG.supabaseUrl || "";
 const SUPA_KEY = CFG.supabaseAnonKey || "";
 
@@ -2756,6 +2757,7 @@ const I18N = {
   claimedTitle:"Star collected!",
   claimScan:"Scan to collect your star", awardStar:"Award star ★",
   starsCount:n=>`${n} ★ collected`,
+  adminOnly:"Only admins can add stars. Log in as an admin in My DM, then try again.", adminView:"Admin view",
   addStar:"Add a star", mWho:"Person", mPillar:"Pillar",
   mTopic:"Topic (optional)", mDate:"Date (optional)", mAdd:"Add",
   starAdded:"Star added ★", cancel:"Cancel", back:"Back",
@@ -2816,6 +2818,7 @@ const I18N = {
   claimedTitle:"Stern geholt!",
   claimScan:"Scannen und Stern abholen", awardStar:"Stern vergeben ★",
   starsCount:n=>`${n} ★ abgeholt`,
+  adminOnly:"Sterne vergeben nur Admins. Melde dich in My DM als Admin an und versuche es nochmals.", adminView:"Admin-Ansicht",
   addStar:"Stern hinzufügen", mWho:"Person", mPillar:"Pfeiler",
   mTopic:"Thema (optional)", mDate:"Datum (optional)", mAdd:"Hinzufügen",
   starAdded:"Stern hinzugefügt ★", cancel:"Abbrechen", back:"Zurück",
@@ -2880,6 +2883,7 @@ const I18N = {
   claimedTitle:"\u00c9toile r\u00e9cup\u00e9r\u00e9e\u00a0!",
   claimScan:"Scanne pour r\u00e9cup\u00e9rer ton \u00e9toile", awardStar:"Attribuer l'\u00e9toile \u2605",
   starsCount:n=>`${n} \u2605 r\u00e9cup\u00e9r\u00e9es`,
+  adminOnly:"Seuls les admins peuvent attribuer des \u00e9toiles. Connecte-toi comme admin dans My DM, puis r\u00e9essaie.", adminView:"Vue admin",
   addStar:"Ajouter une \u00e9toile", mWho:"Personne", mPillar:"Pilier",
   mTopic:"Th\u00e8me (optionnel)", mDate:"Date (optionnelle)", mAdd:"Ajouter",
   starAdded:"\u00c9toile ajout\u00e9e \u2605", cancel:"Annuler", back:"Retour",
@@ -2946,6 +2950,7 @@ const I18N = {
   claimedTitle:"Stella presa!",
   claimScan:"Scansiona e prendi la tua stella", awardStar:"Assegna la stella \u2605",
   starsCount:n=>`${n} \u2605 ${n===1?"raccolta":"raccolte"}`,
+  adminOnly:"Solo gli admin possono assegnare stelle. Accedi come admin in My DM e riprova.", adminView:"Vista admin",
   addStar:"Aggiungi una stella", mWho:"Persona", mPillar:"Pilastro",
   mTopic:"Tema (facoltativo)", mDate:"Data (facoltativa)", mAdd:"Aggiungi",
   starAdded:"Stella aggiunta \u2605", cancel:"Annulla", back:"Indietro",
@@ -3101,14 +3106,38 @@ async function sbInsert(table, row, opts){
     return r.ok;
   }catch(e){ return false; }
 }
+/* Names are readable only by admins (docs/supabase-migration-005.sql). The live
+   game and the passport read through narrow functions instead, one session or
+   one set of own tokens at a time. Until the migration has run, the function
+   does not exist (404) and the old table read is used, so the client can ship
+   first and nothing breaks in between. */
+let rpcMissing = false;
+async function sbRpc(fn, args, legacyPath){
+  if(!SUPA_URL || !SUPA_KEY) return null;
+  if(!rpcMissing){
+    try{
+      const r = await fetch(SUPA_URL+"/rest/v1/rpc/"+fn, { method:"POST", cache:"no-store",
+        headers: headers({ "Content-Type":"application/json" }), body: JSON.stringify(args) });
+      noteDate(r);
+      if(r.ok){ const j = await r.json(); return Array.isArray(j) ? j : null; }
+      if(r.status !== 404) return null;
+      rpcMissing = true;
+    }catch(e){ return null; }
+  }
+  return legacyPath ? sbGet(legacyPath) : null;
+}
 const qsSession = () => "session=eq."+encodeURIComponent(SESSION);
 const fetchState   = () => sbGet("dm_state?"+qsSession()+"&select=phase,q_index,round,started_at&order=started_at.desc&limit=1");
-const fetchRoster  = () => sbGet("dm_players?"+qsSession()+"&round=eq."+curRound()
-  +"&select=token,name&order=joined_at.asc&limit=200");
-const fetchAnswers = () => sbGet("dm_answers?"+qsSession()+"&round=eq."+curRound()
-  +"&select=token,name,q_index,choice,correct,points&limit=2000");
+const fetchRoster  = () => sbRpc("dm_roster", { p_session:SESSION, p_round:curRound() },
+  "dm_players?"+qsSession()+"&round=eq."+curRound()+"&select=token,name&order=joined_at.asc&limit=200");
+const fetchAnswers = () => sbRpc("dm_round_answers", { p_session:SESSION, p_round:curRound() },
+  "dm_answers?"+qsSession()+"&round=eq."+curRound()+"&select=token,name,q_index,choice,correct,points&limit=2000");
 const fetchKicks   = () => sbGet("dm_kicks?"+qsSession()+"&select=token&limit=500");
-const fetchSessionStars = () => sbGet("dm_stars?"+qsSession()+"&select=token,name&order=created_at.asc&limit=500");
+const fetchSessionStars = () => sbRpc("dm_session_stars", { p_session:SESSION },
+  "dm_stars?"+qsSession()+"&select=token,name&order=created_at.asc&limit=500");
+const fetchStarsFor = toks => sbRpc("dm_stars_for_tokens", { p_tokens:[...toks] },
+  "dm_stars?token=in.("+[...toks].map(encodeURIComponent).join(",")+")"
+  +"&select=id,token,pillar,topic,session,awarded_on,source&order=awarded_on.asc&limit=500");
 /* Rounds exist because "New round" has to actually reset. Without one, a
    returning player's answer collides with their old row, their previous score
    stands, and the leaderboard sums every round together. */
@@ -4098,17 +4127,16 @@ async function checkRescue(){
   rescue = null;
   const fp = canvasFp();
   if(!fp || !myName) return;
-  const rows = await sbGet("dm_players?name=eq."+encodeURIComponent(myName)
-    +"&select=token,fp&limit=200");
+  const rows = await sbRpc("dm_rescue_tokens", { p_name:myName, p_fp:fp },
+    "dm_players?name=eq."+encodeURIComponent(myName)+"&select=token,fp&limit=200");
   if(!rows) return;
   const mine = await tokenClosure();
   const dismissed = new Set(store.get("rescue_no", []));
   const cand = [...new Set(rows
-    .filter(r => r.fp === fp && !mine.has(r.token) && !dismissed.has(r.token))
+    .filter(r => (r.fp === undefined || r.fp === fp) && !mine.has(r.token) && !dismissed.has(r.token))
     .map(r => r.token))];
   if(!cand.length) return;
-  const stars = await sbGet("dm_stars?token=in.("
-    + cand.map(encodeURIComponent).join(",") + ")&select=token,awarded_on&limit=200");
+  const stars = await fetchStarsFor(cand);
   if(!stars || !stars.length) return;
   rescue = {
     tokens: [...new Set(stars.map(s=>s.token))],
@@ -4189,6 +4217,37 @@ async function authRefresh(){
   const r = await authReq("token?grant_type=refresh_token", { refresh_token:AUTH.rt });
   if(r && r.ok && r.j && r.j.access_token) setAuth(r.j);
   else if(r && (r.status===400 || r.status===401)) clearAuth();
+}
+
+/* Admins (docs/supabase-migration-005.sql): a logged-in user listed in dm_admins.
+   The row is readable only by its own user, so asking for it with the user's
+   token answers «am I an admin?» without exposing the list.
+   Returns "admin", "no", or "legacy" when dm_admins does not exist yet (before
+   the migration): then the host keeps the old anon star add. */
+async function asUser(path, init){
+  if(!AUTH || !AUTH.at) return null;
+  const go = () => fetch(SUPA_URL+"/rest/v1/"+path, Object.assign({ cache:"no-store" }, init||{}, {
+    headers: Object.assign({ apikey:SUPA_KEY, Authorization:"Bearer "+AUTH.at }, (init||{}).headers||{}) }));
+  try{
+    let r = await go();
+    if(r.status===401 && AUTH && AUTH.rt){ await authRefresh(); if(AUTH) r = await go(); }
+    return r;
+  }catch(e){ return null; }
+}
+let adminState = null;
+async function adminStatus(){
+  if(!SUPA_URL || !SUPA_KEY) return "no";
+  if(!AUTH){
+    // not logged in: admin only if the table is missing (legacy), which anon can see too
+    const r = await fetch(SUPA_URL+"/rest/v1/dm_admins?select=user_id&limit=1",
+      { headers:headers(), cache:"no-store" }).catch(()=>null);
+    return adminState = (r && r.status===404) ? "legacy" : "no";
+  }
+  const r = await asUser("dm_admins?select=user_id&user_id=eq."+encodeURIComponent(AUTH.uid));
+  if(!r) return adminState = "no";
+  if(r.status===404) return adminState = "legacy";
+  const j = r.ok ? await r.json().catch(()=>[]) : [];
+  return adminState = (Array.isArray(j) && j.length) ? "admin" : "no";
 }
 
 /* account block on the My DM page (sketch: name, email, change PW, delete)
@@ -4351,10 +4410,7 @@ async function tokenClosure(){
   return mine;
 }
 async function fetchMyStars(){
-  const mine = await tokenClosure();
-  const list = [...mine].map(encodeURIComponent).join(",");
-  return sbGet("dm_stars?token=in.("+list+")"
-    +"&select=id,pillar,topic,session,awarded_on,source&order=awarded_on.asc&limit=500");
+  return fetchStarsFor(await tokenClosure());
 }
 function mergeStars(local, remote){
   const by = new Map();
@@ -4383,6 +4439,13 @@ function demoStars(){
 function renderPassport(){
   phase="passport";
   paintPassport(DEMO ? demoStars() : mergeStars(localStars(), null));
+  // the entry into the admin view exists only for admins: nothing in the page for anyone else
+  if(!DEMO && AUTH) adminStatus().then(st=>{
+    const c = document.querySelector(".corner");
+    if(st !== "admin" || phase !== "passport" || !c || document.getElementById("adminlink")) return;
+    c.insertAdjacentHTML("afterbegin",
+      `<a class="iconbtn" id="adminlink" href="content/admin.html" aria-label="${esc(t().adminView)}" title="${esc(t().adminView)}">⚙️</a>`);
+  });
   if(!DEMO && SUPA_URL){
     // Refresh only the star grid when the data lands — a full repaint here
     // would wipe whatever the user is typing into the account form.
@@ -4563,8 +4626,27 @@ function paintHostStars(){
 }
 async function openAddStar(){
   A.tap();
+  // Manual stars are for admins only (migration 005). Before the migration
+  // («legacy») the old anon flow still works.
+  const who = await adminStatus();
+  if(who === "no"){
+    const sheet = document.createElement("div");
+    sheet.className = "sheet";
+    sheet.innerHTML = `<form><p class="rules">${esc(t().adminOnly)}</p>
+      <div class="row"><a class="btn small" href="?view=mydm" target="_blank" rel="noopener">${esc(t().myDM)} ★</a>
+      <button type="button" class="btn ghost small" id="mcancel">${esc(t().cancel)}</button></div></form>`;
+    document.body.appendChild(sheet);
+    sheet.addEventListener("click", e=>{ if(e.target===sheet) sheet.remove(); });
+    sheet.querySelector("#mcancel").onclick = ()=>sheet.remove();
+    return;
+  }
+  const readAll = async path => {
+    if(who !== "admin") return sbGet(path);
+    const r = await asUser(path);
+    return r && r.ok ? r.json() : null;
+  };
   // anyone who has ever joined any session, newest first, one entry per device
-  const all = await sbGet("dm_players?select=token,name,session,joined_at"
+  const all = await readAll("dm_players?select=token,name,session,joined_at"
     +"&order=joined_at.desc&limit=1000") || [];
   const seen = new Map();
   for(const p of all) if(!seen.has(p.token)) seen.set(p.token, p);
@@ -4602,7 +4684,11 @@ async function openAddStar(){
     };
     const d = sheet.querySelector("#mdate").value;
     if(d) row.awarded_on = d;
-    if(await sbInsert("dm_stars", row)){ A.tap(); close(); }
+    const ok = who === "admin"
+      ? await asUser("dm_stars", { method:"POST", body:JSON.stringify(row),
+          headers:{ "Content-Type":"application/json", Prefer:"return=minimal" } }).then(r=>r && r.ok)
+      : await sbInsert("dm_stars", row);
+    if(ok){ A.tap(); close(); }
   };
 }
 

@@ -16,6 +16,12 @@
  *   GET /__dump    the whole database as JSON
  *   GET /__reset   empty every table
  *
+ * Access follows docs/supabase-migration-005.sql: anon cannot list dm_players,
+ * dm_answers or dm_stars and reads through the rpc/ functions; a logged-in admin
+ * reads everything. Flag an admin with GET /__admin?email=… after signing up.
+ * `--legacy` serves the schema before 005 instead (no rpc/, no dm_admins, anon
+ * reads every table), which is what the client's fallback path is tested against.
+ *
  * Development only. Never deploy this, and remember to put the real
  * Supabase URL and anon key back in src/config.json before committing.
  */
@@ -25,7 +31,9 @@ import { extname, join, normalize, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const PORT = Number(process.argv[2] || process.env.PORT || 4173);
+const PORT = Number(process.argv.slice(2).find(a => /^\d+$/.test(a)) || process.env.PORT || 4173);
+const LEGACY = process.argv.includes("--legacy");
+const admins = new Set();      // user ids in dm_admins
 
 const db = { dm_state: [], dm_players: [], dm_answers: [], dm_kicks: [],
              dm_stars: [], dm_token_links: [], dm_identities: [] };
@@ -90,6 +98,23 @@ function bearerUser(req) {
   const uid = m && sessions.get(m[1]);
   return uid ? [...authUsers.values()].find(u => u.id === uid) : null;
 }
+const isAdmin = req => { const u = bearerUser(req); return !!(u && admins.has(u.id)); };
+const NAMED = ["dm_players", "dm_answers", "dm_stars"];   // anon-unreadable after 005
+
+// the functions of migration 005, same arguments and columns
+const RPC = {
+  dm_roster: a => db.dm_players.filter(r => r.session === a.p_session && r.round === a.p_round)
+    .sort((x, y) => x._seq - y._seq).slice(0, 200).map(r => ({ token: r.token, name: r.name })),
+  dm_round_answers: a => db.dm_answers.filter(r => r.session === a.p_session && r.round === a.p_round)
+    .slice(0, 2000).map(({ token, name, q_index, choice, correct, points }) => ({ token, name, q_index, choice, correct, points })),
+  dm_session_stars: a => db.dm_stars.filter(r => r.session === a.p_session)
+    .sort((x, y) => x._seq - y._seq).slice(0, 500).map(r => ({ token: r.token, name: r.name })),
+  dm_stars_for_tokens: a => db.dm_stars.filter(r => (a.p_tokens || []).slice(0, 500).includes(r.token))
+    .map(({ id, token, pillar, topic, session, awarded_on, source }) => ({ id, token, pillar, topic, session, awarded_on, source })),
+  dm_rescue_tokens: a => !a.p_fp ? [] : [...new Set(db.dm_players
+    .filter(r => r.name === a.p_name && r.fp === a.p_fp).map(r => r.token))].map(token => ({ token })),
+};
+
 async function readJson(req) {
   let b = ""; for await (const c of req) b += c;
   try { return JSON.parse(b); } catch { return {}; }
@@ -142,18 +167,43 @@ createServer(async (req, res) => {
     return void res.writeHead(200).end("ok");
   }
 
+  // like PostgREST: a bearer that is neither the anon key nor a live session is an expired JWT
+  const bearer = (/^Bearer (.+)$/.exec(req.headers.authorization || "") || [])[1];
+  if (url.pathname.startsWith("/rest/v1/") && bearer && bearer !== "mock" && !sessions.has(bearer))
+    return void res.writeHead(401, { "Content-Type": "application/json" }).end('{"code":"PGRST301","message":"JWT expired"}');
+
+  if (url.pathname.startsWith("/rest/v1/rpc/")) {
+    const fn = RPC[url.pathname.slice("/rest/v1/rpc/".length)];
+    if (LEGACY || !fn || req.method !== "POST")
+      return void res.writeHead(404, { "Content-Type": "application/json" }).end('{"code":"PGRST202"}');
+    res.writeHead(200, { "Content-Type": "application/json" });
+    return void res.end(JSON.stringify(fn(await readJson(req))));
+  }
+
+  if (url.pathname === "/rest/v1/dm_admins") {
+    if (LEGACY) return void res.writeHead(404, { "Content-Type": "application/json" }).end('{"code":"42P01"}');
+    const u = bearerUser(req);
+    res.writeHead(200, { "Content-Type": "application/json" });
+    return void res.end(JSON.stringify(u && admins.has(u.id) ? [{ user_id: u.id }] : []));
+  }
+
   if (url.pathname.startsWith("/rest/v1/")) {
     const table = url.pathname.slice("/rest/v1/".length);
     if (!db[table]) return void res.writeHead(404).end("no such table");
 
     if (req.method === "GET") {
       res.writeHead(200, { "Content-Type": "application/json" });
-      return void res.end(JSON.stringify(query(table, url.searchParams)));
+      const hidden = !LEGACY && NAMED.includes(table) && !isAdmin(req);
+      return void res.end(JSON.stringify(hidden ? [] : query(table, url.searchParams)));
     }
     if (req.method === "POST") {
       let body = "";
       for await (const c of req) body += c;
       const row = JSON.parse(body);
+      // 005: anon may claim a session star; a manual star needs an admin
+      if (!LEGACY && table === "dm_stars" && !isAdmin(req) && (row.source === "manual" || row.session == null))
+        return void res.writeHead(403, { "Content-Type": "application/json" })
+          .end('{"code":"42501","message":"new row violates row-level security policy"}');
       const uq = UNIQUE[table];
       // like Postgres, a NULL never collides with anything
       if (uq && db[table].some(r => uq.every(k =>
@@ -170,6 +220,12 @@ createServer(async (req, res) => {
     return void res.writeHead(405).end();
   }
 
+  if (url.pathname === "/__admin") {
+    const u = authUsers.get(url.searchParams.get("email") || "");
+    if (!u) return void res.writeHead(404).end("no such user: sign up first");
+    admins.add(u.id);
+    return void res.writeHead(200).end("ok");
+  }
   if (url.pathname === "/__reset") {
     for (const k of Object.keys(db)) db[k] = [];
     return void res.writeHead(200).end("ok");
