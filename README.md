@@ -178,7 +178,14 @@ It is built from `packs/sessions.json` at runtime, so a new topic appears on its
 `"practice": [{"file": "fauler-apfel.html", "title": {"de": …, "en": …}, "what": {"en": …}}]`
 (file under `content/`; `what` is the optional one-line description). `check-topic` opens the page
 in Chrome once per language and fails if a topic is missing, a link points at a missing file, or a
-QR does not open that topic's Regie page. Stars and people are not on it yet: the page is public.
+QR does not open that topic's Regie page.
+
+**Stars & people** appear on the admin page only for an admin: someone logged in to My DM whose
+account is in `dm_admins`; for them My DM shows a ⚙ entry to this page. Names are readable only with
+an admin's token (`docs/supabase-migration-005.sql`); the live game and the passport read through
+narrow functions (`dm_roster`, `dm_round_answers`, `dm_session_stars`, `dm_stars_for_tokens`,
+`dm_rescue_tokens`) and fall back to the old table reads while the migration has not run.
+`node tools/mock-supabase.mjs` serves the post-migration rules; `--legacy` the ones before.
 
 ## Build
 

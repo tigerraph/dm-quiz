@@ -13,8 +13,9 @@
   Built from packs/sessions.json at runtime, so a topic added with `npm run new-topic` appears without
   an edit. `npm run check-topic` opens this page in headless Chrome once per language (?lang=) and fails
   on a missing topic, a dead link, or a QR that does not point at the topic's Regie page.
-  No personal data here: stars and people wait for an access decision (the page is public, the anon key
-  can read them, and ?host=1 has no login).
+  People and their stars appear only for a logged-in admin (the My DM login, flagged in dm_admins): the
+  names are readable only with an admin's token (docs/supabase-migration-005.sql), so the public page
+  itself carries none.
 -->
 <style>
   @font-face{font-family:'Poppins';font-style:normal;font-weight:400;
@@ -74,7 +75,16 @@
   .qr svg{width:100%;height:100%}
   .qrcap{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.35}
   .qrcap a{color:#fff}
-  .pending{font-size:13px;color:var(--muted);border-top:1px dashed var(--line);padding-top:14px;margin-top:8px}
+  .people{border-top:1px dashed var(--line);padding-top:14px;margin-top:8px;font-size:14px;color:var(--muted)}
+  .people summary{font-size:14px}
+  .people summary b{color:#fff}
+  .people p{margin-top:8px}
+  .people p a{color:#fff}
+  .plist{margin-top:12px;gap:0}
+  .plist li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 16px;padding:10px 0;border-bottom:1px solid var(--line)}
+  .plist b{color:#fff;font-size:15px;overflow-wrap:anywhere}
+  .plist .st{color:var(--amber);text-align:right;white-space:nowrap}
+  .plist small{grid-column:1 / -1;font-size:12.5px}
   .err{color:var(--amber)}
   .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
   /* phone: one column; the Regie QR is for another device, so on a phone it becomes a plain link */
@@ -100,7 +110,7 @@
   <p class="sub">Review a new topic, then run it: open the slides or copy their link for the moderator.</p>
 </header>
 <main id="topics"><p class="sub">Loading packs/sessions.json …</p></main>
-<p class="pending" id="stars">Stars &amp; people: not on this page yet. It is public, so they wait for a protected access (Rafa decides). Stars are still granted from the beamer view.</p>
+<details class="people" id="people"><summary><b>Stars &amp; people</b> <span id="pcount">· checking login …</span></summary><div id="pbody"></div></details>
 <script>
 (function(){
   var BASE = 'https://tigerraph.github.io/dm-quiz/';
@@ -195,6 +205,65 @@
     var t = document.createElement('textarea'); t.value = text; t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.opacity = '0';
     document.body.appendChild(t); t.select(); var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
     t.remove(); return ok;
+  }
+
+  /* ── Stars & people: only for a logged-in admin (docs/supabase-migration-005.sql) ──
+     The login is the one from My DM (same site, localStorage «dmq_auth»). Names are
+     readable only with an admin's token, so nobody else gets them, whatever this page shows. */
+  var PILL = {civics:'Civics', comm:'Comm', action:'Action'};
+  var fmt = function(d){ return d ? new Date(d).toLocaleDateString('de-CH') : ''; };
+  var people = function(html, count){ document.getElementById('pbody').innerHTML = html; document.getElementById('pcount').textContent = count; };
+  var getAuth = function(){ try { return JSON.parse(localStorage.getItem('dmq_auth')); } catch (e) { return null; } };
+  fetch('../src/config.json').then(function(r){ return r.json(); }).then(function(cfg){
+    var URL_ = cfg.supabaseUrl, KEY = cfg.supabaseAnonKey, auth = getAuth();
+    var login = '<p><a href="../?view=mydm">Log in to My DM</a> with an admin account to see people and their stars.</p>';
+    if (!auth || !auth.at) return people(login, '· admins only');
+    var call = function(path, retried){
+      return fetch(URL_ + '/rest/v1/' + path, { cache:'no-store', headers:{ apikey:KEY, Authorization:'Bearer ' + auth.at } }).then(function(r){
+        if (r.status !== 401 || retried || !auth.rt) return r;
+        // expired token: refresh it the way My DM does, and keep My DM's copy in step
+        return fetch(URL_ + '/auth/v1/token?grant_type=refresh_token', { method:'POST',
+          headers:{ apikey:KEY, 'Content-Type':'application/json' }, body:JSON.stringify({ refresh_token:auth.rt }) })
+          .then(function(t){ return t.ok ? t.json() : null; }).then(function(j){
+            if (!j || !j.access_token) return r;
+            auth = { at:j.access_token, rt:j.refresh_token, uid:j.user && j.user.id, email:j.user && j.user.email };
+            try { localStorage.setItem('dmq_auth', JSON.stringify(auth)); } catch (e) {}
+            return call(path, true);
+          });
+      });
+    };
+    return call('dm_admins?select=user_id&user_id=eq.' + encodeURIComponent(auth.uid)).then(function(r){
+      if (r.status === 404) return people('<p>Waiting for the database update (docs/supabase-migration-005.sql).</p>', '· not set up yet');
+      if (r.status === 401) return people(login, '· login expired');
+      return r.json().then(function(rows){
+        if (!Array.isArray(rows) || !rows.length)
+          return people('<p>' + esc(auth.email || 'This account') + ' is not an admin account. <a href="../?view=mydm">My DM</a></p>', '· admins only');
+        return Promise.all([
+          call('dm_players?select=token,name,session,joined_at&order=joined_at.desc&limit=2000').then(function(x){ return x.json(); }),
+          call('dm_stars?select=token,name,pillar,session,topic,awarded_on,source&order=awarded_on.desc&limit=2000').then(function(x){ return x.json(); }),
+          call('dm_token_links?select=token_a,token_b&limit=5000').then(function(x){ return x.ok ? x.json() : []; })
+        ]).then(function(res){ list(res[0] || [], res[1] || [], res[2] || []); });
+      });
+    });
+  }).catch(function(e){ people('<p class="err">Could not load people: ' + esc(e.message) + '</p>', ''); });
+
+  // one line per person: tokens joined by dm_token_links (device id <-> quiz tokens, rescues)
+  // count as one, as they do in the passport; then latest name, stars per pillar, sessions, last seen
+  function list(players, stars, links){
+    var up = {};
+    var root = function(t){ while (up[t]) t = up[t]; return t; };
+    links.forEach(function(l){ var a = root(l.token_a), b = root(l.token_b); if (a !== b) up[a] = b; });
+    var by = {};
+    var get = function(tok, name){ tok = root(tok); return by[tok] = by[tok] || { name:name, sessions:{}, seen:'', stars:{civics:0, comm:0, action:0}, n:0 }; };
+    players.forEach(function(p){ var x = get(p.token, p.name); if (p.session) x.sessions[p.session] = 1; if (!x.seen || p.joined_at > x.seen) x.seen = p.joined_at; });
+    stars.forEach(function(st){ var x = get(st.token, st.name); x.stars[st.pillar] = (x.stars[st.pillar] || 0) + 1; x.n++; });
+    var rows = Object.keys(by).map(function(k){ return by[k]; })
+      .sort(function(a, b){ return b.n - a.n || (b.seen > a.seen ? 1 : -1); });
+    people('<ul class="plist">' + rows.map(function(x){
+      var pills = Object.keys(PILL).filter(function(p){ return x.stars[p]; }).map(function(p){ return PILL[p] + ' ' + x.stars[p]; }).join(' · ');
+      return '<li><b>' + esc(x.name) + '</b><span class="st">' + (x.n ? '★ ' + x.n : '—') + '</span>' +
+        '<small>' + [pills, Object.keys(x.sessions).join(', '), x.seen ? 'last seen ' + fmt(x.seen) : ''].filter(Boolean).map(esc).join(' · ') + '</small></li>';
+    }).join('') + '</ul>', '· ' + rows.length + (rows.length === 1 ? ' person · ' : ' people · ') + stars.length + (stars.length === 1 ? ' star' : ' stars'));
   }
 })();
 </script>
