@@ -208,6 +208,13 @@ narrow functions (`dm_roster`, `dm_round_answers`, `dm_session_stars`, `dm_stars
 `dm_rescue_tokens`) and fall back to the old table reads while the migration has not run.
 `node tools/mock-supabase.mjs` serves the post-migration rules; `--legacy` the ones before.
 
+## Testing
+
+- **Audio off when testing** (Rafa, 18.09.2026: a test round of the wedding quiz played music on
+  his machine). Before opening the app in any browser an agent drives, set
+  `localStorage.setItem("dmq_sound", "false")` (or press 🔊 first), and close every test tab when
+  done, host and player alike. `npm run check-topic` runs headless Chrome and is silent.
+
 ## Build
 
 ```bash
