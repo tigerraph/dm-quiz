@@ -35,3 +35,5 @@ jobs:
           echo "index.html is current."
       - name: Topic checks (packs, PDFs current, QR + timer in Chrome, i18n)
         run: npm run check-topic -- --all
+      - name: DM uses only its own Supabase schema (never the wedding quiz's «noeggi»)
+        run: bash tools/check-schema.sh
