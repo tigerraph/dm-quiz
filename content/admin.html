@@ -1,154 +1,175 @@
-<!doctype html><html lang="de"><head>
+<!doctype html><html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>My DM · Admin</title>
 <!--
-  Admin view for running a session (Rafa, 18.09.2026). Built entirely from packs/sessions.json
-  and each topic's pack, so a topic added with `npm run new-topic` appears here without an edit.
-  Links follow the file convention of tools/topic-lib.mjs; `npm run check-topic` opens this page in
-  headless Chrome and fails on any link that points at a missing file.
-  No personal data on this page: stars and people wait for an access decision (the anon key in the
-  public site can read them, and ?host=1 has no login).
+  Admin view for running a session (Rafa, 18.09.2026; v2 after his review the same day).
+  It follows the moderator's journey and shows nothing else:
+    1. after a topic is uploaded, review it: slides, topic materials (games, exercises, take-home page);
+    2. on the day: open the slides, or copy their link for the moderator; the Regie QR opens the
+       moderation page on the host's phone.
+  Everything that is already linked from the slides sits in the collapsed support block.
+  Built from packs/sessions.json at runtime, so a topic added with `npm run new-topic` appears without
+  an edit. `npm run check-topic` opens this page in headless Chrome once per language (?lang=) and fails
+  on a missing topic, a dead link, or a QR that does not point at the topic's Regie page.
+  No personal data here: stars and people wait for an access decision (the page is public, the anon key
+  can read them, and ?host=1 has no login).
 -->
 <style>
   @font-face{font-family:'Poppins';font-style:normal;font-weight:400;
     src:url(../assets/fonts/poppins-400-latin.woff2) format('woff2');font-display:swap}
   @font-face{font-family:'Poppins';font-style:normal;font-weight:700;
     src:url(../assets/fonts/poppins-800-latin.woff2) format('woff2');font-display:swap}
-  :root{--bg:#111C2B;--card:#18263A;--line:#2A3A4F;--mint:#5AD1A8;--muted:#9FB0C4;--amber:#FFD166;
-    --gap:20px;--col:minmax(0,1fr)}
+  :root{--bg:#111C2B;--card:#18263A;--line:#2A3A4F;--mint:#5AD1A8;--ink:#0F1B2A;--muted:#9FB0C4;--amber:#FFD166;
+    --gap:20px;--pad:24px;--qr:168px;--radius:16px}
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:Poppins,system-ui,sans-serif;background:var(--bg);color:#fff;line-height:1.45;
-    padding:32px 40px 48px;min-width:1024px}
-  header{display:flex;align-items:baseline;justify-content:space-between;gap:var(--gap);margin-bottom:24px}
+    padding:32px 40px 48px;max-width:1120px;margin:0 auto}
+  header{margin-bottom:24px}
   .kick{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mint)}
   h1{font-size:30px;line-height:1.15;margin-top:4px}
   .sub{font-size:14px;color:var(--muted)}
-  .langs{display:flex;gap:6px}
-  .langs button{font:700 12px Poppins,system-ui,sans-serif;letter-spacing:.06em;color:var(--muted);background:none;
-    border:1px solid var(--line);border-radius:8px;padding:5px 10px;cursor:pointer}
-  .langs button[aria-pressed=true]{background:var(--mint);color:#0F1B2A;border-color:var(--mint)}
-  .topic{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin-bottom:var(--gap)}
-  .topic h2{font-size:22px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .topic{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:var(--pad);margin-bottom:var(--gap)}
+  .topic h2{font-size:22px;line-height:1.25;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
   .badge{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:6px;padding:3px 8px}
-  .badge.draft{background:var(--amber);color:#0F1B2A}
-  .badge.pillar{border:1px solid var(--line);color:var(--muted)}
-  .badge.alias{border:1px dashed var(--line);color:var(--muted)}
+  .badge.draft{background:var(--amber);color:var(--ink)}
   .meta{font-size:13px;color:var(--muted);margin-top:2px}
-  .grid{display:grid;grid-template-columns:max-content var(--col) var(--col) 190px;gap:var(--gap);margin-top:18px}
-  .box h3{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mint);margin-bottom:8px}
-  .box ul{list-style:none;display:flex;flex-direction:column;gap:6px}
-  .box a{color:#fff;text-decoration:none;font-size:14.5px;border-bottom:1px solid transparent}
-  .box a:hover{border-bottom-color:var(--mint)}
-  .box a small{color:var(--muted);font-size:12.5px}
-  .row{display:grid;grid-template-columns:28px 1fr 1fr;gap:12px;align-items:baseline}
-  .row .l{font-size:12px;font-weight:700;color:var(--muted)}
-  .pair{display:flex;gap:8px;align-items:baseline;white-space:nowrap}
-  .row a{font-size:13.5px}
-  .qr{background:#fff;border-radius:10px;padding:8px;width:190px;height:190px;display:flex;align-items:center;justify-content:center}
+  .body{display:grid;grid-template-columns:minmax(0,1fr) var(--qr);gap:calc(var(--gap) * 1.5);margin-top:20px}
+  .actions{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch}
+  .btn{font:700 15px Poppins,system-ui,sans-serif;border-radius:12px;padding:12px 18px;cursor:pointer;white-space:nowrap;
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;min-height:48px}
+  .btn.primary{background:var(--mint);color:var(--ink);border:0;font-size:18px;padding:12px 28px}
+  .btn.ghost{background:none;color:#fff;border:1px solid var(--line)}
+  .btn.ghost:hover{border-color:var(--mint)}
+  select{font:700 14px Poppins,system-ui,sans-serif;color:#fff;background:var(--bg);border:1px solid var(--line);
+    border-radius:12px;padding:0 10px;min-height:48px;cursor:pointer}
+  .copied{font-size:13px;color:var(--mint);align-self:center}
+  .copied:empty{display:none}
+  h3{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mint);margin:22px 0 8px}
+  ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+  li a{color:#fff;text-decoration:none;font-size:15px;border-bottom:1px solid var(--line)}
+  li a:hover{border-bottom-color:var(--mint)}
+  li .what{display:block;font-size:12.5px;color:var(--muted)}
+  details{margin-top:18px;border-top:1px solid var(--line);padding-top:12px}
+  summary{cursor:pointer;font-size:13px;color:var(--muted);list-style-position:inside}
+  details ul{margin-top:10px}
+  details li a{font-size:14px}
+  .qrbox{text-align:center}
+  .qr{background:#fff;border-radius:12px;padding:8px;width:var(--qr);height:var(--qr);display:flex;align-items:center;justify-content:center}
   .qr svg{width:100%;height:100%}
-  .qrcap{font-size:12px;color:var(--muted);margin-top:6px;word-break:break-all}
-  .pending{border:1px dashed var(--line);border-radius:16px;padding:20px 24px;color:var(--muted);font-size:14px}
-  .pending h2{color:#fff;font-size:20px;margin-bottom:6px}
+  .qrcap{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.35}
+  .qrcap a{color:#fff}
+  .pending{font-size:13px;color:var(--muted);border-top:1px dashed var(--line);padding-top:14px;margin-top:8px}
   .err{color:var(--amber)}
+  /* phone: one column; the Regie QR is for another device, so on a phone it becomes a plain link */
+  @media (max-width:640px){
+    :root{--pad:18px;--gap:14px}
+    body{padding:20px 16px 32px}
+    h1{font-size:24px}
+    .topic h2{font-size:19px}
+    .body{grid-template-columns:minmax(0,1fr)}
+    .actions .primary{flex:1 1 100%}
+    .actions select,.actions .ghost{flex:1 1 0;min-width:0}
+    .copied{flex:1 1 100%}
+    .qr{display:none}
+    .qrbox{text-align:left}
+    .qrcap{margin-top:0}
+  }
 </style>
 <script src="../vendor/qrcode.js"></script>
 </head><body>
 <header>
-  <div><div class="kick">Democracy Matters · Admin</div><h1>My DM — Sessions</h1>
-    <div class="sub">Alles, was es zum Durchführen einer Session braucht. Neue Topics erscheinen automatisch.</div></div>
-  <nav class="langs" aria-label="Sprache der Links"></nav>
+  <div class="kick">Democracy Matters · Admin</div><h1>My DM — Sessions</h1>
+  <p class="sub">Review a new topic, then run it: open the slides or copy their link for the moderator.</p>
 </header>
-<main id="topics"><p class="sub">Lade packs/sessions.json …</p></main>
-<section class="pending" id="stars">
-  <h2>Sterne &amp; Personen</h2>
-  <p>Noch nicht hier: Diese Seite liegt öffentlich auf GitHub Pages, und die Liste der Personen mit ihren Sternen
-  braucht zuerst einen geschützten Zugang (Entscheid bei Rafa). Sterne vergeben geht weiter über die Beamer-Ansicht.</p>
-</section>
+<main id="topics"><p class="sub">Loading packs/sessions.json …</p></main>
+<p class="pending" id="stars">Stars &amp; people: not on this page yet. It is public, so they wait for a protected access (Rafa decides). Stars are still granted from the beamer view.</p>
 <script>
 (function(){
   var BASE = 'https://tigerraph.github.io/dm-quiz/';
-  var REPO = 'https://github.com/tigerraph/dm-quiz/blob/main/';
-  var LANGS = ['de','en','fr','it'];
-  var PILLAR = {civics:'Civics & Basic Concepts', comm:'Communication & Social Media', action:'Action & Mobilisation'};
+  var LANGS = ['en','de','fr','it'];            // EN is the default slide language (Rafa, 18.09.2026)
+  var NAME = {en:'English', de:'Deutsch', fr:'Français', it:'Italiano'};
   var q = new URLSearchParams(location.search);
-  var UI = (q.get('lang') || 'de').toLowerCase(); if (LANGS.indexOf(UI) < 0) UI = 'de';
+  var WANT = (q.get('lang') || 'en').toLowerCase();   // ?lang= presets every dropdown (check-topic uses it)
   var esc = function(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };
-  var pick = function(o){ return o ? (o[UI] || o.de || o.en || Object.values(o)[0]) : ''; };
+  var pick = function(o, l){ return o ? (o[l] || o.en || o.de || Object.values(o)[0]) : ''; };
+  var qs = function(l){ return l === 'de' ? '' : '?lang=' + l; };   // DE is each page's own default
   var pdf = function(base, l){ return '../slides/' + base + (l === 'de' ? '' : '.' + l) + '.pdf'; };
-  var DRAFT = null;   // set per card: links of a draft topic carry data-draft (see tools/check-topic.mjs)
-  var lnk = function(href, text, cls){ return '<a href="' + esc(href) + '"' + (cls ? ' class="' + cls + '"' : '') +
-    (DRAFT ? ' data-draft="' + esc(DRAFT) + '"' : '') + ' target="_blank" rel="noopener">' + text + '</a>'; };
-
-  var nav = document.querySelector('.langs');
-  nav.innerHTML = LANGS.map(function(l){ return '<button type="button" data-l="' + l + '" aria-pressed="' + (l === UI) + '">' + l.toUpperCase() + '</button>'; }).join('');
-  nav.addEventListener('click', function(e){
-    var l = e.target.getAttribute('data-l'); if (!l) return;
-    var u = new URL(location.href); u.searchParams.set('lang', l); location.href = u.href;
-  });
 
   fetch('../packs/sessions.json').then(function(r){ return r.json(); }).then(function(reg){
     var byPack = {};
     Object.keys(reg).forEach(function(k){ (byPack[reg[k].pack] = byPack[reg[k].pack] || []).push(k); });
-    // one card per pack; other registry ids on the same pack (e.g. «probe») show as aliases on it
+    // one card per pack; other registry ids on the same pack (e.g. «probe») only appear in the support block
     var packs = Object.keys(byPack).sort(function(a, b){
       return (reg[byPack[a][0]].draft ? 1 : 0) - (reg[byPack[b][0]].draft ? 1 : 0);
     });
     return Promise.all(packs.map(function(p){
       return fetch('../packs/' + p).then(function(r){ return r.json(); }).then(function(pack){ return {pack:pack, ids:byPack[p]}; });
-    })).then(function(list){ render(reg, list); });
-  }).catch(function(e){ document.getElementById('topics').innerHTML = '<p class="err">packs/sessions.json konnte nicht geladen werden: ' + esc(e.message) + '</p>'; });
+    })).then(function(list){ list.forEach(function(it){ card(reg, it); }); document.body.setAttribute('data-ready', '1'); });
+  }).catch(function(e){ document.getElementById('topics').innerHTML = '<p class="err">Could not load packs/sessions.json: ' + esc(e.message) + '</p>'; });
 
-  function render(reg, list){
-    var main = document.getElementById('topics'); main.innerHTML = '';
-    list.forEach(function(it){
-      var id = it.pack.id, s = reg[it.ids[0]], main_id = it.ids.indexOf(id) >= 0 ? id : it.ids[0];
-      DRAFT = s.draft ? id : null;
-      var langs = LANGS.filter(function(l){ return it.pack.questions[0] && it.pack.questions[0].q[l]; });
-      // one row per language: slides and topic card, each as PDF and HTML
-      var show = langs.map(function(l){
-        var qs = l === 'de' ? '' : '?lang=' + l;
-        return '<li class="row"><span class="l">' + l.toUpperCase() + '</span>' +
-          '<span class="pair">' + lnk(pdf(id, l), 'Folien PDF') + lnk('../slides/' + id + '.html' + qs, '<small>HTML</small>') + '</span>' +
-          '<span class="pair">' + lnk(pdf('topic-card-' + id, l), 'Karte PDF') + lnk('../slides/topic-card-' + id + '.html' + qs, '<small>HTML</small>') + '</span></li>';
-      }).join('');
-      var player = BASE + '?session=' + encodeURIComponent(main_id);
-      var aliases = it.ids.filter(function(k){ return k !== main_id; });
-      var practice = (s.practice || []).map(function(x){ return '<li>' + lnk('../content/' + x.file, esc(pick(x.title))) + '</li>'; }).join('');
-      var el = document.createElement('section');
-      el.className = 'topic'; el.id = 'topic-' + id;
+  function card(reg, it){
+    var main = document.getElementById('topics');
+    if (!main.querySelector('.topic')) main.innerHTML = '';
+    var id = it.pack.id, mainId = it.ids.indexOf(id) >= 0 ? id : it.ids[0], s = reg[mainId];
+    var langs = LANGS.filter(function(l){ return it.pack.questions[0] && it.pack.questions[0].q[l]; });
+    var lang = langs.indexOf(WANT) >= 0 ? WANT : langs[0];
+    var draft = s.draft ? ' data-draft="' + esc(id) + '"' : '';   // check-topic gates a draft's links only by name
+    var a = function(href, text, what){
+      return '<li><a href="' + esc(href) + '"' + draft + ' target="_blank" rel="noopener">' + text + '</a>' +
+        (what ? '<span class="what">' + what + '</span>' : '') + '</li>';
+    };
+    var el = document.createElement('section');
+    el.className = 'topic'; el.id = 'topic-' + id;
+    main.appendChild(el);
+
+    function render(){
+      var slides = BASE + 'slides/' + id + '.html' + qs(lang);
+      var regie = BASE + 'content/regie-' + id + '.html' + qs(lang);
+      var games = (s.practice || []).map(function(x){ return a('../content/' + x.file + qs(lang), esc(pick(x.title, lang)), x.what ? esc(pick(x.what, lang)) : 'Game for the exercise block'); }).join('');
       el.innerHTML =
-        '<h2>' + esc(pick(s.title) || id) +
-          (s.draft ? '<span class="badge draft">Entwurf</span>' : '') +
-          '<span class="badge pillar">' + esc(PILLAR[s.pillar] || s.pillar || '—') + '</span>' +
-          aliases.map(function(a){ return '<span class="badge alias">auch als ?session=' + esc(a) + '</span>'; }).join('') + '</h2>' +
-        '<div class="meta">' + esc(id) + ' · ' + it.pack.questions.length + ' Fragen · Sprachen ' + langs.join('/').toUpperCase() +
-          (s.date ? ' · ' + esc(s.date) : '') + '</div>' +
-        '<div class="grid">' +
-          '<div class="box"><h3>Zeigen</h3><ul>' +
-            show +
-          '</ul></div>' +
-          '<div class="box"><h3>Durchführen</h3><ul>' +
-            '<li>' + lnk('../?session=' + encodeURIComponent(main_id) + '&host=1', 'Beamer-Ansicht (Host)') + '</li>' +
-            '<li>' + lnk('regie-' + id + '.html' + (UI === 'de' ? '' : '?lang=' + UI), 'Regie (Handy)') + '</li>' +
-            '<li>' + lnk(REPO + 'docs/runbook-' + id + '.md', 'Runbook') + '</li>' +
-            '<li>' + lnk(id + '.html' + (UI === 'de' ? '' : '?lang=' + UI), 'Teilnehmerseite') + '</li>' +
-          '</ul></div>' +
-          '<div class="box"><h3>Spielen &amp; Üben</h3><ul>' +
-            '<li>' + lnk('../?session=' + encodeURIComponent(main_id), 'Quiz (Spieler)') + '</li>' +
-            aliases.map(function(a){ return '<li>' + lnk('../?session=' + encodeURIComponent(a), 'Quiz als «' + esc(a) + '»') + '</li>'; }).join('') +
-            (practice || '<li class="sub">Kein Übungsspiel registriert</li>') +
-          '</ul></div>' +
-          '<div class="box"><h3>QR Spieler</h3><div class="qr" data-qr="' + esc(player) + '"></div><div class="qrcap">' + esc(player.replace('https://','')) + '</div></div>' +
+        '<h2>' + esc(pick(s.title, lang) || id) + (s.draft ? '<span class="badge draft">Draft</span>' : '') + '</h2>' +
+        '<div class="meta">' + esc(id) + ' · ' + it.pack.questions.length + ' questions · ' + langs.map(function(l){ return l.toUpperCase(); }).join(' / ') + '</div>' +
+        '<div class="body"><div>' +
+          '<div class="actions">' +
+            '<a class="btn primary" data-act="slides" href="' + esc(slides) + '"' + draft + ' target="_blank" rel="noopener">Slides ↗</a>' +
+            '<select aria-label="Slide language" data-act="lang">' + langs.map(function(l){
+              return '<option value="' + l + '"' + (l === lang ? ' selected' : '') + '>' + NAME[l] + '</option>'; }).join('') + '</select>' +
+            '<button type="button" class="btn ghost" data-act="copy" data-url="' + esc(slides) + '">Copy link</button>' +
+            '<span class="copied" aria-live="polite"></span>' +
+          '</div>' +
+          '<h3>Topic materials</h3><ul>' +
+            games +
+            a('../content/' + id + '.html' + qs(lang), 'Take-home page', 'For participants afterwards: bottom line, video, replay') +
+          '</ul>' +
+          '<details><summary>Support material (optional)</summary><ul>' +
+            a(pdf('topic-card-' + id, lang), 'Topic card (PDF)', 'One-page overview; <a href="../slides/topic-card-' + esc(id) + '.html' + qs(lang) + '"' + draft + ' target="_blank" rel="noopener">HTML</a>') +
+            a(pdf(id, lang), 'Slides as PDF', 'Offline backup of the deck') +
+            a('../?session=' + encodeURIComponent(mainId) + '&host=1', 'Beamer view (host)', 'Also linked from the slides') +
+            it.ids.map(function(k){ return a('../?session=' + encodeURIComponent(k), 'Quiz as player · ?session=' + esc(k), k === mainId ? 'The link behind the QR in the slides' : 'Rehearsal alias'); }).join('') +
+          '</ul></details>' +
+        '</div>' +
+        '<div class="qrbox"><div class="qr" data-qr="' + esc(regie) + '"></div>' +
+          '<div class="qrcap">Regie for the host’s phone · <a href="' + esc(regie) + '"' + draft + ' target="_blank" rel="noopener">open</a></div></div>' +
         '</div>';
-      main.appendChild(el);
-    });
-    document.querySelectorAll('[data-qr]').forEach(function(box){
-      var qr = qrcode(0, 'M'); qr.addData(box.getAttribute('data-qr')); qr.make();
-      box.innerHTML = qr.createSvgTag(5, 0);
-    });
-    document.body.setAttribute('data-ready', '1');
+      var box = el.querySelector('[data-qr]');
+      var code = qrcode(0, 'M'); code.addData(regie); code.make(); box.innerHTML = code.createSvgTag(5, 0);
+      el.querySelector('[data-act=lang]').addEventListener('change', function(e){ lang = e.target.value; render(); });
+      el.querySelector('[data-act=copy]').addEventListener('click', function(e){ copy(e.currentTarget.getAttribute('data-url'), el.querySelector('.copied')); });
+    }
+    render();
+  }
+
+  function copy(text, note){
+    var done = function(ok){ note.textContent = ok ? 'Copied ✓' : 'Copy failed — long-press the Slides button'; setTimeout(function(){ note.textContent = ''; }, 2500); };
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(function(){ done(true); }, function(){ done(legacy(text)); });
+    else done(legacy(text));
+  }
+  function legacy(text){
+    var t = document.createElement('textarea'); t.value = text; t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.opacity = '0';
+    document.body.appendChild(t); t.select(); var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+    t.remove(); return ok;
   }
 })();
 </script>

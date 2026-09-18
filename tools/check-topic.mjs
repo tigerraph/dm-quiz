@@ -134,10 +134,12 @@ for (const id of ids) {
   if (bad === before) console.log(`✅ assets: ${n} url()/src references in ${pages.length} pages resolve`);
 }
 
-// ── admin page: every topic appears, and every link on it points at a file that exists ──
+// ── admin page: every topic appears, every link points at a file that exists, every QR opens Regie ──
 // content/admin.html builds its links from packs/sessions.json at runtime, so it is opened in a real
-// browser over a local server (fetch does not run on file://) and the rendered hrefs are checked.
+// browser over a local server (fetch does not run on file://) and the rendered hrefs are checked, once
+// per language: the page shows one language at a time (?lang= presets it).
 if (chrome && existsSync(p("content/admin.html"))) {
+  const before = bad;
   const { createServer } = await import("node:http");
   const { readFile } = await import("node:fs/promises");
   const srv = createServer(async (req, res) => {
@@ -147,39 +149,47 @@ if (chrome && existsSync(p("content/admin.html"))) {
   await new Promise((r) => srv.listen(0, r));
   const port = srv.address().port;
   const { execFile } = await import("node:child_process");
-  const dom = await new Promise((r) => execFile(chrome, ["--headless", "--disable-gpu", "--virtual-time-budget=5000",
-    "--dump-dom", `http://localhost:${port}/content/admin.html`], { maxBuffer: 64 << 20 }, (e, out) => r(out || "")));
-  srv.close();
-  if (!dom.includes('data-ready="1"')) fail("admin", "content/admin.html did not finish rendering (sessions.json or a pack failed to load)");
-  for (const k of Object.keys(sessions)) {
-    const pk = sessions[k].pack.replace(/\.json$/, "");
-    if (!dom.includes(`id="topic-${pk}"`)) fail("admin", `topic «${k}» (${pk}) missing on content/admin.html`);
-  }
+  const BASE = "https://tigerraph.github.io/dm-quiz/", REPO = "https://github.com/tigerraph/dm-quiz/blob/main/";
   // Links inside a draft topic's card (data-draft) may point at PDFs not rendered yet; they are gated
   // when the draft itself is checked by name.
   const draftIds = Object.entries(sessions).filter(([, s]) => s.draft).map(([, s]) => s.pack.replace(/\.json$/, ""));
   const gatedDraft = draftIds.filter((d) => !all && ids.includes(d));
-  const anchors = [...dom.replace(/<script[\s\S]*?<\/script>/g, "").matchAll(/<a\b([^>]*)>/g)].map((m) => m[1]);
-  const hrefs = anchors.filter((a) => { const d = a.match(/data-draft="([^"]+)"/); return !d || gatedDraft.includes(d[1]); })
-    .map((a) => (a.match(/href="([^"]+)"/) || [])[1]).filter(Boolean).map((h) => h.replaceAll("&amp;", "&"));
-  const BASE = "https://tigerraph.github.io/dm-quiz/", REPO = "https://github.com/tigerraph/dm-quiz/blob/main/";
-  let n = 0;
-  for (const h of new Set(hrefs)) {
-    let rel;
-    if (h.startsWith(BASE)) rel = h.slice(BASE.length);
-    else if (h.startsWith(REPO)) rel = h.slice(REPO.length);
-    else if (/^[a-z]+:/.test(h) || h.startsWith("#")) continue;
-    else rel = new URL(h, "http://x/content/").pathname.slice(1);
-    rel = rel.split("?")[0].split("#")[0] || "index.html";
-    n++;
-    if (!existsSync(p(rel))) fail("admin", `dead link on content/admin.html: ${h} → ${rel} does not exist`);
-    const sess = h.match(/[?&]session=([^&]+)/);
-    if (sess && !sessions[decodeURIComponent(sess[1])]) fail("admin", `link to unknown session «${sess[1]}»: ${h}`);
+  const seen = new Set(); let qrs = 0;
+  for (const l of LANGS) {
+    const dom = await new Promise((r) => execFile(chrome, ["--headless", "--disable-gpu", "--virtual-time-budget=5000",
+      "--dump-dom", `http://localhost:${port}/content/admin.html?lang=${l}`], { maxBuffer: 64 << 20 }, (e, out) => r(out || "")));
+    if (!dom.includes('data-ready="1"')) { fail("admin", `content/admin.html?lang=${l} did not finish rendering (sessions.json or a pack failed to load)`); continue; }
+    for (const k of Object.keys(sessions)) {
+      const pk = sessions[k].pack.replace(/\.json$/, "");
+      if (!dom.includes(`id="topic-${pk}"`)) fail("admin", `topic «${k}» (${pk}) missing on content/admin.html`);
+    }
+    const anchors = [...dom.replace(/<script[\s\S]*?<\/script>/g, "").matchAll(/<a\b([^>]*)>/g)].map((m) => m[1]);
+    const hrefs = anchors.filter((a) => { const d = a.match(/data-draft="([^"]+)"/); return !d || gatedDraft.includes(d[1]); })
+      .map((a) => (a.match(/href="([^"]+)"/) || [])[1]).filter(Boolean).map((h) => h.replaceAll("&amp;", "&"));
+    for (const h of hrefs) {
+      if (seen.has(h)) continue; seen.add(h);
+      let rel;
+      if (h.startsWith(BASE)) rel = h.slice(BASE.length);
+      else if (h.startsWith(REPO)) rel = h.slice(REPO.length);
+      else if (/^[a-z]+:/.test(h) || h.startsWith("#")) continue;
+      else rel = new URL(h, "http://x/content/").pathname.slice(1);
+      rel = rel.split("?")[0].split("#")[0] || "index.html";
+      if (!existsSync(p(rel))) fail("admin", `dead link on content/admin.html?lang=${l}: ${h} → ${rel} does not exist`);
+      const sess = h.match(/[?&]session=([^&]+)/);
+      if (sess && !sessions[decodeURIComponent(sess[1])]) fail("admin", `link to unknown session «${sess[1]}»: ${h}`);
+    }
+    // the QR is for the host's phone: it must open that topic's Regie page
+    for (const m of dom.matchAll(/id="topic-([^"]+)"[\s\S]*?class="qr" data-qr="([^"]*)"><svg/g)) {
+      qrs++;
+      const want = `${BASE}content/regie-${m[1]}.html`;
+      if (!m[2].replaceAll("&amp;", "&").startsWith(want)) fail("admin", `QR of «${m[1]}» (${l}) points at ${m[2]}, not ${want}`);
+    }
   }
-  const qrs = (dom.match(/class="qr" data-qr="[^"]*"><svg/g) || []).length;
-  if (qrs < new Set(Object.values(sessions).map((s) => s.pack)).size) fail("admin", `player QR missing on content/admin.html (${qrs} rendered)`);
-  if (bad === 0) console.log(`✅ admin: ${n} links resolve, ${qrs} QR, every topic listed`);
+  srv.close();
+  if (qrs < new Set(Object.values(sessions).map((s) => s.pack)).size * LANGS.length) fail("admin", `Regie QR missing on content/admin.html (${qrs} rendered over ${LANGS.length} languages)`);
+  if (bad === before) console.log(`✅ admin: ${seen.size} links resolve over ${LANGS.length} languages, ${qrs} Regie QR, every topic listed`);
 }
+
 
 // i18n dictionaries over every deck and card (German left in other languages)
 try { execFileSync("python3", [p("tools/check-i18n.py")], { cwd: p(), stdio: "inherit" }); }
