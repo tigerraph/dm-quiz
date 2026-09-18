@@ -15,7 +15,7 @@
   @font-face{font-family:'Poppins';font-style:normal;font-weight:400;
     src:url(../assets/fonts/poppins-400-latin.woff2) format('woff2');font-display:swap}
   @font-face{font-family:'Poppins';font-style:normal;font-weight:700;
-    src:url(../assets/fonts/poppins-700-latin.woff2) format('woff2');font-display:swap}
+    src:url(../assets/fonts/poppins-800-latin.woff2) format('woff2');font-display:swap}
   :root{--bg:#111C2B;--card:#18263A;--line:#2A3A4F;--mint:#5AD1A8;--muted:#9FB0C4;--amber:#FFD166;
     --gap:20px;--col:minmax(0,1fr)}
   *{box-sizing:border-box;margin:0;padding:0}
@@ -36,7 +36,7 @@
   .badge.pillar{border:1px solid var(--line);color:var(--muted)}
   .badge.alias{border:1px dashed var(--line);color:var(--muted)}
   .meta{font-size:13px;color:var(--muted);margin-top:2px}
-  .grid{display:grid;grid-template-columns:var(--col) var(--col) var(--col) 190px;gap:var(--gap);margin-top:18px}
+  .grid{display:grid;grid-template-columns:max-content var(--col) var(--col) 190px;gap:var(--gap);margin-top:18px}
   .box h3{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mint);margin-bottom:8px}
   .box ul{list-style:none;display:flex;flex-direction:column;gap:6px}
   .box a{color:#fff;text-decoration:none;font-size:14.5px;border-bottom:1px solid transparent}

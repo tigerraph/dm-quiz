@@ -16,6 +16,7 @@
  */
 import { execFileSync } from "node:child_process";
 import { existsSync } from "node:fs";
+import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { p, read, readJSON, file, pdfName, chromePath, sha, stamps, GOLDEN, LANGS, PILLARS, MARKER, GOLDEN_LEFTOVERS } from "./topic-lib.mjs";
 
@@ -112,6 +113,25 @@ for (const id of ids) {
   } else if (!noBrowser) fail(id, "no Chrome found for the QR/timer check (set CHROME, or pass --no-browser)");
 
   if (bad === before) console.log(`✅ ${id}: pack (${langs.join("/")}), files, PDFs, ${chrome ? "QR + timer," : ""} house rules`);
+}
+
+// ── static asset references: every url(…) and src="…" in the published pages points at a committed file ──
+// (18.09.2026: content/admin.html and the Regie page asked for poppins-700-latin.woff2, which never existed,
+// so bold silently fell back to a system font.)
+{
+  const before = bad; let n = 0;
+  const pages = execFileSync("git", ["ls-files", "content/*.html", "slides/*.html", "src/template.html"], { encoding: "utf8" }).split("\n").filter(Boolean);
+  for (const pg of pages) {
+    const html = read(pg);
+    const refs = [...html.matchAll(/url\(\s*['"]?([^'")]+)['"]?\s*\)|\bsrc="([^"]+)"/g)].map((m) => m[1] || m[2]);
+    for (const r of refs) {
+      if (/^(https?:|data:|#|\/\/)/.test(r) || /[$+{]/.test(r)) continue;   // external, inline, or built at runtime
+      n++;
+      const target = path.normalize(path.join(path.dirname(pg), r.split(/[?#]/)[0]));
+      if (!existsSync(p(target))) fail("assets", `${pg} references ${r} → ${target} does not exist`);
+    }
+  }
+  if (bad === before) console.log(`✅ assets: ${n} url()/src references in ${pages.length} pages resolve`);
 }
 
 // ── admin page: every topic appears, and every link on it points at a file that exists ──
