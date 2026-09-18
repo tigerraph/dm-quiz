@@ -33,3 +33,5 @@ jobs:
             exit 1
           fi
           echo "index.html is current."
+      - name: Topic checks (packs, PDFs current, QR + timer in Chrome, i18n)
+        run: npm run check-topic -- --all
