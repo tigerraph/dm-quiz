@@ -162,7 +162,18 @@ npm run new-topic -- <id> --pillar civics --title "Deutscher Titel"
 `check-topic` enforces what the git log learned the hard way: no second defensible answer (52598c5),
 complete i18n dictionaries (0f9587a, via `tools/check-i18n.py`), no PDF older than its slides
 (54f47e8, 4944325), QR codes and the timer alive on the deck in a real browser (9c77b9f), no ß, and
-no scaffold line or golden-topic text left. CI runs `npm run check-topic -- --all`.
+no scaffold line or golden-topic text left. CI runs `npm run check-topic -- --all`, which skips
+drafts (it lists them) and also checks the admin page below.
+
+## Admin view
+
+https://tigerraph.github.io/dm-quiz/content/admin.html holds, per topic, everything needed to run a
+session: deck and topic card per language (PDF + HTML), beamer (`&host=1`), Regie, runbook,
+participant page, player link and QR, and practice games. It is built from `packs/sessions.json`
+at runtime, so a new topic appears on its own, marked «Entwurf» while it is a draft. A practice
+game is registered on its topic's line: `"practice": [{"file": "fauler-apfel.html", "title": {"de": …}}]`
+(file under `content/`). `check-topic` opens the page in Chrome and fails if a topic is missing or
+any link points at a missing file. Stars and people are not on it yet: the page is public.
 
 ## Build
 

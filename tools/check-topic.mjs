@@ -22,9 +22,13 @@ import { p, read, readJSON, file, pdfName, chromePath, sha, stamps, GOLDEN, LANG
 const args = process.argv.slice(2);
 const noBrowser = args.includes("--no-browser");
 const sessions = readJSON("packs/sessions.json");
-const ids = args.includes("--all")
-  ? [...new Set(Object.values(sessions).map((s) => s.pack.replace(/\.json$/, "")))]
+// --all gates every finished topic. A draft (new-topic sets "draft": true) is still being written,
+// so it is listed and skipped; `check-topic -- <id>` gates it by name before the flag comes off.
+const all = args.includes("--all");
+const ids = all
+  ? [...new Set(Object.values(sessions).filter((s) => !s.draft).map((s) => s.pack.replace(/\.json$/, "")))]
   : args.filter((a) => !a.startsWith("--"));
+if (all) for (const [k, s] of Object.entries(sessions)) if (s.draft) console.log(`⚪ ${k}: draft — not gated by --all (run check-topic -- ${k})`);
 if (!ids.length) { console.error("usage: npm run check-topic -- <id> | --all [--no-browser]"); process.exit(1); }
 
 // Topics built before these rules keep their shape: the golden pack has no `unique` field.
@@ -108,6 +112,53 @@ for (const id of ids) {
   } else if (!noBrowser) fail(id, "no Chrome found for the QR/timer check (set CHROME, or pass --no-browser)");
 
   if (bad === before) console.log(`✅ ${id}: pack (${langs.join("/")}), files, PDFs, ${chrome ? "QR + timer," : ""} house rules`);
+}
+
+// ── admin page: every topic appears, and every link on it points at a file that exists ──
+// content/admin.html builds its links from packs/sessions.json at runtime, so it is opened in a real
+// browser over a local server (fetch does not run on file://) and the rendered hrefs are checked.
+if (chrome && existsSync(p("content/admin.html"))) {
+  const { createServer } = await import("node:http");
+  const { readFile } = await import("node:fs/promises");
+  const srv = createServer(async (req, res) => {
+    try { res.end(await readFile(p(decodeURIComponent(req.url.split("?")[0]).replace(/^\/+/, "")))); }
+    catch { res.writeHead(404).end(); }
+  });
+  await new Promise((r) => srv.listen(0, r));
+  const port = srv.address().port;
+  const { execFile } = await import("node:child_process");
+  const dom = await new Promise((r) => execFile(chrome, ["--headless", "--disable-gpu", "--virtual-time-budget=5000",
+    "--dump-dom", `http://localhost:${port}/content/admin.html`], { maxBuffer: 64 << 20 }, (e, out) => r(out || "")));
+  srv.close();
+  if (!dom.includes('data-ready="1"')) fail("admin", "content/admin.html did not finish rendering (sessions.json or a pack failed to load)");
+  for (const k of Object.keys(sessions)) {
+    const pk = sessions[k].pack.replace(/\.json$/, "");
+    if (!dom.includes(`id="topic-${pk}"`)) fail("admin", `topic «${k}» (${pk}) missing on content/admin.html`);
+  }
+  // Links inside a draft topic's card (data-draft) may point at PDFs not rendered yet; they are gated
+  // when the draft itself is checked by name.
+  const draftIds = Object.entries(sessions).filter(([, s]) => s.draft).map(([, s]) => s.pack.replace(/\.json$/, ""));
+  const gatedDraft = draftIds.filter((d) => !all && ids.includes(d));
+  const anchors = [...dom.replace(/<script[\s\S]*?<\/script>/g, "").matchAll(/<a\b([^>]*)>/g)].map((m) => m[1]);
+  const hrefs = anchors.filter((a) => { const d = a.match(/data-draft="([^"]+)"/); return !d || gatedDraft.includes(d[1]); })
+    .map((a) => (a.match(/href="([^"]+)"/) || [])[1]).filter(Boolean).map((h) => h.replaceAll("&amp;", "&"));
+  const BASE = "https://tigerraph.github.io/dm-quiz/", REPO = "https://github.com/tigerraph/dm-quiz/blob/main/";
+  let n = 0;
+  for (const h of new Set(hrefs)) {
+    let rel;
+    if (h.startsWith(BASE)) rel = h.slice(BASE.length);
+    else if (h.startsWith(REPO)) rel = h.slice(REPO.length);
+    else if (/^[a-z]+:/.test(h) || h.startsWith("#")) continue;
+    else rel = new URL(h, "http://x/content/").pathname.slice(1);
+    rel = rel.split("?")[0].split("#")[0] || "index.html";
+    n++;
+    if (!existsSync(p(rel))) fail("admin", `dead link on content/admin.html: ${h} → ${rel} does not exist`);
+    const sess = h.match(/[?&]session=([^&]+)/);
+    if (sess && !sessions[decodeURIComponent(sess[1])]) fail("admin", `link to unknown session «${sess[1]}»: ${h}`);
+  }
+  const qrs = (dom.match(/class="qr" data-qr="[^"]*"><svg/g) || []).length;
+  if (qrs < new Set(Object.values(sessions).map((s) => s.pack)).size) fail("admin", `player QR missing on content/admin.html (${qrs} rendered)`);
+  if (bad === 0) console.log(`✅ admin: ${n} links resolve, ${qrs} QR, every topic listed`);
 }
 
 // i18n dictionaries over every deck and card (German left in other languages)
