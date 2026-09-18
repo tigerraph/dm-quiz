@@ -167,13 +167,18 @@ drafts (it lists them) and also checks the admin page below.
 
 ## Admin view
 
-https://tigerraph.github.io/dm-quiz/content/admin.html holds, per topic, everything needed to run a
-session: deck and topic card per language (PDF + HTML), beamer (`&host=1`), Regie, runbook,
-participant page, player link and QR, and practice games. It is built from `packs/sessions.json`
-at runtime, so a new topic appears on its own, marked «Entwurf» while it is a draft. A practice
-game is registered on its topic's line: `"practice": [{"file": "fauler-apfel.html", "title": {"de": …}}]`
-(file under `content/`). `check-topic` opens the page in Chrome and fails if a topic is missing or
-any link points at a missing file. Stars and people are not on it yet: the page is public.
+https://tigerraph.github.io/dm-quiz/content/admin.html follows the moderator's journey, desktop and
+phone. Per topic: one **Slides** button (EN by default, language dropdown) and **Copy link** to hand
+the slides to a moderator; **Topic materials** (games and exercises, and the take-home page for
+participants); a collapsed **Support material** block (topic card, slides PDF, beamer and player
+links, which the slides already carry); and a QR that opens the Regie page on the host's phone.
+The runbook stays in the repo (`docs/runbook-<id>.md`) and is not linked here.
+It is built from `packs/sessions.json` at runtime, so a new topic appears on its own, marked
+«Draft». A game or exercise is registered on its topic's line:
+`"practice": [{"file": "fauler-apfel.html", "title": {"de": …, "en": …}, "what": {"en": …}}]`
+(file under `content/`; `what` is the optional one-line description). `check-topic` opens the page
+in Chrome once per language and fails if a topic is missing, a link points at a missing file, or a
+QR does not open that topic's Regie page. Stars and people are not on it yet: the page is public.
 
 ## Build
 
