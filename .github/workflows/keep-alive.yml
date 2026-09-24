@@ -1,7 +1,12 @@
 # Supabase free-tier projects pause after ~7 days without API activity.
 # Democracy Matters meets roughly monthly, so the project would sleep
-# before every session. This runs twice a week — well inside the 7-day
-# window and inside the «every 5 days» Rafa asked for on 24.09.2026.
+# before every session.
+#
+# 24.09.2026: twice a week was not enough and Supabase warned anyway. Their
+# docs set the bar per DAY, not per week — «typically a few user requests to
+# the database each day over the previous week is enough to keep the project
+# from being paused» (supabase.com/docs/guides/platform/free-project-pausing).
+# Two requests in seven days never met that. This now runs twice a day.
 #
 # 24.09.2026: a run used to pass on the status code alone, so an empty or
 # refused read looked identical to a real one. It now fails unless the
@@ -16,7 +21,7 @@ name: keep-alive
 
 on:
   schedule:
-    - cron: "17 6 * * 1,4"   # Mondays and Thursdays, 06:17 UTC
+    - cron: "17 6,18 * * *"   # twice a day, 06:17 and 18:17 UTC
   workflow_dispatch:
 
 jobs:
