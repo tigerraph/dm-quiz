@@ -1,6 +1,12 @@
 # Supabase free-tier projects pause after ~7 days without API activity.
 # Democracy Matters meets roughly monthly, so the project would sleep
-# before every session. This pings it twice a week.
+# before every session. This runs twice a week — well inside the 7-day
+# window and inside the «every 5 days» Rafa asked for on 24.09.2026.
+#
+# 24.09.2026: a run used to pass on the status code alone, so an empty or
+# refused read looked identical to a real one. It now fails unless the
+# response is a JSON array with at least one row, and prints the count.
+# The row itself is never printed: the body may carry participant data.
 #
 # Repo secrets required (Settings -> Secrets and variables -> Actions):
 #   SUPABASE_URL       https://<ref>.supabase.co
@@ -17,7 +23,7 @@ jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Select one row from dm_state
+      - name: Select one row from dm_state (real read, row count asserted)
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
@@ -33,7 +39,14 @@ jobs:
           echo "HTTP $code"
           if [ "$code" != "200" ]; then
             echo "::error::Unexpected status $code"
-            cat /tmp/body
+            # the body may name the table or the policy, never a key
+            head -c 300 /tmp/body
             exit 1
           fi
-          echo "Project is awake."
+          rows=$(python3 -c 'import json,sys; d=json.load(open("/tmp/body")); print(len(d) if isinstance(d,list) else -1)')
+          echo "rows returned: $rows"
+          if [ "$rows" -lt 1 ]; then
+            echo "::error::200 but no row came back — the read did not touch data, so it does not count as activity."
+            exit 1
+          fi
+          echo "Project is awake: one real row read from dm_state."
