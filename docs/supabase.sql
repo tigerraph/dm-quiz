@@ -1,5 +1,8 @@
 -- dm-quiz — Supabase schema (live, host-driven mode)
 --
+-- New project: run this, then 004, 005 and 006 (006 moves every DM table and
+-- function into the schema «dm»; expose «dm» in the Data API afterwards).
+--
 -- Replaces the single dm_scores table in the original spec. Live mode needs
 -- three things the old schema could not express: who is in the room, what
 -- each player answered on each question, and which question the host has

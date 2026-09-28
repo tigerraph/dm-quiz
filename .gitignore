@@ -5,3 +5,4 @@ handover/
 # Topic source material (PDFs, notes): local only — the Pages site is public
 topics/*/source/*
 !topics/*/source/.gitkeep
+node_modules/

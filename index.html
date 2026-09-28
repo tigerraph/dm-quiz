@@ -2698,7 +2698,7 @@ var qrcode = function() {
    Engine carried over from the noeggi-kahoot wedding app: timer,
    speed scoring, streak bonus, i18n, synthesized offline audio.
    ================================================================== */
-const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","build":"build 18.09.2026 10:29"};
+const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","supabaseSchema":"dm","build":"build 28.09.2026 21:17"};
 const SUPA_URL = CFG.supabaseUrl || "";
 const SUPA_KEY = CFG.supabaseAnonKey || "";
 
@@ -3081,10 +3081,38 @@ function serverNow(){ return Date.now() + srvSkew; }
 function headers(extra){
   return Object.assign({ apikey:SUPA_KEY, Authorization:"Bearer "+SUPA_KEY }, extra||{});
 }
+/* One Supabase project, two apps: DM's tables and functions live in the
+   Postgres schema «dm», the wedding quiz's in «noeggi»
+   (docs/supabase-migration-006-dm-schema.sql). PostgREST picks the schema from
+   a profile header: Accept-Profile on reads, Content-Profile on writes and
+   rpc — the raw-fetch equivalent of supabase-js `db: { schema: "dm" }`.
+   Every REST call goes through rest(), so no call can miss the header.
+   Until 006 has run and «dm» is exposed, PostgREST refuses the profile with
+   406 PGRST106; rest() then repeats the call without the header (the default
+   schema, public, where the tables still are) and keeps doing so for a
+   minute before trying «dm» again. So this client can ship before the
+   migration, and a page left open picks the move up by itself. */
+const SUPA_SCHEMA = CFG.supabaseSchema || "dm";
+const SCHEMA_RETRY_MS = 60000;
+let schemaRefusedAt = -Infinity;
+async function rest(path, init){
+  init = init || {};
+  const m = (init.method || "GET").toUpperCase();
+  const go = withProfile => fetch(SUPA_URL+"/rest/v1/"+path, Object.assign({}, init, {
+    headers: Object.assign({}, init.headers || {}, withProfile
+      ? { [m==="GET" || m==="HEAD" ? "Accept-Profile" : "Content-Profile"]: SUPA_SCHEMA } : {}) }));
+  if(Date.now() - schemaRefusedAt < SCHEMA_RETRY_MS) return go(false);
+  const r = await go(true);
+  if(r.status !== 406) return r;
+  const j = await r.clone().json().catch(()=>null);
+  if(!j || j.code !== "PGRST106") return r;
+  schemaRefusedAt = Date.now();
+  return go(false);
+}
 async function sbGet(pathAndQuery){
   if(!SUPA_URL || !SUPA_KEY) return null;
   try{
-    const r = await fetch(SUPA_URL+"/rest/v1/"+pathAndQuery, { headers:headers(), cache:"no-store" });
+    const r = await rest(pathAndQuery, { headers:headers(), cache:"no-store" });
     noteDate(r);
     if(!r.ok) return null;
     const j = await r.json();
@@ -3094,7 +3122,7 @@ async function sbGet(pathAndQuery){
 async function sbInsert(table, row, opts){
   if(!SUPA_URL || !SUPA_KEY) return false;
   try{
-    const r = await fetch(SUPA_URL+"/rest/v1/"+table, {
+    const r = await rest(table, {
       method:"POST",
       headers: headers({ "Content-Type":"application/json", Prefer:"return=minimal" }),
       body: JSON.stringify(row)
@@ -3116,7 +3144,7 @@ async function sbRpc(fn, args, legacyPath){
   if(!SUPA_URL || !SUPA_KEY) return null;
   if(!rpcMissing){
     try{
-      const r = await fetch(SUPA_URL+"/rest/v1/rpc/"+fn, { method:"POST", cache:"no-store",
+      const r = await rest("rpc/"+fn, { method:"POST", cache:"no-store",
         headers: headers({ "Content-Type":"application/json" }), body: JSON.stringify(args) });
       noteDate(r);
       if(r.ok){ const j = await r.json(); return Array.isArray(j) ? j : null; }
@@ -4204,7 +4232,7 @@ function clearAuth(){ AUTH = null; store.set("auth", null); }
 async function linkDeviceToUser(){
   if(!AUTH || !AUTH.uid) return;
   try{
-    await fetch(SUPA_URL+"/rest/v1/dm_identities", {
+    await rest("dm_identities", {
       method:"POST",
       headers:{ apikey:SUPA_KEY, Authorization:"Bearer "+AUTH.at,
                 "Content-Type":"application/json", Prefer:"return=minimal" },
@@ -4226,7 +4254,7 @@ async function authRefresh(){
    the migration): then the host keeps the old anon star add. */
 async function asUser(path, init){
   if(!AUTH || !AUTH.at) return null;
-  const go = () => fetch(SUPA_URL+"/rest/v1/"+path, Object.assign({ cache:"no-store" }, init||{}, {
+  const go = () => rest(path, Object.assign({ cache:"no-store" }, init||{}, {
     headers: Object.assign({ apikey:SUPA_KEY, Authorization:"Bearer "+AUTH.at }, (init||{}).headers||{}) }));
   try{
     let r = await go();
@@ -4239,7 +4267,7 @@ async function adminStatus(){
   if(!SUPA_URL || !SUPA_KEY) return "no";
   if(!AUTH){
     // not logged in: admin only if the table is missing (legacy), which anon can see too
-    const r = await fetch(SUPA_URL+"/rest/v1/dm_admins?select=user_id&limit=1",
+    const r = await rest("dm_admins?select=user_id&limit=1",
       { headers:headers(), cache:"no-store" }).catch(()=>null);
     return adminState = (r && r.status===404) ? "legacy" : "no";
   }

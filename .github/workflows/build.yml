@@ -37,3 +37,8 @@ jobs:
         run: npm run check-topic -- --all
       - name: DM uses only its own Supabase schema (never the wedding quiz's «noeggi»)
         run: bash tools/check-schema.sh
+      - name: DM schema move (migration 006 + rollback on PGlite, client before/after in Chrome)
+        run: |
+          npm i --no-save @electric-sql/pglite@0.3
+          node tools/test-dm-schema.mjs
+          node tools/test-client-schema.mjs

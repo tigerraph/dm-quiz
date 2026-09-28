@@ -31,12 +31,24 @@ Deno.serve(async (req) => {
   const { data: { user } } = await asCaller.auth.getUser();
   if (!user) return new Response("unauthorized", { status: 401, headers: cors });
 
+  // DM's tables live in the schema «dm» (docs/supabase-migration-006-dm-schema.sql).
+  // Before that migration PostgREST refuses the profile (PGRST106) and the
+  // default schema, public, still holds dm_identities.
   const admin = createClient(
     Deno.env.get("SUPABASE_URL")!,
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+    { db: { schema: "dm" } },
   );
-  const { error: linkErr } = await admin.from("dm_identities")
+  let { error: linkErr } = await admin.from("dm_identities")
     .delete().eq("user_id", user.id);
+  if (linkErr?.code === "PGRST106") {
+    const legacy = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+    );
+    ({ error: linkErr } = await legacy.from("dm_identities")
+      .delete().eq("user_id", user.id));
+  }
   if (linkErr) return new Response(linkErr.message, { status: 500, headers: cors });
 
   const { error: userErr } = await admin.auth.admin.deleteUser(user.id);

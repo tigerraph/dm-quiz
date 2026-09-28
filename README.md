@@ -144,19 +144,30 @@ wedding quiz (the free plan allows two active projects). Each app has its own sc
 
 | | DM quiz | Wedding quiz |
 |---|---|---|
-| Schema | `public` (tables and functions `dm_*`) | `noeggi` (`scores`, `players`, `feedback`, `bonus`, `player_*`, `feedback_list`) |
+| Schema | `dm` (tables and functions `dm_*`; `public` until migration 006 has run) | `noeggi` (`scores`, `players`, `feedback`, `bonus`, `player_*`, `feedback_list`) |
 | Roles | `anon`: join, answer, claim, and the narrow `dm_*` functions; logged-in admins (`dm_admins`) read everything | `anon` only, exactly what the quiz uses; `authenticated` has no access to `noeggi` |
 | Auth | email + password (My DM); admin = row in `dm_admins` | not used |
 | Storage | none | none |
 
-- DM never sets a schema profile: every request goes to `public`. The quiz selects `noeggi`
-  per request (`Accept-Profile` / `Content-Profile`).
+- Each app selects its schema per request with a profile header (`Accept-Profile` on reads,
+  `Content-Profile` on writes and rpc): DM `dm`, the quiz `noeggi`. In DM every REST call goes
+  through `rest()` in `src/template.html` (the schema comes from `supabaseSchema` in
+  `src/config.json`); the admin page, `tools/seed-demo.mjs`, the keep-alive workflow and the
+  `delete-account` function (`db: { schema: "dm" }`) do the same.
+- **Before migration 006** the project does not expose `dm` yet. PostgREST answers 406 PGRST106
+  and DM repeats the call without the header, against `public`, retrying `dm` once a minute. So
+  the client ships first; the move itself is `docs/supabase-migration-006-dm-schema.sql` plus
+  adding `dm` to the Data API's exposed schemas (undo: `docs/supabase-migration-006-rollback.sql`).
 - **Never cross:** CI runs `tools/check-schema.sh`, which fails if DM's code references
-  `noeggi.…`, sends a profile header, or calls the quiz's tables or functions. The quiz's
-  repo has the mirror check.
+  `noeggi.…`, names any schema but `dm` in a profile header, calls `/rest/v1/` outside its
+  wrapper, or calls the quiz's tables or functions, and if a migration after 005 puts DM
+  objects back in `public`. The quiz's repo has the mirror check.
+- **Tests:** `node tools/test-dm-schema.mjs` runs 001–006, the rollback and 006 again on PGlite
+  with Supabase's roles and replays the app's reads and writes as anon, a user and the admin;
+  `node tools/test-client-schema.mjs` opens the built app in headless Chrome against the mock
+  before and after the move. Both run in CI.
 - Auth is shared per project: DM accounts mean nothing to the quiz. An app that needs logins
   gates them with its own membership table, as DM does with `dm_admins`.
-- Moving DM into its own `dm` schema as well is filed for later; until then `public` is DM's.
 
 ## Adding a topic
 
@@ -206,7 +217,8 @@ account is in `dm_admins`; for them My DM shows a ⚙ entry to this page. Names 
 an admin's token (`docs/supabase-migration-005.sql`); the live game and the passport read through
 narrow functions (`dm_roster`, `dm_round_answers`, `dm_session_stars`, `dm_stars_for_tokens`,
 `dm_rescue_tokens`) and fall back to the old table reads while the migration has not run.
-`node tools/mock-supabase.mjs` serves the post-migration rules; `--legacy` the ones before.
+`node tools/mock-supabase.mjs` serves the post-migration rules (006: DM in `dm`); `--legacy` the ones
+before 005, `--schemas public,noeggi --tables-in public` the ones before 006.
 
 ## Testing
 
