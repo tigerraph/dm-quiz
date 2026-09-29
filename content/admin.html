@@ -218,8 +218,23 @@
     var URL_ = cfg.supabaseUrl, KEY = cfg.supabaseAnonKey, auth = getAuth();
     var login = '<p><a href="../?view=mydm">Log in to My DM</a> with an admin account to see people and their stars.</p>';
     if (!auth || !auth.at) return people(login, '· admins only');
+    // DM's tables live in the schema «dm» (docs/supabase-migration-006-dm-schema.sql), picked with the
+    // Accept-Profile header. Before 006 has run PostgREST refuses that profile (406 PGRST106) and the
+    // read is repeated without it, against public, as in the app (rest() in src/template.html).
+    var SCHEMA = cfg.supabaseSchema || 'dm', noProfile = false;
+    var get = function(path){
+      var h = { apikey:KEY, Authorization:'Bearer ' + auth.at };
+      if (!noProfile) h['Accept-Profile'] = SCHEMA;
+      return fetch(URL_ + '/rest/v1/' + path, { cache:'no-store', headers:h }).then(function(r){
+        if (r.status !== 406 || noProfile) return r;
+        return r.clone().json().catch(function(){ return null; }).then(function(j){
+          if (!j || j.code !== 'PGRST106') return r;
+          noProfile = true; return get(path);
+        });
+      });
+    };
     var call = function(path, retried){
-      return fetch(URL_ + '/rest/v1/' + path, { cache:'no-store', headers:{ apikey:KEY, Authorization:'Bearer ' + auth.at } }).then(function(r){
+      return get(path).then(function(r){
         if (r.status !== 401 || retried || !auth.rt) return r;
         // expired token: refresh it the way My DM does, and keep My DM's copy in step
         return fetch(URL_ + '/auth/v1/token?grant_type=refresh_token', { method:'POST',

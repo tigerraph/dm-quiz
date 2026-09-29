@@ -22,6 +22,18 @@
  * `--legacy` serves the schema before 005 instead (no rpc/, no dm_admins, anon
  * reads every table), which is what the client's fallback path is tested against.
  *
+ * Schemas, like PostgREST (docs/supabase-migration-006-dm-schema.sql): a request
+ * picks its schema with Accept-Profile (GET) or Content-Profile (POST); without
+ * one it gets the first exposed schema, public. A profile that is not exposed
+ * gets 406 PGRST106; a table or function outside the schema that holds DM gets
+ * 404. By default DM sits in «dm» and public,noeggi,dm are exposed (after 006).
+ *   --schemas public,noeggi      exposed schemas (before 006: dm not exposed)
+ *   --tables-in public           where DM's tables are (before 006; also --legacy)
+ *   --self                       serve index.html pointed at this mock (URL + key
+ *                                "mock"), so the committed build can be tested
+ *                                without editing src/config.json
+ * GET /__log lists every REST request with its profile and status.
+ *
  * Development only. Never deploy this, and remember to put the real
  * Supabase URL and anon key back in src/config.json before committing.
  */
@@ -33,6 +45,11 @@ import { fileURLToPath } from "node:url";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const PORT = Number(process.argv.slice(2).find(a => /^\d+$/.test(a)) || process.env.PORT || 4173);
 const LEGACY = process.argv.includes("--legacy");
+const SELF = process.argv.includes("--self");
+const arg = (name, dflt) => { const i = process.argv.indexOf(name); return i > 0 ? process.argv[i + 1] : dflt; };
+const EXPOSED = arg("--schemas", LEGACY ? "public,noeggi" : "public,noeggi,dm").split(",");
+const TABLES_IN = arg("--tables-in", LEGACY ? "public" : "dm");
+const restLog = [];
 const admins = new Set();      // user ids in dm_admins
 
 const db = { dm_state: [], dm_players: [], dm_answers: [], dm_kicks: [],
@@ -172,6 +189,22 @@ createServer(async (req, res) => {
   if (url.pathname.startsWith("/rest/v1/") && bearer && bearer !== "mock" && !sessions.has(bearer))
     return void res.writeHead(401, { "Content-Type": "application/json" }).end('{"code":"PGRST301","message":"JWT expired"}');
 
+  if (url.pathname.startsWith("/rest/v1/")) {
+    const read = req.method === "GET" || req.method === "HEAD";
+    const profile = req.headers[read ? "accept-profile" : "content-profile"] || null;
+    const entry = { method: req.method, path: url.pathname.slice("/rest/v1/".length), profile };
+    restLog.push(entry);
+    res.on("finish", () => { entry.status = res.statusCode; });
+    const schema = profile || EXPOSED[0];
+    if (!EXPOSED.includes(schema))
+      return void res.writeHead(406, { "Content-Type": "application/json" }).end(JSON.stringify({
+        code: "PGRST106", message: `Invalid schema: ${schema}`,
+        hint: `Only the following schemas are exposed: ${EXPOSED.join(", ")}` }));
+    if (schema !== TABLES_IN)
+      return void res.writeHead(404, { "Content-Type": "application/json" })
+        .end(JSON.stringify({ code: "PGRST205", message: `no DM table or function in schema ${schema}` }));
+  }
+
   if (url.pathname.startsWith("/rest/v1/rpc/")) {
     const fn = RPC[url.pathname.slice("/rest/v1/rpc/".length)];
     if (LEGACY || !fn || req.method !== "POST")
@@ -226,8 +259,13 @@ createServer(async (req, res) => {
     admins.add(u.id);
     return void res.writeHead(200).end("ok");
   }
+  if (url.pathname === "/__log") {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    return void res.end(JSON.stringify(restLog, null, 1));
+  }
   if (url.pathname === "/__reset") {
     for (const k of Object.keys(db)) db[k] = [];
+    restLog.length = 0;
     return void res.writeHead(200).end("ok");
   }
   if (url.pathname === "/__dump") {
@@ -238,7 +276,11 @@ createServer(async (req, res) => {
   const rel = normalize(url.pathname === "/" ? "/index.html" : url.pathname)
     .replace(/^(\.\.[/\\])+/, "");
   try {
-    const buf = await readFile(join(ROOT, rel));
+    let buf = await readFile(join(ROOT, rel));
+    if (SELF && rel.replace(/^[/\\]/, "") === "index.html")
+      buf = buf.toString()
+        .replace(/"supabaseUrl":"[^"]*"/, `"supabaseUrl":"http://localhost:${PORT}"`)
+        .replace(/"supabaseAnonKey":"[^"]*"/, `"supabaseAnonKey":"mock"`);
     res.writeHead(200, { "Content-Type": MIME[extname(rel)] || "application/octet-stream",
                          "Cache-Control": "no-store" });
     res.end(buf);

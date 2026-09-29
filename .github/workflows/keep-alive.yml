@@ -28,7 +28,7 @@ jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Select one row from dm_state (real read, row count asserted)
+      - name: Select one row from dm.dm_state (real read, row count asserted)
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
@@ -37,10 +37,20 @@ jobs:
             echo "::error::SUPABASE_URL / SUPABASE_ANON_KEY secrets are not set."
             exit 1
           fi
-          code=$(curl -sS -o /tmp/body -w '%{http_code}' \
-            -H "apikey: $SUPABASE_ANON_KEY" \
-            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
-            "$SUPABASE_URL/rest/v1/dm_state?select=id&limit=1")
+          # DM's tables live in the schema «dm» (docs/supabase-migration-006-dm-schema.sql).
+          # Before that migration PostgREST refuses the profile (406 PGRST106) and the
+          # table is still in public, so the read is repeated without the header.
+          ping_dm() {
+            curl -sS -o /tmp/body -w '%{http_code}' \
+              -H "apikey: $SUPABASE_ANON_KEY" \
+              -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+              "$@" "$SUPABASE_URL/rest/v1/dm_state?select=id&limit=1"
+          }
+          code=$(ping_dm -H "Accept-Profile: dm")
+          if [ "$code" = "406" ] && grep -q PGRST106 /tmp/body; then
+            echo "schema dm not exposed yet: reading public.dm_state"
+            code=$(ping_dm)
+          fi
           echo "HTTP $code"
           if [ "$code" != "200" ]; then
             echo "::error::Unexpected status $code"

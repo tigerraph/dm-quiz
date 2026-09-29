@@ -53,13 +53,24 @@ if (LIVE) {
   }
 }
 
-const post = (table, row) =>
-  fetch(`${base}/rest/v1/${table}`, {
+// DM's tables live in the schema «dm» (docs/supabase-migration-006-dm-schema.sql); before that
+// migration PostgREST refuses the profile (406 PGRST106) and the default schema is used, as in the app.
+let profile = true;
+const post = async (table, row) => {
+  const send = () => fetch(`${base}/rest/v1/${table}`, {
     method: "POST",
     headers: { apikey: key, Authorization: `Bearer ${key}`,
-               "Content-Type": "application/json", Prefer: "return=minimal" },
+               "Content-Type": "application/json", Prefer: "return=minimal",
+               ...(profile ? { "Content-Profile": "dm" } : {}) },
     body: JSON.stringify(row),
   });
+  const r = await send();
+  if (r.status !== 406 || !profile) return r;
+  const j = await r.clone().json().catch(() => null);
+  if (!j || j.code !== "PGRST106") return r;
+  profile = false;
+  return send();
+};
 
 // A believable spread: most of the room wrong on the counter-intuitive first
 // question, steadily better after the explanation. That is the shape the
