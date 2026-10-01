@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bypassing statt Dementi — Democracy Matters</title>
+<style>
+  @font-face{font-family:'Poppins';font-style:normal;font-weight:400;
+    src:url(../assets/fonts/poppins-400-latin.woff2) format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F;}
+  @font-face{font-family:'Poppins';font-style:normal;font-weight:400;
+    src:url(../assets/fonts/poppins-400-latin-ext.woff2) format('woff2');
+    unicode-range:U+0100-02BA,U+1E00-1E9F;}
+  @font-face{font-family:'Poppins';font-style:normal;font-weight:800;
+    src:url(../assets/fonts/poppins-800-latin.woff2) format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F;}
+  @font-face{font-family:'Poppins';font-style:normal;font-weight:800;
+    src:url(../assets/fonts/poppins-800-latin-ext.woff2) format('woff2');
+    unicode-range:U+0100-02BA,U+1E00-1E9F;}
+
+  :root{
+    --blue:#435CC6; --green:#A8D272; --teal:#5EB9A9;
+    --cream:#FDF2D0; --dark:#1B2329; --ink:#22313C;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--dark);color:#fff;font-family:'Poppins',system-ui,sans-serif}
+  .wrap{max-width:780px;margin:0 auto;padding:40px 22px 80px}
+  .kicker{color:var(--teal);font-weight:800;font-size:15px;letter-spacing:.06em}
+  h1{font-weight:800;font-size:clamp(34px,7vw,56px);line-height:1.05;margin:8px 0 10px}
+  .sub{font-size:18px;opacity:.85;margin-bottom:28px}
+  h2{font-weight:800;font-size:24px;margin:44px 0 14px;color:var(--teal)}
+  p,li{font-size:17px;line-height:1.6}
+  ol,ul{padding-left:1.3em}
+  li{margin-bottom:10px}
+  b{font-weight:800}
+  a{color:var(--green)}
+  .langbar{display:flex;justify-content:flex-end;gap:8px;margin-bottom:12px}
+  .langbar button{
+    font-family:inherit;font-weight:800;font-size:14px;padding:7px 14px;
+    border-radius:999px;border:2px solid var(--teal);background:none;
+    color:var(--teal);cursor:pointer;
+  }
+  .langbar button.on{background:var(--teal);color:var(--dark)}
+  .video{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000}
+  .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .videofallback{position:absolute;inset:0;display:block;text-decoration:none;overflow:hidden;border-radius:inherit}
+  .videofallback img{width:100%;height:100%;object-fit:cover;display:block}
+  .videofallback .playbtn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-size:3rem;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.6);background:rgba(0,0,0,.28)}
+  .videofallback .vfcap{position:absolute;left:0;right:0;bottom:0;padding:10px 14px;
+    background:linear-gradient(transparent,rgba(0,0,0,.75));color:#fff;font-weight:700;font-size:.9rem}
+  .postit{
+    background:var(--cream);color:var(--ink);border-radius:6px;
+    box-shadow:0 10px 24px rgba(0,0,0,.35);padding:20px 24px;
+    transform:rotate(-1deg);margin:20px 0;font-size:18px;line-height:1.55;
+  }
+  .btnrow{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+  .btn{
+    display:inline-block;background:var(--blue);color:#fff;text-decoration:none;
+    font-weight:800;font-size:16px;padding:14px 22px;border-radius:12px;
+  }
+  .btn.alt{background:none;border:2px solid var(--blue)}
+  .small{font-size:14px;opacity:.7;margin-top:8px}
+  .diagram{width:100%;max-width:620px;display:block;margin:10px auto}
+  footer{margin-top:60px;font-size:14px;opacity:.6}
+
+  [lang-en],[lang-fr],[lang-it]{display:none}
+  html[data-l=en] [lang-de],html[data-l=en] [lang-fr],html[data-l=en] [lang-it]{display:none}
+  html[data-l=en] [lang-en]{display:revert}
+  html[data-l=fr] [lang-de],html[data-l=fr] [lang-en],html[data-l=fr] [lang-it]{display:none}
+  html[data-l=fr] [lang-fr]{display:revert}
+  html[data-l=it] [lang-de],html[data-l=it] [lang-en],html[data-l=it] [lang-fr]{display:none}
+  html[data-l=it] [lang-it]{display:revert}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="langbar">
+    <button id="btn-de" class="on" onclick="setLang('de')">DE</button>
+    <button id="btn-en" onclick="setLang('en')">EN</button>
+    <button id="btn-fr" onclick="setLang('fr')">FR</button>
+    <button id="btn-it" onclick="setLang('it')">IT</button>
+  </div>
+
+  <div class="kicker">DEMOCRACY MATTERS × DAY8 · THE LEARNING LOOP</div>
+  <h1 lang-de>Bypassing statt Dementi</h1>
+  <h1 lang-en>Bypassing instead of denial</h1>
+  <h1 lang-fr>Contourner plutôt que démentir</h1>
+  <h1 lang-it>Aggirare invece di smentire</h1>
+  <p class="sub" lang-de>Wie man auf eine Falschmeldung antwortet, ohne nur zu widersprechen — und wann man es besser lässt. Alles aus der Session zum Nachschauen und Weitergeben.</p>
+  <p class="sub" lang-en>How to answer misinformation without just contradicting it — and when not to. Everything from the session, to revisit and pass on.</p>
+  <p class="sub" lang-fr>Répondre à une fausse information sans seulement la contredire — et quand s’en abstenir. Tout de la session, à revoir et à transmettre.</p>
+  <p class="sub" lang-it>Rispondere a una notizia falsa senza limitarsi a contraddirla — e quando lasciar perdere. Tutto della sessione, da rivedere e condividere.</p>
+
+  <h2 lang-de>Der Merksatz</h2>
+  <h2 lang-en>The bottom line</h2>
+  <h2 lang-fr>La phrase à retenir</h2>
+  <h2 lang-it>La frase da ricordare</h2>
+  <div class="postit" lang-de>Bevor ich widerspreche, frage ich mich: Gibt es etwas <b>Wahres</b>, das in die andere Richtung zeigt? Das sage ich — wenn es stimmt und ich es <b>offen</b> sagen würde.</div>
+  <div class="postit" lang-en>Before I contradict, I ask myself: is there something <b>true</b> that points the other way? I say that — if it is true and I would say it <b>openly</b>.</div>
+  <div class="postit" lang-fr>Avant de contredire, je me demande : y a-t-il quelque chose de <b>vrai</b> qui va dans l’autre sens ? Je le dis — si c’est vrai et que je le dirais <b>ouvertement</b>.</div>
+  <div class="postit" lang-it>Prima di contraddire mi chiedo: c’è qualcosa di <b>vero</b> che va nell’altra direzione? Lo dico — se è vero e lo direi <b>apertamente</b>.</div>
+
+  <h2 lang-de>Die Idee</h2>
+  <h2 lang-en>The idea</h2>
+  <h2 lang-fr>L’idée</h2>
+  <h2 lang-it>L’idea</h2>
+  <p lang-de>Unsere Meinung zu etwas setzt sich aus vielen Überzeugungen zusammen. Eine Falschmeldung legt ein Gewicht auf die eine Seite der Waage. Ein Dementi versucht, es wegzunehmen — oft bleibt ein Rest hängen. <b>Bypassing</b> lässt die Falschmeldung stehen und legt ein anderes, <b>wahres</b> Gewicht auf die Gegenseite: gleicher Gegenstand, Gegenrichtung.</p>
+  <p lang-en>Our opinion of something is built from many beliefs. Misinformation puts a weight on one side of the scale. A denial tries to remove it — often some of it sticks. <b>Bypassing</b> leaves the false claim standing and puts a different, <b>true</b> weight on the other side: same object, opposite direction.</p>
+  <p lang-fr>Notre opinion sur quelque chose se compose de nombreuses convictions. Une fausse information pose un poids d’un côté de la balance. Un démenti essaie de l’enlever — souvent, un reste demeure. Le <b>bypassing</b> laisse la fausse information en place et pose un autre poids, <b>vrai</b>, de l’autre côté : même objet, sens inverse.</p>
+  <p lang-it>La nostra opinione su qualcosa è fatta di molte convinzioni. Una notizia falsa mette un peso su un lato della bilancia. Una smentita cerca di toglierlo — spesso ne resta un po’. Il <b>bypassing</b> lascia in piedi la notizia falsa e mette un altro peso, <b>vero</b>, sull’altro lato: stesso oggetto, direzione opposta.</p>
+  <div class="postit" lang-de><b>Schlagzeile:</b> «Der Stoff TSF verursacht Angstzustände.»<br><b>Dementi:</b> «TSF verursacht keine Angstzustände.»<br><b>Bypassing:</b> «TSF senkt die Preise von Alltagsprodukten.»</div>
+  <div class="postit" lang-en><b>Headline:</b> “The substance TSF causes anxiety.”<br><b>Denial:</b> “TSF does not cause anxiety.”<br><b>Bypassing:</b> “TSF lowers the price of everyday goods.”</div>
+  <div class="postit" lang-fr><b>Titre :</b> «La substance TSF provoque de l’anxiété.»<br><b>Démenti :</b> «Le TSF ne provoque pas d’anxiété.»<br><b>Bypassing :</b> «Le TSF fait baisser le prix des produits courants.»</div>
+  <div class="postit" lang-it><b>Titolo:</b> «La sostanza TSF provoca ansia.»<br><b>Smentita:</b> «Il TSF non provoca ansia.»<br><b>Bypassing:</b> «Il TSF abbassa i prezzi dei prodotti di uso quotidiano.»</div>
+  <p class="small" lang-de>TSF ist erfunden — wie im Experiment, aus dem das Beispiel stammt.</p>
+  <p class="small" lang-en>TSF is made up — as in the experiment the example comes from.</p>
+  <p class="small" lang-fr>Le TSF est inventé — comme dans l’expérience d’où vient l’exemple.</p>
+  <p class="small" lang-it>Il TSF è inventato — come nell’esperimento da cui viene l’esempio.</p>
+
+  <h2 lang-de>Was die Forschung zeigt</h2>
+  <h2 lang-en>What the research shows</h2>
+  <h2 lang-fr>Ce que montre la recherche</h2>
+  <h2 lang-it>Che cosa mostra la ricerca</h2>
+  <ol lang-de>
+    <li>Nach kurzen Schlagzeilen veränderte Bypassing die Meinung <b>etwas</b> stärker als ein kurzes Dementi. Der Vorteil ist klein, zeigte sich aber in mehreren Experimenten.</li>
+    <li>Auch der Glaube an die Falschmeldung sinkt etwas — weniger als mit einem Dementi.</li>
+    <li>Kein Vorteil, wenn man sich beim Lesen schon ein Urteil («gut oder schlecht») gemacht hat.</li>
+    <li>Bei echten Themen bewegte sich die persönliche Meinung, nicht die Haltung zu politischen Massnahmen.</li>
+    <li>Ein ausführlicher Faktencheck bleibt stärker als ein blosses «Stimmt nicht». Getestet wurde mit Online-Teilnehmenden in den USA.</li>
+  </ol>
+  <ol lang-en>
+    <li>After short headlines, bypassing shifted opinions <b>slightly</b> more than a short denial. The edge is small but showed up in several experiments.</li>
+    <li>Belief in the false claim drops a little too — less than with a denial.</li>
+    <li>No edge if people already made up their minds (“good or bad”) while reading.</li>
+    <li>On real topics, personal opinions moved, not attitudes towards policies.</li>
+    <li>A detailed fact-check stays stronger than a bare “not true”. Tested with online participants in the US.</li>
+  </ol>
+  <ol lang-fr>
+    <li>Après des titres courts, le bypassing a fait bouger l’opinion <b>un peu</b> plus qu’un bref démenti. L’avantage est petit, mais il est apparu dans plusieurs expériences.</li>
+    <li>La croyance en la fausse information baisse aussi un peu — moins qu’avec un démenti.</li>
+    <li>Aucun avantage si l’on s’est déjà fait un avis («bon ou mauvais») en lisant.</li>
+    <li>Sur des sujets réels, l’opinion personnelle a bougé, pas l’attitude envers des mesures politiques.</li>
+    <li>Un fact-check détaillé reste plus fort qu’un simple «c’est faux». Testé avec des participants en ligne aux États-Unis.</li>
+  </ol>
+  <ol lang-it>
+    <li>Dopo titoli brevi, il bypassing ha spostato l’opinione <b>un po’</b> più di una breve smentita. Il vantaggio è piccolo, ma è emerso in diversi esperimenti.</li>
+    <li>Anche la fiducia nella notizia falsa cala un po’ — meno che con una smentita.</li>
+    <li>Nessun vantaggio se ci si è già fatti un giudizio («buono o cattivo») leggendo.</li>
+    <li>Su temi reali si è spostata l’opinione personale, non l’atteggiamento verso misure politiche.</li>
+    <li>Un fact-check dettagliato resta più forte di un semplice «non è vero». Testato con partecipanti online negli Stati Uniti.</li>
+  </ol>
+  <p class="small" lang-de>Quelle: Granados Samayoa, J. A. &amp; Albarracín, D. (2025). Bypassing versus correcting misinformation: Efficacy and fundamental processes. <i>Journal of Experimental Psychology: General</i>, 154(1), 18–38. <a href="https://doi.org/10.1037/xge0001687">doi:10.1037/xge0001687</a></p>
+  <p class="small" lang-en>Source: Granados Samayoa, J. A. &amp; Albarracín, D. (2025). Bypassing versus correcting misinformation: Efficacy and fundamental processes. <i>Journal of Experimental Psychology: General</i>, 154(1), 18–38. <a href="https://doi.org/10.1037/xge0001687">doi:10.1037/xge0001687</a></p>
+  <p class="small" lang-fr>Source : Granados Samayoa, J. A. &amp; Albarracín, D. (2025). Bypassing versus correcting misinformation: Efficacy and fundamental processes. <i>Journal of Experimental Psychology: General</i>, 154(1), 18–38. <a href="https://doi.org/10.1037/xge0001687">doi:10.1037/xge0001687</a></p>
+  <p class="small" lang-it>Fonte: Granados Samayoa, J. A. &amp; Albarracín, D. (2025). Bypassing versus correcting misinformation: Efficacy and fundamental processes. <i>Journal of Experimental Psychology: General</i>, 154(1), 18–38. <a href="https://doi.org/10.1037/xge0001687">doi:10.1037/xge0001687</a></p>
+
+  <h2 lang-de>Fair oder Manipulation? Der Check</h2>
+  <h2 lang-en>Fair or manipulation? The check</h2>
+  <h2 lang-fr>Loyal ou manipulation ? Le check</h2>
+  <h2 lang-it>Corretto o manipolazione? Il check</h2>
+  <ol lang-de>
+    <li><b>Ist die Behauptung wirklich falsch?</b> Hat sie einen wahren Kern, zuerst den anerkennen.</li>
+    <li><b>Ist meine Gegeninformation wahr?</b> Sonst ist sie selbst eine Falschmeldung.</li>
+    <li><b>Bleibe ich beim gleichen Gegenstand?</b> Sonst ist es Ablenkung.</li>
+    <li><b>Würde ich es offen sagen?</b> Wenn nicht, ist es Manipulation.</li>
+  </ol>
+  <ol lang-en>
+    <li><b>Is the claim really false?</b> If it has a true core, acknowledge that first.</li>
+    <li><b>Is my counter-fact true?</b> Otherwise it is misinformation itself.</li>
+    <li><b>Do I stay on the same object?</b> Otherwise it is distraction.</li>
+    <li><b>Would I say it openly?</b> If not, it is manipulation.</li>
+  </ol>
+  <ol lang-fr>
+    <li><b>L’affirmation est-elle vraiment fausse ?</b> S’il y a un fond de vérité, le reconnaître d’abord.</li>
+    <li><b>Ma contre-information est-elle vraie ?</b> Sinon, c’est elle-même une fausse information.</li>
+    <li><b>Est-ce que je reste sur le même objet ?</b> Sinon, c’est une diversion.</li>
+    <li><b>Le dirais-je ouvertement ?</b> Sinon, c’est de la manipulation.</li>
+  </ol>
+  <ol lang-it>
+    <li><b>L’affermazione è davvero falsa?</b> Se c’è un fondo di verità, riconoscerlo per primo.</li>
+    <li><b>La mia controinformazione è vera?</b> Altrimenti è essa stessa una notizia falsa.</li>
+    <li><b>Resto sullo stesso oggetto?</b> Altrimenti è una distrazione.</li>
+    <li><b>Lo direi apertamente?</b> Se no, è manipolazione.</li>
+  </ol>
+
+  <h2 lang-de>Selber spielen &amp; nachlesen</h2>
+  <h2 lang-en>Play &amp; look it up</h2>
+  <h2 lang-fr>Jouer &amp; relire</h2>
+  <h2 lang-it>Gioca &amp; rileggi</h2>
+  <p lang-de>Der Quiz aus der Session läuft jederzeit auch solo auf deinem Handy.</p>
+  <p lang-en>The session quiz also runs solo on your phone, any time.</p>
+  <p lang-fr>Le quiz de la session se joue aussi en solo sur ton téléphone, à tout moment.</p>
+  <p lang-it>Il quiz della sessione si gioca anche da soli sul telefono, in qualsiasi momento.</p>
+  <div class="btnrow">
+    <a class="btn" href="../?session=bypassing" lang-de>Quiz spielen</a>
+    <a class="btn" href="../?session=bypassing" lang-en>Play the quiz</a>
+    <a class="btn" href="../?session=bypassing" lang-fr>Jouer au quiz</a>
+    <a class="btn" href="../?session=bypassing" lang-it>Gioca al quiz</a>
+    <a class="btn alt" href="../slides/bypassing.pdf" lang-de>Folien (PDF)</a>
+    <a class="btn alt" href="../slides/bypassing.en.pdf" lang-en>Slides (PDF)</a>
+    <a class="btn alt" href="../slides/bypassing.fr.pdf" lang-fr>Slides (PDF)</a>
+    <a class="btn alt" href="../slides/bypassing.it.pdf" lang-it>Slide (PDF)</a>
+    <a class="btn alt" href="../slides/topic-card-bypassing.pdf" lang-de>Topic Card (PDF)</a>
+    <a class="btn alt" href="../slides/topic-card-bypassing.en.pdf" lang-en>Topic card (PDF)</a>
+    <a class="btn alt" href="../slides/topic-card-bypassing.fr.pdf" lang-fr>Topic card (PDF)</a>
+    <a class="btn alt" href="../slides/topic-card-bypassing.it.pdf" lang-it>Topic card (PDF)</a>
+  </div>
+  <p class="small" lang-de>Die Topic Card ist die Ein-Blatt-Version der Session — für Durchführungen ohne Folien.</p>
+  <p class="small" lang-en>The topic card is the one-page version of the session — for runs without slides.</p>
+  <p class="small" lang-fr>La topic card est la version une-page de la session — pour animer sans slides.</p>
+  <p class="small" lang-it>La topic card è la versione in una pagina della sessione — per condurla senza slide.</p>
+
+  <footer>Democracy Matters × DAY8 — The Learning Loop. Learn it. Keep it.</footer>
+</div>
+<script>
+  function setLang(l){
+    if(['de','en','fr','it'].indexOf(l) < 0) l = 'de';
+    if(l === 'de') document.documentElement.removeAttribute('data-l');
+    else document.documentElement.setAttribute('data-l', l);
+    document.documentElement.setAttribute('lang', l);
+    ['de','en','fr','it'].forEach(function(x){
+      document.getElementById('btn-'+x).classList.toggle('on', x === l);
+    });
+    try{localStorage.setItem('dm-lang', l);}catch(e){}
+  }
+  try{
+    var q = new URLSearchParams(location.search).get('lang');
+    var saved = q || localStorage.getItem('dm-lang');
+    if(saved && saved !== 'de') setLang(saved);
+  }catch(e){}
+</script>
+</body>
+</html>

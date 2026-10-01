@@ -6,3 +6,6 @@ handover/
 topics/*/source/*
 !topics/*/source/.gitkeep
 node_modules/
+
+# Research papers and drafts (not ours to publish; the Pages site is public)
+research/
