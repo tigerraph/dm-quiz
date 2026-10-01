@@ -21,8 +21,8 @@ auf PubMed Central.
 - [ ] Beamer-Ansicht öffnen (Link auf Folie 3 und in der Regie-Folie ist klickbar):
       `?session=bypassing&host=1`
 - [ ] **Zettel für das Live-Experiment**: je ca. 10 Post-its beschriften —
-      **A** «TSF verursacht keine Angstzustände.» und
-      **B** «TSF senkt die Preise von Alltagsprodukten.» Getrennt halten.
+      **A** «Leitungswasser ist nicht ungesund.» und
+      **B** «Leitungswasser kostet einen Bruchteil von Flaschenwasser und braucht keine Plastikflasche.» Getrennt halten.
 - [ ] Post-its + Stifte bereit (für die Bottom Line / Master Checklist)
 - [ ] Master Checklist und Sterne-Tafel dabei (Communication-Stern ★ wird heute vergeben)
 
@@ -32,7 +32,7 @@ auf PubMed Central.
 |---|---|---|---|
 | — | Ankommen | 1 DM-Hauptfolie | Pillar zeigen: heute gibt es den **Communication-Stern**. Zwei Slots: Sprint (30′), dann die Runde. |
 | 15:00 (5′) | **Einstieg** | 3 QR | «Handy raus.» QR scannen, Beamer-Ansicht per Klick öffnen, 3 Fragen spielen. Erklärungen zeigt die App — nicht doppelt erklären. |
-| 15:05 (10′) | **Thema** | 4 Live-Experiment, 5 Check | Kein Video. Schlagzeile zeigen. Linke Hälfte bekommt Zettel A, rechte Hälfte Zettel B — nur lesen, nicht zeigen. Alle gleichzeitig 1–5 Finger: «Wie sehr bist du dafür, TSF einzuschränken?» Grob schätzen, welche Hälfte höher liegt. Dann Folie 5: beide Zettel vorlesen, die drei Befunde. |
+| 15:05 (10′) | **Thema** | 4 Live-Experiment, 5 Check | Kein Video. Schlagzeile zeigen. Linke Hälfte bekommt Zettel A, rechte Hälfte Zettel B — nur lesen, nicht zeigen. Alle gleichzeitig 1–5 Finger: «Wie gern würdest du Leitungswasser statt Flaschenwasser trinken?» Grob schätzen, welche Hälfte höher liegt (hier heisst mehr Finger: Bypassing hat gewirkt). Dann Folie 5: beide Zettel vorlesen, die drei Befunde. |
 | 15:15 (5′) | **Übung** | 6 Fälle, 7 Auflösung | Je Gruppe ein Fall (A/B/C). **2′** in der Gruppe, dann **3′** Runde: pro Gruppe **ein** Satz — Bypassing ok, Dementi nötig, oder Ausweichen? **Nach 2′ hart unterbrechen** (Timer auf der Folie). Folie 7 erst **nach** der Runde zeigen. |
 | 15:20 (5′) | **Take-away** | 8 Kit | Die vier Karten sind Antworten auf «Falschmeldungen widersprechen bringt eh nichts». Laut lesen lassen. Bottom Line auf die Master Checklist, Communication-Stern ★ vergeben. Nie streichen. |
 | 15:25 (5′) | Puffer | — | Überzieher abfedern, dann Folie 9: Übergang in die Runde. |
@@ -42,10 +42,14 @@ auf PubMed Central.
 ## Die Dramaturgie
 
 Das Live-Experiment ersetzt das Video: Die Leute erleben den Mechanismus, bevor
-er erklärt wird. Der Stoff TSF ist **erfunden** — wie im Paper. So wiederholen wir
-keine echte Falschmeldung, die hängen bleiben könnte (Paper S. 26: Wiederholung
-macht Aussagen glaubwürdiger). Der Raum ist zu klein für einen Beweis. Kommt es
-«falsch» heraus, ist das die Überleitung: Im Paper brauchte es Hunderte von
+er erklärt wird. Das Paper testete mit einem **erfundenen** Produkt («TSF»), damit
+niemand schon eine Meinung hat. Wir nehmen ein Alltagsbeispiel, das sofort klar
+ist: «Leitungswasser ist ungesund» ist falsch, und die Bypassing-Antwort (Preis,
+keine Plastikflasche) stimmt, ohne der Behauptung zu widersprechen. Das Beispiel
+ist unseres, nicht aus dem Paper. Die Falschmeldung nur einmal zeigen und danach
+nicht wiederholen (Paper S. 26: Wiederholung macht Aussagen glaubwürdiger). Der
+Raum ist zu klein für einen Beweis. Kommt es «falsch» heraus, ist das die
+Überleitung: Im Paper brauchte es Hunderte von
 Personen, um den kleinen Unterschied sicher zu sehen.
 
 Die Übung ist die Ethik-Frage. Die Auflösung (Folie 7) kommt bewusst **nach** der
