@@ -1,0 +1,123 @@
+{
+ "id": "bypassing",
+ "title": {
+  "de": "Bypassing statt Dementi",
+  "en": "Bypassing instead of denial",
+  "fr": "Contourner plutôt que démentir",
+  "it": "Aggirare invece di smentire"
+ },
+ "timer_ms": 30000,
+ "questions": [
+  {
+   "id": "schlagzeile",
+   "img": null,
+   "q": {
+    "de": "Nach einer falschen Schlagzeile: Was verschiebt die Meinung im Schnitt stärker?",
+    "en": "After a false headline: what shifts opinions more, on average?",
+    "fr": "Après un titre faux : qu'est-ce qui fait le plus bouger l'opinion, en moyenne ?",
+    "it": "Dopo un titolo falso: che cosa sposta di più l'opinione, in media?"
+   },
+   "o": {
+    "de": [
+     "Ein kurzes «Stimmt nicht.»",
+     "Eine andere wahre Tatsache, die in die Gegenrichtung zeigt"
+    ],
+    "en": [
+     "A short “That’s not true.”",
+     "Another true fact that points the other way"
+    ],
+    "fr": [
+     "Un bref «C'est faux.»",
+     "Un autre fait vrai qui va dans l'autre sens"
+    ],
+    "it": [
+     "Un breve «Non è vero.»",
+     "Un altro fatto vero che va nella direzione opposta"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "de": "Das nennt man Bypassing. In Experimenten der University of Pennsylvania (2025) wirkte es nach kurzen Schlagzeilen etwas stärker als ein kurzes Dementi. Der Vorteil ist klein — und ein ausführlicher Faktencheck bleibt stark.",
+    "en": "That is called bypassing. In experiments at the University of Pennsylvania (2025) it worked slightly better than a short denial after brief headlines. The edge is small — and a detailed fact-check stays strong.",
+    "fr": "C'est ce qu'on appelle le bypassing. Dans des expériences de l'Université de Pennsylvanie (2025), il a un peu mieux fonctionné qu'un bref démenti après des titres courts. L'avantage est petit — et un fact-check détaillé reste efficace.",
+    "it": "Si chiama bypassing. In esperimenti dell'Università della Pennsylvania (2025) ha funzionato un po' meglio di una breve smentita dopo titoli brevi. Il vantaggio è piccolo — e un fact-check dettagliato resta efficace."
+   },
+   "unique": "Granados Samayoa & Albarracín 2025 (J Exp Psychol Gen 154:18–38): bypassing beat a simple negation on attitudes in Exp. 1, 2, 4, 5 and on object attitudes in Exp. 6 (pp. 8, 10, 15, 19, 23). The option «Stimmt nicht» is exactly the simple negation that lost; the question says «im Schnitt» and «kurz», so the detailed-refutation case is excluded.",
+   "sure": true
+  },
+  {
+   "id": "glaube",
+   "img": null,
+   "q": {
+    "de": "Bypassing lässt die falsche Behauptung stehen. Glauben die Leute sie danach gleich stark?",
+    "en": "Bypassing leaves the false claim standing. Do people believe it just as much afterwards?",
+    "fr": "Le bypassing laisse la fausse affirmation en place. Les gens y croient-ils autant ensuite ?",
+    "it": "Il bypassing lascia in piedi l'affermazione falsa. Le persone ci credono ancora allo stesso modo?"
+   },
+   "o": {
+    "de": [
+     "Ja, gleich stark",
+     "Nein, etwas weniger"
+    ],
+    "en": [
+     "Yes, just as much",
+     "No, a bit less"
+    ],
+    "fr": [
+     "Oui, autant",
+     "Non, un peu moins"
+    ],
+    "it": [
+     "Sì, allo stesso modo",
+     "No, un po' meno"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "de": "Auch der Glaube an die Falschmeldung sinkt — weniger als mit einem Dementi, aber er sinkt. Die wahre Gegeninformation färbt auf die falsche ab.",
+    "en": "Belief in the false claim drops too — less than with a denial, but it drops. The true counter-fact rubs off on the false one.",
+    "fr": "La croyance en la fausse information baisse aussi — moins qu'avec un démenti, mais elle baisse. Le fait vrai déteint sur le faux.",
+    "it": "Anche la fiducia nella notizia falsa cala — meno che con una smentita, ma cala. Il fatto vero contagia quello falso."
+   },
+   "unique": "Paper p. 25: a meta-analysis in the Supplemental Material shows a spillover — bypassing reduces misinformation belief, though less than correction. So «gleich stark» is wrong.",
+   "sure": true
+  },
+  {
+   "id": "schon-geurteilt",
+   "img": null,
+   "q": {
+    "de": "Hilft Bypassing auch, wenn man sich beim Lesen schon ein Urteil gemacht hat («gut oder schlecht»)?",
+    "en": "Does bypassing still help if you already made up your mind while reading (“good or bad”)?",
+    "fr": "Le bypassing aide-t-il encore si l'on s'est déjà fait un avis en lisant («bon ou mauvais») ?",
+    "it": "Il bypassing aiuta ancora se ci si è già fatti un giudizio leggendo («buono o cattivo»)?"
+   },
+   "o": {
+    "de": [
+     "Ja, genauso",
+     "Nein, dann hat es keinen Vorteil"
+    ],
+    "en": [
+     "Yes, just as much",
+     "No, then it has no edge"
+    ],
+    "fr": [
+     "Oui, tout autant",
+     "Non, il n'a alors plus d'avantage"
+    ],
+    "it": [
+     "Sì, allo stesso modo",
+     "No, allora non ha più vantaggi"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "de": "Wer beim Lesen schon urteilt, hält am ersten Urteil fest. Dann wirkt Bypassing nicht besser als ein Dementi. Am besten wirkt es, solange man noch fragt: Stimmt das?",
+    "en": "If you judge while reading, you hold on to that first verdict. Then bypassing works no better than a denial. It works best while people are still asking: is this true?",
+    "fr": "Qui juge déjà en lisant s'accroche à ce premier verdict. Le bypassing ne fait alors pas mieux qu'un démenti. Il marche le mieux tant qu'on se demande encore : est-ce vrai ?",
+    "it": "Chi giudica già leggendo resta attaccato al primo giudizio. Allora il bypassing non funziona meglio di una smentita. Funziona meglio finché ci si chiede ancora: è vero?"
+   },
+   "unique": "Paper Exp. 5, Table 4 p. 40 and pp. 19, 24: under the attitude-formation goal the bypassing vs correction difference on object attitudes was d = −0.02, p = .56 (no advantage). «Ja, genauso» contradicts that.",
+   "sure": true
+  }
+ ]
+}

@@ -30,5 +30,17 @@
       "it": "Test — prova"
     },
     "date": null
+  },
+  "bypassing": {
+    "pack": "bypassing.json",
+    "pillar": "comm",
+    "materials": true,
+    "title": {
+      "de": "Bypassing statt Dementi",
+      "en": "Bypassing instead of denial",
+      "fr": "Contourner plutôt que démentir",
+      "it": "Aggirare invece di smentire"
+    },
+    "date": "2026-10-01"
   }
 }
