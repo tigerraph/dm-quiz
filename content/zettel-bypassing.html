@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zettel A/B · Bypassing statt Dementi</title>
+<style>
+  @font-face{font-family:'Poppins';font-style:normal;font-weight:400;
+    src:url(../assets/fonts/poppins-400-latin.woff2) format('woff2');}
+  @font-face{font-family:'Poppins';font-style:normal;font-weight:800;
+    src:url(../assets/fonts/poppins-800-latin.woff2) format('woff2');}
+  :root{--blue:#435CC6;--teal:#5EB9A9;--cream:#FDF2D0;--ink:#22313C}
+  @page{size:A4;margin:10mm}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Poppins',system-ui,sans-serif;color:var(--ink);background:#fff}
+  .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:14px 16px;background:var(--cream);font-size:14px}
+  .bar a{color:var(--blue);font-weight:800;text-decoration:none;border:2px solid var(--blue);border-radius:8px;padding:3px 9px}
+  .bar a[aria-current]{background:var(--blue);color:#fff}
+  .bar span{flex:1;min-width:200px}
+  .sheet{max-width:190mm;margin:0 auto;padding:6mm 0;display:grid;grid-template-columns:1fr 1fr}
+  .slip{border:1.5px dashed #9aa5ad;padding:5mm 6mm;height:52mm;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:3mm}
+  .tag{font-weight:800;font-size:30pt;line-height:1;color:var(--blue)}
+  .slip.b .tag{color:#2f7f73}
+  .txt{font-weight:800;font-size:13.5pt;line-height:1.3}
+  .hint{font-size:9pt;opacity:.6}
+  @media print{.bar{display:none}.sheet{padding:0}}
+</style>
+</head>
+<body>
+<div class="bar">
+  <a href="?lang=de" data-l="de">DE</a><a href="?lang=en" data-l="en">EN</a><a href="?lang=fr" data-l="fr">FR</a><a href="?lang=it" data-l="it">IT</a>
+  <span data-i18n="how">Drucken (A4), an den gestrichelten Linien schneiden. A für die linke Raumhälfte, B für die rechte. Ein Blatt = 5 × A und 5 × B.</span>
+</div>
+<div class="sheet" id="sheet"></div>
+<template id="tpl">
+  <div class="slip a"><div class="tag">A</div><div class="txt" data-k="a"></div><div class="hint" data-k="h"></div></div>
+  <div class="slip b"><div class="tag">B</div><div class="txt" data-k="b"></div><div class="hint" data-k="h"></div></div>
+</template>
+<script>
+(function(){
+  var L = (new URLSearchParams(location.search).get('lang') || 'de').toLowerCase();
+  if (['de','en','fr','it'].indexOf(L) < 0) L = 'de';
+  document.documentElement.lang = L;
+  var c = document.querySelector('.bar a[data-l="' + L + '"]'); if (c) c.setAttribute('aria-current','page');
+  var T = {
+    de:{a:'«Leitungswasser ist nicht ungesund.»', b:'«Leitungswasser kostet einen Bruchteil von Flaschenwasser und braucht keine Plastikflasche.»', h:'Still lesen. Nicht zeigen.',
+        how:'Drucken (A4), an den gestrichelten Linien schneiden. A für die linke Raumhälfte, B für die rechte. Ein Blatt = 5 × A und 5 × B.'},
+    en:{a:'“Tap water is not unhealthy.”', b:'“Tap water costs a fraction of bottled water and needs no plastic bottle.”', h:'Read silently. Don’t show it.',
+        how:'Print (A4), cut along the dashed lines. A for the left side of the room, B for the right. One sheet = 5 × A and 5 × B.'},
+    fr:{a:'«L’eau du robinet n’est pas mauvaise pour la santé.»', b:'«L’eau du robinet coûte une fraction de l’eau en bouteille et se passe de bouteille en plastique.»', h:'Lire en silence. Ne pas montrer.',
+        how:'Imprimer (A4), découper le long des pointillés. A pour le côté gauche de la salle, B pour le droit. Une feuille = 5 × A et 5 × B.'},
+    it:{a:'«L’acqua del rubinetto non fa male.»', b:'«L’acqua del rubinetto costa una frazione di quella in bottiglia e non richiede bottiglie di plastica.»', h:'Leggere in silenzio. Non mostrare.',
+        how:'Stampare (A4), ritagliare lungo le linee tratteggiate. A per il lato sinistro della sala, B per il destro. Un foglio = 5 × A e 5 × B.'}
+  }[L];
+  document.querySelector('[data-i18n="how"]').textContent = T.how;
+  var sheet = document.getElementById('sheet'), tpl = document.getElementById('tpl');
+  for (var i = 0; i < 5; i++) sheet.appendChild(tpl.content.cloneNode(true));
+  sheet.querySelectorAll('[data-k]').forEach(function(el){ el.textContent = T[el.getAttribute('data-k')]; });
+})();
+</script>
+</body>
+</html>
