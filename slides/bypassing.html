@@ -183,6 +183,15 @@
   .res > div{flex:1;border-radius:16px;padding:18px 22px;color:#fff;background:var(--ink)}
   .res .h{font-weight:800;font-size:22px;margin-bottom:6px}
   .res .p{font-size:18px;line-height:1.45}
+  .vidframe{position:relative;flex:none;width:267px;height:476px;border-radius:14px;overflow:hidden;background:#000}
+  .vidframe .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;
+    color:#fff;font-weight:800;font-size:18px;padding:20px;opacity:.7}
+  .vidframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .bul{list-style:none;padding:0;display:grid;gap:18px;margin-top:6px}
+  .bul li{font-size:34px;line-height:1.25;display:grid;grid-template-columns:170px 1fr;gap:20px;margin:0}
+  .bul li b{color:var(--teal)}
+  .steps{font-size:28px;line-height:1.4;margin-top:18px}
+  .res .cl{display:block;font-size:13px;font-weight:800;letter-spacing:.08em;opacity:.7;margin-bottom:4px}
 </style>
 </head>
 <body>
@@ -238,7 +247,8 @@
   <div class="lede" data-i18n="s2.lede">Wie man auf eine Falschmeldung antwortet, ohne nur zu widersprechen</div>
   <div class="agenda">
     <div class="item"><div class="t" data-i18n="ag.1">Einstieg</div><div class="m">5′</div></div>
-    <div class="item"><div class="t" data-i18n="ag.2">Thema</div><div class="m">10′</div></div>
+    <div class="item"><div class="t" data-i18n="ag.v">Video</div><div class="m">5′</div></div>
+    <div class="item"><div class="t" data-i18n="ag.2">Thema</div><div class="m">7′</div></div>
     <div class="item"><div class="t" data-i18n="ag.3">Übung</div><div class="m">5′</div></div>
     <div class="item"><div class="t" data-i18n="ag.4">Take-away</div><div class="m">5′</div></div>
   </div>
@@ -275,7 +285,44 @@
   </div>
 </section>
 
-<!-- 4 · Thema: Live-Experiment (statt Video) -->
+<!-- 4 · Video: offizielles Facebook-Embed, Fallback QR + Link. Nie herunterladen oder hier hosten. -->
+<section class="slide bg-dark">
+  <div class="kicker" data-i18n="sv.kick">2 — VIDEO</div>
+  <div style="display:flex;gap:56px;align-items:flex-start">
+    <div class="vidframe">
+      <div class="ph" data-i18n="sv.ph">▶ Video auf Facebook — QR-Code oder Link rechts</div>
+      <iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1160919765939031%2F&amp;show_text=false&amp;width=267&amp;t=0" scrolling="no" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" title="Mini Philosophy — The Bypassing Technique"></iframe>
+    </div>
+    <div style="flex:1">
+      <h1 style="font-size:56px;margin-bottom:16px" data-i18n="sv.h1">Was ist Bypassing?</h1>
+      <div class="lede" style="font-size:26px;font-weight:400;line-height:1.4" data-i18n="sv.lede">Mini Philosophy erklärt die Technik in 90 Sekunden — auf Englisch, mit Untertiteln.</div>
+      <div style="display:flex;gap:22px;align-items:center;margin-top:22px">
+        <div class="qrmini" id="qr-video"></div>
+        <div><div style="font-weight:800;font-size:20px" data-i18n="sv.fb">Läuft das Video nicht? QR scannen oder Link öffnen:</div>
+          <a class="tlink" style="font-size:18px" href="https://www.facebook.com/reel/1160919765939031/">facebook.com/reel/1160919765939031</a></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot">
+    <div class="wordmark" style="font-size:16px" data-i18n="sv.foot">Video: Mini Philosophy, «The Bypassing Technique» (Facebook, 1:29)</div>
+    <div class="metric"><div class="label" data-i18n="t.zeit">Zeit</div><div class="value">5m</div></div>
+  </div>
+</section>
+
+<!-- 5 · Bypassing in vier Sätzen -->
+<section class="slide bg-blue">
+  <div class="kicker" data-i18n="sb.kick">2 — VIDEO · DIE KURZFASSUNG</div>
+  <h1 style="font-size:60px;margin-bottom:26px" data-i18n="sb.h1">Bypassing in vier Sätzen</h1>
+  <ul class="bul">
+    <li><b data-i18n="sb.w">Was</b><span data-i18n="sb.wt">Nicht widersprechen, sondern Wahres ergänzen.</span></li>
+    <li><b data-i18n="sb.h">Wie</b><span data-i18n="sb.ht">Wahre Tatsache, gleicher Gegenstand, Gegenrichtung.</span></li>
+    <li><b data-i18n="sb.q">Wann</b><span data-i18n="sb.qt">Kurze Behauptungen, bevor die Meinung steht.</span></li>
+    <li><b data-i18n="sb.l">Grenze</b><span data-i18n="sb.lt">Nur Wahres, offen gesagt — keine Manipulation.</span></li>
+  </ul>
+  <div class="foot"><div class="wordmark" style="font-size:17px" data-i18n="sb.foot">Das Video sagt «nicht faktenchecken» — die Studie nicht: Ein ausführlicher Faktencheck bleibt stark.</div></div>
+</section>
+
+<!-- 6 · Thema: Live-Experiment -->
 <section class="slide bg-blue">
   <div class="kicker" data-i18n="s4.kick">2 — THEMA · LIVE-EXPERIMENT</div>
   <h1 style="font-size:60px;margin-bottom:22px" data-i18n="s4.h1">Ein Experiment mit euch</h1>
@@ -288,7 +335,7 @@
   <div class="lede" style="font-size:24px;margin-top:6px;color:var(--cream)" data-i18n="s4.next">→ Nächste Folie: Wir vergleichen die beiden Seiten.</div>
   <div class="foot">
     <div class="wordmark" data-i18n="s4.foot">Das Paper testete mit einem erfundenen Produkt. Das Leitungswasser-Beispiel ist unseres.</div>
-    <div class="metric"><div class="label" data-i18n="t.zeit">Zeit</div><div class="value">5m</div></div>
+    <div class="metric"><div class="label" data-i18n="t.zeit">Zeit</div><div class="value">7m</div></div>
   </div>
 </section>
 
@@ -309,41 +356,32 @@
   <div class="foot"><div class="wordmark" style="font-size:16px" data-i18n="s5.foot">Granados Samayoa &amp; Albarracín, University of Pennsylvania · Journal of Experimental Psychology: General, 2025</div></div>
 </section>
 
-<!-- 6 · Übung: Fair oder Ausweichen? -->
+<!-- 8 · Thema: Wo die Grenze liegt (Info, keine Übung) -->
 <section class="slide bg-cream">
-  <div class="kicker" data-i18n="s6.kick">3 — ÜBUNG · DISKUSSION</div>
-  <h1 style="color:var(--ink);font-size:60px;margin-bottom:16px" data-i18n="s6.h1">Fair oder Ausweichen?</h1>
-  <div style="font-style:italic;font-weight:400;font-size:26px;line-height:1.4;max-width:1050px" data-i18n="s6.q">
-    «Bypassing? Das ist doch einfach Spin.»
+  <div class="kicker" data-i18n="s7.kick">2 — THEMA · WO DIE GRENZE LIEGT</div>
+  <h1 style="color:var(--ink);font-size:56px;margin-bottom:22px" data-i18n="s7.h1">Fair oder Ausweichen?</h1>
+  <div class="res">
+    <div><span class="cl" data-i18n="s7.al">BEISPIEL · ECHTE SORGE</span><div class="h" data-i18n="s7.ah">«Der Wolf reisst unsere Schafe.»</div><div class="p" data-i18n="s7.ap">Das ist kein Gerücht. Mit einem anderen Vorteil zu antworten, wäre Ausweichen. Erst anerkennen, dann reden.</div></div>
+    <div style="background:#2f6f66"><span class="cl" data-i18n="s7.cl">BEISPIEL · WAHRER KERN</span><div class="h" data-i18n="s7.ch">«Initiativen kommen nur mit gefälschten Unterschriften zustande.»</div><div class="p" data-i18n="s7.cp">Gibt es einzelne echte Fälle, zuerst anerkennen. Dann die Verallgemeinerung korrigieren. Reines Bypassing wirkt wie Schönreden.</div></div>
   </div>
-  <div class="cases">
-    <div class="case"><span class="cl" data-i18n="s6.ca">FALL A · BEISPIEL</span><span data-i18n="s6.a">«Der Wolf reisst unsere Schafe.»</span></div>
-    <div class="case"><span class="cl" data-i18n="s6.cb">FALL B · BEISPIEL</span><span data-i18n="s6.b">«Das Abstimmungsresultat wurde gefälscht.»</span></div>
-    <div class="case"><span class="cl" data-i18n="s6.cc">FALL C · BEISPIEL</span><span data-i18n="s6.c">«Initiativen kommen nur mit gefälschten Unterschriften zustande.»</span></div>
-  </div>
-  <div class="groups"><span class="gnum">2–3</span>
-    <span data-i18n="s6.groups">Bildet Gruppen zu zweit oder zu dritt, jede Gruppe nimmt einen Fall</span></div>
-  <div class="task" data-i18n="s6.task">
-    <b>2′</b> in der Gruppe: Bypassing ok, Dementi nötig — oder wäre Bypassing hier Ausweichen?<br>
-    <b>3′</b> in der Runde: pro Gruppe <b>ein</b> Satz.
-  </div>
+  <div class="postit" style="margin-top:20px;max-width:980px;font-size:21px;padding:16px 24px;transform:rotate(-1deg)" data-i18n="s7.punch">Bypassing ergänzt eine <b>falsche</b> Behauptung mit einer <b>wahren</b>. Spin lässt eine berechtigte Sorge verschwinden.</div>
+</section>
+
+<!-- 9 · Übung: ein Fall (Rafa: Fall B). Auflösung mündlich, siehe Regie. -->
+<section class="slide bg-cream">
+  <div class="kicker" data-i18n="s6.kick">3 — ÜBUNG</div>
+  <h1 style="color:var(--ink);font-size:56px;margin-bottom:16px" data-i18n="s6.h1">Passt Bypassing hier?</h1>
+  <div class="case" style="flex:none;font-size:30px;padding:18px 26px;max-width:1000px"><span class="cl" data-i18n="s6.cb">BEISPIEL</span><span data-i18n="s6.b">«Das Abstimmungsresultat wurde gefälscht.»</span></div>
+  <ol class="steps" style="color:var(--ink)">
+    <li data-i18n="s6.m1">Bildet Gruppen zu zweit oder zu dritt.</li>
+    <li data-i18n="s6.m2"><b>2 Minuten:</b> Gibt es etwas Wahres, das dagegen spricht — oder braucht es ein Dementi?</li>
+    <li data-i18n="s6.m3"><b>Ein Satz</b> pro Gruppe in die Runde.</li>
+  </ol>
   <div class="foot">
     <div class="ontimer"><span id="t2" class="tval">2:00</span>
       <button id="t2go" class="tgo" data-i18n="t.start">▶ Timer starten</button></div>
     <div class="metric"><div class="label" data-i18n="t.zeit">Zeit</div><div class="value">5m</div></div>
   </div>
-</section>
-
-<!-- 7 · Übung: Die Auflösung -->
-<section class="slide bg-cream">
-  <div class="kicker" data-i18n="s7.kick">3 — ÜBUNG · DIE AUFLÖSUNG</div>
-  <h1 style="color:var(--ink);font-size:60px;margin-bottom:22px" data-i18n="s7.h1">Wann Bypassing nicht passt</h1>
-  <div class="res">
-    <div><div class="h" data-i18n="s7.ah">A · Echte Sorge</div><div class="p" data-i18n="s7.ap">Gerissene Schafe sind kein Gerücht. Wer hier mit etwas anderem antwortet, weicht aus. Erst anerkennen, dann reden.</div></div>
-    <div style="background:var(--blue)"><div class="h" data-i18n="s7.bh">B · Nichts Wahres dagegen</div><div class="p" data-i18n="s7.bp">Zu «gefälscht» gibt es keine passende Gegeninformation. Hier braucht es ein erklärendes Dementi: Wer zählt, wer kontrolliert, wie man Beschwerde führt.</div></div>
-    <div style="background:#2f6f66"><div class="h" data-i18n="s7.ch">C · Wahrer Kern</div><div class="p" data-i18n="s7.cp">Gibt es einzelne echte Fälle, zuerst anerkennen. Dann die Verallgemeinerung korrigieren. Reines Bypassing wirkt hier wie Schönreden.</div></div>
-  </div>
-  <div class="postit" style="margin-top:20px;max-width:980px;font-size:21px;padding:16px 24px;transform:rotate(-1deg)" data-i18n="s7.punch">Bypassing ergänzt eine <b>falsche</b> Behauptung mit einer <b>wahren</b>. Spin lässt eine berechtigte Sorge verschwinden.</div>
 </section>
 
 <!-- 8 · Take-away -->
@@ -405,10 +443,10 @@
   <table class="regie">
     <tr><td data-i18n="s11.r0t">vorher</td><td data-i18n="s11.r0">Zettel <a href="https://tigerraph.github.io/dm-quiz/content/zettel-bypassing.html">ausdrucken</a> und zuschneiden (A links, B rechts). Ohne Zettel: A der linken Hälfte vorlesen, die rechte schliesst die Augen — dann umgekehrt mit B.</td></tr>
     <tr><td>15:00 (5′)</td><td data-i18n="s11.r1"><b>Einstieg</b> — QR-Folie, <a href="https://tigerraph.github.io/dm-quiz/?session=bypassing&amp;host=1">Beamer-Ansicht öffnen</a>, 3 Fragen spielen. Erklärungen zeigt die App.</td></tr>
-    <tr><td>15:05 (10′)</td><td data-i18n="s11.r2"><b>Thema</b> — Live-Experiment: Schlagzeile zeigen, links Zettel A, rechts Zettel B, Finger 1–5. Dann Check-Folie: beide Zettel vorlesen, die drei Befunde. Der Raum ist zu klein für einen Beweis — kommt es «falsch» heraus, ist das die Überleitung.</td></tr>
-    <tr><td>15:15 (5′)</td><td data-i18n="s11.r3"><b>Übung</b> — je Gruppe ein Fall: 2′ in der Gruppe, dann 3′ Runde, <b>ein</b> Satz pro Gruppe. Nach 2′ hart unterbrechen. <b>Erst danach</b> die Auflösung zeigen.</td></tr>
-    <tr><td>15:20 (5′)</td><td data-i18n="s11.r4"><b>Take-away</b> — Kit durchgehen, Bottom Line in die Master Checklist, Communication-Stern ★ vergeben. Nie streichen.</td></tr>
-    <tr><td>15:25 (5′)</td><td data-i18n="s11.r5"><b>Puffer</b> — dann Übergang in die Runde.</td></tr>
+    <tr><td>15:05 (5′)</td><td data-i18n="s11.r2"><b>Video</b> — Reel ab Folie (1:29, Englisch). Blockiert? QR oder Link. Dann die Kurzfassung in vier Sätzen.</td></tr>
+    <tr><td>15:10 (7′)</td><td data-i18n="s11.r3"><b>Thema</b> — Live-Experiment (Zettel, still lesen, 1–5 Finger), Check-Folie, dann «Wo die Grenze liegt» als Info.</td></tr>
+    <tr><td>15:17 (5′)</td><td data-i18n="s11.r4"><b>Übung</b> — «Abstimmungsresultat gefälscht»: 2′ Gruppe, 3′ Runde, <b>ein</b> Satz pro Gruppe. Auflösung mündlich: Es gibt nichts Wahres dagegen — erklärend richtigstellen (wer zählt, wer kontrolliert, Beschwerde).</td></tr>
+    <tr><td>15:22 (5′)</td><td data-i18n="s11.r5"><b>Take-away</b> — Kit, Bottom Line in die Master Checklist, Communication-Stern ★. Nie streichen. Dann Puffer, Runde.</td></tr>
   </table>
   <div class="foot">
     <div class="wordmark"><span data-i18n="s11.foot">Details: docs/runbook-bypassing.md · Zum Nachschauen:</span> <a style="color:var(--green);text-decoration:none" href="https://tigerraph.github.io/dm-quiz/content/bypassing.html">…/content/bypassing.html</a></div>
@@ -429,7 +467,12 @@
     's1.slotbt':'2 · The round','s10b.title':'The round','s1.chip':'TODAY +★','s1.slota':'Bypassing — the sprint','s1.slotb':'Discussion &amp; wind-down',
     's1.foot':'The Learning Loop — Learn it. Keep it. · 3★ per pillar → DM Champion · 6★ → DM Master',
     's2.h1':'Bypassing instead of denial','s2.lede':'How to answer misinformation without just contradicting it',
-    'ag.1':'Warm-up','ag.2':'Topic','ag.3':'Exercise','ag.4':'Take-away',
+    'ag.1':'Warm-up','ag.v':'Video','ag.2':'Topic','ag.3':'Exercise','ag.4':'Take-away',
+    'sv.kick':'2 — VIDEO','sv.ph':'▶ Video on Facebook — QR code or link on the right','sv.h1':'What is bypassing?','sv.lede':'Mini Philosophy explains the technique in 90 seconds — in English, with subtitles.','sv.fb':'Video not playing? Scan the QR or open the link:','sv.foot':'Video: Mini Philosophy, “The Bypassing Technique” (Facebook, 1:29)',
+    'sb.kick':'2 — VIDEO · THE SHORT VERSION','sb.h1':'Bypassing in four sentences','sb.w':'What','sb.wt':'Don’t contradict — add something true.','sb.h':'How','sb.ht':'True fact, same object, opposite direction.','sb.q':'When','sb.qt':'Short claims, before minds are made up.','sb.l':'Line','sb.lt':'True facts only, said openly — no manipulation.','sb.foot':'The video says “don’t fact-check” — the study doesn’t: a detailed fact-check stays strong.',
+    's6.kick':'3 — EXERCISE','s6.h1':'Does bypassing fit here?','s6.cb':'EXAMPLE','s6.b':'“The vote result was rigged.”','s6.m1':'Form groups of two or three.','s6.m2':'<b>2 minutes:</b> is there something true that speaks against it — or does it need a denial?','s6.m3':'<b>One sentence</b> per group to the round.',
+    's7.kick':'2 — TOPIC · WHERE THE LINE IS','s7.h1':'Fair or dodging?','s7.al':'EXAMPLE · A REAL CONCERN','s7.ah':'“The wolf kills our sheep.”','s7.ap':'That is no rumour. Answering with some other upside would be dodging. Acknowledge first, then talk.','s7.cl':'EXAMPLE · A TRUE CORE','s7.ch':'“Initiatives only make it with forged signatures.”','s7.cp':'If there are individual real cases, acknowledge them first. Then correct the generalisation. Pure bypassing looks like whitewashing.','s7.punch':'Bypassing adds a <b>true</b> claim to a <b>false</b> one. Spin makes a legitimate concern disappear.',
+    's11.r1':'<b>Warm-up</b> — QR slide, <a href="https://tigerraph.github.io/dm-quiz/?session=bypassing&amp;host=1">open the beamer view</a>, play the 3 questions. The app shows the explanations.','s11.r2':'<b>Video</b> — reel from the slide (1:29, English). Blocked? QR or link. Then the four-sentence short version.','s11.r3':'<b>Topic</b> — live experiment (slips, read silently, 1–5 fingers), check slide, then “where the line is” as information.','s11.r4':'<b>Exercise</b> — “vote result rigged”: 2′ group, 3′ round, <b>one</b> sentence per group. Debrief out loud: nothing true speaks against it — correct it and explain (who counts, who checks, complaints).','s11.r5':'<b>Take-away</b> — kit, bottom line onto the Master Checklist, Communication star ★. Never cut. Then buffer, the round.',
     's2.why':'<b>Why this topic?</b> Before every vote, claims circulate that aren’t true. A “that’s not true” helps less than you’d think. There is a second way — and a clear line where it becomes unfair.',
     's3.kick':'1 — WARM-UP','s3.h1':'Phones out','s3.lede':'Scan the QR, enter a name — three questions, everyone at once.',
     's3.l1':'Join — if the QR code acts up','s3.l2':'Open the beamer view →','s3.l2s':'Host: starts the game and shows questions, answers, leaderboard',
@@ -448,18 +491,6 @@
     's5.f2':'In experiments, after short headlines, it worked <b>slightly</b> better than a short denial. A small edge, found repeatedly.',
     's5.f3':'<b>No</b> edge if people already made up their minds while reading. A detailed fact-check stays strong.',
     's5.foot':'Granados Samayoa &amp; Albarracín, University of Pennsylvania · Journal of Experimental Psychology: General, 2025',
-    's6.kick':'3 — EXERCISE · DISCUSSION','s6.h1':'Fair or dodging?',
-    's6.q':'“Bypassing? That’s just spin.”',
-    's6.ca':'CASE A · EXAMPLE','s6.a':'“The wolf kills our sheep.”',
-    's6.cb':'CASE B · EXAMPLE','s6.b':'“The vote result was rigged.”',
-    's6.cc':'CASE C · EXAMPLE','s6.c':'“Initiatives only make it with forged signatures.”',
-    's6.groups':'Form groups of two or three, each group takes one case',
-    's6.task':'<b>2′</b> in your group: bypassing ok, denial needed — or would bypassing be dodging here?<br><b>3′</b> in the round: <b>one</b> sentence per group.',
-    's7.kick':'3 — EXERCISE · THE REVEAL','s7.h1':'When bypassing doesn’t fit',
-    's7.ah':'A · A real concern','s7.ap':'Killed sheep are not a rumour. Answering with something else is dodging. Acknowledge first, then talk.',
-    's7.bh':'B · Nothing true against it','s7.bp':'There is no fitting counter-fact to “rigged”. This needs an explaining denial: who counts, who checks, how to file a complaint.',
-    's7.ch':'C · A true core','s7.cp':'If there are individual real cases, acknowledge them first. Then correct the generalisation. Pure bypassing looks like whitewashing here.',
-    's7.punch':'Bypassing adds a <b>true</b> claim to a <b>false</b> one. Spin makes a legitimate concern disappear.',
     's8.star':'★ Claim your star now','s8.h1':'“Contradicting misinformation? It’s pointless anyway.”',
     's8.lede':'Your kit for exactly that conversation:',
     's8.c1h':'Check first','s8.c1p':'Is it really false? If it has a true core, acknowledge that first.',
@@ -471,11 +502,6 @@
     's10.cap':'Slides, quiz &amp; star — everything to revisit',
     's11.qr':'Run sheet on your phone','s11.kick':'FOR THE MODERATOR','s11.h1':'Run sheet',
     's11.r0t':'before','s11.r0':'<a href="https://tigerraph.github.io/dm-quiz/content/zettel-bypassing.html?lang=en">Print</a> and cut the slips (A left, B right). No slips: read A to the left half while the right half closes their eyes — then the reverse with B.',
-    's11.r1':'<b>Warm-up</b> — QR slide, <a href="https://tigerraph.github.io/dm-quiz/?session=bypassing&amp;host=1">open the beamer view</a>, play the 3 questions. The app shows the explanations.',
-    's11.r2':'<b>Topic</b> — live experiment: show the headline, slip A on the left, slip B on the right, fingers 1–5. Then the check slide: read both slips, the three findings. The room is too small for proof — if it comes out “wrong”, that is your transition.',
-    's11.r3':'<b>Exercise</b> — one case per group: 2′ in the group, then a 3′ round, <b>one</b> sentence per group. Cut hard after 2′. <b>Only then</b> show the reveal.',
-    's11.r4':'<b>Take-away</b> — go through the kit, bottom line onto the Master Checklist, award the Communication star ★. Never cut.',
-    's11.r5':'<b>Buffer</b> — then transition into the round.',
     's11.foot':'Details: docs/runbook-bypassing.md · To revisit:'
   },
   fr: {
@@ -484,7 +510,12 @@
     's1.slotbt':'2 · La ronde','s10b.title':'La ronde','s1.chip':'AUJOURD’HUI +★','s1.slota':'Le bypassing — le sprint','s1.slotb':'Discussion &amp; clôture',
     's1.foot':'The Learning Loop — Learn it. Keep it. · 3★ par pilier → DM Champion · 6★ → DM Master',
     's2.h1':'Contourner plutôt que démentir','s2.lede':'Répondre à une fausse information sans seulement la contredire',
-    'ag.1':'Intro','ag.2':'Thème','ag.3':'Exercice','ag.4':'À retenir',
+    'ag.1':'Intro','ag.v':'Vidéo','ag.2':'Thème','ag.3':'Exercice','ag.4':'À retenir',
+    'sv.kick':'2 — VIDÉO','sv.ph':'▶ Vidéo sur Facebook — code QR ou lien à droite','sv.h1':'Qu’est-ce que le bypassing ?','sv.lede':'Mini Philosophy explique la technique en 90 secondes — en anglais, sous-titré.','sv.fb':'La vidéo ne se lance pas ? Scanne le QR ou ouvre le lien :','sv.foot':'Vidéo : Mini Philosophy, «The Bypassing Technique» (Facebook, 1:29)',
+    'sb.kick':'2 — VIDÉO · EN BREF','sb.h1':'Le bypassing en quatre phrases','sb.w':'Quoi','sb.wt':'Ne pas contredire, ajouter du vrai.','sb.h':'Comment','sb.ht':'Fait vrai, même objet, sens inverse.','sb.q':'Quand','sb.qt':'Affirmations courtes, avant que l’avis soit fait.','sb.l':'Limite','sb.lt':'Que du vrai, dit ouvertement — pas de manipulation.','sb.foot':'La vidéo dit «ne pas fact-checker» — l’étude non : un fact-check détaillé reste efficace.',
+    's6.kick':'3 — EXERCICE','s6.h1':'Le bypassing convient-il ici ?','s6.cb':'EXEMPLE','s6.b':'«Le résultat de la votation a été truqué.»','s6.m1':'Formez des groupes de deux ou trois.','s6.m2':'<b>2 minutes :</b> y a-t-il quelque chose de vrai qui s’y oppose — ou faut-il un démenti ?','s6.m3':'<b>Une phrase</b> par groupe en plénière.',
+    's7.kick':'2 — THÈME · OÙ EST LA LIMITE','s7.h1':'Loyal ou esquive ?','s7.al':'EXEMPLE · UN VRAI SOUCI','s7.ah':'«Le loup tue nos moutons.»','s7.ap':'Ce n’est pas une rumeur. Répondre avec un autre avantage serait esquiver. D’abord reconnaître, ensuite discuter.','s7.cl':'EXEMPLE · UN FOND DE VÉRITÉ','s7.ch':'«Les initiatives n’aboutissent qu’avec des signatures falsifiées.»','s7.cp':'S’il y a des cas réels isolés, les reconnaître d’abord. Puis corriger la généralisation. Le bypassing seul ressemble à de l’enjolivement.','s7.punch':'Le bypassing ajoute une affirmation <b>vraie</b> à une <b>fausse</b>. La com’ fait disparaître un souci légitime.',
+    's11.r1':'<b>Intro</b> — slide QR, <a href="https://tigerraph.github.io/dm-quiz/?session=bypassing&amp;host=1">ouvrir la vue beamer</a>, jouer les 3 questions. L’app affiche les explications.','s11.r2':'<b>Vidéo</b> — reel depuis la slide (1:29, anglais). Bloqué ? QR ou lien. Puis la version en quatre phrases.','s11.r3':'<b>Thème</b> — expérience en direct (billets, lire en silence, 1–5 doigts), slide check, puis «où est la limite» comme information.','s11.r4':'<b>Exercice</b> — «résultat truqué» : 2′ en groupe, 3′ en plénière, <b>une</b> phrase par groupe. Débriefing oral : rien de vrai ne s’y oppose — rectifier en expliquant (qui compte, qui contrôle, recours).','s11.r5':'<b>À retenir</b> — kit, bottom line sur la Master Checklist, étoile Communication ★. Ne jamais couper. Puis tampon, la ronde.',
     's2.why':'<b>Pourquoi ce thème ?</b> Avant chaque votation circulent des affirmations fausses. Un «c’est faux» aide moins qu’on ne le pense. Il existe une deuxième voie — et une limite claire où elle devient déloyale.',
     's3.kick':'1 — INTRO','s3.h1':'Sortez vos téléphones','s3.lede':'Scannez le QR, entrez un nom — trois questions, tous en même temps.',
     's3.l1':'Participer — si le code QR fait des siennes','s3.l2':'Ouvrir la vue beamer →','s3.l2s':'Modération : lance le jeu et affiche questions, réponses, classement',
@@ -503,18 +534,6 @@
     's5.f2':'Dans des expériences, après des titres courts, il a <b>un peu</b> mieux marché qu’un bref démenti. Petit avantage, trouvé plusieurs fois.',
     's5.f3':'<b>Aucun</b> avantage si l’on s’est déjà fait un avis en lisant. Un fact-check détaillé reste efficace.',
     's5.foot':'Granados Samayoa &amp; Albarracín, Université de Pennsylvanie · Journal of Experimental Psychology: General, 2025',
-    's6.kick':'3 — EXERCICE · DISCUSSION','s6.h1':'Loyal ou esquive ?',
-    's6.q':'«Le bypassing ? C’est juste de la com’.»',
-    's6.ca':'CAS A · EXEMPLE','s6.a':'«Le loup tue nos moutons.»',
-    's6.cb':'CAS B · EXEMPLE','s6.b':'«Le résultat de la votation a été truqué.»',
-    's6.cc':'CAS C · EXEMPLE','s6.c':'«Les initiatives n’aboutissent qu’avec des signatures falsifiées.»',
-    's6.groups':'Formez des groupes de deux ou trois, chaque groupe prend un cas',
-    's6.task':'<b>2′</b> en groupe : bypassing ok, démenti nécessaire — ou le bypassing serait-il ici une esquive ?<br><b>3′</b> en plénière : <b>une</b> phrase par groupe.',
-    's7.kick':'3 — EXERCICE · LA RÉSOLUTION','s7.h1':'Quand le bypassing ne convient pas',
-    's7.ah':'A · Un vrai souci','s7.ap':'Des moutons tués, ce n’est pas une rumeur. Répondre avec autre chose, c’est esquiver. D’abord reconnaître, ensuite discuter.',
-    's7.bh':'B · Rien de vrai à opposer','s7.bp':'Face à «truqué», il n’y a pas de contre-information adaptée. Il faut un démenti qui explique : qui compte, qui contrôle, comment déposer un recours.',
-    's7.ch':'C · Un fond de vérité','s7.cp':'S’il y a des cas réels isolés, les reconnaître d’abord. Puis corriger la généralisation. Le bypassing seul ressemble ici à de l’enjolivement.',
-    's7.punch':'Le bypassing ajoute une affirmation <b>vraie</b> à une <b>fausse</b>. La com’ fait disparaître un souci légitime.',
     's8.star':'★ Récupère ton étoile','s8.h1':'«Contredire les fausses infos ? Ça ne sert à rien.»',
     's8.lede':'Ton kit pour exactement cette discussion :',
     's8.c1h':'D’abord vérifier','s8.c1p':'Est-ce vraiment faux ? S’il y a un fond de vérité, le reconnaître d’abord.',
@@ -526,11 +545,6 @@
     's10.cap':'Slides, quiz &amp; étoile — tout pour y revenir',
     's11.qr':'La régie sur le téléphone','s11.kick':'POUR LA MODÉRATION','s11.h1':'Régie',
     's11.r0t':'avant','s11.r0':'<a href="https://tigerraph.github.io/dm-quiz/content/zettel-bypassing.html?lang=fr">Imprimer</a> et découper les billets (A à gauche, B à droite). Sans billets : lire A à la moitié gauche pendant que la droite ferme les yeux — puis l’inverse avec B.',
-    's11.r1':'<b>Intro</b> — slide QR, <a href="https://tigerraph.github.io/dm-quiz/?session=bypassing&amp;host=1">ouvrir la vue beamer</a>, jouer les 3 questions. L’app affiche les explications.',
-    's11.r2':'<b>Thème</b> — expérience en direct : montrer le titre, billet A à gauche, billet B à droite, doigts 1–5. Puis la slide check : lire les deux billets, les trois constats. La salle est trop petite pour une preuve — si le résultat est «faux», c’est la transition.',
-    's11.r3':'<b>Exercice</b> — un cas par groupe : 2′ en groupe, puis 3′ en plénière, <b>une</b> phrase par groupe. Couper net après 2′. <b>Ensuite seulement</b>, la résolution.',
-    's11.r4':'<b>À retenir</b> — parcourir le kit, bottom line sur la Master Checklist, remettre l’étoile Communication ★. Ne jamais couper.',
-    's11.r5':'<b>Tampon</b> — puis transition vers la ronde.',
     's11.foot':'Détails : docs/runbook-bypassing.md · Pour y revenir :'
   },
   it: {
@@ -539,7 +553,12 @@
     's1.slotbt':'2 · Il giro','s10b.title':'Il giro','s1.chip':'OGGI +★','s1.slota':'Il bypassing — lo sprint','s1.slotb':'Discussione &amp; chiusura',
     's1.foot':'The Learning Loop — Learn it. Keep it. · 3★ per pilastro → DM Champion · 6★ → DM Master',
     's2.h1':'Aggirare invece di smentire','s2.lede':'Rispondere a una notizia falsa senza limitarsi a contraddirla',
-    'ag.1':'Intro','ag.2':'Tema','ag.3':'Esercizio','ag.4':'Da ricordare',
+    'ag.1':'Intro','ag.v':'Video','ag.2':'Tema','ag.3':'Esercizio','ag.4':'Da ricordare',
+    'sv.kick':'2 — VIDEO','sv.ph':'▶ Video su Facebook — codice QR o link a destra','sv.h1':'Che cos’è il bypassing?','sv.lede':'Mini Philosophy spiega la tecnica in 90 secondi — in inglese, con sottotitoli.','sv.fb':'Il video non parte? Scansiona il QR o apri il link:','sv.foot':'Video: Mini Philosophy, «The Bypassing Technique» (Facebook, 1:29)',
+    'sb.kick':'2 — VIDEO · IN BREVE','sb.h1':'Il bypassing in quattro frasi','sb.w':'Cosa','sb.wt':'Non contraddire, aggiungere qualcosa di vero.','sb.h':'Come','sb.ht':'Fatto vero, stesso oggetto, direzione opposta.','sb.q':'Quando','sb.qt':'Affermazioni brevi, prima che l’opinione sia fatta.','sb.l':'Limite','sb.lt':'Solo fatti veri, detti apertamente — niente manipolazione.','sb.foot':'Il video dice «non fare fact-checking» — lo studio no: un fact-check dettagliato resta efficace.',
+    's6.kick':'3 — ESERCIZIO','s6.h1':'Il bypassing va bene qui?','s6.cb':'ESEMPIO','s6.b':'«Il risultato della votazione è stato falsificato.»','s6.m1':'Formate gruppi da due o tre.','s6.m2':'<b>2 minuti:</b> c’è qualcosa di vero che si oppone — o serve una smentita?','s6.m3':'<b>Una frase</b> per gruppo in plenaria.',
+    's7.kick':'2 — TEMA · DOV’È IL LIMITE','s7.h1':'Corretto o scappatoia?','s7.al':'ESEMPIO · UNA PREOCCUPAZIONE VERA','s7.ah':'«Il lupo sbrana le nostre pecore.»','s7.ap':'Non è una voce. Rispondere con un altro vantaggio sarebbe scappare. Prima riconoscere, poi parlare.','s7.cl':'ESEMPIO · UN FONDO DI VERITÀ','s7.ch':'«Le iniziative riescono solo con firme falsificate.»','s7.cp':'Se ci sono singoli casi veri, prima riconoscerli. Poi correggere la generalizzazione. Il solo bypassing sembra un abbellimento.','s7.punch':'Il bypassing aggiunge un’affermazione <b>vera</b> a una <b>falsa</b>. Lo spin fa sparire una preoccupazione legittima.',
+    's11.r1':'<b>Intro</b> — slide QR, <a href="https://tigerraph.github.io/dm-quiz/?session=bypassing&amp;host=1">apri la vista beamer</a>, gioca le 3 domande. Le spiegazioni le mostra l’app.','s11.r2':'<b>Video</b> — reel dalla slide (1:29, inglese). Bloccato? QR o link. Poi la versione in quattro frasi.','s11.r3':'<b>Tema</b> — esperimento dal vivo (biglietti, leggere in silenzio, 1–5 dita), slide check, poi «dov’è il limite» come informazione.','s11.r4':'<b>Esercizio</b> — «risultato falsificato»: 2′ in gruppo, 3′ in plenaria, <b>una</b> frase per gruppo. Debriefing a voce: niente di vero si oppone — rettificare spiegando (chi conta, chi controlla, ricorso).','s11.r5':'<b>Da ricordare</b> — kit, bottom line sulla Master Checklist, stella Communication ★. Mai tagliare. Poi cuscinetto, il giro.',
     's2.why':'<b>Perché questo tema?</b> Prima di ogni votazione circolano affermazioni false. Un «non è vero» aiuta meno di quanto si pensi. C’è una seconda via — e un limite chiaro oltre il quale diventa scorretta.',
     's3.kick':'1 — INTRO','s3.h1':'Telefoni alla mano','s3.lede':'Scansiona il QR, inserisci un nome — tre domande, tutti insieme.',
     's3.l1':'Partecipa — se il codice QR fa i capricci','s3.l2':'Apri la vista beamer →','s3.l2s':'Moderazione: avvia il gioco e mostra domande, risposte, classifica',
@@ -558,18 +577,6 @@
     's5.f2':'Negli esperimenti, dopo titoli brevi, ha funzionato <b>un po’</b> meglio di una breve smentita. Piccolo vantaggio, trovato più volte.',
     's5.f3':'<b>Nessun</b> vantaggio se ci si è già fatti un giudizio leggendo. Un fact-check dettagliato resta efficace.',
     's5.foot':'Granados Samayoa &amp; Albarracín, Università della Pennsylvania · Journal of Experimental Psychology: General, 2025',
-    's6.kick':'3 — ESERCIZIO · DISCUSSIONE','s6.h1':'Corretto o scappatoia?',
-    's6.q':'«Il bypassing? È solo spin.»',
-    's6.ca':'CASO A · ESEMPIO','s6.a':'«Il lupo sbrana le nostre pecore.»',
-    's6.cb':'CASO B · ESEMPIO','s6.b':'«Il risultato della votazione è stato falsificato.»',
-    's6.cc':'CASO C · ESEMPIO','s6.c':'«Le iniziative riescono solo con firme falsificate.»',
-    's6.groups':'Formate gruppi da due o tre, ogni gruppo prende un caso',
-    's6.task':'<b>2′</b> in gruppo: bypassing ok, smentita necessaria — o qui il bypassing sarebbe una scappatoia?<br><b>3′</b> in plenaria: <b>una</b> frase per gruppo.',
-    's7.kick':'3 — ESERCIZIO · LA SOLUZIONE','s7.h1':'Quando il bypassing non va bene',
-    's7.ah':'A · Una preoccupazione vera','s7.ap':'Le pecore sbranate non sono una voce. Rispondere con altro è scappare. Prima riconoscere, poi parlare.',
-    's7.bh':'B · Niente di vero da opporre','s7.bp':'A «falsificato» non c’è una controinformazione adatta. Serve una smentita che spieghi: chi conta, chi controlla, come fare ricorso.',
-    's7.ch':'C · Un fondo di verità','s7.cp':'Se ci sono singoli casi veri, prima riconoscerli. Poi correggere la generalizzazione. Il solo bypassing qui sembra un abbellimento.',
-    's7.punch':'Il bypassing aggiunge un’affermazione <b>vera</b> a una <b>falsa</b>. Lo spin fa sparire una preoccupazione legittima.',
     's8.star':'★ Prenditi la stella','s8.h1':'«Contraddire le notizie false? Tanto non serve a niente.»',
     's8.lede':'Il tuo kit proprio per quella discussione:',
     's8.c1h':'Prima verificare','s8.c1p':'È davvero falso? Se c’è un fondo di verità, riconoscerlo per primo.',
@@ -581,11 +588,6 @@
     's10.cap':'Slide, quiz e stella — tutto da rivedere',
     's11.qr':'La regia sul telefono','s11.kick':'PER LA MODERAZIONE','s11.h1':'Regia',
     's11.r0t':'prima','s11.r0':'<a href="https://tigerraph.github.io/dm-quiz/content/zettel-bypassing.html?lang=it">Stampare</a> e ritagliare i biglietti (A a sinistra, B a destra). Senza biglietti: leggere A alla metà sinistra mentre la destra chiude gli occhi — poi il contrario con B.',
-    's11.r1':'<b>Intro</b> — slide QR, <a href="https://tigerraph.github.io/dm-quiz/?session=bypassing&amp;host=1">apri la vista beamer</a>, gioca le 3 domande. Le spiegazioni le mostra l’app.',
-    's11.r2':'<b>Tema</b> — esperimento dal vivo: mostrare il titolo, biglietto A a sinistra, biglietto B a destra, dita 1–5. Poi la slide check: leggere entrambi i biglietti, i tre risultati. La sala è troppo piccola per una prova — se esce «sbagliato», è il passaggio.',
-    's11.r3':'<b>Esercizio</b> — un caso per gruppo: 2′ in gruppo, poi 3′ in plenaria, <b>una</b> frase per gruppo. Interrompere dopo 2′. <b>Solo dopo</b> mostrare la soluzione.',
-    's11.r4':'<b>Da ricordare</b> — percorrere il kit, bottom line sulla Master Checklist, assegnare la stella Communication ★. Mai tagliare.',
-    's11.r5':'<b>Cuscinetto</b> — poi passaggio al giro.',
     's11.foot':'Dettagli: docs/runbook-bypassing.md · Da rivedere:'
   }};
 
@@ -607,6 +609,7 @@
   make('qr', 'https://tigerraph.github.io/dm-quiz/?session=bypassing', 8);
   make('qr-star', 'https://tigerraph.github.io/dm-quiz/?session=bypassing&view=mydm', 3);
   make('qr-content', contentUrl, 5);
+  make('qr-video', 'https://www.facebook.com/reel/1160919765939031/', 3);
   /* Timer auf der Übungsfolie: die Folie bleibt sichtbar, die Aufgabe steht daneben.
      Vorher ersetzte eine eigene Timer-Seite die Folie, und die Gruppe sah die Aufgabe
      nicht mehr. Der Ton wird beim Klick entsperrt, sonst bleibt er stumm. */
