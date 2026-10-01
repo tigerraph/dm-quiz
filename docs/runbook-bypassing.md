@@ -24,6 +24,8 @@ auf PubMed Central.
 - [ ] **Zettel für das Live-Experiment**: [`content/zettel-bypassing.html`](../content/zettel-bypassing.html)
       drucken (A4, ein Blatt = 5 × A + 5 × B, `?lang=en|fr|it` für die anderen Sprachen)
       und zuschneiden. A für die linke Raumhälfte, B für die rechte.
+      A und B sind keine Gegensätze zueinander — es sind zwei Antworten auf
+      dieselbe Behauptung. Auch im Admin unter «Topic materials».
 - [ ] Post-its + Stifte bereit (für die Bottom Line / Master Checklist)
 - [ ] Master Checklist und Sterne-Tafel dabei (Communication-Stern ★ wird heute vergeben)
 
@@ -35,7 +37,7 @@ auf PubMed Central.
 | 15:00 (5′) | **Einstieg** | 3 QR | «Handy raus.» QR scannen, Beamer-Ansicht per Klick öffnen, 3 Fragen spielen. Erklärungen zeigt die App — nicht doppelt erklären. |
 | 15:05 (5′) | **Video** | 4 Video, 5 Kurzfassung | Reel von Mini Philosophy (Facebook, 1:29, Englisch mit Untertiteln) über das offizielle Embed abspielen; blockiert → QR oder Link auf der Folie. Dann «Bypassing in vier Sätzen». Achtung: Das Video sagt «don't fact check» — die Studie sagt das nicht; die Fussnote auf Folie 5 hält das fest. |
 | 15:10 (7′) | **Thema** | 6 Live-Experiment, 7 Check, 8 Grenze | Live-Experiment (die Folie erklärt dem Raum die drei Schritte), Check-Folie, dann «Wo die Grenze liegt» als reine Info — kein Gruppenauftrag (Rafa, 01.10.2026). |
-| 15:17 (5′) | **Übung** | 9 Fall | Ein Fall für alle: «Das Abstimmungsresultat wurde gefälscht.» **2′** in Gruppen, dann **3′** Runde: pro Gruppe **ein** Satz. **Nach 2′ hart unterbrechen.** Auflösung mündlich (siehe unten). |
+| 15:17 (5′) | **Diskussion** | 9 Offene Runde | Keine strukturierte Übung (Rafa, 01.10.2026): offene Runde. Anstösse auf der Folie — Wo ging ein Dementi nach hinten los? Wann wirkt Bypassing manipulativ? Würdet ihr es nutzen, und wo nicht? |
 | 15:22 (5′) | **Take-away** | 10 Kit | Kit laut lesen lassen. Bottom Line auf die Master Checklist, Communication-Stern ★ vergeben. Nie streichen. Danach Puffer. |
 | danach | **Die Runde** | 9 | Nur die Titelfolie. Einstiegsfrage, falls es stockt: «Wann hast du zuletzt versucht, jemanden zu korrigieren? Wie wäre es mit Bypassing gelaufen?» |
 | Schluss | Abspann | 10 | Merci-Folie: QR auf die Teilnehmerseite (Folien, Quiz, Stern). |
@@ -56,13 +58,13 @@ Personen, um den kleinen Unterschied sicher zu sehen.
 Die Übung ist die Ethik-Frage. Die Auflösung (Folie 7) kommt bewusst **nach** der
 Runde, damit der Raum die Grenze selbst findet.
 
-## Die Übung (Fall B, ~Minute 17) — ein **Beispiel**, kein Zitat
+## Die offene Runde (~Minute 17)
 
-**«Das Abstimmungsresultat wurde gefälscht.»** Zielantwort (nicht vorsagen,
-hinführen): Hier passt Bypassing nicht. Es gibt keine natürliche wahre
-Gegeninformation — das Paper nennt dafür als Beispiel die «gefälschte Mondlandung»
-(S. 21). Etwas anderes Gutes zu sagen, wäre Ausweichen. Es braucht ein klares,
-erklärendes Dementi: wer zählt, wer kontrolliert, wie man Beschwerde führt.
+Keine Gruppenaufgabe. Die drei Fragen auf der Folie sind Anstösse, nicht alle nötig.
+Falls jemand «das Abstimmungsresultat wurde gefälscht» o. ä. bringt: Hier gibt es
+keine natürliche wahre Gegeninformation — das Paper nennt dafür als Beispiel die
+«gefälschte Mondlandung» (S. 21). Dann braucht es ein klares, erklärendes Dementi:
+wer zählt, wer kontrolliert, wie man Beschwerde führt.
 
 Die Folie «Wo die Grenze liegt» (vorher, im Thema-Teil) zeigt die beiden anderen
 Grenzfälle als Info: **Wolf** (echte Sorge → erst anerkennen) und **Unterschriften**
