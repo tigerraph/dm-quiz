@@ -153,7 +153,11 @@
     function render(){
       var slides = BASE + 'slides/' + id + '.html' + qs(lang);
       var regie = BASE + 'content/regie-' + id + '.html' + qs(lang);
-      var games = (s.practice || []).map(function(x){ return a('../content/' + x.file + qs(lang), esc(pick(x.title, lang)), x.what ? esc(pick(x.what, lang)) : 'Game for the exercise block'); }).join('');
+      var games = (s.practice || []).map(function(x){
+        // x.pdf: a printable PDF per language next to the HTML (slips, 01.10.2026)
+        var what = (x.what ? esc(pick(x.what, lang)) : 'Game for the exercise block') +
+          (x.pdf ? ' · <a href="' + esc(pdf(x.pdf, lang)) + '"' + draft + ' target="_blank" rel="noopener">PDF</a>' : '');
+        return a('../content/' + x.file + qs(lang), esc(pick(x.title, lang)), what); }).join('');
       el.innerHTML =
         '<h2>' + esc(pick(s.title, lang) || id) + (s.draft ? '<span class="badge draft">Draft</span>' : '') + '</h2>' +
         '<div class="meta">' + esc(id) + ' · ' + it.pack.questions.length + ' questions · ' + langs.map(function(l){ return l.toUpperCase(); }).join(' / ') + '</div>' +

@@ -56,7 +56,8 @@
           "en": "For the live experiment: one A4 = 5 × A + 5 × B",
           "fr": "Pour l’expérience en direct : un A4 = 5 × A + 5 × B",
           "it": "Per l’esperimento dal vivo: un A4 = 5 × A + 5 × B"
-        }
+        },
+        "pdf": "zettel-bypassing"
       }
     ]
   }
