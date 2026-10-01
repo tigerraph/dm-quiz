@@ -455,7 +455,7 @@ const I18N = {
   waitingSession:"The session hasn't started yet — this page switches by itself.",
   claimTitle:"Your star is ready", claimBtn:"Collect my star ★",
   claimedTitle:"Star collected!",
-  claimScan:"Scan to collect your star", awardStar:"Award star ★",
+  claimScan:"Scan to collect your star", awardStar:"Award star ★", awardLater:"The star ★ comes at the end of the presentation, from the take-away slide.", awardKicker:"Take-away · Bottom line ★", awardSub:"Press to open the star for everyone in this session. Phones switch by themselves.",
   starsCount:n=>`${n} ★ collected`,
   adminOnly:"Only admins can add stars. Log in as an admin in My DM, then try again.", adminView:"Admin view",
   addStar:"Add a star", mWho:"Person", mPillar:"Pillar",
@@ -516,7 +516,7 @@ const I18N = {
   waitingSession:"Die Session hat noch nicht begonnen — diese Seite wechselt von selbst.",
   claimTitle:"Dein Stern ist bereit", claimBtn:"Stern abholen ★",
   claimedTitle:"Stern geholt!",
-  claimScan:"Scannen und Stern abholen", awardStar:"Stern vergeben ★",
+  claimScan:"Scannen und Stern abholen", awardStar:"Stern vergeben ★", awardLater:"Den Stern ★ gibt es am Ende der Präsentation, auf der Take-away-Folie.", awardKicker:"Take-away · Bottom Line ★", awardSub:"Drücken, um den Stern für alle in dieser Session freizugeben. Die Handys wechseln von selbst.",
   starsCount:n=>`${n} ★ abgeholt`,
   adminOnly:"Sterne vergeben nur Admins. Melde dich in My DM als Admin an und versuche es nochmals.", adminView:"Admin-Ansicht",
   addStar:"Stern hinzufügen", mWho:"Person", mPillar:"Pfeiler",
@@ -581,7 +581,7 @@ const I18N = {
   waitingSession:"La session n'a pas encore commenc\u00e9 \u2014 cette page changera toute seule.",
   claimTitle:"Ton \u00e9toile t'attend", claimBtn:"R\u00e9cup\u00e9rer mon \u00e9toile \u2605",
   claimedTitle:"\u00c9toile r\u00e9cup\u00e9r\u00e9e\u00a0!",
-  claimScan:"Scanne pour r\u00e9cup\u00e9rer ton \u00e9toile", awardStar:"Attribuer l'\u00e9toile \u2605",
+  claimScan:"Scanne pour r\u00e9cup\u00e9rer ton \u00e9toile", awardStar:"Attribuer l'\u00e9toile \u2605", awardLater:"L'\u00e9toile \u2605 vient \u00e0 la fin de la pr\u00e9sentation, depuis la slide \u00ab\u00a0\u00c0 retenir\u00a0\u00bb.", awardKicker:"\u00c0 retenir \u00b7 Bottom line \u2605", awardSub:"Appuie pour ouvrir l'\u00e9toile \u00e0 toute la session. Les t\u00e9l\u00e9phones basculent tout seuls.",
   starsCount:n=>`${n} \u2605 r\u00e9cup\u00e9r\u00e9es`,
   adminOnly:"Seuls les admins peuvent attribuer des \u00e9toiles. Connecte-toi comme admin dans My DM, puis r\u00e9essaie.", adminView:"Vue admin",
   addStar:"Ajouter une \u00e9toile", mWho:"Personne", mPillar:"Pilier",
@@ -648,7 +648,7 @@ const I18N = {
   waitingSession:"La sessione non \u00e8 ancora iniziata \u2014 questa pagina cambia da sola.",
   claimTitle:"La tua stella \u00e8 pronta", claimBtn:"Prendi la tua stella \u2605",
   claimedTitle:"Stella presa!",
-  claimScan:"Scansiona e prendi la tua stella", awardStar:"Assegna la stella \u2605",
+  claimScan:"Scansiona e prendi la tua stella", awardStar:"Assegna la stella \u2605", awardLater:"La stella \u2605 arriva alla fine della presentazione, dalla slide finale.", awardKicker:"Da ricordare \u00b7 Bottom line \u2605", awardSub:"Premi per aprire la stella a tutta la sessione. I telefoni cambiano da soli.",
   starsCount:n=>`${n} \u2605 ${n===1?"raccolta":"raccolte"}`,
   adminOnly:"Solo gli admin possono assegnare stelle. Accedi come admin in My DM e riprova.", adminView:"Vista admin",
   addStar:"Aggiungi una stella", mWho:"Persona", mPillar:"Pilastro",
@@ -690,6 +690,9 @@ const CHAMPION_PER_PILLAR = 3, MASTER_PER_PILLAR = 6;
 const params  = new URLSearchParams(location.search);
 const SESSION = params.get("session") || "";
 const HOST    = params.get("host") === "1";
+/* ?award=1 on the host view: the star is awarded from the take-away slide, not at the
+   podium (Rafa, 01.10.2026). The host lands on a one-button «Award star» screen. */
+let   AWARD   = params.get("award") === "1";
 const DEMO    = params.get("demo") === "1";
 /* ?view=mydm öffnet den Sterne-Pass direkt, auch während eine Session läuft.
    Die Spezifikation sieht einen QR für drei Zustände vor — solange eine Runde
@@ -1399,6 +1402,7 @@ async function tickHost(){
 function renderHost(){
   stopTimer();
   const p = liveState.phase;
+  if(AWARD && p!=="stars" && p!=="question" && p!=="reveal") return renderHostAward();
   if(p==="question") renderHostQuestion();
   else if(p==="reveal") renderHostReveal();
   else if(p==="done") renderHostDone();
@@ -1606,24 +1610,43 @@ function renderHostDone(){
       <p class="joinurl">${esc(joinUrl())}</p>
     </div></div>
   </div>
+  <p class="scanlbl" style="text-align:center;margin-top:10px">${esc(t().awardLater)}</p>
   <div class="hostbar">
-    <button class="btn" id="hstar">${esc(t().awardStar)}</button>
-    <button class="btn ghost" id="hagain">${esc(t().restart)}</button>
+    <button class="btn ghost" id="hagain" data-noremote="1">${esc(t().restart)}</button>
   </div>
   <div class="hostfoot">${esc(CFG.build||"")}</div>`;
   if(!renderHostDone.fx){ renderHostDone.fx=true; A.fanfare(); }
-  // Award star is the primary button, so the presenter remote's next press
-  // opens the claim window — the Learning Loop's Bottom-line beat.
-  document.getElementById("hstar").onclick = async ()=>{
-    A.tap(); renderHostDone.fx=false;
-    sessionStars = [];
-    await pushState("stars", liveState.q_index);
-    renderHost();
-  };
+  // No award button here any more: the star comes at the end of the presentation,
+  // from the take-away slide (?award=1). The remote must not restart the round
+  // by accident, so «New round» is excluded from Space/Enter (data-noremote).
   document.getElementById("hagain").onclick = async ()=>{
     A.tap(); renderHostDone.fx=false;
     answers = [];                       // the new round starts from zero
     await pushState("lobby", -1, curRound()+1);
+    renderHost();
+  };
+}
+
+/* Award screen: opened from the take-away slide or the Regie page with ?award=1.
+   One primary button, so the presenter remote opens the claim window. */
+function renderHostAward(){
+  phase="hostaward";
+  app.innerHTML = `<div class="hostq">
+    <div class="qhead">${wordmarkHtml()}<span class="kicker">${esc(t().awardKicker)}</span></div>
+    <h1 style="margin-top:24px">${esc(sessionTitle())}</h1>
+    <p class="scanlbl">${esc(t().awardSub)}</p>
+  </div>
+  <div class="hostbar">
+    <button class="btn" id="hstar">${esc(t().awardStar)}</button>
+  </div>
+  <div class="hostfoot">${esc(CFG.build||"")}</div>`;
+  document.getElementById("hstar").onclick = async ()=>{
+    A.tap();
+    sessionStars = [];
+    const ok = await pushState("stars", liveState ? liveState.q_index : -1);
+    if(!ok) return;
+    AWARD = false;                                  // «New round» later must land in the lobby
+    try{ const u = new URL(location.href); u.searchParams.delete("award"); history.replaceState(null, "", u); }catch(e){}
     renderHost();
   };
 }
@@ -2444,7 +2467,7 @@ document.addEventListener("keydown", e=>{
     const b = app.querySelectorAll(".tile")[+e.key-1];
     if(b && !b.disabled) b.click();
   } else if(HOST && (e.key==="Enter" || e.key===" ")){
-    const b = document.querySelector(".hostbar .btn");
+    const b = document.querySelector(".hostbar .btn:not([data-noremote])");
     if(b && !b.disabled){ e.preventDefault(); b.click(); }
   } else if(phase==="reveal" && !LIVE && (e.key==="Enter" || e.key===" ")){
     e.preventDefault();

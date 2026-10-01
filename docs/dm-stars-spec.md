@@ -63,9 +63,13 @@ account). Merging is computed client-side; workshop scale makes that trivial.
 
 ## Star award flow
 
-- The host view gets an **"Award star ★"** button (available from the last
-  question's reveal onward). Pressing it appends a `dm_state` row with phase
-  `stars`. This is the Bottom-line beat.
+- **The star is awarded at the end of the presentation, not after the game**
+  (Rafa, 01.10.2026). The podium has no award button; it says the star comes
+  from the take-away slide. The take-away slide and the Regie page link the host
+  view with `&award=1`, which shows one **"Award star ★"** button. Pressing it
+  appends a `dm_state` row with phase `stars`. This is the Bottom-line beat.
+  «New round» on the podium is excluded from the presenter remote, so a stray
+  press cannot wipe the leaderboard.
 - Every phone in the session — and anyone scanning the last-slide QR — sees
   the claim screen: pillar, topic, big **"Collect my star"** button.
 - Claiming inserts one `dm_stars` row; `unique (session, token)` stops
