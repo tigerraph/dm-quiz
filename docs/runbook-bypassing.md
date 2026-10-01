@@ -4,6 +4,7 @@ Moderationsleitfaden für das Special Topic im 5/10/5/5-Format, danach die Runde
 Pillar: **Communication & Social Media**.
 Folien: [`slides/bypassing.pdf`](../slides/bypassing.pdf) ·
 Teilnehmerseite: [`content/bypassing.html`](../content/bypassing.html) ·
+Video: [Mini Philosophy, «The Bypassing Technique»](https://www.facebook.com/reel/1160919765939031/) (Facebook-Reel, 1:29, Englisch; nur verlinkt/eingebettet, nie heruntergeladen) ·
 Regie fürs Handy: [`content/regie-bypassing.html`](../content/regie-bypassing.html) ·
 Kein-Folien-Fallback: [`slides/topic-card-bypassing.pdf`](../slides/topic-card-bypassing.pdf)
 
@@ -32,17 +33,17 @@ auf PubMed Central.
 |---|---|---|---|
 | — | Ankommen | 1 DM-Hauptfolie | Pillar zeigen: heute gibt es den **Communication-Stern**. Zwei Slots: Sprint (30′), dann die Runde. |
 | 15:00 (5′) | **Einstieg** | 3 QR | «Handy raus.» QR scannen, Beamer-Ansicht per Klick öffnen, 3 Fragen spielen. Erklärungen zeigt die App — nicht doppelt erklären. |
-| 15:05 (10′) | **Thema** | 4 Live-Experiment, 5 Check | Kein Video. Schlagzeile zeigen. Linke Hälfte bekommt Zettel A, rechte Hälfte Zettel B — nur lesen, nicht zeigen. Alle gleichzeitig 1–5 Finger: «Wie gern würdest du Leitungswasser statt Flaschenwasser trinken?» Grob schätzen, welche Hälfte höher liegt (hier heisst mehr Finger: Bypassing hat gewirkt). Dann Folie 5: beide Zettel vorlesen, die drei Befunde. |
-| 15:15 (5′) | **Übung** | 6 Fälle, 7 Auflösung | Je Gruppe ein Fall (A/B/C). **2′** in der Gruppe, dann **3′** Runde: pro Gruppe **ein** Satz — Bypassing ok, Dementi nötig, oder Ausweichen? **Nach 2′ hart unterbrechen** (Timer auf der Folie). Folie 7 erst **nach** der Runde zeigen. |
-| 15:20 (5′) | **Take-away** | 8 Kit | Die vier Karten sind Antworten auf «Falschmeldungen widersprechen bringt eh nichts». Laut lesen lassen. Bottom Line auf die Master Checklist, Communication-Stern ★ vergeben. Nie streichen. |
-| 15:25 (5′) | Puffer | — | Überzieher abfedern, dann Folie 9: Übergang in die Runde. |
+| 15:05 (5′) | **Video** | 4 Video, 5 Kurzfassung | Reel von Mini Philosophy (Facebook, 1:29, Englisch mit Untertiteln) über das offizielle Embed abspielen; blockiert → QR oder Link auf der Folie. Dann «Bypassing in vier Sätzen». Achtung: Das Video sagt «don't fact check» — die Studie sagt das nicht; die Fussnote auf Folie 5 hält das fest. |
+| 15:10 (7′) | **Thema** | 6 Live-Experiment, 7 Check, 8 Grenze | Live-Experiment (die Folie erklärt dem Raum die drei Schritte), Check-Folie, dann «Wo die Grenze liegt» als reine Info — kein Gruppenauftrag (Rafa, 01.10.2026). |
+| 15:17 (5′) | **Übung** | 9 Fall | Ein Fall für alle: «Das Abstimmungsresultat wurde gefälscht.» **2′** in Gruppen, dann **3′** Runde: pro Gruppe **ein** Satz. **Nach 2′ hart unterbrechen.** Auflösung mündlich (siehe unten). |
+| 15:22 (5′) | **Take-away** | 10 Kit | Kit laut lesen lassen. Bottom Line auf die Master Checklist, Communication-Stern ★ vergeben. Nie streichen. Danach Puffer. |
 | danach | **Die Runde** | 9 | Nur die Titelfolie. Einstiegsfrage, falls es stockt: «Wann hast du zuletzt versucht, jemanden zu korrigieren? Wie wäre es mit Bypassing gelaufen?» |
 | Schluss | Abspann | 10 | Merci-Folie: QR auf die Teilnehmerseite (Folien, Quiz, Stern). |
 
 ## Die Dramaturgie
 
-Das Live-Experiment ersetzt das Video: Die Leute erleben den Mechanismus, bevor
-er erklärt wird. Das Paper testete mit einem **erfundenen** Produkt («TSF»), damit
+Ablauf: Spiel → Video → Präsentation → eine Übung (Rafa, 01.10.2026). Im
+Live-Experiment erleben die Leute den Mechanismus selbst. Das Paper testete mit einem **erfundenen** Produkt («TSF»), damit
 niemand schon eine Meinung hat. Wir nehmen ein Alltagsbeispiel, das sofort klar
 ist: «Leitungswasser ist ungesund» ist falsch, und die Bypassing-Antwort (Preis,
 keine Plastikflasche) stimmt, ohne der Behauptung zu widersprechen. Das Beispiel
@@ -55,22 +56,21 @@ Personen, um den kleinen Unterschied sicher zu sehen.
 Die Übung ist die Ethik-Frage. Die Auflösung (Folie 7) kommt bewusst **nach** der
 Runde, damit der Raum die Grenze selbst findet.
 
-## Die Fälle (Übung, ~Minute 15) — alle drei sind **Beispiele**, keine Zitate
+## Die Übung (Fall B, ~Minute 17) — ein **Beispiel**, kein Zitat
 
-- **A «Der Wolf reisst unsere Schafe.»** Das ist keine Falschmeldung. Wer mit
-  einem anderen Vorteil des Wolfs antwortet, weicht einer echten Sorge aus.
-  Bypassing ist für falsche Behauptungen gedacht, nicht um berechtigte Einwände
-  zu überspielen.
-- **B «Das Abstimmungsresultat wurde gefälscht.»** Es gibt keine natürliche wahre
-  Gegeninformation. Das Paper nennt dafür als Beispiel die «gefälschte
-  Mondlandung» (S. 21). Hier braucht es ein klares, erklärendes Dementi: wer
-  zählt, wer kontrolliert, wie man Beschwerde führt.
-- **C «Initiativen kommen nur mit gefälschten Unterschriften zustande.»**
-  Pauschale Verallgemeinerung. Gibt es einzelne echte Fälle, zuerst anerkennen,
-  dann die Verallgemeinerung korrigieren. Reines Bypassing wirkt wie Schönreden.
+**«Das Abstimmungsresultat wurde gefälscht.»** Zielantwort (nicht vorsagen,
+hinführen): Hier passt Bypassing nicht. Es gibt keine natürliche wahre
+Gegeninformation — das Paper nennt dafür als Beispiel die «gefälschte Mondlandung»
+(S. 21). Etwas anderes Gutes zu sagen, wäre Ausweichen. Es braucht ein klares,
+erklärendes Dementi: wer zählt, wer kontrolliert, wie man Beschwerde führt.
 
-Zielsatz (nicht vorsagen, hinführen): Bypassing **ergänzt** eine falsche
-Behauptung mit einer wahren. Spin lässt eine berechtigte Sorge verschwinden.
+Die Folie «Wo die Grenze liegt» (vorher, im Thema-Teil) zeigt die beiden anderen
+Grenzfälle als Info: **Wolf** (echte Sorge → erst anerkennen) und **Unterschriften**
+(wahrer Kern → erst anerkennen, dann die Verallgemeinerung korrigieren). Beide sind
+Beispiele, keine Zitate.
+
+Zielsatz: Bypassing **ergänzt** eine falsche Behauptung mit einer wahren. Spin
+lässt eine berechtigte Sorge verschwinden.
 
 ## Fachliche Sicherungen (falls Rückfragen kommen)
 
@@ -103,7 +103,7 @@ Nur Aussagen, die so im Paper stehen (Seiten im Autorenmanuskript):
 - **Keine Zettel dabei**: A laut der linken Hälfte vorlesen, während die rechte
   die Augen schliesst — dann umgekehrt B für die rechte Hälfte, die linke schliesst
   die Augen. Danach wie gewohnt 1–5 Finger.
-- **Zeit läuft davon**: Übung auf zwei Fälle kürzen (A und B).
+- **Zeit läuft davon**: die Kurzfassung (Folie 5) nur zeigen, nicht vorlesen.
   Take-away nie streichen — das ist der Block, der bleibt.
 - **Gar keine Folien / kein Beamer**: die ausgefüllte Topic Card verwenden
   ([`slides/topic-card-bypassing.pdf`](../slides/topic-card-bypassing.pdf));
