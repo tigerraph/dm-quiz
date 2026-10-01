@@ -20,9 +20,9 @@ auf PubMed Central.
 - [ ] QR-Code auf Folie 3 einmal selbst scannen — landet er im richtigen Spiel?
 - [ ] Beamer-Ansicht öffnen (Link auf Folie 3 und in der Regie-Folie ist klickbar):
       `?session=bypassing&host=1`
-- [ ] **Zettel für das Live-Experiment**: je ca. 10 Post-its beschriften —
-      **A** «Leitungswasser ist nicht ungesund.» und
-      **B** «Leitungswasser kostet einen Bruchteil von Flaschenwasser und braucht keine Plastikflasche.» Getrennt halten.
+- [ ] **Zettel für das Live-Experiment**: [`content/zettel-bypassing.html`](../content/zettel-bypassing.html)
+      drucken (A4, ein Blatt = 5 × A + 5 × B, `?lang=en|fr|it` für die anderen Sprachen)
+      und zuschneiden. A für die linke Raumhälfte, B für die rechte.
 - [ ] Post-its + Stifte bereit (für die Bottom Line / Master Checklist)
 - [ ] Master Checklist und Sterne-Tafel dabei (Communication-Stern ★ wird heute vergeben)
 
@@ -100,9 +100,9 @@ Nur Aussagen, die so im Paper stehen (Seiten im Autorenmanuskript):
 ## Wenn etwas klemmt
 
 - **Supabase down**: Beamer sagt es; Handys spielen im Solo-Modus weiter.
-- **Keine Zettel dabei**: Folie 5 direkt zeigen und die Hände-Abstimmung für
-  beide Varianten nacheinander machen — weniger überraschend, aber der
-  Mechanismus wird klar.
+- **Keine Zettel dabei**: A laut der linken Hälfte vorlesen, während die rechte
+  die Augen schliesst — dann umgekehrt B für die rechte Hälfte, die linke schliesst
+  die Augen. Danach wie gewohnt 1–5 Finger.
 - **Zeit läuft davon**: Übung auf zwei Fälle kürzen (A und B).
   Take-away nie streichen — das ist der Block, der bleibt.
 - **Gar keine Folien / kein Beamer**: die ausgefüllte Topic Card verwenden
