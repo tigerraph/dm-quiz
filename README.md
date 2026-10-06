@@ -92,6 +92,21 @@ Account deletion runs through the `delete-account` edge function
 to try the flow with real phones without leaving test names on a real
 session's leaderboard.
 
+## Daily lesson
+
+`?view=daily` (also the **Daily lesson 🔥** card in the session picker) is a solo learning mode:
+three questions a day, no timer, no points, the explanation after every answer. Finishing the
+lesson keeps the **streak** alive (a missed day restarts it at 1); the total days done climb the
+**title ladder**: Zaungast (0) · Stimmbürger:in (3) · Gemeinderat (7) · Grossrat (21) ·
+Nationalrat (60) · Ständerat (120) · Bundesrat (365). A missed day never costs a title.
+
+- The three come from every listed (non-draft) session's pack, each pack once, in one fixed
+  order walked three a day: same date, same three on every device, and the whole pool comes
+  round before anything repeats. A new pack joins the pool on its own.
+- Stored per device (`dmq_daily` in localStorage); nothing goes to Supabase yet.
+- **Practise again** replays today's three without counting.
+- Logic: `src/daily.js` (injected by the build), tests: `npm test` (CI runs them).
+
 ## Adding a session
 
 No rebuild needed — packs are fetched at runtime.

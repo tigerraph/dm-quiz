@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "node build.mjs",
+    "test": "node tools/test-daily.mjs",
     "mock": "node tools/mock-supabase.mjs",
     "new-topic": "node tools/new-topic.mjs",
     "check-topic": "node tools/check-topic.mjs",
