@@ -9,6 +9,7 @@
  *   __FONTS__    @font-face rules with the Poppins subsets base64-inlined
  *   __QRCODE__   vendor/qrcode.js verbatim (MIT), so the host view needs no CDN
  *   __AUDIO__    src/audio.js, the synthesized offline audio engine
+ *   __DAILY__    src/daily.js, the daily lesson's pick/streak/ladder logic
  *   __CONFIG__   src/config.json plus a build stamp
  *
  * Question data is NOT injected — packs are fetched at runtime from packs/,
@@ -62,9 +63,10 @@ const html = read("src", "template.html")
   .replace("__FONTS__", () => fontCss())
   .replace("__QRCODE__", () => guard(read("vendor", "qrcode.js")))
   .replace("__AUDIO__", () => guard(read("src", "audio.js")))
+  .replace("__DAILY__", () => guard(read("src", "daily.js")))
   .replace("__CONFIG__", () => JSON.stringify(config));
 
-for (const token of ["__LOGO__", "__FONTS__", "__QRCODE__", "__AUDIO__", "__CONFIG__"]) {
+for (const token of ["__LOGO__", "__FONTS__", "__QRCODE__", "__AUDIO__", "__DAILY__", "__CONFIG__"]) {
   if (html.includes(token)) throw new Error(`placeholder ${token} was not replaced`);
 }
 

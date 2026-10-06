@@ -163,6 +163,30 @@ a.iconbtn{display:grid; place-items:center; text-decoration:none; box-sizing:bor
 .stage.rev .qtext{margin:0 2px; font-size:1rem; font-weight:600; opacity:.85;}
 .stage.rev .grid{margin-top:0;}
 
+/* ---------- daily lesson (?view=daily) ---------- */
+.dl-top{display:flex; align-items:center; gap:10px; padding:2px 0 12px; font-size:.85rem; font-weight:700;}
+.dl-streak{color:var(--green); font-weight:800; white-space:nowrap;}
+.dl-prog{flex:1; height:8px; border-radius:999px; background:rgba(255,255,255,.14); overflow:hidden;}
+.dl-prog i{display:block; height:100%; background:var(--teal); border-radius:999px; transition:width .3s ease;}
+.dl-count{color:rgba(255,255,255,.7); white-space:nowrap;}
+.dl-entry{display:flex; align-items:center; gap:12px; width:min(94%,400px); text-align:left; cursor:pointer;
+  padding:14px 16px; border-radius:var(--radius); border:0; font:inherit; color:var(--ink);
+  background:var(--cream); box-shadow:var(--paper-shadow);}
+.dl-entry b{display:block; font-weight:800;}
+.dl-entry small{display:block; font-size:.8rem; opacity:.75;}
+.dl-entry .dl-fire{font-size:1.5rem; flex:0 0 auto;}
+.dl-entry .dl-n{margin-left:auto; font-weight:800; color:var(--blue); white-space:nowrap;}
+.dl-entry:focus-visible{outline:3px solid var(--teal); outline-offset:3px;}
+.dl-big{font-weight:800; font-size:clamp(3rem,15vw,4.4rem); line-height:1; margin:0; color:var(--green);}
+.dl-title{background:rgba(255,255,255,.08); border-radius:var(--radius); padding:14px 16px;
+  width:min(94%,400px); display:grid; gap:8px; text-align:left;}
+.dl-title .lbl{font-weight:800; font-size:.8rem; color:var(--teal);}
+.dl-title .nm{font-weight:800; font-size:1.2rem;}
+.dl-title .dl-prog{flex:none;}
+.dl-title small{font-size:.82rem; color:rgba(255,255,255,.7);}
+.dl-tag{font-size:.78rem; font-weight:700; color:rgba(255,255,255,.6);}
+@media (prefers-reduced-motion:reduce){.dl-prog i{transition:none;}}
+
 /* ---------- answer distribution ---------- */
 .dist{display:flex; flex-direction:column; gap:8px;}
 .dbar{display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:10px; align-items:center;}
@@ -2698,7 +2722,7 @@ var qrcode = function() {
    Engine carried over from the noeggi-kahoot wedding app: timer,
    speed scoring, streak bonus, i18n, synthesized offline audio.
    ================================================================== */
-const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","supabaseSchema":"dm","build":"build 01.10.2026 14:53"};
+const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","supabaseSchema":"dm","build":"build 06.10.2026 04:45"};
 const SUPA_URL = CFG.supabaseUrl || "";
 const SUPA_KEY = CFG.supabaseAnonKey || "";
 
@@ -2741,6 +2765,10 @@ const I18N = {
   waitNext:"Waiting for the next question",
   done:"That's it", doneSub:"Thanks for playing",
   soloTitle:"Solo mode", soloSub:"No live connection, so you can play at your own pace.",
+  daily:"Daily lesson", dailySub:"Three questions a day. Keep your streak and climb from Onlooker to Federal Councillor.",
+  dayStreak:n=>`${n} ${n===1?"day":"days"}`, inARow:"in a row", dailyFinish:"Finish lesson", dailyRight:"Right!", dailyWrong:"Not quite.",
+  dailyTitle:"Your title", dailyNewTitle:"New title", dailyToGo:(n,ti)=>`${n} more ${n===1?"day":"days"} to ${ti}`, dailyTop:"Top of the ladder.",
+  dailyTomorrow:"Done for today. Come back tomorrow.", dailyAgain:"Practise again", dailyPractice:"Practice, does not count", dailyEmpty:"No questions yet.",
   removeHint:"Remove from the session", removeConfirm:n=>`Remove ${n} from the session?`,
   removed:"You've been removed", removedSub:"The host removed you from this session.",
   noSession:"Unknown session", noSessionSub:"That session id is not in the registry.",
@@ -2802,6 +2830,10 @@ const I18N = {
   waitNext:"Warten auf die nächste Frage",
   done:"Das war's", doneSub:"Danke fürs Mitmachen",
   soloTitle:"Solo-Modus", soloSub:"Keine Live-Verbindung — du kannst in deinem Tempo spielen.",
+  daily:"Tageslektion", dailySub:"Drei Fragen pro Tag. Halte deine Serie und steig vom Zaungast zum Bundesrat auf.",
+  dayStreak:n=>`${n} ${n===1?"Tag":"Tage"}`, inARow:"am Stück", dailyFinish:"Lektion abschliessen", dailyRight:"Richtig.", dailyWrong:"Nicht ganz.",
+  dailyTitle:"Dein Titel", dailyNewTitle:"Neuer Titel", dailyToGo:(n,ti)=>`Noch ${n} ${n===1?"Tag":"Tage"} bis ${ti}`, dailyTop:"Ganz oben angekommen.",
+  dailyTomorrow:"Für heute erledigt. Morgen geht's weiter.", dailyAgain:"Nochmals üben", dailyPractice:"Übung, zählt nicht", dailyEmpty:"Noch keine Fragen.",
   removeHint:"Aus der Session entfernen", removeConfirm:n=>`${n} aus der Session entfernen?`,
   removed:"Du wurdest entfernt", removedSub:"Der Host hat dich aus dieser Session entfernt.",
   noSession:"Unbekannte Session", noSessionSub:"Diese Session-ID steht nicht in der Registry.",
@@ -2866,6 +2898,10 @@ const I18N = {
   waitNext:"En attente de la prochaine question",
   done:"C'est fini", doneSub:"Merci d'avoir jou\u00e9",
   soloTitle:"Mode solo", soloSub:"Pas de connexion en direct \u2014 tu peux jouer \u00e0 ton rythme.",
+  daily:"Leçon du jour", dailySub:"Trois questions par jour. Garde ta série et passe de Spectateur à Conseiller fédéral.",
+  dayStreak:n=>`${n} ${n===1?"jour":"jours"}`, inARow:"d'affilée", dailyFinish:"Terminer la leçon", dailyRight:"Juste !", dailyWrong:"Pas tout à fait.",
+  dailyTitle:"Ton titre", dailyNewTitle:"Nouveau titre", dailyToGo:(n,ti)=>`Encore ${n} ${n===1?"jour":"jours"} jusqu'à ${ti}`, dailyTop:"Tout en haut de l'échelle.",
+  dailyTomorrow:"C'est fait pour aujourd'hui. Reviens demain.", dailyAgain:"S'entraîner encore", dailyPractice:"Entraînement, ne compte pas", dailyEmpty:"Pas encore de questions.",
   removeHint:"Retirer de la session", removeConfirm:n=>`Retirer ${n} de la session\u00a0?`,
   removed:"Tu as \u00e9t\u00e9 retir\u00e9",
   removedSub:"L'h\u00f4te t'a retir\u00e9 de cette session.",
@@ -2933,6 +2969,10 @@ const I18N = {
   waitNext:"In attesa della prossima domanda",
   done:"\u00c8 tutto", doneSub:"Grazie per aver giocato",
   soloTitle:"Modalit\u00e0 solo", soloSub:"Nessun collegamento dal vivo \u2014 puoi giocare al tuo ritmo.",
+  daily:"Lezione del giorno", dailySub:"Tre domande al giorno. Mantieni la serie e sali da Spettatore a Consigliere federale.",
+  dayStreak:n=>`${n} ${n===1?"giorno":"giorni"}`, inARow:"di fila", dailyFinish:"Concludi la lezione", dailyRight:"Giusto!", dailyWrong:"Non proprio.",
+  dailyTitle:"Il tuo titolo", dailyNewTitle:"Nuovo titolo", dailyToGo:(n,ti)=>`Ancora ${n} ${n===1?"giorno":"giorni"} per ${ti}`, dailyTop:"In cima alla scala.",
+  dailyTomorrow:"Fatto per oggi. Torna domani.", dailyAgain:"Esercitati ancora", dailyPractice:"Esercizio, non conta", dailyEmpty:"Ancora nessuna domanda.",
   removeHint:"Rimuovi dalla sessione", removeConfirm:n=>`Rimuovere ${n} dalla sessione?`,
   removed:"Non sei pi\u00f9 nella sessione",
   removedSub:"La moderazione ti ha rimosso da questa sessione.",
@@ -3188,6 +3228,7 @@ async function boot(){
 
   if(DEMO && !HOST) return renderPassport();
   if(VIEW === "mydm" && !HOST) return renderPassport();
+  if(VIEW === "daily" && !HOST){ passBack = renderPicker; return openDaily(); }
 
   if(!SESSION || !registry[SESSION]){
     if(SESSION) errKey = "noSessionSub";
@@ -3278,9 +3319,11 @@ function renderPicker(){
           ${when ? `<small>${esc(when)}</small>` : ""}</a>`;
       }).join("") || `<p class="rules">—</p>`}
     </div>
+    ${dailyEntryHtml()}
     <button class="btn ghost small" id="mydm">${esc(t().myDM)} ★</button>
   </div>`;
   bindLangPills();
+  bindDailyEntry(renderPicker);
   document.getElementById("mydm").onclick = ()=>{ passBack=renderPicker; renderPassport(); };
 }
 function langPills(){
@@ -4044,6 +4087,255 @@ function renderSoloDone(){
 }
 
 /* ================================================================
+   DAILY LESSON — three questions a day, streak, title ladder
+   (Rafa 29.09.2026; logic in src/daily.js, tested by tools/test-daily.mjs)
+   Stored per device (dmq_daily). No timer and no points: this is the
+   learning mode, the explanation after every answer is the point.
+   ================================================================ */
+/* Daily lesson — pure logic, no DOM, no storage.
+ *
+ * Injected into index.html by build.mjs and tested on its own by
+ * tools/test-daily.mjs. Everything takes dates as local "YYYY-MM-DD" strings
+ * so the tests can travel in time without touching the clock.
+ *
+ * Spec (Rafa 29.09.2026, mock https://claude.ai/artifact/MgyhdLG1BSZZhj5Qq6tXcx):
+ * a solo mode with three questions a day, a streak, and a title ladder that
+ * climbs the Swiss offices from Zaungast to Bundesrat.
+ */
+const DAILY = (() => {
+  const PER_DAY = 3;
+
+  /* Days of lessons done -> title. The days count lessons completed in total,
+     not the current streak: a missed day breaks the streak, never the title. */
+  const LADDER = [
+    { days: 0,   t: { de: "Zaungast",       en: "Onlooker",              fr: "Spectateur",            it: "Spettatore" } },
+    { days: 3,   t: { de: "Stimmbürger:in", en: "Voter",                 fr: "Citoyen·ne",            it: "Cittadino/a" } },
+    { days: 7,   t: { de: "Gemeinderat",    en: "Municipal councillor",  fr: "Conseiller communal",   it: "Consigliere comunale" } },
+    { days: 21,  t: { de: "Grossrat",       en: "Cantonal MP",           fr: "Député au Grand Conseil", it: "Gran consigliere" } },
+    { days: 60,  t: { de: "Nationalrat",    en: "National Councillor",   fr: "Conseiller national",   it: "Consigliere nazionale" } },
+    { days: 120, t: { de: "Ständerat",      en: "Councillor of States",  fr: "Conseiller aux Etats",  it: "Consigliere agli Stati" } },
+    { days: 365, t: { de: "Bundesrat",      en: "Federal Councillor",    fr: "Conseiller fédéral",    it: "Consigliere federale" } },
+  ];
+
+  function iso(d) {
+    const p = n => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+  }
+  /* Whole days since 1970-01-01 for a local date string (UTC arithmetic, so
+     daylight-saving switches never make a day 23 or 25 hours long). */
+  function dayNum(s) {
+    const m = String(s || "").match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!m) return NaN;
+    return Math.round(Date.UTC(+m[1], +m[2] - 1, +m[3]) / 86400000);
+  }
+
+  function hash32(str) {
+    let h = 2166136261;
+    for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+    return h >>> 0;
+  }
+  function rng(seed) {
+    return () => {
+      seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  /* The pool: every question of every listed (non-draft) session, each pack
+     once even when two sessions share it (the rehearsal session does).
+     packs: { file: packJson }. Returns [{ pack, qi, key }] in a fixed order. */
+  function pool(registry, packs) {
+    const seen = new Set(), out = [];
+    for (const id of Object.keys(registry || {})) {
+      const s = registry[id];
+      if (!s || s.draft || !s.pack || seen.has(s.pack)) continue;
+      seen.add(s.pack);
+      const p = packs[s.pack];
+      if (!p || !Array.isArray(p.questions)) continue;
+      p.questions.forEach((q, qi) => out.push({ pack: s.pack, qi, key: `${s.pack}#${q.id || qi}` }));
+    }
+    // one fixed shuffle, so neighbouring days mix topics; stable across devices
+    const r = rng(hash32(out.map(x => x.key).join("|")));
+    for (let i = out.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [out[i], out[j]] = [out[j], out[i]]; }
+    return out;
+  }
+
+  /* Today's three: walk the fixed order three at a time, one step per day, so
+     the whole pool comes round before anything repeats. Same date, same three,
+     on every device. A pool smaller than three gives what there is. */
+  function pick(all, dateStr) {
+    const n = all.length;
+    if (!n) return [];
+    const k = Math.min(PER_DAY, n);
+    const start = ((dayNum(dateStr) * k) % n + n) % n;
+    const out = [];
+    for (let i = 0; i < k; i++) out.push(all[(start + i) % n]);
+    return out;
+  }
+
+  /* state: { last: "YYYY-MM-DD" | null, streak, best, days } */
+  function blank() { return { last: null, streak: 0, best: 0, days: 0 }; }
+  function norm(s) {
+    s = s && typeof s === "object" ? s : {};
+    const n = v => (Number.isFinite(v) && v > 0 ? Math.floor(v) : 0);
+    return { last: typeof s.last === "string" ? s.last : null, streak: n(s.streak), best: n(s.best), days: n(s.days) };
+  }
+  /* The streak as it stands today: alive if the last lesson was today or
+     yesterday, otherwise 0. */
+  function current(s, today) {
+    s = norm(s);
+    if (!s.last) return 0;
+    const gap = dayNum(today) - dayNum(s.last);
+    return gap === 0 || gap === 1 ? s.streak : 0;
+  }
+  function doneToday(s, today) { return norm(s).last === today; }
+  /* Finishing a lesson. A second lesson on the same day changes nothing. */
+  function complete(s, today) {
+    s = norm(s);
+    if (s.last === today) return s;
+    const streak = current(s, today) + 1;
+    return { last: today, streak, best: Math.max(s.best, streak), days: s.days + 1 };
+  }
+
+  /* Where the days put you: { i, title, next, toGo, pct } (titles are objects
+     by language; next is null at the top of the ladder). */
+  function rank(days) {
+    days = Math.max(0, Math.floor(days || 0));
+    let i = 0;
+    while (i + 1 < LADDER.length && days >= LADDER[i + 1].days) i++;
+    const cur = LADDER[i], nxt = LADDER[i + 1] || null;
+    return {
+      i, title: cur.t, next: nxt ? nxt.t : null,
+      toGo: nxt ? nxt.days - days : 0,
+      pct: nxt ? Math.round(100 * (days - cur.days) / (nxt.days - cur.days)) : 100,
+      promoted: days === cur.days && i > 0,
+    };
+  }
+
+  return { PER_DAY, LADDER, iso, dayNum, pool, pick, blank, norm, current, doneToday, complete, rank };
+})();
+
+
+let dQs=[], dI=0, dRight=0, dPicked=-1, dOrder=[], dPractice=false, dBefore=null;
+function dailyState(){ return DAILY.norm(store.get("daily", null)); }
+function dailyToday(){ return DAILY.iso(new Date()); }
+function dailyStreakNow(){ return DAILY.current(dailyState(), dailyToday()); }
+function dailyEntryHtml(){
+  const n = dailyStreakNow();
+  return `<button class="dl-entry" id="dailygo" type="button"><span class="dl-fire" aria-hidden="true">🔥</span>
+    <span><b>${esc(t().daily)}</b><small>${esc(L(DAILY.rank(dailyState().days).title))}</small></span>
+    <span class="dl-n">${esc(t().dayStreak(n))}</span></button>`;
+}
+function bindDailyEntry(back){
+  const b = document.getElementById("dailygo");
+  if(b) b.onclick = ()=>{ A.tap(); passBack = back; openDaily(); };
+}
+async function openDaily(){
+  phase="daily-load";
+  try{
+    if(!registry) registry = await loadJSON("packs/sessions.json");
+    const files = [...new Set(Object.values(registry).filter(s=>s && !s.draft && s.pack).map(s=>s.pack))];
+    const packs = {};
+    await Promise.all(files.map(async f=>{ try{ packs[f] = await loadJSON("packs/"+f); }catch(e){} }));
+    const today = dailyToday();
+    dQs = DAILY.pick(DAILY.pool(registry, packs), today)
+      .map(x=>packs[x.pack].questions[x.qi]);
+  }catch(e){ return fail("loadFail"); }
+  if(!dQs.length){ app.innerHTML = `<div class="screen">${wordmarkHtml("", t().daily)}<p class="sub">${esc(t().dailyEmpty)}</p></div>`; return; }
+  if(DAILY.doneToday(dailyState(), dailyToday())) return renderDailyDone();
+  startDaily(false);
+}
+function startDaily(practice){
+  dPractice = practice; dI=0; dRight=0;
+  dOrder = dQs.map(q=>shuffled(L(q.o).length));
+  renderDailyQuestion();
+}
+function dailyBar(doneCount){
+  const n = dQs.length, streak = dailyStreakNow();
+  return `<div class="dl-top">
+    <button class="iconbtn" id="dlback" aria-label="${esc(t().back)}" title="${esc(t().back)}">←</button>
+    <span class="dl-streak">🔥 ${esc(t().dayStreak(streak))}</span>
+    <div class="dl-prog" role="progressbar" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${doneCount}"><i style="width:${Math.round(100*doneCount/n)}%"></i></div>
+    <span class="dl-count">${doneCount}/${n}</span>
+    <button class="langcycle" id="lc" title="${LANGS.map(l=>l.toUpperCase()).join(" / ")}">${lang.toUpperCase()}</button>
+  </div>`;
+}
+function bindDailyBar(){
+  const b=document.getElementById("dlback");
+  if(b) b.onclick=()=>{ A.tap(); (passBack||renderPicker)(); };
+  const lc=document.getElementById("lc"); if(lc) lc.onclick=cycleLang;
+}
+function renderDailyQuestion(){
+  phase="daily-q"; dPicked=-1;
+  const q = dQs[dI];
+  app.innerHTML = `${dailyBar(dI)}
+  <div class="stage">
+    ${dPractice ? `<p class="dl-tag">${esc(t().dailyPractice)}</p>` : ""}
+    ${q.img ? `<div class="qimg"><img src="${esc(q.img)}" alt=""></div>` : ""}
+    <div class="qtext">${esc(L(q.q))}</div>
+    ${tilesHtml(q, dOrder[dI], {picked:-1})}
+  </div>`;
+  bindDailyBar();
+  app.querySelectorAll(".tile").forEach(b=>b.onclick=()=>dailyPick(+b.dataset.oi));
+}
+function dailyPick(oi){
+  if(phase!=="daily-q") return;
+  dPicked = oi;
+  if(oi===dQs[dI].correct){ dRight++; A.correct(1); } else A.wrong();
+  renderDailyReveal();
+}
+function renderDailyReveal(){
+  phase="daily-r";
+  const q = dQs[dI], ok = dPicked===q.correct, last = dI >= dQs.length-1;
+  app.innerHTML = `${dailyBar(dI+1)}
+  <div class="stage rev">
+    <div class="banner ${ok?"good":"bad"}">${esc(ok?t().dailyRight:t().dailyWrong)}
+      ${ok?"":`<small>${esc(t().answerWas)} ${esc(L(q.o)[q.correct])}</small>`}</div>
+    <div class="qtext">${esc(L(q.q))}</div>
+    ${tilesHtml(q, dOrder[dI], {picked:dPicked, reveal:true})}
+    ${whyHtml(q)}
+    <div class="nextrow"><button class="btn" id="next">${esc(last ? t().dailyFinish : t().next)}</button></div>
+  </div>`;
+  bindDailyBar();
+  const n = document.getElementById("next");
+  n.onclick = ()=>{ A.tap(); if(!last){ dI++; renderDailyQuestion(); } else finishDaily(); };
+  n.focus({preventScroll:true});
+}
+function finishDaily(){
+  dBefore = dailyState();
+  if(!dPractice) store.set("daily", DAILY.complete(dBefore, dailyToday()));
+  A.fanfare();
+  renderDailyDone(true);
+}
+function renderDailyDone(justNow){
+  phase="daily-done";
+  const st = dailyState(), streak = DAILY.current(st, dailyToday()), r = DAILY.rank(st.days);
+  const promoted = justNow && !dPractice && dBefore && DAILY.rank(dBefore.days).i < r.i;
+  app.innerHTML = `<div class="corner">${ctl()}</div>
+  <div class="screen">
+    ${langPills()}
+    <p class="dl-big">🔥 ${streak}</p>
+    <p class="metriclbl">${esc(t().dayStreak(streak))} ${esc(t().inARow)}</p>
+    ${justNow ? `<p class="sub">${esc(t().ofN(dRight, dQs.length))}</p>` : ""}
+    <div class="dl-title">
+      <span class="lbl">${esc(promoted ? t().dailyNewTitle : t().dailyTitle)}</span>
+      <span class="nm">${esc(L(r.title))}</span>
+      <div class="dl-prog" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${r.pct}"><i style="width:${r.pct}%"></i></div>
+      <small>${esc(r.next ? t().dailyToGo(r.toGo, L(r.next)) : t().dailyTop)}</small>
+    </div>
+    <p class="sub">${esc(t().dailyTomorrow)}</p>
+    <button class="btn ghost" id="again">${esc(t().dailyAgain)}</button>
+    <button class="btn ghost small" id="dlback">${esc(t().back)}</button>
+    ${wordmarkHtml("", t().daily)}
+  </div>`;
+  bindLangPills(); bindCtl();
+  document.getElementById("again").onclick = ()=>{ A.tap(); startDaily(true); };
+  document.getElementById("dlback").onclick = ()=>{ A.tap(); (passBack||renderPicker)(); };
+}
+
+/* ================================================================
    STARS — passport, claim, host award (docs/dm-stars-spec.md)
    ================================================================ */
 function fmtDate(isoStr){
@@ -4751,6 +5043,9 @@ function rerender(){
   else if(phase==="passport") renderPassport();
   else if(phase==="review") renderReview();
   else if(phase==="claim") renderClaim();
+  else if(phase==="daily-q") renderDailyQuestion();
+  else if(phase==="daily-r") renderDailyReveal();
+  else if(phase==="daily-done") renderDailyDone(false);
   else if(HOST) renderHost();
   else if(phase==="lobby") renderPlayerLobby();
   else if(phase==="question") LIVE ? renderPlayerQuestion() : renderSoloQuestion();
@@ -4867,13 +5162,13 @@ const A=(()=>{
 
 /* ---------------- keyboard ---------------- */
 document.addEventListener("keydown", e=>{
-  if(phase==="question" && !HOST && ["1","2","3","4"].includes(e.key)){
+  if((phase==="question" || phase==="daily-q") && !HOST && ["1","2","3","4"].includes(e.key)){
     const b = app.querySelectorAll(".tile")[+e.key-1];
     if(b && !b.disabled) b.click();
   } else if(HOST && (e.key==="Enter" || e.key===" ")){
     const b = document.querySelector(".hostbar .btn:not([data-noremote])");
     if(b && !b.disabled){ e.preventDefault(); b.click(); }
-  } else if(phase==="reveal" && !LIVE && (e.key==="Enter" || e.key===" ")){
+  } else if((phase==="reveal" && !LIVE || phase==="daily-r") && (e.key==="Enter" || e.key===" ")){
     e.preventDefault();
     const n = document.getElementById("next");
     if(n) n.click();
