@@ -191,7 +191,7 @@
     function render(){
       var lang = langs.indexOf(LANG) >= 0 ? LANG : langs[0];
       var slides = BASE + 'slides/' + id + '.html' + qs(lang);
-      var present = BASE + 'slides/' + id + '.html?' + (lang === 'de' ? '' : 'lang=' + lang + '&') + 'present=1';
+      var present = '../slides/' + id + '.html?' + (lang === 'de' ? '' : 'lang=' + lang + '&') + 'present=1';
       var regie = BASE + 'content/regie-' + id + '.html' + qs(lang);
       var host = '../?session=' + encodeURIComponent(mainId) + '&host=1';
       var practice = s.practice || [];
