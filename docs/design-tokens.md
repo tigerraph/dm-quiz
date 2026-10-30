@@ -1,4 +1,4 @@
-# Skin — DM / DAY8 tokens
+# Skin — DM tokens
 
 Source of truth: the `DM_Format_Learning-Loop_Gewaltenteilung-CH` deck and
 the Democracy Matters Journey slide. Both were sampled pixel-by-pixel while
@@ -37,10 +37,9 @@ base64-inlined at build, so there is no runtime font request.
   stronger "wrong" signal, that needs a new colour decision.
 - **No confetti, no polaroids.** Stripped with the rest of the wedding skin,
   per the spec.
-- **The mark is now in.** `assets/img/dm-logo-white.png` is base64-inlined at
-  build time and sits beside the "Democracy Matters Quiz" wordmark. It is white
-  artwork, so it only ever appears on the dark ground or a colour panel — never
-  on cream.
+- **No logo.** Democracy Matters has no mark of its own. The round «dP» mark in
+  the reference PDFs belongs to another organisation and never goes on a DM
+  surface; the name set in Poppins ExtraBold is the wordmark.
 
 - **A red had to be invented.** The palette has none, so a wrong answer uses
   `--wrong: #DB6A57`, a muted terracotta tuned to sit beside the green. It is

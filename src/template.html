@@ -8,7 +8,7 @@
 <!-- Open Graph for link previews (WhatsApp, iMessage, Slack). Must stay above the
      inlined fonts: scrapers read only the first part of the file. No og:url on
      purpose — session links carry ?session=…, and these tags describe the app as
-     a whole. assets/img/og.png is the header lockup (the real mark + wordmark). -->
+     a whole. assets/img/og.png is the wordmark on the dark ground. -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Democracy Matters Quiz">
 <meta property="og:description" content="Live session quiz for Democracy Matters: scan the QR code, join from your phone and answer together with the room.">
@@ -20,7 +20,7 @@
 <style>
 __FONTS__
 :root{
-  /* DM / DAY8 tokens — verified against DM_Format_Learning-Loop deck */
+  /* DM tokens — verified against DM_Format_Learning-Loop deck */
   --blue:#435CC6; --green:#A8D272; --teal:#5EB9A9;
   --cream:#FDF2D0; --dark:#1B2329; --ink:#22313C;
   --blue-deep:#33489e; --dark-2:#232c33;
@@ -71,13 +71,9 @@ body.host #app{max-width:none; padding:0;}
 a.iconbtn{display:grid; place-items:center; text-decoration:none; box-sizing:border-box;}
 .corner{position:fixed; top:calc(10px + env(safe-area-inset-top)); right:14px; display:flex; gap:8px; z-index:6;}
 
-/* The DM/DAY8 mark beside the name, matching the deck's lockup. The mark is
-   white artwork, so it only ever sits on the dark ground or a colour panel. */
 .wordmark{font-weight:800; letter-spacing:-.005em; white-space:nowrap;
           display:inline-flex; align-items:center; gap:.55em;}
-.wordmark .wmlogo{height:1.75em; width:auto; flex:0 0 auto; display:block;}
 .wordmark .wm2{color:var(--teal);}
-.hostleft .wordmark .wmlogo,.hostq .wordmark .wmlogo{height:2.7em;}
 
 /* ---------- centred screens ---------- */
 .screen{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -987,14 +983,10 @@ function renderError(){
     <div class="err">${esc(big ? t().hostNeedsDbSub : t()[errKey] || "")}</div>
   </div>`;
 }
-const LOGO = "__LOGO__";
 /* The star screens are Curriculum, not Quiz — the passport outlives any
-   single quiz session — and they drop the dP mark, which is DAY8's, not
-   Democracy Matters'. */
+   single quiz session. */
 function wordmarkHtml(cls, word){
-  const logo = word ? "" : `<img class="wmlogo" src="${LOGO}" alt="">`;
   return `<div class="kicker ${cls||""}"><span class="wordmark">`
-       + logo
        + `${esc(t().brand)} <span class="wm2">${esc(word||t().quiz)}</span></span></div>`;
 }
 

@@ -30,7 +30,7 @@ Kein-Folien-Fallback: [`docs/reference/DM_Template_V3_Topic-Card.pdf`](reference
 | 15:20 (5′) | **Take-away** | 9 Skeptiker-Kit | Die vier Karten sind Antworten auf «die sind doch eh alle korrupt». Laut lesen lassen. Bottom Line auf die Master Checklist, Civics-Stern ★ vergeben. Nie streichen. |
 | 15:25 (5′) | Puffer | — | Überzieher abfedern, dann Folie 10: Übergang in die Runde. |
 | danach | **Die Runde** | 10 | Nur die Titelfolie — die Runde gehört dem Raum. |
-| Schluss | Abspann | 11 | Merci-Folie: DAY8-Credit + QR auf die Teilnehmerseite (Folien, Video, Quiz, Stern). |
+| Schluss | Abspann | 11 | Merci-Folie: QR auf die Teilnehmerseite (Folien, Video, Quiz, Stern). |
 
 ## Regieanweisungen
 
