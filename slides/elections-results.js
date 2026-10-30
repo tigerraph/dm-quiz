@@ -24,7 +24,7 @@ window.DM_RESULTS = {
     asOf: null,        // date of the electoral commission's final report, e.g. "05.11.2026"
     student: { pct: null, seats: null },   // final figures of the Republic Electoral Commission (RIK), e.g. "53,0 %", 141
     united:  { pct: null, seats: null },
-    turnout: null      // e.g. "69,0 %"
+    turnout: null      // e.g. "69,0 %". Serbia shows as final only when both lists and the turnout are all filled in
   }
 };
 
@@ -61,7 +61,7 @@ window.DM_RESULTS = {
   }
   window.DM_renderResults = function(lang){
     var w = W[lang] || W.de, R = window.DM_RESULTS, u = R.us, s = R.rs;
-    var rsFinal = has(s.student.seats) && has(s.united.seats);
+    var rsFinal = has(s.student.pct) && has(s.student.seats) && has(s.united.pct) && has(s.united.seats) && has(s.turnout);   // all or nothing
     var called = has(u.house.d) || has(u.senate.d) || has(u.governors.d);
     var parts = [];
     if (u.asOf) parts.push(esc(w.asOf) + ' ' + esc(u.asOf));
@@ -77,12 +77,12 @@ window.DM_RESULTS = {
       'us.tag': { on:false, html:esc(called ? w.tagInterim : w.tagNone) },
       'rs.tag': { on:false, html:esc(rsFinal ? w.tagFinal : w.tagPre) },
       'rs.line': { on:false, html:esc(rsFinal ? w.rsLineFinal : w.rsLine) },
-      'rs.turnoutCell': { on:false, html:esc(rsFinal && has(s.turnout) ? s.turnout : w.rsCell) },
-      'rs.turnoutNote': { on:false, html:esc(rsFinal && has(s.turnout) ? w.rsCellFinal : w.rsCellNote) },
+      'rs.turnoutCell': { on:false, html:esc(rsFinal ? s.turnout : w.rsCell) },
+      'rs.turnoutNote': { on:false, html:esc(rsFinal ? w.rsCellFinal : w.rsCellNote) },
       'rs.final': rsFinal
         ? { on:true, html:'<b>' + esc(w.rsTitle) + ':</b> ' + esc(w.student) + ' ' + esc(s.student.pct) + ' · ' + esc(s.student.seats) + ' ' + esc(w.seats) +
             ' · ' + esc(w.united) + ' ' + esc(s.united.pct) + ' · ' + esc(s.united.seats) + ' ' + esc(w.seats) +
-            (has(s.turnout) ? ' · ' + esc(w.turnout) + ' ' + esc(s.turnout) : '') + (s.asOf ? ' · ' + esc(w.asOf) + ' ' + esc(s.asOf) : '') }
+            ' · ' + esc(w.turnout) + ' ' + esc(s.turnout) + (s.asOf ? ' · ' + esc(w.asOf) + ' ' + esc(s.asOf) : '') }
         : { on:false, html:'<b>' + esc(w.slot) + ' · ' + esc(w.rsTitle) + '</b> ' + esc(w.rsNone) }
     };
     document.querySelectorAll('[data-slot]').forEach(function(el){

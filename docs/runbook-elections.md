@@ -29,7 +29,7 @@ füllen sich selbst, auch die Etiketten, Serbiens «Vorläufig»-Satz und die Be
 | 3 | `us.governors` | `d`, `r`, `other`, `open` (36 Rennen) | AP-Race-Calls |
 | 4 | `us.turnout` | Schätzung als Text, z. B. `"≈ 47 %"`. Gibt es keine, bleibt `null`: Die Folie zeigt dann «nicht publiziert» | U.S. Elections Project, sonst leer |
 | 5 | `us.asOf`, `us.source`, `us.note` | Datum und Uhrzeit des Ablesens, Quelle, optional eine Notiz wie `"GA: runoff 01.12."` | selbst |
-| 6 | `rs.student`, `rs.united`, `rs.turnout`, `rs.asOf` | Endresultat der Wahlkommission RIK, beide Listen. Prozent als Text, z. B. `"53,0 %"`, Sitze als Zahl. Nur das amtliche Endresultat, keine Zwischenstände | rik.parlament.gov.rs |
+| 6 | `rs.student`, `rs.united`, `rs.turnout`, `rs.asOf` | Endresultat der Wahlkommission RIK: beide Listen und Beteiligung, alles oder nichts. Prozent als Text, z. B. `"53,0 %"`, Sitze als Zahl. Nur das amtliche Endresultat, keine Zwischenstände | rik.parlament.gov.rs |
 
 Danach von Hand prüfen, weil das nicht aus Zahlen kommt. Trifft etwas nicht mehr zu, den Satz in
 `slides/elections.html` und `content/elections.html` ändern, in allen vier Sprachen, mit Quelle:
@@ -90,9 +90,9 @@ Drei Länder in 30 Minuten gehen nur, wenn jedes kurz bleibt. Darum tragen die *
 (Was? Wie? Worum? Wem?) alle drei Fälle, und die Länder sind Beispiele dafür, nicht je ein eigener Vortrag.
 Der rote Faden ist die vierte Frage: Wer glaubt dem Resultat?
 
-Das Live-Experiment kommt vor den Fällen, und die Zettel nennen kein Land. Die Leute beurteilen zwei echte
-Systeme, nicht ihre Meinung zu einem Land. Wer aus dem Quiz errät, dass A Brasilien ist, bewertet trotzdem
-das Verfahren. Der Raum ist zu klein für einen Beweis. Kein Unterschied zwischen den Hälften ist auch eine
+Das Live-Experiment kommt vor den Fällen, und die Zettel nennen kein Land. Die Quizfragen verraten bewusst
+nichts darüber, wie gezählt wird. So beurteilen die Leute zwei echte Systeme, nicht ihre Meinung zu einem Land.
+Der Raum ist zu klein für einen Beweis. Kein Unterschied zwischen den Hälften ist auch eine
 Aussage: Dann liegt Vertrauen nicht am Verfahren allein.
 
 ## Neutralität
