@@ -36,5 +36,13 @@ for (const [key, base] of [["deck", id], ["card", `topic-card-${id}`]]) {
     console.log(`  ✓ ${out}`);
   }
 }
+// slips, if the topic has them (A4 from their own @page rule); linked from the admin page and the run sheet
+const slips = `content/zettel-${id}.html`;
+if (existsSync(p(slips))) for (const lang of langs) {
+  const out = pdfName(`zettel-${id}`, lang);
+  execFileSync(chrome, ["--headless", "--disable-gpu", "--force-color-profile=srgb", "--no-pdf-header-footer",
+    "--virtual-time-budget=4000", `--print-to-pdf=${p(out)}`, pathToFileURL(p(slips)).href + "?lang=" + lang], { stdio: "ignore" });
+  console.log(`  ✓ ${out}`);
+}
 writeFileSync(p(STAMPS), JSON.stringify(Object.fromEntries(Object.entries(st).sort()), null, 1) + "\n");
 console.log(`  ~ ${STAMPS}\nLook at every page of every PDF before calling it done.`);

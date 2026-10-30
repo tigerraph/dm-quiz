@@ -14,25 +14,30 @@ Stand aller Fakten: 30. Oktober 2026. **Kein Midterm-Resultat im Material:** Die
 
 ## Ausfüllen, sobald Resultate da sind (Mi 4. oder Do 5. November)
 
-Alles steht in **einer** Datei: [`slides/elections-results.js`](../slides/elections-results.js).
-Dort `null` ersetzen, sonst nichts anfassen. Die Slots in Folien und Teilnehmerseite füllen sich selbst,
-die Status-Etiketten wechseln mit.
+**Wer:** Rafa bestimmt, wer die Zahlen einträgt. Vorschlag: Der Master-Agent beauftragt am Mittwochnachmittag
+einen Helfer, der Helfer trägt ein und erstellt die PDFs neu, Rafa gibt das OK für live. Ein offener Punkt, bis Rafa
+entschieden hat.
+
+**Wo:** Alles steht in einer einzigen Datei, [`slides/elections-results.js`](../slides/elections-results.js).
+Dort `null` ersetzen, sonst nichts anfassen. Die Felder «⏳ Resultat folgt» in Folien und Teilnehmerseite
+füllen sich selbst, auch die Etiketten, Serbiens «Vorläufig»-Satz und die Beteiligung auf der Schweiz-Folie.
 
 | # | Feld | Was eintragen | Woher |
 |---|---|---|---|
-| 1 | `us.house` | `d`, `r`: entschiedene Sitze. `open`: noch nicht entschiedene. `majority`: `"D"` oder `"R"`, erst wenn die Mehrheit ausgerufen ist | AP-Race-Calls |
-| 2 | `us.senate` | wie oben. Die zwei Unabhängigen zu der Partei zählen, mit der sie stimmen, und das in `note` sagen | AP-Race-Calls |
-| 3 | `us.governors` | `d`, `r`, `open` (36 Rennen) | AP-Race-Calls |
-| 4 | `us.turnout` | Schätzung als Text, z. B. `"≈ 47 %"`. Gibt es keine: `null` lassen | U.S. Elections Project, sonst leer |
+| 1 | `us.house` | `d`, `r`: entschiedene Sitze. `other`: Sitze anderer. `open`: noch nicht entschiedene. `majority`: `"D"` oder `"R"`, erst wenn die Mehrheit ausgerufen ist | AP-Race-Calls |
+| 2 | `us.senate` | wie oben. Unabhängige zu der Partei zählen, mit der sie stimmen, und das in `note` sagen | AP-Race-Calls |
+| 3 | `us.governors` | `d`, `r`, `other`, `open` (36 Rennen) | AP-Race-Calls |
+| 4 | `us.turnout` | Schätzung als Text, z. B. `"≈ 47 %"`. Gibt es keine, bleibt `null`: Die Folie zeigt dann «nicht publiziert» | U.S. Elections Project, sonst leer |
 | 5 | `us.asOf`, `us.source`, `us.note` | Datum und Uhrzeit des Ablesens, Quelle, optional eine Notiz wie `"GA: runoff 01.12."` | selbst |
-| 6 | `rs.student`, `rs.united`, `rs.turnout`, `rs.asOf` | Endresultat der Wahlkommission RIK: Prozent und Sitze. Nur das amtliche Endresultat, keine Zwischenstände | rik.parlament.gov.rs |
+| 6 | `rs.student`, `rs.united`, `rs.turnout`, `rs.asOf` | Endresultat der Wahlkommission RIK, beide Listen. Prozent als Text, z. B. `"53,0 %"`, Sitze als Zahl. Nur das amtliche Endresultat, keine Zwischenstände | rik.parlament.gov.rs |
 
-Danach auch prüfen (Text in `slides/elections.html`, dann Teilnehmerseite nachziehen):
+Danach von Hand prüfen, weil das nicht aus Zahlen kommt. Trifft etwas nicht mehr zu, den Satz in
+`slides/elections.html` und `content/elections.html` ändern, in allen vier Sprachen, mit Quelle:
 
 - [ ] **Serbien:** Präsidentschaftswahl-Datum festgelegt? Dann «spätestens am 27. Dezember» ersetzen.
-      Steht das Endresultat, in der Karte «Was stand auf dem Spiel?» das Wort «Vorläufig» streichen.
-- [ ] **Brasilien:** Stimmt die Karte «Wer glaubt dem Resultat?» noch? Hat Flávio Bolsonaro Rechtsmittel
-      eingelegt oder seine Haltung geändert?
+      Wiederholung vom 1. November gelaufen? Dann «ist … angesetzt» in die Vergangenheit setzen.
+- [ ] **Brasilien:** Stimmt die Karte «Wer glaubt dem Resultat?» noch? Hat Flávio Bolsonaro die angekündigte
+      Klage eingereicht oder seine Haltung geändert?
 - [ ] **USA:** Der Satz «Offen.» in «Wer glaubt dem Resultat?» prüfen: Gibt es Anfechtungen oder
       Anerkennungen, die man belegen kann? Wenn ja, mit Quelle ersetzen.
 
@@ -41,7 +46,7 @@ committen. **Live geht das erst mit dem Merge.** Letzte Kontrolle Freitag, 14:00
 
 ### Wenn Rennen noch offen sind
 
-Das ist der Normalfall, keine Panne. Der Slot zeigt die entschiedenen Sitze und «noch offen».
+Das ist der Normalfall, keine Panne. Das Feld zeigt die entschiedenen Sitze und «noch offen».
 
 - Ein Rennen ohne Call bleibt in `open`. Nie einer Seite zuschlagen, auch wenn sie vorne liegt.
 - `majority` bleibt `null`, bis die Mehrheit ausgerufen ist. Die Folie sagt dann «noch nicht entschieden».
@@ -49,13 +54,13 @@ Das ist der Normalfall, keine Panne. Der Slot zeigt die entschiedenen Sitze und 
 - Ein Call ist nicht amtlich. Darum trägt die Folie das Etikett «NICHT AMTLICH», auch wenn alle Rennen
   entschieden sind. Die Bundesstaaten beglaubigen erst Tage bis Wochen später.
 - Stichwahl in Georgia (allenfalls 1. Dezember): zählt als offen, in `note` vermerken.
-- **Ist bis Freitag nichts eingetragen:** Die Session läuft trotzdem, der Slot bleibt sichtbar. Satz für
+- **Ist bis Freitag nichts eingetragen:** Die Session läuft trotzdem, das Feld bleibt sichtbar. Satz für
   die Moderation: «Hier steht noch nichts, weil es noch nicht feststeht. Genau darum geht es heute.»
 
 ## Vorbereitung (vor der Session)
 
 - [ ] Supabase-Projekt **Active**? (Dashboard-Check, sonst läuft der Quiz im Solo-Fallback)
-- [ ] Slots geprüft? (siehe oben)
+- [ ] Resultate USA und Serbien eingetragen? (siehe oben)
 - [ ] QR-Code auf Folie 3 einmal selbst scannen — landet er im richtigen Spiel?
 - [ ] Beamer-Ansicht öffnen (Link auf Folie 3 und in der Regie-Folie ist klickbar):
       `?session=elections&host=1`
@@ -72,8 +77,8 @@ Das ist der Normalfall, keine Panne. Der Slot zeigt die entschiedenen Sitze und 
 |---|---|---|---|
 | — | Ankommen | 1 DM-Hauptfolie | Pillar zeigen: heute gibt es den **Civics-Stern**. Zwei Slots: Sprint (30′), dann die Runde. |
 | 15:00 (5′) | **Einstieg** | 3 QR | «Handy raus.» QR scannen, Beamer-Ansicht per Klick öffnen, 3 Fragen spielen, je eine pro Land. Erklärungen zeigt die App — nicht doppelt erklären. |
-| 15:05 (5′) | **Drei Fälle** | 4 Raster, 5 Brasilien, 6 Serbien, 7 USA | Raster in 20 Sekunden, dann pro Land gut eine Minute. Nur die Karte «Wer glaubt dem Resultat?» ganz vorlesen, der Rest steht auf der Folie und der Teilnehmerseite. Kein Video in dieser Session. |
-| 15:10 (7′) | **Thema** | 8 Live-Experiment, 9 Check, 10 Und die Schweiz? | Live-Experiment (die Folie erklärt dem Raum die drei Schritte), Check-Folie, dann die Schweiz als reine Info — kein Gruppenauftrag. |
+| 15:05 (5′) | **Experiment** | 4 Live-Experiment, 5 Check | Die Folie erklärt dem Raum die drei Schritte. Dann die Check-Folie: Welche Länder waren es? Kein Video in dieser Session. |
+| 15:10 (7′) | **Drei Fälle** | 6 Raster, 7 Brasilien, 8 Serbien, 9 USA, 10 Und die Schweiz? | Raster in 20 Sekunden, pro Land knapp zwei Minuten, zuletzt die Schweiz als reine Info. Nur die Karte «Wer glaubt dem Resultat?» ganz vorlesen, der Rest steht auf der Folie und der Teilnehmerseite. |
 | 15:17 (5′) | **Diskussion** | 11 Offene Runde | Keine strukturierte Übung: offene Runde. Die drei Fragen auf der Folie sind Anstösse, nicht alle nötig. |
 | 15:22 (5′) | **Take-away** | 12 Kit | Kit laut lesen lassen. Bottom Line auf die Master Checklist, Civics-Stern ★ vergeben. Nie streichen. Danach Puffer. |
 | danach | **Die Runde** | 13 | Nur die Titelfolie. Einstiegsfrage, falls es stockt: «Welchem Wahlresultat habt ihr zuletzt misstraut, und warum?» |
@@ -85,9 +90,10 @@ Drei Länder in 30 Minuten gehen nur, wenn jedes kurz bleibt. Darum tragen die *
 (Was? Wie? Worum? Wem?) alle drei Fälle, und die Länder sind Beispiele dafür, nicht je ein eigener Vortrag.
 Der rote Faden ist die vierte Frage: Wer glaubt dem Resultat?
 
-Im Live-Experiment beurteilen die Leute zwei echte Systeme, ohne die Länder zu kennen. So reagieren sie
-auf das Verfahren, nicht auf ihre Meinung zu einem Land. Der Raum ist zu klein für einen Beweis. Kein
-Unterschied zwischen den Hälften ist auch eine Aussage: Dann liegt Vertrauen nicht am Verfahren allein.
+Das Live-Experiment kommt vor den Fällen, und die Zettel nennen kein Land. Die Leute beurteilen zwei echte
+Systeme, nicht ihre Meinung zu einem Land. Wer aus dem Quiz errät, dass A Brasilien ist, bewertet trotzdem
+das Verfahren. Der Raum ist zu klein für einen Beweis. Kein Unterschied zwischen den Hälften ist auch eine
+Aussage: Dann liegt Vertrauen nicht am Verfahren allein.
 
 ## Neutralität
 
@@ -95,7 +101,8 @@ Diese Session nimmt keine Seite. Für die Moderation:
 
 - Beschreiben, nicht bewerten. Keine Kandidatin und keinen Kandidaten loben oder kritisieren.
 - Immer sagen, wer etwas sagt: «Die OSZE-Mission schreibt …», «Das Wahlgericht teilt mit …».
-- Die Kritik der Beobachter an Serbien stammt von der Mission selbst. Sie ist kein Urteil über die Wählenden.
+- Die Kritik an Serbiens Wahl stammt von der Beobachtungsmission selbst (ODIHR, Parlamentarische Versammlungen
+  von OSZE und Europarat, EU-Parlament). Sie ist kein Urteil über die Wählenden.
 - Die Betrugsbehauptung in Brasilien als Behauptung benennen und sagen, was dazu belegt ist.
 - Kommt Parteipolitik auf: «Spannend, aber heute geht es darum, wie man ein Resultat liest.»
 
@@ -110,8 +117,10 @@ Diese Session nimmt keine Seite. Für die Moderation:
   in noch offenen Wahllokalen, nachdem beide Kandidaturen Probleme beim Transport von Wählenden gemeldet
   hatten. Laut TSE wurden nach 17 Uhr 34’393 Stimmen abgegeben. Der Abstand zwischen den beiden betrug über
   4,4 Millionen Stimmen. Das sind die Zahlen, keine Bewertung des Vorwurfs.
-- Flávio Bolsonaro schrieb in einem Brief vom 28. Oktober von Wahlbetrug, ohne Belege zu nennen. Seine
-  Partei PL und sein Vize-Kandidat anerkannten das Resultat (CNN Brasil). Stand 30. Oktober.
+- Flávio Bolsonaro schrieb in einem Brief vom 28. Oktober von Wahlbetrug und verweist auf diese Verlängerung.
+  Laut CNN Brasil nennt der Brief keine Belege für Unregelmässigkeiten. Seine eigene Kampagne hatte zuvor
+  selbst eine Verlängerung in drei Bundesstaaten beantragt. Seine Partei PL und sein Vize-Kandidat anerkannten
+  das Resultat (CNN Brasil). Er kündigte an, die Annullierung einzuklagen (O Liberal). Stand 30. Oktober.
 - Jede Person kann die Protokolle der Urnen online mit dem Gesamtresultat vergleichen (TSE).
 
 **Serbien**
@@ -144,7 +153,7 @@ Diese Session nimmt keine Seite. Für die Moderation:
 - **Supabase down**: Beamer sagt es; Handys spielen im Solo-Modus weiter.
 - **Keine Zettel dabei**: A laut der linken Hälfte vorlesen, während die rechte die Augen schliesst, dann
   umgekehrt B für die rechte Hälfte. Danach wie gewohnt 1–5 Finger.
-- **Zeit läuft davon**: das Raster nur zeigen, und die Folie «Und die Schweiz?» auf die Postit-Zeile kürzen.
+- **Zeit läuft davon**: das Raster nur zeigen, und die Folie «Und die Schweiz?» auf die untere Zeile kürzen.
   Take-away nie streichen — das ist der Block, der bleibt.
 - **Gar keine Folien / kein Beamer**: die ausgefüllte Topic Card verwenden
   ([`slides/topic-card-elections.pdf`](../slides/topic-card-elections.pdf));

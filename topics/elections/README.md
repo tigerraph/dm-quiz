@@ -5,8 +5,9 @@
 - **Governing question (the «warum»):** Was entscheidet eine Wahl wirklich, und wer glaubt dem Resultat?
 - **Swiss angle:** Wir wählen das Parlament, nicht die Regierung, und stimmen zwischen den Wahlen über Sachfragen ab.
 - **Fälle:** Brasilien (4. und 25.10.2026), Serbien (25.10.2026), USA (3.11.2026).
-- **Video:** keines. Die 5 Minuten gehören den drei Fällen. Geprüft wurde: ein neutraler Kandidat ist zu lang (10:29),
-  der einzige kurze (4:16) rahmt die Wahl als Rennen einer Partei.
+- **Video:** keines. Die Zeit gehört dem Experiment und den drei Fällen. Geprüft wurde: ein neutraler Kandidat ist zu lang (10:29),
+  der einzige kurze (4:16) rahmt die Wahl aus der Sicht einer Partei.
+- **Layout:** Folien-Bausteine von `bypassing` wiederverwendet. Neu sind nur das Resultat-Feld und die Beteiligungs-Zeile, angelehnt an (1) Wahlabend-Tafeln mit «entschieden / noch offen» und Stand-Zeit, (2) Apple Keynote, eine Aussage pro Folie, (3) Kahoot für den Quiz-Ablauf, wie alle DM-Sessions.
 - **Languages:** DE, EN, FR, IT.
 - **Resultate:** nur in `slides/elections-results.js`. Anleitung: `docs/runbook-elections.md`.
 
@@ -23,7 +24,8 @@ Stand 30.10.2026. «Gelesen» heisst: Seite selbst geöffnet, nicht nur aus eine
 | 1. Wahlgang: F. Bolsonaro 47,03 %, Lula 45,16 % | [Câmara](https://www.camara.leg.br/noticias/1313705-lula-e-reeleito-presidente-com-quase-52-dos-votos-validos-no-2o-turno) | ja |
 | Gewählt: Präsidentschaft, 513 Abgeordnete, 54 von 81 Senatssitze, Gouverneure, Parlamente der Bundesstaaten; 50-%-Regel | [Wikipedia](https://en.wikipedia.org/wiki/2026_Brazilian_general_election) | ja |
 | Wahlpflicht für Alphabetisierte von 18 bis 70 | [TSE](https://www.tse.jus.br/comunicacao/noticias/2026/Setembro/faltam-19-dias-saiba-para-quem-o-voto-e-obrigatorio-ou-facultativo) | Suchauszug |
-| Brief vom 28.10., Betrugsbehauptung ohne Belege; PL und Vize-Kandidat anerkennen | [CNN Brasil](https://www.cnnbrasil.com.br/politica/flavio-recua-em-carta-com-teor-golpista-e-se-diz-lider-do-brasil/) | ja |
+| Brief vom 28.10., Betrugsbehauptung, verweist auf die Verlängerung, keine Belege; eigene Kampagne beantragte Verlängerung in drei Staaten; PL und Vize-Kandidat anerkennen | [CNN Brasil](https://www.cnnbrasil.com.br/politica/flavio-recua-em-carta-com-teor-golpista-e-se-diz-lider-do-brasil/) | ja |
+| Kündigt Klage auf Annullierung an (nur Runbook) | [O Liberal](https://www.oliberal.com/eleicoes/flavio-chama-prorrogacao-de-sacanagem-e-diz-que-pedira-anulacao-do-2-turno-1.1186838) | Suchauszug |
 | Verfügung von STF-Richter Zanin, Verlängerung 17 auf 19 Uhr; beide Kandidaturen meldeten Transportprobleme | [TSE, 27.10.](https://www.tse.jus.br/comunicacao/noticias/2026/Outubro/eleicoes-2026-mais-de-34-mil-votos-foram-registrados-apos-as-17h-no-2o-turno) | ja |
 | 34’393 Stimmen nach 17 Uhr | TSE, 27.10., wie oben | ja |
 | Boletim de Urna: gedruckt, Kopie im Wahllokal, QR-Code, mit den offiziellen Daten vergleichbar | [TSE, 24.10.](https://www.tse.jus.br/comunicacao/noticias/2026/Outubro/falta-1-dia-zeresima-e-boletim-de-urna-comprovam-seguranca-da-urna-veja-diferencas) | ja |
@@ -37,7 +39,7 @@ Stand 30.10.2026. «Gelesen» heisst: Seite selbst geöffnet, nicht nur aus eine
 |---|---|---|
 | 250 Sitze, vier Jahre, Proporz, feste Listen, ein Wahlkreis, 3-%-Hürde, Ausnahme Minderheiten | [ODIHR, Preliminary Statement, 26.10.](https://odihr.osce.org/odihr/669165) | ja |
 | 16 Tote in Novi Sad, Nov. 2024; Protest; Forderung nach Neuwahlen ab Mai 2025; Auflösung am 9.9.; Rücktritt Vučić 27.9.; Brnabić amtierend | ODIHR, wie oben | ja |
-| Wahltag positiv in grosser Mehrheit; Chancengleichheit ernsthaft beeinträchtigt; Misstrauen ins Wählerregister; 96 %; Gewaltvorfälle | ODIHR, wie oben | ja |
+| Wahltag positiv in grosser Mehrheit; Chancengleichheit ernsthaft beeinträchtigt; Misstrauen ins Wählerregister; 96 %; Gewaltvorfälle; gemeinsame Mission von ODIHR, OSZE-PV, Europarat-PV und EU-Parlament | ODIHR, wie oben; [Medienmitteilung](https://odihr.osce.org/odihr/669153) | ja |
 | Parteien in Wahlbüros, Zählung im Wahllokal | ODIHR, wie oben | ja |
 | Zwischenstände: 52,54 / 39,29 / Beteiligung 68,78 | [Danas, 26.10.](https://www.danas.rs/vesti/politika/izbori26/rik-rezultati-izbora-izlaznost/), [Al Jazeera](https://www.aljazeera.com/news/2026/10/26/serbia-after-vucic-who-will-be-pm-and-when-will-a-government-be-formed) | ja |
 | Spätere Stände: rund 53 %, rund 39 %, Beteiligung 68,98, Sitze 141/103 | [Wikipedia](https://en.wikipedia.org/wiki/2026_Serbian_parliamentary_election) (zitiert RIK) | ja, nur als «rund» verwendet |

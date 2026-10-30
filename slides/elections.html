@@ -201,7 +201,7 @@
   .fall .card .em{font-size:28px}
   .fall .card .h{font-size:19px;margin-bottom:2px}
   .fall .card .p{font-size:18.5px;line-height:1.36}
-  .src{position:absolute;left:72px;right:72px;bottom:12px;font-size:12.5px;opacity:.7}
+  .src{position:absolute;left:72px;right:72px;bottom:64px;font-size:13.5px;opacity:.7}
   .tagp{display:inline-block;background:#FFD166;color:var(--ink);font-size:14px;font-weight:800;letter-spacing:.05em;
     border-radius:6px;padding:2px 9px;vertical-align:6px;margin-left:8px}
   .slotbox{border:2.5px dashed #FFD166;background:rgba(255,209,102,.13);color:#fff;border-radius:10px;
@@ -274,8 +274,8 @@
   <div class="lede" data-i18n="s2.lede">Brasilien, Serbien, USA: Was eine Wahl entscheidet, und wer dem Resultat glaubt</div>
   <div class="agenda">
     <div class="item"><div class="t" data-i18n="ag.1">Einstieg</div><div class="m">5′</div></div>
-    <div class="item"><div class="t" data-i18n="ag.v">Drei Fälle</div><div class="m">5′</div></div>
-    <div class="item"><div class="t" data-i18n="ag.2">Thema</div><div class="m">7′</div></div>
+    <div class="item"><div class="t" data-i18n="ag.v">Experiment</div><div class="m">5′</div></div>
+    <div class="item"><div class="t" data-i18n="ag.2">Drei Fälle</div><div class="m">7′</div></div>
     <div class="item"><div class="t" data-i18n="ag.3">Diskussion</div><div class="m">5′</div></div>
     <div class="item"><div class="t" data-i18n="ag.4">Take-away</div><div class="m">5′</div></div>
   </div>
@@ -311,9 +311,44 @@
   </div>
 </section>
 
-<!-- 4 · Der Raster (ersetzt die Video-Kurzfassung: drei Fälle statt Video) -->
+<!-- 4 · Live-Experiment (vor den Fällen: die Zettel nennen kein Land) -->
 <section class="slide bg-blue">
-  <div class="kicker" data-i18n="sb.kick">2 — DREI FÄLLE · DER RASTER</div>
+  <div class="kicker" data-i18n="s4.kick">2 — LIVE-EXPERIMENT</div>
+  <h1 style="font-size:60px;margin-bottom:22px" data-i18n="s4.h1">Ein Experiment mit euch</h1>
+  <div class="headline"><small data-i18n="s4.hs">ZWEI ECHTE SYSTEME OHNE LÄNDERNAMEN</small><span data-i18n="s4.head">«Wie sehr vertraust du diesem Resultat?»</span></div>
+  <ol style="font-size:27px;margin-top:22px;line-height:1.4">
+    <li data-i18n="s4.m1">Die Moderation verteilt Zettel: <b>linke</b> Raumhälfte Zettel <b>A</b>, <b>rechte</b> Raumhälfte Zettel <b>B</b>.</li>
+    <li data-i18n="s4.m2">Lies deinen Zettel still. <b>Nicht zeigen.</b></li>
+    <li data-i18n="s4.m3">Zeig mit <b>1–5 Fingern</b>: Wie sehr würdest du diesem Resultat vertrauen?</li>
+  </ol>
+  <div class="lede" style="font-size:24px;margin-top:6px;color:var(--cream)" data-i18n="s4.next">→ Nächste Folie: Welche Länder sind es?</div>
+  <a class="tlink" style="font-size:15px;opacity:.7" href="https://dmatters.org/content/zettel-elections.html" id="sliplink" data-i18n="s4.sl">Zettel zum Ausdrucken</a>
+  <div class="foot">
+    <div class="wordmark" data-i18n="s4.foot">Kein Test, kein richtig oder falsch. Zwei Hälften, zwei Systeme.</div>
+    <div class="metric"><div class="label" data-i18n="t.zeit">Zeit</div><div class="value">5m</div></div>
+  </div>
+</section>
+
+<!-- 5 · Der Check -->
+<section class="slide bg-dark">
+  <div class="kicker" data-i18n="s5.kick">2 — DER CHECK</div>
+  <h1 style="font-size:56px;margin-bottom:20px" data-i18n="s5.h1">A war Brasilien, B die USA</h1>
+  <div class="trio trio3">
+    <div class="postit" style="transform:rotate(-1.5deg)"><b data-i18n="s5.l0">A · Brasilien</b><span data-i18n="s5.t0">Elektronisch, zentral, am selben Abend fertig. Jede Urne ist online prüfbar, Papierstimmen zum Nachzählen gibt es nicht.</span></div>
+    <div class="postit" style="transform:rotate(1deg)"><b data-i18n="s5.l1">B · USA</b><span data-i18n="s5.t1">Viele Regeln, lokale Ämter, fast alles auf Papier. Nachzählen ist möglich, dafür dauert die Ungewissheit Tage bis Wochen.</span></div>
+    <div class="postit" style="transform:rotate(-.5deg)"><b data-i18n="s5.l2">Dazu: Serbien</b><span data-i18n="s5.t2">Papier, gezählt im Wahllokal, Parteien in den Wahlbüros, Beobachter im Raum. Trotzdem: breites Misstrauen ins Wählerregister.</span></div>
+  </div>
+  <div class="facts">
+    <div data-i18n="s5.f1"><b>Prüfbar:</b> Kann jemand von aussen nachrechnen?</div>
+    <div data-i18n="s5.f2"><b>Fair:</b> Waren die Chancen schon vor dem Wahltag gleich?</div>
+    <div data-i18n="s5.f3"><b>Akzeptiert:</b> Anerkennen die Unterlegenen das Resultat?</div>
+  </div>
+  <div class="foot"><div class="wordmark" style="font-size:16px" data-i18n="s5.foot">Quellen: TSE · ODIHR/OSZE · Verified Voting und EAC via Brennan Center · Al Jazeera</div></div>
+</section>
+
+<!-- 6 · Der Raster (drei Fälle statt Video) -->
+<section class="slide bg-blue">
+  <div class="kicker" data-i18n="sb.kick">3 — DREI FÄLLE · DER RASTER</div>
   <h1 style="font-size:60px;margin-bottom:26px" data-i18n="sb.h1">Vier Fragen an jede Wahl</h1>
   <ul class="bul">
     <li><b data-i18n="sb.w">Was</b><span data-i18n="sb.wt">Was entscheidet sie wirklich?</span></li>
@@ -323,11 +358,11 @@
   </ul>
   <div class="foot">
     <div class="wordmark" style="font-size:17px" data-i18n="sb.foot">Stand aller Fakten: 30. Oktober 2026. Quellen: Teilnehmerseite.</div>
-    <div class="metric"><div class="label" data-i18n="t.zeit">Zeit</div><div class="value">5m</div></div>
+    <div class="metric"><div class="label" data-i18n="t.zeit">Zeit</div><div class="value">7m</div></div>
   </div>
 </section>
 
-<!-- 5 · Fall 1: Brasilien -->
+<!-- 7 · Fall 1: Brasilien -->
 <section class="slide bg-dark fall">
   <div class="kicker" data-i18n="br.kick">FALL 1 · BRASILIEN · 4. UND 25. OKTOBER 2026</div>
   <h1 data-i18n="br.h1">Brasilien: Präsidentschaft und Kongress an einem Tag</h1>
@@ -346,14 +381,14 @@
     </div></div>
     <div class="card"><div class="em">🧾</div><div>
       <div class="h" data-i18n="c.4">Wer glaubt dem Resultat?</div>
-      <div class="p" data-i18n="br.4">Das Wahlgericht TSE verkündete das Resultat am Wahlabend. Flávio Bolsonaro spricht von Betrug, ohne Belege vorzulegen. Seine Partei PL anerkennt das Resultat.</div>
+      <div class="p" data-i18n="br.4">Das Wahlgericht TSE verkündete das Resultat am Wahlabend. Flávio Bolsonaro schrieb am 28. Oktober von Wahlbetrug und verweist auf die Verlängerung der Stimmabgabe; laut CNN Brasil nennt der Brief keine Belege. Seine Partei PL anerkennt das Resultat.</div>
     </div></div>
   </div>
   <div class="note" style="font-size:17px;margin-top:12px" data-i18n="br.next">Amtsantritt vorgesehen: 5. Januar 2027.</div>
   <div class="src" data-i18n="br.src">Quellen: TSE · Câmara dos Deputados · CNN Brasil · Stand 30.10.2026</div>
 </section>
 
-<!-- 6 · Fall 2: Serbien. Vorläufige Zahlen, Endresultat im Slot -->
+<!-- 8 · Fall 2: Serbien. Vorläufige Zahlen, Endresultat im Slot -->
 <section class="slide bg-dark fall">
   <div class="kicker" data-i18n="rs.kick">FALL 2 · SERBIEN · 25. OKTOBER 2026</div>
   <h1><span data-i18n="rs.h1">Serbien: Vorgezogene Parlamentswahl</span><span class="tagp" data-slot="rs.tag">⏳</span></h1>
@@ -368,18 +403,18 @@
     </div></div>
     <div class="card"><div class="em">🎯</div><div>
       <div class="h" data-i18n="c.3">Was stand auf dem Spiel?</div>
-      <div class="p" data-i18n="rs.3">Nach dem Vordach-Einsturz in Novi Sad mit 16 Toten (2024) verlangte die Studentenbewegung Neuwahlen. Vorläufig: Studentenliste rund 53 %, Vereintes Serbien (SNS) rund 39 %, Beteiligung rund 69 %.</div>
+      <div class="p" data-i18n="rs.3">Nach dem Vordach-Einsturz in Novi Sad mit 16 Toten (2024) verlangte die Studentenbewegung Neuwahlen. <span data-slot="rs.line"></span></div>
     </div></div>
     <div class="card"><div class="em">🧾</div><div>
       <div class="h" data-i18n="c.4">Wer glaubt dem Resultat?</div>
-      <div class="p" data-i18n="rs.4">Vučić anerkannte die Niederlage in der Wahlnacht. Die OSZE-geführte Mission bewertet den Wahltag grösstenteils positiv, nennt die Chancengleichheit im Wahlkampf aber ernsthaft beeinträchtigt. In 53 Wahllokalen ist die Wiederholung auf den 1. November angesetzt.</div>
+      <div class="p" data-i18n="rs.4">Vučić anerkannte die Niederlage in der Wahlnacht. Die internationale Beobachtungsmission (OSZE, Europarat, EU-Parlament) bewertet den Wahltag grösstenteils positiv, nennt die Chancengleichheit im Wahlkampf aber ernsthaft beeinträchtigt. In 53 Wahllokalen ist die Wiederholung auf den 1. November angesetzt.</div>
     </div></div>
   </div>
-  <div class="slotbox" data-slot="rs.final"><b>⏳ SLOT</b></div>
+  <div class="slotbox" data-slot="rs.final"><b>⏳</b></div>
   <div class="src" data-i18n="rs.src">Quellen: ODIHR/OSZE · Wahlkommission RIK (über RTS, Danas) · Reuters · Stand 30.10.2026</div>
 </section>
 
-<!-- 7 · Fall 3: USA. KEIN Resultat auf dieser Folie, nur Slots -->
+<!-- 9 · Fall 3: USA. KEIN Resultat auf dieser Folie, nur Slots -->
 <section class="slide bg-dark fall">
   <div class="kicker" data-i18n="us.kick">FALL 3 · USA · 3. NOVEMBER 2026</div>
   <h1><span data-i18n="us.h1">USA: Halbzeit im Kongress</span><span class="tagp" data-slot="us.tag">⏳</span></h1>
@@ -390,11 +425,11 @@
     </div></div>
     <div class="card"><div class="em">⚙️</div><div>
       <div class="h" data-i18n="c.2">Wie funktioniert sie?</div>
-      <div class="p" data-i18n="us.2">Jeder Gliedstaat hat eigene Regeln, mehrere zeichneten ihre Wahlkreise neu. Postwahl-Fristen legen die Staaten fest; das Oberste Gericht bestätigte das im Juni 2026.</div>
+      <div class="p" data-i18n="us.2">Jeder Gliedstaat hat eigene Regeln, mehrere zeichneten ihre Wahlkreise neu. Im Juni 2026 entschied das Oberste Gericht 5 zu 4: Staaten dürfen rechtzeitig abgeschickte Post-Stimmen zählen, die nach dem Wahltag eintreffen.</div>
     </div></div>
     <div class="card"><div class="em">🎯</div><div>
       <div class="h" data-i18n="c.3u">Was steht auf dem Spiel?</div>
-      <div class="p" data-i18n="us.3">Wer die Gesetze prägt. Vor der Wahl: Republikaner 218, Demokraten 214 im Haus; Republikaner 53, Demokraten inkl. Unabhängige 47 im Senat. Mehrheit: 218 und 51.</div>
+      <div class="p" data-i18n="us.3">Wer die Gesetze prägt. Vor der Wahl im Haus: Demokraten 214, Republikaner 218, 1 Unabhängiger, 2 vakant. Im Senat: Demokraten mit 2 Unabhängigen 47, Republikaner 53. Mehrheit: 218 und 51.</div>
     </div></div>
     <div class="card"><div class="em">🧾</div><div>
       <div class="h" data-i18n="c.4">Wer glaubt dem Resultat?</div>
@@ -402,62 +437,27 @@
     </div></div>
   </div>
   <div class="slotrow">
-    <div class="slotbox" data-slot="us.house"><b>⏳ SLOT</b></div>
-    <div class="slotbox" data-slot="us.senate"><b>⏳ SLOT</b></div>
-    <div class="slotbox" data-slot="us.governors"><b>⏳ SLOT</b></div>
+    <div class="slotbox" data-slot="us.house"><b>⏳</b></div>
+    <div class="slotbox" data-slot="us.senate"><b>⏳</b></div>
+    <div class="slotbox" data-slot="us.governors"><b>⏳</b></div>
   </div>
   <div class="slotstamp" data-slot="us.stamp"></div>
   <div class="src" data-i18n="us.src">Quellen: Clerk of the House · Al Jazeera · Votebeat · Ballotpedia · Stand 30.10.2026</div>
 </section>
 
-<!-- 8 · Thema: Live-Experiment -->
-<section class="slide bg-blue">
-  <div class="kicker" data-i18n="s4.kick">3 — THEMA · LIVE-EXPERIMENT</div>
-  <h1 style="font-size:60px;margin-bottom:22px" data-i18n="s4.h1">Ein Experiment mit euch</h1>
-  <div class="headline"><small data-i18n="s4.hs">ZWEI ECHTE SYSTEME OHNE LÄNDERNAMEN</small><span data-i18n="s4.head">«Wie sehr vertraust du diesem Resultat?»</span></div>
-  <ol style="font-size:27px;margin-top:22px;line-height:1.4">
-    <li data-i18n="s4.m1">Die Moderation verteilt Zettel: <b>linke</b> Raumhälfte Zettel <b>A</b>, <b>rechte</b> Raumhälfte Zettel <b>B</b>.</li>
-    <li data-i18n="s4.m2">Lies deinen Zettel still. <b>Nicht zeigen.</b></li>
-    <li data-i18n="s4.m3">Zeig mit <b>1–5 Fingern</b>: Wie sehr würdest du diesem Resultat vertrauen?</li>
-  </ol>
-  <div class="lede" style="font-size:24px;margin-top:6px;color:var(--cream)" data-i18n="s4.next">→ Nächste Folie: Welche Länder sind es?</div>
-  <a class="tlink" style="font-size:15px;opacity:.7" href="https://dmatters.org/content/zettel-elections.html" id="sliplink" data-i18n="s4.sl">Zettel zum Ausdrucken</a>
-  <div class="foot">
-    <div class="wordmark" data-i18n="s4.foot">Kein Test, kein richtig oder falsch. Zwei Hälften, zwei Systeme.</div>
-    <div class="metric"><div class="label" data-i18n="t.zeit">Zeit</div><div class="value">7m</div></div>
-  </div>
-</section>
-
-<!-- 9 · Thema: Der Check -->
-<section class="slide bg-dark">
-  <div class="kicker" data-i18n="s5.kick">3 — THEMA · DER CHECK</div>
-  <h1 style="font-size:56px;margin-bottom:20px" data-i18n="s5.h1">A war Brasilien, B die USA</h1>
-  <div class="trio trio3">
-    <div class="postit" style="transform:rotate(-1.5deg)"><b data-i18n="s5.l0">A · Brasilien</b><span data-i18n="s5.t0">Elektronisch, zentral, am selben Abend fertig. Jede Urne ist online prüfbar, Papierstimmen zum Nachzählen gibt es nicht.</span></div>
-    <div class="postit" style="transform:rotate(1deg)"><b data-i18n="s5.l1">B · USA</b><span data-i18n="s5.t1">Viele Regeln, lokale Ämter, fast alles auf Papier. Nachzählen ist möglich, dafür dauert die Ungewissheit Tage bis Wochen.</span></div>
-    <div class="postit" style="transform:rotate(-.5deg)"><b data-i18n="s5.l2">Dazu: Serbien</b><span data-i18n="s5.t2">Papier, gezählt im Wahllokal, Parteien in den Wahlbüros, Beobachter im Raum. Trotzdem: breites Misstrauen ins Wählerregister.</span></div>
-  </div>
-  <div class="facts">
-    <div data-i18n="s5.f1"><b>Prüfbar:</b> Kann jemand von aussen nachrechnen?</div>
-    <div data-i18n="s5.f2"><b>Fair:</b> Waren die Chancen schon vor dem Wahltag gleich?</div>
-    <div data-i18n="s5.f3"><b>Akzeptiert:</b> Anerkennen die Unterlegenen das Resultat?</div>
-  </div>
-  <div class="foot"><div class="wordmark" style="font-size:16px" data-i18n="s5.foot">Quellen: TSE · ODIHR/OSZE · Verified Voting und EAC via Brennan Center · Al Jazeera</div></div>
-</section>
-
 <!-- 10 · Thema: Und wir? (Info, keine Übung) -->
 <section class="slide bg-cream">
-  <div class="kicker" data-i18n="s7.kick">3 — THEMA · UND DIE SCHWEIZ?</div>
+  <div class="kicker" data-i18n="s7.kick">3 — UND DIE SCHWEIZ?</div>
   <h1 style="color:var(--ink);font-size:52px;margin-bottom:18px" data-i18n="s7.h1">Bei uns hängt weniger an einem Tag</h1>
   <div class="res">
     <div><span class="cl" data-i18n="s7.al">WÄHLEN</span><div class="h" data-i18n="s7.ah">Wir wählen das Parlament, nicht die Regierung.</div><div class="p" data-i18n="s7.ap">Den Bundesrat wählt die Bundesversammlung. Die nächsten eidgenössischen Wahlen sind am 24. Oktober 2027.</div></div>
     <div style="background:#2f6f66"><span class="cl" data-i18n="s7.cl">ABSTIMMEN</span><div class="h" data-i18n="s7.ch">Zwischen den Wahlen entscheiden wir mit.</div><div class="p" data-i18n="s7.cp">Bis zu viermal im Jahr. 50’000 Unterschriften für ein Referendum, 100’000 für eine Initiative. Nächster Termin: 29. November 2026.</div></div>
   </div>
   <div class="trust">
-    <div class="cell"><b data-i18n="s7.t0">BETEILIGUNG · BRASILIEN</b><span>80,8 %</span><small data-i18n="s7.t0s">Stichwahl, mit Wahlpflicht</small></div>
-    <div class="cell"><b data-i18n="s7.t1">SERBIEN</b><span data-i18n="s7.t1v">rund 69 %</span><small data-i18n="s7.t1s">vorläufig</small></div>
-    <div class="cell"><b data-i18n="s7.t2">SCHWEIZ</b><span>46,6 %</span><small data-i18n="s7.t2s">Nationalrat 2023</small></div>
-    <div class="cell"><b data-i18n="s7.t3">USA · MIDTERMS</b><span data-slot="us.turnout">⏳ SLOT</span><small data-i18n="s7.t3s">Schnitt seit 1944: rund 42 %</small></div>
+    <div class="cell"><b data-i18n="s7.t0">BETEILIGUNG · BRASILIEN</b><span data-i18n="s7.t0v">80,8 %</span><small data-i18n="s7.t0s">Stichwahl, mit Wahlpflicht</small></div>
+    <div class="cell"><b data-i18n="s7.t1">SERBIEN</b><span data-slot="rs.turnoutCell">⏳</span><small data-slot="rs.turnoutNote">⏳</small></div>
+    <div class="cell"><b data-i18n="s7.t2">SCHWEIZ</b><span data-i18n="s7.t2v">46,6 %</span><small data-i18n="s7.t2s">Nationalrat 2023</small></div>
+    <div class="cell"><b data-i18n="s7.t3">USA · MIDTERMS</b><span data-slot="us.turnout">⏳</span><small data-i18n="s7.t3s">Schnitt seit 1944: rund 42 %</small></div>
   </div>
   <div class="postit" style="margin-top:14px;max-width:1040px;font-size:18px;padding:11px 20px;transform:rotate(-.6deg)" data-i18n="s7.punch">Auch bei uns: 2023 publizierte das BFS falsche Parteistärken und korrigierte sie drei Tage später. Die Sitze blieben gleich.</div>
 </section>
@@ -536,10 +536,10 @@
     <span data-i18n="s11.qr">Regie aufs Handy</span></div>
   <h1 style="font-size:56px" data-i18n="s11.h1">Regie</h1>
   <table class="regie">
-    <tr><td data-i18n="s11.r0t">vorher</td><td data-i18n="s11.r0">Zettel <a href="https://dmatters.org/content/zettel-elections.html">ausdrucken</a> und zuschneiden (A links, B rechts). Ohne Zettel: A der linken Hälfte vorlesen, die rechte schliesst die Augen, dann umgekehrt. Slots prüfen: Sind USA und Serbien eingetragen?</td></tr>
+    <tr><td data-i18n="s11.r0t">vorher</td><td data-i18n="s11.r0">Zettel <a href="https://dmatters.org/content/zettel-elections.html">ausdrucken</a> und zuschneiden (A links, B rechts). Ohne Zettel: A der linken Hälfte vorlesen, die rechte schliesst die Augen, dann umgekehrt. Prüfen: Sind die Resultate USA und Serbien eingetragen?</td></tr>
     <tr><td>15:00 (5′)</td><td data-i18n="s11.r1"><b>Einstieg</b> — QR-Folie, <a href="https://dmatters.org/?session=elections&amp;host=1">Beamer-Ansicht öffnen</a>, 3 Fragen spielen. Erklärungen zeigt die App.</td></tr>
-    <tr><td>15:05 (5′)</td><td data-i18n="s11.r2"><b>Drei Fälle</b> — Raster, dann Brasilien, Serbien, USA, je gut eine Minute. Nur Karte «Wer glaubt dem Resultat?» ganz vorlesen.</td></tr>
-    <tr><td>15:10 (7′)</td><td data-i18n="s11.r3"><b>Thema</b> — Live-Experiment (Zettel, still lesen, 1–5 Finger), Check-Folie, dann «Und die Schweiz?» als Info.</td></tr>
+    <tr><td>15:05 (5′)</td><td data-i18n="s11.r2"><b>Experiment</b> — Zettel, still lesen, 1–5 Finger, dann die Check-Folie: Welche Länder waren es?</td></tr>
+    <tr><td>15:10 (7′)</td><td data-i18n="s11.r3"><b>Drei Fälle</b> — Raster, dann Brasilien, Serbien, USA, je knapp zwei Minuten, zuletzt die Schweiz als Info. Nur die Karte «Wer glaubt dem Resultat?» ganz vorlesen.</td></tr>
     <tr><td>15:17 (5′)</td><td data-i18n="s11.r4"><b>Diskussion</b> — offene Runde, keine Gruppenaufgabe. Die Moderation nimmt keine Seite und bewertet keine Kandidierenden.</td></tr>
     <tr><td>15:22 (5′)</td><td data-i18n="s11.r5"><b>Take-away</b> — Kit, Bottom Line in die Master Checklist, Civics-Stern ★. Nie streichen. Dann Puffer, Runde.</td></tr>
   </table>
@@ -563,48 +563,48 @@
     's1.slotbt':'2 · The round','s10b.title':'The round','s1.chip':'TODAY +★','s1.slota':'Elections — the sprint','s1.slotb':'Discussion &amp; wind-down',
     's1.foot':'Fri, 6 November 2026 · 3 PM · Room C2, Impact Hub · Members and guests welcome',
     's2.h1':'Elections','s2.lede':'Brazil, Serbia, USA: what an election decides, and who believes the result',
-    'ag.1':'Warm-up','ag.v':'Three cases','ag.2':'Topic','ag.3':'Discussion','ag.4':'Take-away',
+    'ag.1':'Warm-up','ag.v':'Experiment','ag.2':'Three cases','ag.3':'Discussion','ag.4':'Take-away',
     's2.why':'<b>Why this topic?</b> Within 30 days, Brazil, Serbia and the USA all vote. Same word, very different decisions. And the same question everywhere: who believes the result?',
     's3.kick':'1 — WARM-UP','s3.h1':'Phones out','s3.lede':'Scan the QR, enter a name — three questions, everyone at once.',
     's3.l1':'Join — if the QR code acts up','s3.l2':'Open the beamer view →','s3.l2s':'Host: starts the game and shows questions, answers, leaderboard',
     's3.foot':'After each question: answer + explanation — the app does that.',
     't.start':'▶ Start timer','t.zeit':'Time',
-    'sb.kick':'2 — THREE CASES · THE GRID','sb.h1':'Four questions for any election','sb.w':'What','sb.wt':'What does it really decide?','sb.h':'How','sb.ht':'What rules does it run on?','sb.q':'Stakes','sb.qt':'What is at stake?','sb.l':'Trust','sb.lt':'Who believes the result, and why?','sb.foot':'All facts as of 30 October 2026. Sources: participant page.',
+    'sb.kick':'3 — THREE CASES · THE GRID','sb.h1':'Four questions for any election','sb.w':'What','sb.wt':'What does it really decide?','sb.h':'How','sb.ht':'What rules does it run on?','sb.q':'Stakes','sb.qt':'What is at stake?','sb.l':'Trust','sb.lt':'Who believes the result, and why?','sb.foot':'All facts as of 30 October 2026. Sources: participant page.',
     'c.1':'What does it decide?','c.2':'How does it work?','c.3':'What was at stake?','c.3u':'What is at stake?','c.4':'Who believes the result?',
     'br.kick':'CASE 1 · BRAZIL · 4 AND 25 OCTOBER 2026','br.h1':'Brazil: presidency and Congress on one day',
     'br.1':'The presidency, all 513 seats in the Chamber of Deputies, 54 of 81 Senate seats, governors and state parliaments.',
     'br.2':'Presidency: more than 50% of valid votes, otherwise a runoff. Voting is compulsory for most adults. People vote on electronic machines.',
     'br.3':'Who runs the country. First round: Flávio Bolsonaro 47.03%, Lula 45.16%. Runoff: Lula 51.79%, Bolsonaro 48.21%. Turnout 80.8%.',
-    'br.4':'The electoral court TSE announced the result on election night. Flávio Bolsonaro speaks of fraud without presenting evidence. His party, the PL, recognises the result.',
+    'br.4':'The electoral court TSE announced the result on election night. On 28 October Flávio Bolsonaro wrote of electoral fraud, pointing to the extended voting hours; according to CNN Brasil the letter offers no evidence. His party, the PL, recognises the result.',
     'br.next':'Inauguration scheduled: 5 January 2027.','br.src':'Sources: TSE · Câmara dos Deputados · CNN Brasil · as of 30 Oct 2026',
     'rs.kick':'CASE 2 · SERBIA · 25 OCTOBER 2026','rs.h1':'Serbia: early parliamentary election',
     'rs.1':'All 250 seats in parliament. With 126 seats a list has the majority, and parliament settles the government. The presidency is elected separately, by 27 December at the latest.',
     'rs.2':'Proportional representation with closed lists; the whole country is one constituency. A 3% threshold applies, except for national minority lists.',
-    'rs.3':'After the canopy collapse in Novi Sad that killed 16 (2024), the student movement demanded early elections. Preliminary: Student List about 53%, United Serbia (SNS) about 39%, turnout about 69%.',
-    'rs.4':'Vučić conceded on election night. The OSCE-led mission rates election day mostly positively but calls equal campaign opportunities seriously compromised. A repeat vote is set for 1 November at 53 polling stations.',
+    'rs.3':'After the canopy collapse in Novi Sad that killed 16 (2024), the student movement demanded early elections. <span data-slot="rs.line"></span>',
+    'rs.4':'Vučić conceded on election night. The international observation mission (OSCE, Council of Europe, European Parliament) rates election day mostly positively but calls equal campaign opportunities seriously compromised. A repeat vote is set for 1 November at 53 polling stations.',
     'rs.src':'Sources: ODIHR/OSCE · electoral commission RIK (via RTS, Danas) · Reuters · as of 30 Oct 2026',
     'us.kick':'CASE 3 · USA · 3 NOVEMBER 2026','us.h1':'USA: Congress at half-time',
     'us.1':'Congress, not the presidency: all 435 House seats, 35 of 100 Senate seats, plus 36 governors.',
-    'us.2':'Each state has its own rules, and several redrew their districts. States set mail-ballot deadlines; the Supreme Court confirmed that in June 2026.',
-    'us.3':'Who shapes the laws. Before the vote: House, Republicans 218, Democrats 214; Senate, Republicans 53, Democrats incl. independents 47. Majority: 218 and 51.',
+    'us.2':'Each state has its own rules, and several redrew their districts. In June 2026 the Supreme Court ruled 5–4 that states may count mail ballots sent in time that arrive after Election Day.',
+    'us.3':'Who shapes the laws. Before the vote, House: Democrats 214, Republicans 218, 1 independent, 2 vacant. Senate: Democrats with 2 independents 47, Republicans 53. Majority: 218 and 51.',
     'us.4':'Open. One night is not enough: the count takes days to weeks, and early tallies can mislead. Georgia may hold a Senate runoff on 1 December.',
     'us.src':'Sources: Clerk of the House · Al Jazeera · Votebeat · Ballotpedia · as of 30 Oct 2026',
-    's4.sl':'Slips to print','s4.kick':'3 — TOPIC · LIVE EXPERIMENT','s4.h1':'An experiment with you','s4.hs':'TWO REAL SYSTEMS, NO COUNTRY NAMES',
+    's4.sl':'Slips to print','s4.kick':'2 — LIVE EXPERIMENT','s4.h1':'An experiment with you','s4.hs':'TWO REAL SYSTEMS, NO COUNTRY NAMES',
     's4.head':'“How much do you trust this result?”',
     's4.m1':'The moderator hands out slips: <b>left</b> side of the room gets slip <b>A</b>, <b>right</b> side slip <b>B</b>.',
     's4.m2':'Read your slip silently. <b>Don’t show it.</b>',
     's4.m3':'Show with <b>1–5 fingers</b>: how much would you trust this result?','s4.next':'→ Next slide: which countries are they?',
     's4.foot':'Not a test, no right or wrong. Two halves, two systems.',
-    's5.kick':'3 — TOPIC · THE CHECK','s5.h1':'A was Brazil, B the USA',
+    's5.kick':'2 — THE CHECK','s5.h1':'A was Brazil, B the USA',
     's5.l0':'A · Brazil','s5.t0':'Electronic, central, finished the same evening. Each machine can be checked online; there are no paper votes to recount.',
     's5.l1':'B · USA','s5.t1':'Many rules, local offices, nearly all on paper. Recounts are possible, but the uncertainty lasts days to weeks.',
     's5.l2':'Plus: Serbia','s5.t2':'Paper, counted at the polling station, parties on the polling boards, observers in the room. Still: widespread distrust of the voter register.',
     's5.f1':'<b>Checkable:</b> can someone outside recalculate it?','s5.f2':'<b>Fair:</b> were the chances equal before election day?','s5.f3':'<b>Accepted:</b> do the losers recognise the result?',
     's5.foot':'Sources: TSE · ODIHR/OSCE · Verified Voting and EAC via Brennan Center · Al Jazeera',
-    's7.kick':'3 — TOPIC · AND SWITZERLAND?','s7.h1':'Here, less hangs on a single day',
+    's7.kick':'3 — AND SWITZERLAND?','s7.h1':'Here, less hangs on a single day',
     's7.al':'ELECTING','s7.ah':'We elect parliament, not the government.','s7.ap':'The Federal Council is elected by the Federal Assembly. The next federal elections are on 24 October 2027.',
     's7.cl':'VOTING','s7.ch':'Between elections, we decide too.','s7.cp':'Up to four times a year. 50,000 signatures for a referendum, 100,000 for an initiative. Next date: 29 November 2026.',
-    's7.t0':'TURNOUT · BRAZIL','s7.t0s':'runoff, voting compulsory','s7.t1':'SERBIA','s7.t1v':'about 69%','s7.t1s':'preliminary','s7.t2':'SWITZERLAND','s7.t2s':'National Council 2023','s7.t3':'USA · MIDTERMS','s7.t3s':'average since 1944: about 42%',
+    's7.t0':'TURNOUT · BRAZIL','s7.t0v':'80.8%','s7.t2v':'46.6%','s7.t0s':'runoff, voting compulsory','s7.t1':'SERBIA','s7.t2':'SWITZERLAND','s7.t2s':'National Council 2023','s7.t3':'USA · MIDTERMS','s7.t3s':'average since 1944: about 42%',
     's7.punch':'Here too: in 2023 the Federal Statistical Office published wrong party shares and corrected them three days later. The seats stayed the same.',
     's6.kick':'4 — OPEN DISCUSSION','s6.h1':'What do you think?',
     's6.m1':'💬 What builds more trust for you: fast and central, or slow and decentralised?',
@@ -620,10 +620,10 @@
     's10.body':'The Learning Loop — design &amp; concept of the gamified workshop format',
     's10.cap':'Slides, quiz &amp; star — everything to revisit',
     's11.qr':'Run sheet on your phone','s11.kick':'FOR THE MODERATOR','s11.h1':'Run sheet',
-    's11.r0t':'before','s11.r0':'<a href="https://dmatters.org/content/zettel-elections.html?lang=en">Print</a> and cut the slips (A left, B right). No slips: read A to the left half while the right half closes their eyes, then the reverse. Check the slots: are USA and Serbia filled in?',
+    's11.r0t':'before','s11.r0':'<a href="https://dmatters.org/content/zettel-elections.html?lang=en">Print</a> and cut the slips (A left, B right). No slips: read A to the left half while the right half closes their eyes, then the reverse. Check: are the USA and Serbia results entered?',
     's11.r1':'<b>Warm-up</b> — QR slide, <a href="https://dmatters.org/?session=elections&amp;host=1">open the beamer view</a>, play the 3 questions. The app shows the explanations.',
-    's11.r2':'<b>Three cases</b> — the grid, then Brazil, Serbia, USA, just over a minute each. Read only the “Who believes the result?” card in full.',
-    's11.r3':'<b>Topic</b> — live experiment (slips, read silently, 1–5 fingers), check slide, then “And Switzerland?” as information.',
+    's11.r2':'<b>Experiment</b> — slips, read silently, 1–5 fingers, then the check slide: which countries were they?',
+    's11.r3':'<b>Three cases</b> — the grid, then Brazil, Serbia, USA, just under two minutes each, Switzerland last as information. Read only the “Who believes the result?” card in full.',
     's11.r4':'<b>Discussion</b> — open round, no group task. The moderator takes no side and rates no candidate.',
     's11.r5':'<b>Take-away</b> — kit, bottom line onto the Master Checklist, Civics star ★. Never cut. Then buffer, the round.',
     's11.foot':'Details: docs/runbook-elections.md · To revisit:'
@@ -634,48 +634,48 @@
     's1.slotbt':'2 · La ronde','s10b.title':'La ronde','s1.chip':'AUJOURD’HUI +★','s1.slota':'Élections — le sprint','s1.slotb':'Discussion &amp; clôture',
     's1.foot':'Ven. 6 novembre 2026 · 15:00 · Salle C2, Impact Hub · Membres et invités bienvenus',
     's2.h1':'Élections','s2.lede':'Brésil, Serbie, États-Unis : ce qu’une élection décide, et qui croit le résultat',
-    'ag.1':'Intro','ag.v':'Trois cas','ag.2':'Thème','ag.3':'Discussion','ag.4':'À retenir',
+    'ag.1':'Intro','ag.v':'Expérience','ag.2':'Trois cas','ag.3':'Discussion','ag.4':'À retenir',
     's2.why':'<b>Pourquoi ce thème ?</b> En 30 jours, le Brésil, la Serbie et les États-Unis votent. Même mot, décisions très différentes. Et partout la même question : qui croit le résultat ?',
     's3.kick':'1 — INTRO','s3.h1':'Sortez vos téléphones','s3.lede':'Scannez le QR, entrez un nom — trois questions, tous en même temps.',
     's3.l1':'Participer — si le code QR fait des siennes','s3.l2':'Ouvrir la vue beamer →','s3.l2s':'Modération : lance le jeu et affiche questions, réponses, classement',
     's3.foot':'Après chaque question : réponse + explication — l’app s’en charge.',
     't.start':'▶ Lancer le timer','t.zeit':'Temps',
-    'sb.kick':'2 — TROIS CAS · LA GRILLE','sb.h1':'Quatre questions à toute élection','sb.w':'Quoi','sb.wt':'Que décide-t-elle vraiment ?','sb.h':'Comment','sb.ht':'Selon quelles règles ?','sb.q':'Enjeu','sb.qt':'Qu’est-ce qui est en jeu ?','sb.l':'Confiance','sb.lt':'Qui croit le résultat, et pourquoi ?','sb.foot':'Tous les faits au 30 octobre 2026. Sources : page des participants.',
+    'sb.kick':'3 — TROIS CAS · LA GRILLE','sb.h1':'Quatre questions à toute élection','sb.w':'Quoi','sb.wt':'Que décide-t-elle vraiment ?','sb.h':'Comment','sb.ht':'Selon quelles règles ?','sb.q':'Enjeu','sb.qt':'Qu’est-ce qui est en jeu ?','sb.l':'Confiance','sb.lt':'Qui croit le résultat, et pourquoi ?','sb.foot':'Tous les faits au 30 octobre 2026. Sources : page des participants.',
     'c.1':'Que décide-t-elle ?','c.2':'Comment ça marche ?','c.3':'Quel était l’enjeu ?','c.3u':'Quel est l’enjeu ?','c.4':'Qui croit le résultat ?',
     'br.kick':'CAS 1 · BRÉSIL · 4 ET 25 OCTOBRE 2026','br.h1':'Brésil : présidence et Congrès le même jour',
     'br.1':'La présidence, les 513 sièges de la Chambre des députés, 54 des 81 sièges du Sénat, les gouverneurs et les parlements des États.',
     'br.2':'Présidence : plus de 50 % des suffrages valables, sinon un second tour. Le vote est obligatoire pour la plupart des adultes. On vote sur des urnes électroniques.',
     'br.3':'Qui dirige le pays. 1er tour : Flávio Bolsonaro 47,03 %, Lula 45,16 %. Second tour : Lula 51,79 %, Bolsonaro 48,21 %. Participation 80,8 %.',
-    'br.4':'Le tribunal électoral TSE a annoncé le résultat le soir du vote. Flávio Bolsonaro parle de fraude sans présenter de preuves. Son parti, le PL, reconnaît le résultat.',
+    'br.4':'Le tribunal électoral TSE a annoncé le résultat le soir du vote. Le 28 octobre, Flávio Bolsonaro a écrit à propos d’une fraude électorale, en invoquant la prolongation du vote ; selon CNN Brasil, la lettre n’apporte aucune preuve. Son parti, le PL, reconnaît le résultat.',
     'br.next':'Entrée en fonction prévue : 5 janvier 2027.','br.src':'Sources : TSE · Câmara dos Deputados · CNN Brasil · état au 30.10.2026',
     'rs.kick':'CAS 2 · SERBIE · 25 OCTOBRE 2026','rs.h1':'Serbie : législatives anticipées',
     'rs.1':'Les 250 sièges du parlement. Avec 126 sièges, une liste a la majorité, et le parlement décide du gouvernement. La présidence est élue à part, au plus tard le 27 décembre.',
     'rs.2':'Proportionnelle à listes bloquées, le pays forme une seule circonscription. Un seuil de 3 % s’applique, sauf pour les listes de minorités nationales.',
-    'rs.3':'Après l’effondrement de l’auvent de Novi Sad, 16 morts (2024), le mouvement étudiant a exigé des élections anticipées. Provisoire : Liste étudiante env. 53 %, Serbie unie (SNS) env. 39 %, participation env. 69 %.',
-    'rs.4':'Vučić a reconnu sa défaite le soir du vote. La mission conduite par l’OSCE juge le jour du vote plutôt positif, mais l’égalité des chances gravement compromise. Un nouveau vote est fixé au 1er novembre dans 53 bureaux.',
+    'rs.3':'Après l’effondrement de l’auvent de Novi Sad, 16 morts (2024), le mouvement étudiant a exigé des élections anticipées. <span data-slot="rs.line"></span>',
+    'rs.4':'Vučić a reconnu sa défaite le soir du vote. La mission internationale d’observation (OSCE, Conseil de l’Europe, Parlement européen) juge le jour du vote plutôt positif, mais l’égalité des chances gravement compromise. Un nouveau vote est fixé au 1er novembre dans 53 bureaux.',
     'rs.src':'Sources : BIDDH/OSCE · commission électorale RIK (via RTS, Danas) · Reuters · état au 30.10.2026',
     'us.kick':'CAS 3 · ÉTATS-UNIS · 3 NOVEMBRE 2026','us.h1':'États-Unis : le Congrès à mi-mandat',
     'us.1':'Le Congrès, pas la présidence : les 435 sièges de la Chambre, 35 des 100 sièges du Sénat, plus 36 gouverneurs.',
-    'us.2':'Chaque État a ses règles, plusieurs ont redessiné leurs circonscriptions. Les États fixent les délais du vote postal ; la Cour suprême l’a confirmé en juin 2026.',
-    'us.3':'Qui façonne les lois. Avant le vote : Chambre, républicains 218, démocrates 214 ; Sénat, républicains 53, démocrates avec indépendants 47. Majorité : 218 et 51.',
+    'us.2':'Chaque État a ses règles, plusieurs ont redessiné leurs circonscriptions. En juin 2026, la Cour suprême a jugé par 5 voix contre 4 que les États peuvent compter les votes postaux envoyés à temps et arrivés après le jour du scrutin.',
+    'us.3':'Qui façonne les lois. Avant le vote, Chambre : démocrates 214, républicains 218, 1 indépendant, 2 vacants. Sénat : démocrates avec 2 indépendants 47, républicains 53. Majorité : 218 et 51.',
     'us.4':'Ouvert. Une nuit ne suffit pas : le décompte prend des jours, voire des semaines, et les premiers chiffres peuvent tromper. La Géorgie aura peut-être un second tour au Sénat le 1er décembre.',
     'us.src':'Sources : Clerk of the House · Al Jazeera · Votebeat · Ballotpedia · état au 30.10.2026',
-    's4.sl':'Billets à imprimer','s4.kick':'3 — THÈME · EXPÉRIENCE EN DIRECT','s4.h1':'Une expérience avec vous','s4.hs':'DEUX SYSTÈMES RÉELS, SANS NOM DE PAYS',
+    's4.sl':'Billets à imprimer','s4.kick':'2 — EXPÉRIENCE EN DIRECT','s4.h1':'Une expérience avec vous','s4.hs':'DEUX SYSTÈMES RÉELS, SANS NOM DE PAYS',
     's4.head':'«Quelle confiance as-tu dans ce résultat ?»',
     's4.m1':'L’animation distribue des billets : côté <b>gauche</b> de la salle billet <b>A</b>, côté <b>droit</b> billet <b>B</b>.',
     's4.m2':'Lis ton billet en silence. <b>Ne le montre pas.</b>',
     's4.m3':'Montre avec <b>1 à 5 doigts</b> : quelle confiance aurais-tu dans ce résultat ?','s4.next':'→ Slide suivante : quels sont ces pays ?',
     's4.foot':'Ni test, ni bonne ou mauvaise réponse. Deux moitiés, deux systèmes.',
-    's5.kick':'3 — THÈME · LE CHECK','s5.h1':'A, c’était le Brésil, B, les États-Unis',
+    's5.kick':'2 — LE CHECK','s5.h1':'A, c’était le Brésil, B, les États-Unis',
     's5.l0':'A · Brésil','s5.t0':'Électronique, central, terminé le soir même. Chaque urne se vérifie en ligne, mais il n’y a pas de bulletins papier à recompter.',
     's5.l1':'B · États-Unis','s5.t1':'Beaucoup de règles, des bureaux locaux, presque tout sur papier. On peut recompter, mais l’incertitude dure des jours, voire des semaines.',
     's5.l2':'En plus : la Serbie','s5.t2':'Papier, décompte au bureau de vote, partis dans les bureaux, observateurs dans la salle. Malgré tout : large méfiance envers le registre électoral.',
     's5.f1':'<b>Vérifiable :</b> quelqu’un d’extérieur peut-il recalculer ?','s5.f2':'<b>Équitable :</b> les chances étaient-elles égales avant le vote ?','s5.f3':'<b>Accepté :</b> les perdants reconnaissent-ils le résultat ?',
     's5.foot':'Sources : TSE · BIDDH/OSCE · Verified Voting et EAC via Brennan Center · Al Jazeera',
-    's7.kick':'3 — THÈME · ET LA SUISSE ?','s7.h1':'Chez nous, moins dépend d’un seul jour',
+    's7.kick':'3 — ET LA SUISSE ?','s7.h1':'Chez nous, moins dépend d’un seul jour',
     's7.al':'ÉLIRE','s7.ah':'Nous élisons le parlement, pas le gouvernement.','s7.ap':'Le Conseil fédéral est élu par l’Assemblée fédérale. Les prochaines élections fédérales ont lieu le 24 octobre 2027.',
     's7.cl':'VOTER','s7.ch':'Entre les élections, nous décidons aussi.','s7.cp':'Jusqu’à quatre fois par an. 50 000 signatures pour un référendum, 100 000 pour une initiative. Prochaine date : 29 novembre 2026.',
-    's7.t0':'PARTICIPATION · BRÉSIL','s7.t0s':'second tour, vote obligatoire','s7.t1':'SERBIE','s7.t1v':'env. 69 %','s7.t1s':'provisoire','s7.t2':'SUISSE','s7.t2s':'Conseil national 2023','s7.t3':'USA · MIDTERMS','s7.t3s':'moyenne depuis 1944 : env. 42 %',
+    's7.t0':'PARTICIPATION · BRÉSIL','s7.t0v':'80,8 %','s7.t2v':'46,6 %','s7.t0s':'second tour, vote obligatoire','s7.t1':'SERBIE','s7.t2':'SUISSE','s7.t2s':'Conseil national 2023','s7.t3':'USA · MIDTERMS','s7.t3s':'moyenne depuis 1944 : env. 42 %',
     's7.punch':'Chez nous aussi : en 2023, l’OFS a publié de fausses forces des partis et les a corrigées trois jours plus tard. Les sièges n’ont pas changé.',
     's6.kick':'4 — DISCUSSION OUVERTE','s6.h1':'Qu’en pensez-vous ?',
     's6.m1':'💬 Qu’est-ce qui vous inspire le plus confiance : rapide et central, ou lent et décentralisé ?',
@@ -691,10 +691,10 @@
     's10.body':'The Learning Loop — design &amp; concept du format d’atelier gamifié',
     's10.cap':'Slides, quiz &amp; étoile — tout pour y revenir',
     's11.qr':'La régie sur le téléphone','s11.kick':'POUR LA MODÉRATION','s11.h1':'Régie',
-    's11.r0t':'avant','s11.r0':'<a href="https://dmatters.org/content/zettel-elections.html?lang=fr">Imprimer</a> et découper les billets (A à gauche, B à droite). Sans billets : lire A à la moitié gauche pendant que la droite ferme les yeux, puis l’inverse. Vérifier les slots : USA et Serbie sont-ils remplis ?',
+    's11.r0t':'avant','s11.r0':'<a href="https://dmatters.org/content/zettel-elections.html?lang=fr">Imprimer</a> et découper les billets (A à gauche, B à droite). Sans billets : lire A à la moitié gauche pendant que la droite ferme les yeux, puis l’inverse. Vérifier : les résultats USA et Serbie sont-ils inscrits ?',
     's11.r1':'<b>Intro</b> — slide QR, <a href="https://dmatters.org/?session=elections&amp;host=1">ouvrir la vue beamer</a>, jouer les 3 questions. L’app affiche les explications.',
-    's11.r2':'<b>Trois cas</b> — la grille, puis Brésil, Serbie, États-Unis, un peu plus d’une minute chacun. Ne lire en entier que la carte «Qui croit le résultat ?».',
-    's11.r3':'<b>Thème</b> — expérience en direct (billets, lire en silence, 1–5 doigts), slide check, puis «Et la Suisse ?» comme information.',
+    's11.r2':'<b>Expérience</b> — billets, lire en silence, 1–5 doigts, puis la slide check : quels étaient ces pays ?',
+    's11.r3':'<b>Trois cas</b> — la grille, puis Brésil, Serbie, États-Unis, un peu moins de deux minutes chacun, la Suisse en dernier comme information. Ne lire en entier que la carte «Qui croit le résultat ?».',
     's11.r4':'<b>Discussion</b> — ronde ouverte, pas de tâche de groupe. L’animation ne prend pas parti et ne juge aucun candidat.',
     's11.r5':'<b>À retenir</b> — kit, bottom line sur la Master Checklist, étoile Civics ★. Ne jamais couper. Puis tampon, la ronde.',
     's11.foot':'Détails : docs/runbook-elections.md · Pour y revenir :'
@@ -705,48 +705,48 @@
     's1.slotbt':'2 · Il giro','s10b.title':'Il giro','s1.chip':'OGGI +★','s1.slota':'Elezioni — lo sprint','s1.slotb':'Discussione &amp; chiusura',
     's1.foot':'Ven. 6 novembre 2026 · 15:00 · Sala C2, Impact Hub · Soci e ospiti benvenuti',
     's2.h1':'Elezioni','s2.lede':'Brasile, Serbia, USA: che cosa decide un’elezione, e chi crede al risultato',
-    'ag.1':'Avvio','ag.v':'Tre casi','ag.2':'Tema','ag.3':'Discussione','ag.4':'Da portare a casa',
+    'ag.1':'Avvio','ag.v':'Esperimento','ag.2':'Tre casi','ag.3':'Discussione','ag.4':'Da portare a casa',
     's2.why':'<b>Perché questo tema?</b> In 30 giorni votano Brasile, Serbia e Stati Uniti. Stessa parola, decisioni molto diverse. E ovunque la stessa domanda: chi crede al risultato?',
     's3.kick':'1 — AVVIO','s3.h1':'Fuori i telefoni','s3.lede':'Scansiona il QR, inserisci un nome — tre domande, tutti insieme.',
     's3.l1':'Partecipa — se il codice QR fa i capricci','s3.l2':'Apri la vista beamer →','s3.l2s':'Moderazione: avvia il gioco e mostra domande, risposte, classifica',
     's3.foot':'Dopo ogni domanda: risposta + spiegazione — ci pensa l’app.',
     't.start':'▶ Avvia il timer','t.zeit':'Tempo',
-    'sb.kick':'2 — TRE CASI · LA GRIGLIA','sb.h1':'Quattro domande per ogni elezione','sb.w':'Cosa','sb.wt':'Che cosa decide davvero?','sb.h':'Come','sb.ht':'Con quali regole si svolge?','sb.q':'Posta','sb.qt':'Che cosa è in gioco?','sb.l':'Fiducia','sb.lt':'Chi crede al risultato, e perché?','sb.foot':'Tutti i fatti al 30 ottobre 2026. Fonti: pagina dei partecipanti.',
+    'sb.kick':'3 — TRE CASI · LA GRIGLIA','sb.h1':'Quattro domande per ogni elezione','sb.w':'Cosa','sb.wt':'Che cosa decide davvero?','sb.h':'Come','sb.ht':'Con quali regole si svolge?','sb.q':'Posta','sb.qt':'Che cosa è in gioco?','sb.l':'Fiducia','sb.lt':'Chi crede al risultato, e perché?','sb.foot':'Tutti i fatti al 30 ottobre 2026. Fonti: pagina dei partecipanti.',
     'c.1':'Che cosa decide?','c.2':'Come funziona?','c.3':'Che cosa era in gioco?','c.3u':'Che cosa è in gioco?','c.4':'Chi crede al risultato?',
     'br.kick':'CASO 1 · BRASILE · 4 E 25 OTTOBRE 2026','br.h1':'Brasile: presidenza e Congresso nello stesso giorno',
     'br.1':'La presidenza, tutti i 513 seggi della Camera dei deputati, 54 degli 81 seggi del Senato, i governatori e i parlamenti degli Stati.',
     'br.2':'Presidenza: oltre il 50 % dei voti validi, altrimenti ballottaggio. Per la maggior parte degli adulti il voto è obbligatorio. Si vota su urne elettroniche.',
     'br.3':'Chi governa il Paese. Primo turno: Flávio Bolsonaro 47,03 %, Lula 45,16 %. Ballottaggio: Lula 51,79 %, Bolsonaro 48,21 %. Affluenza 80,8 %.',
-    'br.4':'Il tribunale elettorale TSE ha annunciato il risultato la sera del voto. Flávio Bolsonaro parla di frode senza presentare prove. Il suo partito, il PL, riconosce il risultato.',
+    'br.4':'Il tribunale elettorale TSE ha annunciato il risultato la sera del voto. Il 28 ottobre Flávio Bolsonaro ha scritto di frode elettorale, richiamando la proroga del voto; secondo CNN Brasil la lettera non porta prove. Il suo partito, il PL, riconosce il risultato.',
     'br.next':'Insediamento previsto: 5 gennaio 2027.','br.src':'Fonti: TSE · Câmara dos Deputados · CNN Brasil · stato al 30.10.2026',
     'rs.kick':'CASO 2 · SERBIA · 25 OTTOBRE 2026','rs.h1':'Serbia: elezioni parlamentari anticipate',
     'rs.1':'Tutti i 250 seggi del parlamento. Con 126 seggi una lista ha la maggioranza, e il parlamento decide il governo. La presidenza si elegge a parte, al più tardi il 27 dicembre.',
     'rs.2':'Proporzionale con liste bloccate, tutto il Paese è un’unica circoscrizione. Vale una soglia del 3 %, tranne per le liste delle minoranze nazionali.',
-    'rs.3':'Dopo il crollo della pensilina di Novi Sad, 16 morti (2024), il movimento studentesco ha chiesto elezioni anticipate. Provvisorio: Lista studentesca circa 53 %, Serbia unita (SNS) circa 39 %, affluenza circa 69 %.',
-    'rs.4':'Vučić ha ammesso la sconfitta la notte del voto. La missione guidata dall’OSCE giudica per lo più positivo il giorno del voto, ma gravemente compromessa la parità di opportunità. In 53 seggi il voto è ripetuto il 1° novembre.',
+    'rs.3':'Dopo il crollo della pensilina di Novi Sad, 16 morti (2024), il movimento studentesco ha chiesto elezioni anticipate. <span data-slot="rs.line"></span>',
+    'rs.4':'Vučić ha ammesso la sconfitta la notte del voto. La missione internazionale di osservazione (OSCE, Consiglio d’Europa, Parlamento europeo) giudica per lo più positivo il giorno del voto, ma gravemente compromessa la parità di opportunità. In 53 seggi il voto è ripetuto il 1° novembre.',
     'rs.src':'Fonti: ODIHR/OSCE · commissione elettorale RIK (via RTS, Danas) · Reuters · stato al 30.10.2026',
     'us.kick':'CASO 3 · USA · 3 NOVEMBRE 2026','us.h1':'USA: il Congresso a metà mandato',
     'us.1':'Il Congresso, non la presidenza: tutti i 435 seggi della Camera, 35 dei 100 del Senato, più 36 governatori.',
-    'us.2':'Ogni Stato ha le sue regole e diversi hanno ridisegnato i collegi. Gli Stati fissano i termini del voto postale; la Corte suprema lo ha confermato nel giugno 2026.',
-    'us.3':'Chi plasma le leggi. Prima del voto: Camera, repubblicani 218, democratici 214; Senato, repubblicani 53, democratici con indipendenti 47. Maggioranza: 218 e 51.',
+    'us.2':'Ogni Stato ha le sue regole e diversi hanno ridisegnato i collegi. Nel giugno 2026 la Corte suprema ha stabilito con 5 voti a 4 che gli Stati possono contare i voti postali spediti in tempo e arrivati dopo il giorno del voto.',
+    'us.3':'Chi plasma le leggi. Prima del voto, Camera: democratici 214, repubblicani 218, 1 indipendente, 2 vacanti. Senato: democratici con 2 indipendenti 47, repubblicani 53. Maggioranza: 218 e 51.',
     'us.4':'Aperto. Una notte non basta: lo spoglio richiede da giorni a settimane e i primi dati possono ingannare. In Georgia può esserci un ballottaggio per il Senato il 1° dicembre.',
     'us.src':'Fonti: Clerk of the House · Al Jazeera · Votebeat · Ballotpedia · stato al 30.10.2026',
-    's4.sl':'Biglietti da stampare','s4.kick':'3 — TEMA · ESPERIMENTO DAL VIVO','s4.h1':'Un esperimento con voi','s4.hs':'DUE SISTEMI REALI, SENZA NOMI DI PAESI',
+    's4.sl':'Biglietti da stampare','s4.kick':'2 — ESPERIMENTO DAL VIVO','s4.h1':'Un esperimento con voi','s4.hs':'DUE SISTEMI REALI, SENZA NOMI DI PAESI',
     's4.head':'«Quanta fiducia hai in questo risultato?»',
     's4.m1':'La moderazione distribuisce i biglietti: lato <b>sinistro</b> della sala biglietto <b>A</b>, lato <b>destro</b> biglietto <b>B</b>.',
     's4.m2':'Leggi il biglietto in silenzio. <b>Non mostrarlo.</b>',
     's4.m3':'Mostra con <b>1–5 dita</b>: quanta fiducia avresti in questo risultato?','s4.next':'→ Prossima slide: quali sono questi Paesi?',
     's4.foot':'Non è un test, non c’è giusto o sbagliato. Due metà, due sistemi.',
-    's5.kick':'3 — TEMA · IL CHECK','s5.h1':'A era il Brasile, B gli Stati Uniti',
+    's5.kick':'2 — IL CHECK','s5.h1':'A era il Brasile, B gli Stati Uniti',
     's5.l0':'A · Brasile','s5.t0':'Elettronico, centrale, finito la sera stessa. Ogni urna è verificabile online, ma non ci sono schede di carta da ricontare.',
     's5.l1':'B · USA','s5.t1':'Molte regole, uffici locali, quasi tutto su carta. Si può ricontare, ma l’incertezza dura da giorni a settimane.',
     's5.l2':'In più: la Serbia','s5.t2':'Carta, conteggio al seggio, partiti nei seggi, osservatori in sala. Eppure: ampia sfiducia nel registro elettorale.',
     's5.f1':'<b>Verificabile:</b> qualcuno dall’esterno può ricalcolare?','s5.f2':'<b>Equo:</b> le opportunità erano pari già prima del voto?','s5.f3':'<b>Accettato:</b> gli sconfitti riconoscono il risultato?',
     's5.foot':'Fonti: TSE · ODIHR/OSCE · Verified Voting ed EAC via Brennan Center · Al Jazeera',
-    's7.kick':'3 — TEMA · E LA SVIZZERA?','s7.h1':'Da noi dipende meno da un solo giorno',
+    's7.kick':'3 — E LA SVIZZERA?','s7.h1':'Da noi dipende meno da un solo giorno',
     's7.al':'ELEGGERE','s7.ah':'Eleggiamo il parlamento, non il governo.','s7.ap':'Il Consiglio federale è eletto dall’Assemblea federale. Le prossime elezioni federali sono il 24 ottobre 2027.',
     's7.cl':'VOTARE','s7.ch':'Tra un’elezione e l’altra decidiamo anche noi.','s7.cp':'Fino a quattro volte l’anno. 50 000 firme per un referendum, 100 000 per un’iniziativa. Prossima data: 29 novembre 2026.',
-    's7.t0':'AFFLUENZA · BRASILE','s7.t0s':'ballottaggio, voto obbligatorio','s7.t1':'SERBIA','s7.t1v':'circa 69 %','s7.t1s':'provvisorio','s7.t2':'SVIZZERA','s7.t2s':'Consiglio nazionale 2023','s7.t3':'USA · MIDTERMS','s7.t3s':'media dal 1944: circa 42 %',
+    's7.t0':'AFFLUENZA · BRASILE','s7.t0v':'80,8 %','s7.t2v':'46,6 %','s7.t0s':'ballottaggio, voto obbligatorio','s7.t1':'SERBIA','s7.t2':'SVIZZERA','s7.t2s':'Consiglio nazionale 2023','s7.t3':'USA · MIDTERMS','s7.t3s':'media dal 1944: circa 42 %',
     's7.punch':'Anche da noi: nel 2023 l’UST ha pubblicato forze dei partiti errate e le ha corrette tre giorni dopo. I seggi non sono cambiati.',
     's6.kick':'4 — DISCUSSIONE APERTA','s6.h1':'Che ne pensate?',
     's6.m1':'💬 Che cosa vi dà più fiducia: veloce e centrale o lento e decentrato?',
@@ -762,10 +762,10 @@
     's10.body':'The Learning Loop — design &amp; concetto del formato di workshop gamificato',
     's10.cap':'Slide, quiz &amp; stella — tutto da rivedere',
     's11.qr':'La regia sul telefono','s11.kick':'PER LA MODERAZIONE','s11.h1':'Regia',
-    's11.r0t':'prima','s11.r0':'<a href="https://dmatters.org/content/zettel-elections.html?lang=it">Stampare</a> e ritagliare i biglietti (A a sinistra, B a destra). Senza biglietti: leggere A alla metà sinistra mentre la destra chiude gli occhi, poi il contrario. Controllare gli slot: USA e Serbia sono compilati?',
+    's11.r0t':'prima','s11.r0':'<a href="https://dmatters.org/content/zettel-elections.html?lang=it">Stampare</a> e ritagliare i biglietti (A a sinistra, B a destra). Senza biglietti: leggere A alla metà sinistra mentre la destra chiude gli occhi, poi il contrario. Controllare: i risultati USA e Serbia sono inseriti?',
     's11.r1':'<b>Avvio</b> — slide QR, <a href="https://dmatters.org/?session=elections&amp;host=1">aprire la vista beamer</a>, giocare le 3 domande. Le spiegazioni le mostra l’app.',
-    's11.r2':'<b>Tre casi</b> — la griglia, poi Brasile, Serbia, USA, poco più di un minuto ciascuno. Leggere per intero solo la scheda «Chi crede al risultato?».',
-    's11.r3':'<b>Tema</b> — esperimento dal vivo (biglietti, lettura in silenzio, 1–5 dita), slide check, poi «E la Svizzera?» come informazione.',
+    's11.r2':'<b>Esperimento</b> — biglietti, lettura in silenzio, 1–5 dita, poi la slide check: quali erano i Paesi?',
+    's11.r3':'<b>Tre casi</b> — la griglia, poi Brasile, Serbia, USA, poco meno di due minuti ciascuno, la Svizzera per ultima come informazione. Leggere per intero solo la scheda «Chi crede al risultato?».',
     's11.r4':'<b>Discussione</b> — giro aperto, nessun compito di gruppo. La moderazione non prende posizione e non giudica i candidati.',
     's11.r5':'<b>Da portare a casa</b> — kit, bottom line sulla Master Checklist, stella Civics ★. Mai tagliare. Poi riserva, il giro.',
     's11.foot':'Dettagli: docs/runbook-elections.md · Da rivedere:'
