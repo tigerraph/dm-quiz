@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="de"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Regie · Wahlen</title>
+<style>
+  @font-face{font-family:'Poppins';font-style:normal;font-weight:400;
+    src:url(../assets/fonts/poppins-400-latin.woff2) format('woff2');font-display:swap}
+  @font-face{font-family:'Poppins';font-style:normal;font-weight:700;
+    src:url(../assets/fonts/poppins-800-latin.woff2) format('woff2');font-display:swap}
+  :root{--ink:#0F1B2A;--bg:#111C2B;--card:#18263A;--line:#2A3A4F;--mint:#5AD1A8;--muted:#9FB0C4}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-text-size-adjust:100%}
+  body{font-family:Poppins,system-ui,sans-serif;background:var(--bg);color:#fff;
+    padding:20px 16px calc(28px + env(safe-area-inset-bottom));line-height:1.5}
+  .kick{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--mint)}
+  h1{font-size:30px;line-height:1.15;margin:6px 0 2px}
+  .sub{font-size:14px;color:var(--muted);margin-bottom:18px}
+  .step{background:var(--card);border-radius:14px;padding:14px 16px;margin-bottom:10px;
+    border:1px solid var(--line)}
+  .t{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
+  .t .clock{font-size:19px;font-weight:700;color:var(--mint);font-variant-numeric:tabular-nums}
+  .t .dur{font-size:13px;color:var(--muted)}
+  .step b{font-size:16px;display:block;margin-bottom:3px}
+  .step p{font-size:14.5px;color:#DCE6F0}
+  .step a{color:var(--mint)}
+  .warn{color:#FFD166;font-weight:700}
+  .links{margin-top:18px;padding-top:14px;border-top:1px solid var(--line);
+    display:flex;flex-direction:column;gap:9px}
+  .links a{color:#fff;background:var(--card);border:1px solid var(--line);border-radius:11px;
+    padding:12px 14px;font-size:15px;font-weight:700;text-decoration:none;display:block}
+  .links a span{display:block;font-weight:400;font-size:13px;color:var(--muted);margin-top:2px}
+  footer{margin-top:20px;font-size:12.5px;color:var(--muted)}
+  .langs{display:flex;gap:6px;margin-bottom:14px}
+  .langs a{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--muted);
+    text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:5px 10px}
+  .langs a[aria-current]{background:var(--mint);color:#0F1B2A;border-color:var(--mint)}
+</style></head><body>
+
+<nav class="langs" aria-label="Sprache">
+  <a href="?lang=de" data-l="de">DE</a><a href="?lang=en" data-l="en">EN</a>
+  <a href="?lang=fr" data-l="fr">FR</a><a href="?lang=it" data-l="it">IT</a>
+</nav>
+<div class="kick" data-i18n="kick">Für die Moderation</div>
+<h1 data-i18n="h1">Regie</h1>
+<div class="sub" data-i18n="sub">Wahlen · Fr, 6. November 2026 · Start 15:00 · Raum C2, Impact Hub · 30 Minuten</div>
+<div class="step"><div class="t"><span class="clock" data-i18n="pre">vorher</span></div>
+  <b data-i18n="s0">Zettel und Slots</b><p data-i18n="p0">Zettel <a href="zettel-elections.html">ausdrucken</a> und zuschneiden (A links, B rechts). Ohne Zettel: A der linken Hälfte vorlesen, die rechte schliesst die Augen, dann umgekehrt. <span class="warn">Slots prüfen: Stehen USA und Serbien drin? Ein offener Slot ist erlaubt: «noch offen» sagen, nie schätzen.</span></p></div>
+<div class="step"><div class="t"><span class="clock">15:00</span><span class="dur" data-i18n="d5">5 Min</span></div>
+  <b data-i18n="s1">Einstieg</b><p data-i18n="p1">QR-Folie zeigen, Beamer-Ansicht öffnen, 3 Fragen spielen.
+  Die Erklärungen zeigt die App selbst.</p></div>
+<div class="step"><div class="t"><span class="clock">15:05</span><span class="dur" data-i18n="d5">5 Min</span></div>
+  <b data-i18n="sv">Drei Fälle</b><p data-i18n="pv">Raster, dann Brasilien, Serbien, USA, je gut eine Minute. Nur die Karte «Wer glaubt dem Resultat?» ganz vorlesen. Kein Video in dieser Session.</p></div>
+<div class="step"><div class="t"><span class="clock">15:10</span><span class="dur" data-i18n="d7">7 Min</span></div>
+  <b data-i18n="s2">Thema</b><p data-i18n="p2">Live-Experiment: Zettel verteilen, still lesen, 1–5 Finger.
+  Check-Folie: A ist Brasilien, B die USA, dazu Serbien. Dann «Und die Schweiz?» als Info, ohne Gruppenauftrag.
+  <span class="warn">Kein Unterschied zwischen den Hälften? Auch gut: Dann liegt es nicht am Verfahren allein.</span></p></div>
+<div class="step"><div class="t"><span class="clock">15:17</span><span class="dur" data-i18n="d5">5 Min</span></div>
+  <b data-i18n="s3">Diskussion</b><p data-i18n="p3">Offene Runde, keine Gruppenaufgabe. Anstösse auf der Folie: schnell oder langsam zählen? Wann anzweifeln? Was bedeutet uns eine Wahl? <span class="warn">Die Moderation nimmt keine Seite.</span></p></div>
+<div class="step"><div class="t"><span class="clock">15:22</span><span class="dur" data-i18n="d5">5 Min</span></div>
+  <b data-i18n="s4">Take-away</b><p data-i18n="p4">Kit durchgehen, Bottom Line in die Master Checklist,
+  Civics-Stern vergeben. <span class="warn">Nie streichen.</span> Danach Puffer und Runde.</p></div>
+<div class="links">
+  <a href="../?session=elections&host=1&award=1"><span data-i18n="l5t">Stern freigeben ★</span>
+    <span data-i18n="l5">Am Ende, auf der Take-away-Folie — öffnet den Stern für alle</span></a>
+  <a href="../?session=elections&host=1"><span data-i18n="l1t">Beamer-Ansicht öffnen</span>
+    <span data-i18n="l1">Steuert das Spiel — auf dem Präsentationsrechner, nicht hier</span></a>
+  <a href="elections.html"><span data-i18n="l2t">Teilnehmerseite</span>
+    <span data-i18n="l2">Folien, Quiz und Stern zum Nachschauen</span></a>
+  <a href="../slides/elections.pdf" id="deckpdf" data-i18n="l3">Folien als PDF</a>
+  <a href="zettel-elections.html" data-i18n="l4">Zettel A/B zum Ausdrucken</a>
+  <a href="../slides/zettel-elections.pdf" id="slippdf" data-i18n="l6">Zettel A/B als PDF</a>
+</div>
+
+<footer data-i18n="foot">Democracy Matters · Regie-Blatt für das Telefon.
+Die Beamer-Ansicht gehört auf den Präsentationsrechner.</footer>
+
+<script>
+/* Dieselbe Mechanik wie in den Folien: Deutsch steht im Markup, die anderen drei
+   Sprachen kommen aus Wörterbüchern über data-i18n. */
+(function(){
+  var L = (new URLSearchParams(location.search).get('lang') || 'de').toLowerCase();
+  if (!['de','en','fr','it'].includes(L)) L = 'de';
+  document.documentElement.lang = L;
+  var A = document.querySelector('.langs a[data-l="' + L + '"]');
+  if (A) A.setAttribute('aria-current', 'page');
+
+  var T = {
+   en:{l6:'Slips A/B as PDF', l5t:'Award the star ★', l5:'At the end, on the take-away slide — opens the star for everyone', d7:'7 min', sv:'Three cases', pv:'The grid, then Brazil, Serbia, USA, just over a minute each. Read only the “Who believes the result?” card in full. No video in this session.', l4:'Slips A/B to print', l1t:'Open the beamer view', l1:'Runs the game — on the presentation machine, not here', l2t:'Participant page', l2:'Slides, quiz and star to revisit', l3:'Slides as PDF', foot:'Democracy Matters · run sheet for the phone. The beamer view belongs on the presentation machine.', kick:'For the moderator', h1:'Run sheet',
+     sub:'Elections · Fri, 6 November 2026 · start 3 PM · Room C2, Impact Hub · 30 minutes',
+     d5:'5 min', pre:'before',
+     s0:'Slips and slots', s1:'Warm-up', s2:'Topic', s3:'Discussion', s4:'Take-away',
+     p0:'<a href="zettel-elections.html?lang=en">Print</a> and cut the slips (A left, B right). No slips: read A to the left half while the right half closes their eyes, then the reverse. <span class="warn">Check the slots: are USA and Serbia filled in? An empty slot is allowed: say “still open”, never estimate.</span>',
+     p1:'Show the QR slide, open the beamer view, play the 3 questions. The app shows the explanations itself.',
+     p2:'Live experiment: hand out slips, read silently, 1–5 fingers. Check slide: A is Brazil, B the USA, plus Serbia. Then “And Switzerland?” as information, no group task. <span class="warn">No difference between the halves? Also fine: then it isn’t down to the procedure alone.</span>',
+     p3:'Open round, no group task. Prompts on the slide: count fast or slow? When to question a result? What does an election mean to us? <span class="warn">The moderator takes no side.</span>',
+     p4:'Go through the kit, bottom line onto the Master Checklist, award the Civics star. <span class="warn">Never cut.</span> Then buffer and the round.'},
+   fr:{l6:'Billets A/B en PDF', l5t:'Attribuer l’étoile ★', l5:'À la fin, sur la slide «À retenir» — ouvre l’étoile pour tout le monde', d7:'7 min', sv:'Trois cas', pv:'La grille, puis Brésil, Serbie, États-Unis, un peu plus d’une minute chacun. Ne lire en entier que la carte «Qui croit le résultat ?». Pas de vidéo dans cette session.', l4:'Billets A/B à imprimer', l1t:'Ouvrir la vue beamer', l1:'Pilote le jeu — sur l’ordinateur de présentation, pas ici', l2t:'Page des participants', l2:'Diapos, quiz et étoile à revoir', l3:'Diapos en PDF', foot:'Democracy Matters · déroulé pour le téléphone. La vue beamer va sur l’ordinateur de présentation.', kick:'Pour l’animation', h1:'Déroulé',
+     sub:'Élections · ven. 6 novembre 2026 · début 15:00 · salle C2, Impact Hub · 30 minutes',
+     d5:'5 min', pre:'avant',
+     s0:'Billets et slots', s1:'Ouverture', s2:'Thème', s3:'Discussion', s4:'À retenir',
+     p0:'<a href="zettel-elections.html?lang=fr">Imprimer</a> et découper les billets (A à gauche, B à droite). Sans billets : lire A à la moitié gauche pendant que la droite ferme les yeux, puis l’inverse. <span class="warn">Vérifier les slots : USA et Serbie sont-ils remplis ? Un slot vide est permis : dire «encore ouvert», ne jamais estimer.</span>',
+     p1:'Montrer la diapo QR, ouvrir la vue beamer, jouer les 3 questions. L’app affiche les explications.',
+     p2:'Expérience en direct : distribuer les billets, lire en silence, 1–5 doigts. Diapo check : A est le Brésil, B les États-Unis, en plus la Serbie. Puis «Et la Suisse ?» comme information, sans tâche de groupe. <span class="warn">Pas de différence entre les moitiés ? Très bien aussi : cela ne tient donc pas qu’à la procédure.</span>',
+     p3:'Ronde ouverte, pas de tâche de groupe. Amorces sur la diapo : compter vite ou lentement ? Quand douter ? Que nous apporte une élection ? <span class="warn">L’animation ne prend pas parti.</span>',
+     p4:'Parcourir le kit, la conclusion sur la Master Checklist, décerner l’étoile Civics. <span class="warn">Ne jamais supprimer.</span> Puis réserve et ronde.'},
+   it:{l6:'Biglietti A/B in PDF', l5t:'Assegna la stella ★', l5:'Alla fine, sulla slide finale — apre la stella per tutti', d7:'7 min', sv:'Tre casi', pv:'La griglia, poi Brasile, Serbia, USA, poco più di un minuto ciascuno. Leggere per intero solo la scheda «Chi crede al risultato?». Nessun video in questa sessione.', l4:'Biglietti A/B da stampare', l1t:'Apri la vista beamer', l1:'Comanda il gioco — sul computer di presentazione, non qui', l2t:'Pagina dei partecipanti', l2:'Slide, quiz e stella da rivedere', l3:'Slide in PDF', foot:'Democracy Matters · regia per il telefono. La vista beamer va sul computer di presentazione.', kick:'Per la moderazione', h1:'Regia',
+     sub:'Elezioni · ven. 6 novembre 2026 · inizio 15:00 · sala C2, Impact Hub · 30 minuti',
+     d5:'5 min', pre:'prima',
+     s0:'Biglietti e slot', s1:'Avvio', s2:'Tema', s3:'Discussione', s4:'Da portare a casa',
+     p0:'<a href="zettel-elections.html?lang=it">Stampare</a> e ritagliare i biglietti (A a sinistra, B a destra). Senza biglietti: leggere A alla metà sinistra mentre la destra chiude gli occhi, poi il contrario. <span class="warn">Controllare gli slot: USA e Serbia sono compilati? Uno slot vuoto è ammesso: dire «ancora aperto», mai stimare.</span>',
+     p1:'Mostrare la slide con il QR, aprire la vista beamer, giocare le 3 domande. Le spiegazioni le mostra l’app.',
+     p2:'Esperimento dal vivo: distribuire i biglietti, leggere in silenzio, 1–5 dita. Slide check: A è il Brasile, B gli Stati Uniti, in più la Serbia. Poi «E la Svizzera?» come informazione, senza compito di gruppo. <span class="warn">Nessuna differenza tra le metà? Va bene lo stesso: allora non dipende solo dalla procedura.</span>',
+     p3:'Giro aperto, nessun compito di gruppo. Spunti sulla slide: contare in fretta o con calma? Quando dubitare? Che cosa ci dà un’elezione? <span class="warn">La moderazione non prende posizione.</span>',
+     p4:'Percorrere il kit, la conclusione sulla Master Checklist, assegnare la stella Civics. <span class="warn">Mai tagliare.</span> Poi riserva e giro.'}
+  };
+  var sp = document.getElementById('slippdf'); if (sp && L !== 'de') sp.href = '../slides/zettel-elections.' + L + '.pdf';
+  var dp = document.getElementById('deckpdf'); if (dp && L !== 'de') dp.href = '../slides/elections.' + L + '.pdf';
+  var d = T[L]; if (!d) return;
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var v = d[el.getAttribute('data-i18n')];
+    if (v) el.innerHTML = v;
+  });
+})();
+</script>
+</body></html>

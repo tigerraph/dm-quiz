@@ -18,7 +18,7 @@ import { execFileSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { p, read, readJSON, file, pdfName, chromePath, sha, stamps, GOLDEN, LANGS, PILLARS, MARKER, GOLDEN_LEFTOVERS } from "./topic-lib.mjs";
+import { p, read, readJSON, file, pdfName, chromePath, sha, stamps, stampSource, GOLDEN, LANGS, PILLARS, MARKER, GOLDEN_LEFTOVERS } from "./topic-lib.mjs";
 
 const args = process.argv.slice(2);
 const noBrowser = args.includes("--no-browser");
@@ -86,7 +86,7 @@ for (const id of ids) {
   // ── PDFs current ──
   const st = stamps();
   for (const [key, base] of [["deck", id], ["card", `topic-card-${id}`]]) {
-    const src = read(file(key, id));
+    const src = stampSource(key, id);
     for (const l of langs) {
       const pdf = pdfName(base, l);
       if (!existsSync(p(pdf))) fail(id, `${pdf} missing — npm run render-topic -- ${id}`);

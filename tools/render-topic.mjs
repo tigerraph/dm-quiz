@@ -11,7 +11,7 @@
 import { execFileSync } from "node:child_process";
 import { writeFileSync, existsSync } from "node:fs";
 import { pathToFileURL } from "node:url";
-import { p, read, readJSON, file, pdfName, chromePath, sha, stamps, STAMPS, LANGS } from "./topic-lib.mjs";
+import { p, readJSON, file, pdfName, chromePath, sha, stamps, stampSource, STAMPS, LANGS } from "./topic-lib.mjs";
 
 const args = process.argv.slice(2);
 const id = args.find((a) => !a.startsWith("--"));
@@ -26,7 +26,7 @@ const st = stamps();
 for (const [key, base] of [["deck", id], ["card", `topic-card-${id}`]]) {
   const rel = file(key, id);
   if (!existsSync(p(rel))) { console.error(`✗ ${rel} missing`); process.exit(1); }
-  const src = read(rel);
+  const src = stampSource(key, id);
   for (const lang of langs) {
     const out = pdfName(base, lang);
     const url = pathToFileURL(p(rel)).href + "?lang=" + lang;

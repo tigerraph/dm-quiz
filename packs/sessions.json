@@ -60,5 +60,35 @@
         "pdf": "zettel-bypassing"
       }
     ]
+  },
+  "elections": {
+    "pack": "elections.json",
+    "pillar": "civics",
+    "materials": true,
+    "title": {
+      "de": "Wahlen",
+      "en": "Elections",
+      "fr": "Élections",
+      "it": "Elezioni"
+    },
+    "date": "2026-11-06",
+    "practice": [
+      {
+        "file": "zettel-elections.html",
+        "title": {
+          "de": "Zettel A/B zum Ausdrucken",
+          "en": "Slips to print (A/B)",
+          "fr": "Billets A/B à imprimer",
+          "it": "Biglietti A/B da stampare"
+        },
+        "what": {
+          "de": "Für das Live-Experiment: ein A4 = 5 × A + 5 × B",
+          "en": "For the live experiment: one A4 = 5 × A + 5 × B",
+          "fr": "Pour l’expérience en direct : un A4 = 5 × A + 5 × B",
+          "it": "Per l’esperimento dal vivo: un A4 = 5 × A + 5 × B"
+        },
+        "pdf": "zettel-elections"
+      }
+    ]
   }
 }

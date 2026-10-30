@@ -1,0 +1,123 @@
+{
+ "id": "elections",
+ "title": {
+  "de": "Wahlen",
+  "en": "Elections",
+  "fr": "Élections",
+  "it": "Elezioni"
+ },
+ "timer_ms": 30000,
+ "questions": [
+  {
+   "id": "halbzeit",
+   "img": null,
+   "q": {
+    "de": "Gedankenspiel: Die Partei des US-Präsidenten verliert bei den Midterms beide Kammern. Was passiert mit dem Präsidenten?",
+    "en": "Thought experiment: the US president’s party loses both chambers in the midterms. What happens to the president?",
+    "fr": "Hypothèse : le parti du président américain perd les deux chambres aux midterms. Que devient le président ?",
+    "it": "Ipotesi: il partito del presidente USA perde entrambe le camere alle elezioni di metà mandato. Che cosa succede al presidente?"
+   },
+   "o": {
+    "de": [
+     "Er muss zurücktreten, es gibt Neuwahlen",
+     "Er bleibt im Amt, braucht für Gesetze aber die Gegenseite"
+    ],
+    "en": [
+     "He must resign and a new election is held",
+     "He stays in office, but needs the other side to pass laws"
+    ],
+    "fr": [
+     "Il doit démissionner, il y a une nouvelle élection",
+     "Il reste en fonction, mais a besoin de l’autre camp pour les lois"
+    ],
+    "it": [
+     "Deve dimettersi e si torna a votare",
+     "Resta in carica, ma per le leggi gli serve l’altra parte"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "de": "Die Midterms wählen den Kongress, nicht den Präsidenten: alle 435 Sitze des Repräsentantenhauses und 35 von 100 Senatssitzen. Die Präsidentschaft steht nicht zur Wahl. Gesetze müssen aber durch beide Kammern. Das war ein Gedankenspiel, kein Resultat.",
+    "en": "The midterms elect Congress, not the president: all 435 House seats and 35 of 100 Senate seats. The presidency is not on the ballot. But laws have to pass both chambers. This was a thought experiment, not a result.",
+    "fr": "Les midterms élisent le Congrès, pas le président : les 435 sièges de la Chambre et 35 des 100 sièges du Sénat. La présidence n’est pas en jeu. Mais les lois doivent passer les deux chambres. C’était une hypothèse, pas un résultat.",
+    "it": "Le elezioni di metà mandato eleggono il Congresso, non il presidente: tutti i 435 seggi della Camera e 35 dei 100 del Senato. La presidenza non è in gioco. Ma le leggi devono passare da entrambe le camere. Era un’ipotesi, non un risultato."
+   },
+   "unique": "US Constitution Art. I §§ 2–3 and §7 (House two-year terms, Senate six, bills pass both chambers), Art. II §1 (four-year presidential term); Al Jazeera 26.10.2026 (435 + 35 seats). A midterm has no mechanism that removes a president or triggers a new election, so option A is wrong. The question is marked as hypothetical and states no 2026 outcome.",
+   "sure": true
+  },
+  {
+   "id": "urne",
+   "img": null,
+   "q": {
+    "de": "In Brasilien wählt man elektronisch, ohne Stimmzettel aus Papier. Wie lässt sich das Resultat eines einzelnen Wahllokals nachprüfen?",
+    "en": "Brazilians vote electronically, without paper ballots. How can the result of a single polling station be checked?",
+    "fr": "Au Brésil, on vote électroniquement, sans bulletin papier. Comment vérifier le résultat d’un seul bureau de vote ?",
+    "it": "In Brasile si vota elettronicamente, senza schede di carta. Come si può verificare il risultato di un singolo seggio?"
+   },
+   "o": {
+    "de": [
+     "Gar nicht: Die Zahlen kennt nur das Wahlgericht",
+     "Jede Urne druckt ihr Resultat aus, und es wird auch online veröffentlicht"
+    ],
+    "en": [
+     "It can’t be: only the electoral court knows the numbers",
+     "Each machine prints its result, and it is also published online"
+    ],
+    "fr": [
+     "Impossible : seul le tribunal électoral connaît les chiffres",
+     "Chaque urne imprime son résultat, qui est aussi publié en ligne"
+    ],
+    "it": [
+     "Non si può: i numeri li conosce solo il tribunale elettorale",
+     "Ogni urna stampa il suo risultato, che viene anche pubblicato online"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "de": "Am Ende druckt jede Urne ein Protokoll, den Boletim de Urna, und eine Kopie hängt im Wahllokal. Dieselben Daten stehen online, darum kann jede Person ein Wahllokal mit dem Gesamtresultat vergleichen. Papierstimmen zum Nachzählen gibt es dagegen nicht.",
+    "en": "At the end each machine prints a record, the Boletim de Urna, and a copy is posted at the polling place. The same data goes online, so anyone can compare a polling station with the overall result. There are no paper votes to recount, though.",
+    "fr": "À la fin, chaque urne imprime un procès-verbal, le Boletim de Urna, et une copie est affichée au bureau de vote. Les mêmes données sont en ligne : chacun peut comparer un bureau avec le résultat global. Il n’y a en revanche pas de bulletins papier à recompter.",
+    "it": "Alla fine ogni urna stampa un verbale, il Boletim de Urna, e una copia viene affissa al seggio. Gli stessi dati vanno online, quindi chiunque può confrontare un seggio con il risultato complessivo. Non esistono però schede di carta da ricontare."
+   },
+   "unique": "TSE, «Terminada a votação, saiba como acompanhar os resultados» and «zerésima e Boletim de Urna» (October 2026): each section prints the Boletim de Urna, one copy is posted, and the files are online so that any citizen can compare them with the totalisation. So «only the court knows» is false.",
+   "sure": true
+  },
+  {
+   "id": "beobachtung",
+   "img": null,
+   "q": {
+    "de": "Internationale Beobachter bewerten in Serbien den Wahltag meist positiv und nennen den Wahlkampf trotzdem ungleich. Geht das zusammen?",
+    "en": "In Serbia, international observers rate election day mostly positively, yet call the campaign unequal. Can both be true?",
+    "fr": "En Serbie, des observateurs internationaux jugent le jour du vote plutôt positif, mais la campagne inégale. Les deux sont-ils compatibles ?",
+    "it": "In Serbia gli osservatori internazionali giudicano per lo più positivo il giorno del voto, ma definiscono impari la campagna. Le due cose sono compatibili?"
+   },
+   "o": {
+    "de": [
+     "Nein: Eine Wahl ist entweder fair oder nicht",
+     "Ja: Korrekt gezählt heisst noch nicht gleich lange Spiesse"
+    ],
+    "en": [
+     "No: an election is either fair or it isn’t",
+     "Yes: a correct count doesn’t mean a level playing field"
+    ],
+    "fr": [
+     "Non : une élection est juste ou elle ne l’est pas",
+     "Oui : un décompte correct ne veut pas dire à armes égales"
+    ],
+    "it": [
+     "No: un’elezione o è giusta o non lo è",
+     "Sì: un conteggio corretto non significa ad armi pari"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "de": "Beobachter prüfen den ganzen Weg, nicht nur den Wahltag. Die internationale Mission unter Leitung der OSZE bewertete alle Etappen des Wahltags in der grossen Mehrheit der beobachteten Wahllokale positiv. Die Chancengleichheit im Wahlkampf nannte sie aber ernsthaft beeinträchtigt.",
+    "en": "Observers examine the whole process, not just election day. The international mission led by the OSCE rated all stages of election day positively in the vast majority of polling stations observed. But it called the equality of campaign opportunities seriously compromised.",
+    "fr": "Les observateurs examinent tout le processus, pas seulement le jour du vote. La mission internationale conduite par l’OSCE a jugé positives toutes les étapes du jour du vote dans la grande majorité des bureaux observés. Mais elle a estimé l’égalité des chances dans la campagne gravement compromise.",
+    "it": "Gli osservatori esaminano tutto il percorso, non solo il giorno del voto. La missione internazionale guidata dall’OSCE ha giudicato positive tutte le fasi del giorno del voto nella grande maggioranza dei seggi osservati. Ma ha definito gravemente compromessa la parità di opportunità nella campagna."
+   },
+   "unique": "ODIHR/IEOM, Statement of Preliminary Findings and Conclusions, 26.10.2026, p. 1: «positively assessed all stages of the election day process in the vast majority of polling stations observed» and «equality of campaign opportunities seriously compromised». Both findings stand in the same statement, so «either fair or not» cannot be the answer.",
+   "sure": true
+  }
+ ]
+}
