@@ -394,6 +394,7 @@ body.host{overflow:hidden;}
                 text-align:left; overflow:hidden; vertical-align:bottom;}
 @keyframes dots{0%{width:0} 100%{width:1.2em}}
 @media (prefers-reduced-motion:reduce){*{animation:none !important; transition:none !important;}}
+__SITECSS__
 </style>
 </head>
 <body>
@@ -735,6 +736,8 @@ const DEMO    = params.get("demo") === "1";
    aktiv ist, gewinnt aber das Spiel, und der Stern-QR auf der Schlussfolie
    landete deshalb im Spielfenster statt im Pass (Rafa, 04.09.2026). */
 const VIEW    = params.get("view") || "";
+const SOLO    = params.get("solo") === "1";
+const goHome  = ()=>{ location.href = "./"; };
 
 let lang = store.get("lang", (()=>{
   const n=(navigator.language||"en").slice(0,2);
@@ -743,7 +746,7 @@ let lang = store.get("lang", (()=>{
 if(!LANGS.includes(lang)) lang = "en";
 
 let registry=null, pack=null, TIME=20000;
-let phase="boot";              // boot | picker | error | join | lobby | question | reveal | done | solo*
+let phase="boot";              // boot | site-home | site-session | login | error | join | lobby | question | reveal | done | solo*
 let errKey="";
 let LIVE=false;                // true once the host/player is talking to Supabase
 
@@ -923,12 +926,16 @@ async function boot(){
   catch(e){ return fail("loadFail"); }
 
   if(DEMO && !HOST) return renderPassport();
-  if(VIEW === "mydm" && !HOST) return renderPassport();
-  if(VIEW === "daily" && !HOST){ passBack = renderPicker; return openDaily(); }
+  if(VIEW === "mydm" && !HOST){ if(!SESSION) passBack = goHome; return renderPassport(); }
+  if(VIEW === "daily" && !HOST){ passBack = goHome; return openDaily(); }
+  if(VIEW === "session" && !HOST) return renderSessionPage(params.get("id") || "");
+  if(VIEW === "login" && !HOST) return renderLogin();
 
+  /* No session: the start page, My DM with the next session (concept B, Rafa 03.11.2026).
+     It replaces the old «Pick a session» list. */
   if(!SESSION || !registry[SESSION]){
     if(SESSION) errKey = "noSessionSub";
-    return renderPicker();
+    return renderHome();
   }
   try{ pack = await loadJSON("packs/" + registry[SESSION].pack); }
   catch(e){ return fail("loadFail"); }
@@ -957,7 +964,8 @@ async function boot(){
   }
 
   myToken = store.get("token_"+SESSION, "");
-  const st = await fetchState();
+  // ?solo=1 (Replay on a session page): play the pack alone, even while the database is up
+  const st = SOLO ? null : await fetchState();
   LIVE = st !== null;
   if(LIVE) liveState = st[0] || null;
   order = LIVE
@@ -990,34 +998,6 @@ function wordmarkHtml(cls, word){
        + `${esc(t().brand)} <span class="wm2">${esc(word||t().quiz)}</span></span></div>`;
 }
 
-/* ---------------- session picker ---------------- */
-function renderPicker(){
-  phase="picker";
-  // A draft topic (new-topic sets "draft": true) is reachable by its ?session= link but not listed.
-  const ids = Object.keys(registry||{}).filter(id=>!registry[id].draft);
-  app.innerHTML = `<div class="screen">
-    ${langPills()}
-    ${wordmarkHtml()}
-    <h1>${esc(t().pickTitle)}</h1>
-    <p class="sub">${esc(t().pickSub)}</p>
-    ${errKey ? `<div class="err">${esc(t()[errKey])}</div>` : ""}
-    <div class="picker">
-      ${ids.map(id=>{
-        const s = registry[id];
-        const when = s.date
-          ? new Date(s.date).toLocaleDateString(lang, {year:"numeric", month:"long", day:"numeric"})
-          : "";
-        return `<a href="?session=${encodeURIComponent(id)}">${esc(L(s.title)||id)}
-          ${when ? `<small>${esc(when)}</small>` : ""}</a>`;
-      }).join("") || `<p class="rules">—</p>`}
-    </div>
-    ${dailyEntryHtml()}
-    <button class="btn ghost small" id="mydm">${esc(t().myDM)} ★</button>
-  </div>`;
-  bindLangPills();
-  bindDailyEntry(renderPicker);
-  document.getElementById("mydm").onclick = ()=>{ passBack=renderPicker; renderPassport(); };
-}
 function langPills(){
   return `<div class="pills" role="group" aria-label="Language">
     ${LANGS.map(l=>`<button class="pill ${l===lang?"on":""}" data-lang="${l}">${l.toUpperCase()}</button>`).join("")}
@@ -1832,7 +1812,7 @@ function dailyBar(doneCount){
 }
 function bindDailyBar(){
   const b=document.getElementById("dlback");
-  if(b) b.onclick=()=>{ A.tap(); (passBack||renderPicker)(); };
+  if(b) b.onclick=()=>{ A.tap(); (passBack||goHome)(); };
   const lc=document.getElementById("lc"); if(lc) lc.onclick=cycleLang;
 }
 function renderDailyQuestion(){
@@ -1900,7 +1880,7 @@ function renderDailyDone(justNow){
   </div>`;
   bindLangPills(); bindCtl();
   document.getElementById("again").onclick = ()=>{ A.tap(); startDaily(true); };
-  document.getElementById("dlback").onclick = ()=>{ A.tap(); (passBack||renderPicker)(); };
+  document.getElementById("dlback").onclick = ()=>{ A.tap(); (passBack||goHome)(); };
 }
 
 /* ================================================================
@@ -2170,6 +2150,7 @@ let acctMode = "";    // "" | "pw"
 let acctMsg = null;   // {text, err}
 let acctAuth = "";    // "" (decide on first render) | "signup" | "login"
 let acctEmail = "";   // survives re-renders, so an error never wipes the field
+let acctRender = ()=>renderPassport();   // the page the account form sits on (passport or ?view=login)
 function acctHtml(){
   const msg = `<p class="msg ${acctMsg && acctMsg.err ? "err" : ""}">${esc(acctMsg ? acctMsg.text : "")}</p>`;
   if(AUTH){
@@ -2212,7 +2193,7 @@ function acctHtml(){
     ${msg}
   </form>`;
 }
-function setAcctMsg(text, err){ acctMsg = text ? { text, err } : null; renderPassport(); }
+function setAcctMsg(text, err){ acctMsg = text ? { text, err } : null; acctRender(); }
 function authOk(j){ store.set("had_auth", true); acctEmail=""; setAuth(j); setAcctMsg(""); }
 function bindAcct(){
   const el = id => document.getElementById(id);
@@ -2245,10 +2226,10 @@ function bindAcct(){
   if(el("aswitch")) el("aswitch").onclick = ()=>{
     acctEmail = (el("aemail").value || "").trim();
     acctAuth = acctAuth==="signup" ? "login" : "signup";
-    acctMsg = null; renderPassport();
+    acctMsg = null; acctRender();
   };
-  if(el("achangepw")) el("achangepw").onclick = ()=>{ acctMode="pw"; renderPassport(); };
-  if(el("acancel"))   el("acancel").onclick   = ()=>{ acctMode="";   renderPassport(); };
+  if(el("achangepw")) el("achangepw").onclick = ()=>{ acctMode="pw"; acctRender(); };
+  if(el("acancel"))   el("acancel").onclick   = ()=>{ acctMode="";   acctRender(); };
   if(el("apwform"))   el("apwform").onsubmit  = async e=>{
     e.preventDefault();
     const p = el("anewpw").value || "";
@@ -2350,13 +2331,7 @@ function demoStars(){
 function renderPassport(){
   phase="passport";
   paintPassport(DEMO ? demoStars() : mergeStars(localStars(), null));
-  // the entry into the admin view exists only for admins: nothing in the page for anyone else
-  if(!DEMO && AUTH) adminStatus().then(st=>{
-    const c = document.querySelector(".corner");
-    if(st !== "admin" || phase !== "passport" || !c || document.getElementById("adminlink")) return;
-    c.insertAdjacentHTML("afterbegin",
-      `<a class="iconbtn" id="adminlink" href="content/admin.html" aria-label="${esc(t().adminView)}" title="${esc(t().adminView)}">⚙️</a>`);
-  });
+  // (the hidden ⚙️ admin entry is gone: moderators find their kit on each session page, concept B)
   if(!DEMO && SUPA_URL){
     // Refresh only the star grid when the data lands — a full repaint here
     // would wipe whatever the user is typing into the account form.
@@ -2603,9 +2578,11 @@ async function openAddStar(){
   };
 }
 
+__SITE__
+
 /* ---------------- rerender on language switch ---------------- */
 function rerender(){
-  if(phase==="picker") renderPicker();
+  if(SITE_PHASES.includes(phase)) siteRerender();
   else if(phase==="error") renderError();
   else if(phase==="join") renderJoin();
   else if(phase==="passport") renderPassport();

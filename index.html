@@ -397,6 +397,129 @@ body.host{overflow:hidden;}
                 text-align:left; overflow:hidden; vertical-align:bottom;}
 @keyframes dots{0%{width:0} 100%{width:1.2em}}
 @media (prefers-reduced-motion:reduce){*{animation:none !important; transition:none !important;}}
+/* ---------- site pages: concept B «Session first» (Rafa, 03.11.2026) ----------
+   Start (My DM with the next session), one page per session, login. The quiz,
+   the passport and the beamer keep their own narrow layout; these pages are wider. */
+body.site #app{max-width:1080px; padding:0 28px calc(40px + env(safe-area-inset-bottom)); display:block;}
+.sbar{display:flex; align-items:center; gap:12px; padding:14px 0; min-height:64px;
+  border-bottom:1px solid rgba(255,255,255,.08); margin-bottom:22px;}
+.sbar .wordmark{color:#fff; text-decoration:none; font-size:.98rem;}
+.sbar .sright{margin-left:auto; display:flex; gap:8px; align-items:center;}
+.sbar .btn.small{min-height:42px; display:inline-flex; align-items:center; gap:6px; white-space:nowrap;}
+.sbar .langcycle{min-height:42px; min-width:44px;}
+.who{font-size:.78rem; font-weight:800; color:var(--ink); background:var(--teal); border-radius:999px;
+  padding:5px 11px; white-space:nowrap;}
+.who.participant{background:var(--cream);}
+.site h1{font-size:clamp(1.8rem,4.6vw,2.6rem); line-height:1.06; margin:4px 0 0;}
+.site h2{font-size:1.3rem; line-height:1.2; margin:0;}
+.lnk{display:inline-flex; align-items:center; min-height:44px; font:inherit; font-weight:800; font-size:.92rem;
+  color:var(--teal); background:none; border:0; padding:0; cursor:pointer; text-decoration:none;}
+.lnk:focus-visible,.sbar a:focus-visible,.rowitem:focus-visible,.slinks a:focus-visible,.strip a:focus-visible,
+.sbar .langcycle:focus-visible,.copy:focus-visible{outline:3px solid var(--teal); outline-offset:3px;}
+.err.site-err{color:var(--cream); font-weight:700;}
+
+/* next-session hero */
+.hero{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,.9fr); gap:22px; background:var(--blue);
+  border-radius:18px; padding:22px; align-items:center; margin-top:16px;}
+.hero.plain{background:var(--dark-2); margin-top:8px;}
+.hero h2{font-size:clamp(1.6rem,4vw,2.4rem); line-height:1.05; margin-top:6px;}
+.hero .when{font-weight:800; font-size:.9rem; color:var(--cream);}
+.hero.plain .when{color:var(--teal);}
+.hero .sub{color:#fff; max-width:46ch; margin-top:6px;}
+.hero.plain .sub{color:rgba(255,255,255,.82);}
+.hero img{width:100%; aspect-ratio:16/9; border-radius:10px; display:block; box-shadow:var(--paper-shadow); background:var(--dark-2);}
+.hero .acts{display:flex; flex-wrap:wrap; gap:10px; margin-top:16px;}
+.hero .btn{background:#fff; color:var(--blue); box-shadow:0 4px 0 rgba(0,0,0,.25); padding:13px 24px;}
+.hero .btn.ghost{background:transparent; color:#fff; box-shadow:inset 0 0 0 2px #fff;}
+.two{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:26px; margin-top:26px; align-items:start;}
+.ministars{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px;}
+.ministars span{background:var(--cream); color:var(--ink); border-radius:999px; padding:6px 12px; font-weight:800; font-size:.85rem;}
+.two .rules{max-width:none; margin-top:8px;}
+.two .dl-entry{width:100%; max-width:420px; margin-top:16px;}
+.stack{display:flex; flex-wrap:wrap; gap:10px; margin-top:12px;}
+.rowlist{display:flex; flex-direction:column; gap:10px; margin-top:12px;}
+.rowitem{display:grid; grid-template-columns:120px minmax(0,1fr) auto; gap:14px; align-items:center; background:var(--dark-2);
+  border:1px solid rgba(255,255,255,.1); border-radius:14px; padding:10px; text-align:left; color:#fff; text-decoration:none;}
+.rowitem img{width:100%; aspect-ratio:16/9; border-radius:7px; display:block; background:rgba(255,255,255,.06);}
+.rowitem b{display:block; font-weight:800;}
+.rowitem .meta{font-size:.84rem; color:rgba(255,255,255,.62); margin-top:2px;}
+.rowitem .go{color:var(--teal); font-weight:800; padding-right:6px;}
+.chipline{display:flex; flex-wrap:wrap; gap:6px; margin-top:4px;}
+.tag{display:inline-block; font-size:.66rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; border-radius:6px;
+  padding:3px 7px; background:rgba(255,255,255,.1); color:#fff; vertical-align:middle;}
+.tag.next{background:var(--green); color:var(--ink);}
+.tag.draft{background:var(--cream); color:var(--ink);}
+.tag.new{background:var(--teal); color:var(--ink); font-size:.6rem; padding:2px 6px; margin-left:6px;}
+
+/* session page */
+.site .why{font-size:.98rem;}
+.slinks{list-style:none; margin:10px 0 0; padding:0; display:flex; flex-direction:column; gap:12px;}
+.slinks a{color:#fff; font-weight:600; font-size:.98rem; text-decoration:none; border-bottom:1px solid rgba(255,255,255,.25);}
+.slinks .what{display:block; font-size:.8rem; color:rgba(255,255,255,.62); margin-top:2px;}
+.slinks .fmt{font-size:.7rem; font-weight:800; color:var(--teal); margin-left:6px;}
+.slinks .plain{font-weight:600;}
+.modhint{margin-top:26px; color:rgba(255,255,255,.62); font-size:.9rem;}
+.modhint .lnk{min-height:0; margin-left:4px;}
+
+/* moderator kit (the session setup approved 07.10.2026, in DM colours) */
+.postkit{background:var(--cream); color:var(--ink); border-radius:6px; box-shadow:var(--paper-shadow); padding:6px;
+  margin-top:26px; transform:rotate(-.25deg); scroll-margin-top:16px;}
+.postkit > .lbl{font-weight:800; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--blue); padding:8px 12px 4px;}
+.kit{color:#fff; background:var(--dark-2); border-radius:12px; padding:20px 22px; transform:rotate(.25deg); container-type:inline-size;}
+.kit h2{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+.kit .meta{font-size:.84rem; color:rgba(255,255,255,.62); margin-top:3px;}
+.kit .prim{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:16px 0 4px;}
+.kit .prim .pills{margin-left:auto;}
+.kit .btn.big{font-size:1.1rem; padding:13px 30px;}
+.copy{position:relative; width:48px; height:48px; border-radius:12px; border:1.5px solid rgba(255,255,255,.28);
+  background:transparent; color:#fff; cursor:pointer; display:grid; place-items:center; padding:0;}
+.copy svg{width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;}
+.copy .ok{display:none;} .copy.done{border-color:var(--teal); color:var(--teal);} .copy.done .ok{display:block;} .copy.done .cp{display:none;}
+.copy .tip{position:absolute; top:calc(100% + 8px); left:50%; transform:translateX(-50%); background:#fff; color:var(--ink);
+  font-weight:800; font-size:.72rem; border-radius:8px; padding:5px 9px; white-space:nowrap; pointer-events:none; opacity:0; z-index:2;}
+.copy:hover .tip,.copy:focus-visible .tip,.copy.done .tip,.copy.fail .tip{opacity:1;}
+.copy.fail .tip{background:var(--cream);}
+.strip{display:grid; grid-template-columns:repeat(4,minmax(0,150px)) auto; gap:8px; margin:14px 0 4px; align-items:center;}
+.strip a{display:block; border-radius:6px; overflow:hidden; line-height:0;}
+.strip img{width:100%; aspect-ratio:16/9; display:block; background:rgba(255,255,255,.06);}
+.strip .more{font-size:.84rem; font-weight:800; color:var(--teal); line-height:1.2; padding:0 6px; white-space:nowrap; text-decoration:none;}
+.moments{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; margin-top:12px; border-top:1px solid rgba(255,255,255,.1); padding-top:2px;}
+.moments h3{font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--teal); margin:14px 0 8px; font-weight:800;}
+.moments ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;}
+.moments li a{color:#fff; text-decoration:none; font-size:.95rem; font-weight:600; border-bottom:1px solid rgba(255,255,255,.22);}
+.moments li a:focus-visible{outline:3px solid var(--teal); outline-offset:2px;}
+.moments .what{display:block; font-size:.78rem; color:rgba(255,255,255,.62);}
+.moments .what a{font-size:.78rem;}
+.moments .fmt{font-size:.7rem; font-weight:800; color:var(--teal); margin-left:6px;}
+.qrline{display:flex; gap:12px; align-items:center;}
+.qr{background:#fff; border-radius:10px; padding:6px; width:84px; height:84px; flex:none;}
+.qr svg{width:100%; height:100%; display:block;}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
+@container (max-width:600px){
+  .moments{grid-template-columns:1fr; gap:0;}
+  .qr{display:none;}
+  .strip{grid-template-columns:repeat(4,minmax(0,1fr));}
+  .strip .more{grid-column:1/-1; padding:4px 0;}
+  .kit .prim .pills{margin-left:0;}
+}
+@media (max-width:820px){ .two{grid-template-columns:1fr;} }
+@media (max-width:700px){
+  body.site #app{padding:0 16px calc(28px + env(safe-area-inset-bottom));}
+  .hero{grid-template-columns:1fr; padding:18px;}
+  .hero img{order:-1;}
+  .kit{padding:16px;}
+  .rowitem{grid-template-columns:84px minmax(0,1fr);}
+  .rowitem .go{display:none;}
+}
+@media (max-width:560px){
+  .sbar{gap:8px;}
+  .sbar .wordmark{white-space:normal; line-height:1.15; font-size:.86rem;}
+  .sbar .ptxt,.sbar .who{display:none;}
+  .sbar .btn.small{padding:9px 12px;}
+}
+@media (prefers-reduced-motion:reduce){ .postkit,.kit{transform:none;} }
+.site .why strong{font-weight:800;}
+
 </style>
 </head>
 <body>
@@ -2718,7 +2841,7 @@ var qrcode = function() {
    Engine carried over from the noeggi-kahoot wedding app: timer,
    speed scoring, streak bonus, i18n, synthesized offline audio.
    ================================================================== */
-const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","supabaseSchema":"dm","build":"build 30.10.2026 17:05"};
+const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","supabaseSchema":"dm","build":"build 03.11.2026 22:06"};
 const SUPA_URL = CFG.supabaseUrl || "";
 const SUPA_KEY = CFG.supabaseAnonKey || "";
 
@@ -3035,6 +3158,8 @@ const DEMO    = params.get("demo") === "1";
    aktiv ist, gewinnt aber das Spiel, und der Stern-QR auf der Schlussfolie
    landete deshalb im Spielfenster statt im Pass (Rafa, 04.09.2026). */
 const VIEW    = params.get("view") || "";
+const SOLO    = params.get("solo") === "1";
+const goHome  = ()=>{ location.href = "./"; };
 
 let lang = store.get("lang", (()=>{
   const n=(navigator.language||"en").slice(0,2);
@@ -3043,7 +3168,7 @@ let lang = store.get("lang", (()=>{
 if(!LANGS.includes(lang)) lang = "en";
 
 let registry=null, pack=null, TIME=20000;
-let phase="boot";              // boot | picker | error | join | lobby | question | reveal | done | solo*
+let phase="boot";              // boot | site-home | site-session | login | error | join | lobby | question | reveal | done | solo*
 let errKey="";
 let LIVE=false;                // true once the host/player is talking to Supabase
 
@@ -3223,12 +3348,16 @@ async function boot(){
   catch(e){ return fail("loadFail"); }
 
   if(DEMO && !HOST) return renderPassport();
-  if(VIEW === "mydm" && !HOST) return renderPassport();
-  if(VIEW === "daily" && !HOST){ passBack = renderPicker; return openDaily(); }
+  if(VIEW === "mydm" && !HOST){ if(!SESSION) passBack = goHome; return renderPassport(); }
+  if(VIEW === "daily" && !HOST){ passBack = goHome; return openDaily(); }
+  if(VIEW === "session" && !HOST) return renderSessionPage(params.get("id") || "");
+  if(VIEW === "login" && !HOST) return renderLogin();
 
+  /* No session: the start page, My DM with the next session (concept B, Rafa 03.11.2026).
+     It replaces the old «Pick a session» list. */
   if(!SESSION || !registry[SESSION]){
     if(SESSION) errKey = "noSessionSub";
-    return renderPicker();
+    return renderHome();
   }
   try{ pack = await loadJSON("packs/" + registry[SESSION].pack); }
   catch(e){ return fail("loadFail"); }
@@ -3257,7 +3386,8 @@ async function boot(){
   }
 
   myToken = store.get("token_"+SESSION, "");
-  const st = await fetchState();
+  // ?solo=1 (Replay on a session page): play the pack alone, even while the database is up
+  const st = SOLO ? null : await fetchState();
   LIVE = st !== null;
   if(LIVE) liveState = st[0] || null;
   order = LIVE
@@ -3290,34 +3420,6 @@ function wordmarkHtml(cls, word){
        + `${esc(t().brand)} <span class="wm2">${esc(word||t().quiz)}</span></span></div>`;
 }
 
-/* ---------------- session picker ---------------- */
-function renderPicker(){
-  phase="picker";
-  // A draft topic (new-topic sets "draft": true) is reachable by its ?session= link but not listed.
-  const ids = Object.keys(registry||{}).filter(id=>!registry[id].draft);
-  app.innerHTML = `<div class="screen">
-    ${langPills()}
-    ${wordmarkHtml()}
-    <h1>${esc(t().pickTitle)}</h1>
-    <p class="sub">${esc(t().pickSub)}</p>
-    ${errKey ? `<div class="err">${esc(t()[errKey])}</div>` : ""}
-    <div class="picker">
-      ${ids.map(id=>{
-        const s = registry[id];
-        const when = s.date
-          ? new Date(s.date).toLocaleDateString(lang, {year:"numeric", month:"long", day:"numeric"})
-          : "";
-        return `<a href="?session=${encodeURIComponent(id)}">${esc(L(s.title)||id)}
-          ${when ? `<small>${esc(when)}</small>` : ""}</a>`;
-      }).join("") || `<p class="rules">—</p>`}
-    </div>
-    ${dailyEntryHtml()}
-    <button class="btn ghost small" id="mydm">${esc(t().myDM)} ★</button>
-  </div>`;
-  bindLangPills();
-  bindDailyEntry(renderPicker);
-  document.getElementById("mydm").onclick = ()=>{ passBack=renderPicker; renderPassport(); };
-}
 function langPills(){
   return `<div class="pills" role="group" aria-label="Language">
     ${LANGS.map(l=>`<button class="pill ${l===lang?"on":""}" data-lang="${l}">${l.toUpperCase()}</button>`).join("")}
@@ -4256,7 +4358,7 @@ function dailyBar(doneCount){
 }
 function bindDailyBar(){
   const b=document.getElementById("dlback");
-  if(b) b.onclick=()=>{ A.tap(); (passBack||renderPicker)(); };
+  if(b) b.onclick=()=>{ A.tap(); (passBack||goHome)(); };
   const lc=document.getElementById("lc"); if(lc) lc.onclick=cycleLang;
 }
 function renderDailyQuestion(){
@@ -4324,7 +4426,7 @@ function renderDailyDone(justNow){
   </div>`;
   bindLangPills(); bindCtl();
   document.getElementById("again").onclick = ()=>{ A.tap(); startDaily(true); };
-  document.getElementById("dlback").onclick = ()=>{ A.tap(); (passBack||renderPicker)(); };
+  document.getElementById("dlback").onclick = ()=>{ A.tap(); (passBack||goHome)(); };
 }
 
 /* ================================================================
@@ -4594,6 +4696,7 @@ let acctMode = "";    // "" | "pw"
 let acctMsg = null;   // {text, err}
 let acctAuth = "";    // "" (decide on first render) | "signup" | "login"
 let acctEmail = "";   // survives re-renders, so an error never wipes the field
+let acctRender = ()=>renderPassport();   // the page the account form sits on (passport or ?view=login)
 function acctHtml(){
   const msg = `<p class="msg ${acctMsg && acctMsg.err ? "err" : ""}">${esc(acctMsg ? acctMsg.text : "")}</p>`;
   if(AUTH){
@@ -4636,7 +4739,7 @@ function acctHtml(){
     ${msg}
   </form>`;
 }
-function setAcctMsg(text, err){ acctMsg = text ? { text, err } : null; renderPassport(); }
+function setAcctMsg(text, err){ acctMsg = text ? { text, err } : null; acctRender(); }
 function authOk(j){ store.set("had_auth", true); acctEmail=""; setAuth(j); setAcctMsg(""); }
 function bindAcct(){
   const el = id => document.getElementById(id);
@@ -4669,10 +4772,10 @@ function bindAcct(){
   if(el("aswitch")) el("aswitch").onclick = ()=>{
     acctEmail = (el("aemail").value || "").trim();
     acctAuth = acctAuth==="signup" ? "login" : "signup";
-    acctMsg = null; renderPassport();
+    acctMsg = null; acctRender();
   };
-  if(el("achangepw")) el("achangepw").onclick = ()=>{ acctMode="pw"; renderPassport(); };
-  if(el("acancel"))   el("acancel").onclick   = ()=>{ acctMode="";   renderPassport(); };
+  if(el("achangepw")) el("achangepw").onclick = ()=>{ acctMode="pw"; acctRender(); };
+  if(el("acancel"))   el("acancel").onclick   = ()=>{ acctMode="";   acctRender(); };
   if(el("apwform"))   el("apwform").onsubmit  = async e=>{
     e.preventDefault();
     const p = el("anewpw").value || "";
@@ -4774,13 +4877,7 @@ function demoStars(){
 function renderPassport(){
   phase="passport";
   paintPassport(DEMO ? demoStars() : mergeStars(localStars(), null));
-  // the entry into the admin view exists only for admins: nothing in the page for anyone else
-  if(!DEMO && AUTH) adminStatus().then(st=>{
-    const c = document.querySelector(".corner");
-    if(st !== "admin" || phase !== "passport" || !c || document.getElementById("adminlink")) return;
-    c.insertAdjacentHTML("afterbegin",
-      `<a class="iconbtn" id="adminlink" href="content/admin.html" aria-label="${esc(t().adminView)}" title="${esc(t().adminView)}">⚙️</a>`);
-  });
+  // (the hidden ⚙️ admin entry is gone: moderators find their kit on each session page, concept B)
   if(!DEMO && SUPA_URL){
     // Refresh only the star grid when the data lands — a full repaint here
     // would wipe whatever the user is typing into the account form.
@@ -5027,9 +5124,428 @@ async function openAddStar(){
   };
 }
 
+/* ==================================================================
+   Site pages — concept B «Session first» (Rafa, 03.11.2026, picked from
+   the mock «DM overhaul», 19:1x): My DM opens with the next session, big;
+   every session has one page with everything; a logged-in moderator
+   (dm_admins) sees the «Moderator kit» on it; past topics below.
+
+     ./                      start (My DM): next session, your stars, earlier sessions
+     ?view=session&id=<id>   one session: bottom line, links for everyone, kit for moderators
+     ?view=login&next=…      the My DM account form on its own page
+     ?view=mydm              the star passport, unchanged (the QR on the slides lands there)
+
+   Injected by build.mjs into the app's script, so it shares the app's state:
+   registry, lang, AUTH, adminStatus(), acctHtml()/bindAcct(), stars helpers.
+   The kit itself is the session setup approved on 07.10.2026 (content/admin.html):
+   Present ▶ + copy link, the first slides, before / during / after, run-sheet QR.
+   Its labels stay English like that page; its language switch picks the material.
+   ================================================================== */
+const SITE_T = {
+ en:{ passport:"Passport", moderator:"Moderator", participant:"Participant",
+  nextSession:"Next session", latestSession:"Latest session", openSession:"Open the session", modKit:"Moderator kit",
+  yourStars:"Your stars", openPassport:"Open my passport", earlier:"Earlier sessions", more:"More sessions",
+  noDate:"Date not on record", noneYet:"No sessions yet.", backHome:"My DM",
+  bottomLine:"The bottom line", forEveryone:"For everyone",
+  joinQuiz:"Join the quiz", joinWhat:"On the day: scan the QR code on the slides",
+  takeHome:"Read the session page", takeHomeWhat:"Everything from the session, to revisit and pass on",
+  replay:"Replay the quiz", replayWhat:"On your own, at your own pace",
+  slides:"Slides", slidesWhat:"The deck as PDF", topicCard:"Topic card", topicCardWhat:"The session on one page",
+  modHintGuest:"Moderating this session?", modHintLogin:"Log in to see the kit.",
+  modHintNo:"The Moderator kit is only for moderator accounts.",
+  loginSub:"One account for everyone: your stars on every device. Moderators see their material after logging in.",
+  notFound:"This session is not on the list." },
+ de:{ passport:"Pass", moderator:"Moderator:in", participant:"Teilnehmer:in",
+  nextSession:"Nächste Session", latestSession:"Letzte Session", openSession:"Zur Session", modKit:"Moderator-Kit",
+  yourStars:"Deine Sterne", openPassport:"Meinen Pass öffnen", earlier:"Frühere Sessions", more:"Weitere Sessions",
+  noDate:"Datum nicht erfasst", noneYet:"Noch keine Sessions.", backHome:"My DM",
+  bottomLine:"Der Merksatz", forEveryone:"Für alle",
+  joinQuiz:"Beim Quiz mitmachen", joinWhat:"Am Tag selbst: QR-Code auf den Folien scannen",
+  takeHome:"Die Seite zur Session lesen", takeHomeWhat:"Alles aus der Session zum Nachschauen und Weitergeben",
+  replay:"Quiz nochmals spielen", replayWhat:"Allein, im eigenen Tempo",
+  slides:"Folien", slidesWhat:"Die Präsentation als PDF", topicCard:"Themenkarte", topicCardWhat:"Die Session auf einer Seite",
+  modHintGuest:"Du moderierst diese Session?", modHintLogin:"Melde dich an, dann siehst du das Kit.",
+  modHintNo:"Das Moderator-Kit sehen nur Moderations-Konten.",
+  loginSub:"Ein Konto für alle: deine Sterne auf jedem Gerät. Wer moderiert, sieht nach dem Anmelden das Material.",
+  notFound:"Diese Session ist nicht auf der Liste." },
+ fr:{ passport:"Passeport", moderator:"Modération", participant:"Participant·e",
+  nextSession:"Prochaine session", latestSession:"Dernière session", openSession:"Ouvrir la session", modKit:"Kit de modération",
+  yourStars:"Tes étoiles", openPassport:"Ouvrir mon passeport", earlier:"Sessions précédentes", more:"Autres sessions",
+  noDate:"Date non enregistrée", noneYet:"Pas encore de session.", backHome:"My DM",
+  bottomLine:"La phrase à retenir", forEveryone:"Pour tout le monde",
+  joinQuiz:"Participer au quiz", joinWhat:"Le jour même : scanne le code QR sur les diapositives",
+  takeHome:"Lire la page de la session", takeHomeWhat:"Tout de la session, à revoir et à transmettre",
+  replay:"Rejouer le quiz", replayWhat:"Seul·e, à ton rythme",
+  slides:"Diapositives", slidesWhat:"La présentation en PDF", topicCard:"Fiche thème", topicCardWhat:"La session sur une page",
+  modHintGuest:"Tu animes cette session ?", modHintLogin:"Connecte-toi pour voir le kit.",
+  modHintNo:"Le kit de modération est réservé aux comptes de modération.",
+  loginSub:"Un seul compte pour tout le monde : tes étoiles sur chaque appareil. Les modérateurs voient leur matériel après connexion.",
+  notFound:"Cette session n’est pas dans la liste." },
+ it:{ passport:"Passaporto", moderator:"Moderazione", participant:"Partecipante",
+  nextSession:"Prossima sessione", latestSession:"Ultima sessione", openSession:"Apri la sessione", modKit:"Kit di moderazione",
+  yourStars:"Le tue stelle", openPassport:"Apri il mio passaporto", earlier:"Sessioni precedenti", more:"Altre sessioni",
+  noDate:"Data non registrata", noneYet:"Ancora nessuna sessione.", backHome:"My DM",
+  bottomLine:"La frase da ricordare", forEveryone:"Per tutti",
+  joinQuiz:"Partecipa al quiz", joinWhat:"Il giorno stesso: scansiona il codice QR sulle slide",
+  takeHome:"Leggi la pagina della sessione", takeHomeWhat:"Tutto della sessione, da rivedere e condividere",
+  replay:"Rigioca il quiz", replayWhat:"Da solo, al tuo ritmo",
+  slides:"Slide", slidesWhat:"La presentazione in PDF", topicCard:"Scheda tema", topicCardWhat:"La sessione in una pagina",
+  modHintGuest:"Moderi questa sessione?", modHintLogin:"Accedi per vedere il kit.",
+  modHintNo:"Il kit di moderazione è solo per gli account di moderazione.",
+  loginSub:"Un solo account per tutti: le tue stelle su ogni dispositivo. Chi modera vede il materiale dopo l’accesso.",
+  notFound:"Questa sessione non è nell’elenco." }
+};
+function st(){ return SITE_T[lang] || SITE_T.en; }
+const SITE_PHASES = ["site-home","site-session","login"];
+const LOCALES = { en:"en-GB", de:"de-CH", fr:"fr-CH", it:"it-CH" };
+/* QR codes and «copy link» must point at the public site, also from a local preview */
+const SITE_BASE = (location.protocol === "file:" || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname))
+  ? "https://dmatters.org/" : new URL("./", location.href).href;
+
+let siteRole = "guest";          // guest | participant | moderator
+let siteId = "";                 // the session on a session page
+let kitLang = "";                // the kit's material language ("" = follow the page)
+async function resolveRole(){
+  if(!AUTH) return siteRole = "guest";
+  return siteRole = (await adminStatus()) === "admin" ? "moderator" : "participant";
+}
+
+/* ---------- registry helpers ---------- */
+function siteSessions(){
+  const reg = registry || {}, ids = Object.keys(reg);
+  return ids.filter(id=>{
+    const s = reg[id];
+    if(!s || !s.pack) return false;
+    if(s.draft && siteRole !== "moderator") return false;
+    // a rehearsal alias (e.g. «probe»): same pack as a session that has its own page
+    return s.materials || !ids.some(k=>k!==id && reg[k] && reg[k].pack===s.pack && reg[k].materials);
+  });
+}
+function aliasesOf(id){
+  const p = registry[id].pack;
+  return Object.keys(registry).filter(k=>k!==id && registry[k].pack===p && !registry[k].materials);
+}
+function isUpcoming(id){ const d = registry[id].date; return !!d && d >= todayISO(); }
+function splitSessions(){
+  const ids = siteSessions();
+  const up = ids.filter(isUpcoming).sort((a,b)=>registry[a].date.localeCompare(registry[b].date));
+  const byDateDesc = (a,b)=>String(registry[b].date||"").localeCompare(String(registry[a].date||""));
+  let hero = up[0] || null, heroNext = !!hero;
+  if(!hero) hero = ids.slice().sort(byDateDesc)[0] || null;   // nothing planned: show the latest
+  const rest = ids.filter(id=>id!==hero).sort((a,b)=>{
+    const ua = isUpcoming(a), ub = isUpcoming(b);
+    return (ub - ua) || byDateDesc(a,b);
+  });
+  return { hero, heroNext, rest };
+}
+function longDate(iso){
+  if(!iso) return st().noDate;
+  const d = new Date(iso + "T12:00:00");
+  return isNaN(d) ? iso : d.toLocaleDateString(LOCALES[lang] || "en-GB", { weekday:"short", day:"numeric", month:"long", year:"numeric" });
+}
+function thumb(id, n, cls){
+  return `<img${cls ? ` class="${cls}"` : ""} src="assets/thumbs/${encodeURIComponent(id)}-${n}.jpg" alt="" loading="lazy" onerror="this.style.visibility='hidden'">`;
+}
+function pillarLine(id){
+  const p = registry[id].pillar;
+  return p && PILLARS[p] ? `${PILLAR_EMOJI[p] || ""} ${L(PILLARS[p])}` : "";
+}
+const PILLAR_EMOJI = { civics:"🏛️", comm:"📣", action:"✊" };
+const qsLang = l => l === "de" ? "" : "?lang=" + l;          // DE is each page's own default
+const pdfPath = (base, l) => "slides/" + base + (l === "de" ? "" : "." + l) + ".pdf";
+
+/* the tagline and the bottom line come from the session's own take-home page,
+   so nothing is written twice (content/<id>.html: .sub and the first .postit) */
+const takeCache = {};
+async function takeHome(id){
+  if(!registry[id] || !registry[id].materials) return null;
+  if(!takeCache[id]) takeCache[id] = fetch("content/" + encodeURIComponent(id) + ".html", { cache:"no-cache" })
+    .then(r=>r.ok ? r.text() : "").then(h=>h ? new DOMParser().parseFromString(h, "text/html") : null).catch(()=>null);
+  const doc = await takeCache[id];
+  if(!doc) return null;
+  const pick = sel => doc.querySelector(`${sel}[lang-${lang}]`) || doc.querySelector(`${sel}[lang-de]`) || doc.querySelector(sel);
+  const sub = pick(".sub"), post = pick(".postit");
+  let tag = sub ? sub.textContent.replace(/\s+/g, " ").trim() : "";
+  const cut = tag.search(/[.!?](\s|$)/);
+  if(cut > 0) tag = tag.slice(0, cut + 1);
+  return { tag, bottom: post ? safeInline(post).trim() : "" };
+}
+function safeInline(node){
+  let out = "";
+  node.childNodes.forEach(n=>{
+    if(n.nodeType === 3) out += esc(n.textContent.replace(/\s+/g, " "));
+    else if(n.nodeType === 1){
+      const tg = n.tagName.toLowerCase();
+      if(tg === "br") out += "<br>";
+      else if(tg === "b" || tg === "strong") out += `<strong>${safeInline(n)}</strong>`;
+      else if(tg === "i" || tg === "em") out += `<em>${safeInline(n)}</em>`;
+      else out += safeInline(n);
+    }
+  });
+  return out;
+}
+
+/* ---------- top bar ---------- */
+function loginHref(){
+  const here = location.search.replace(/^\?/, "");
+  const back = /(^|&)view=login(&|$)/.test(here) ? "" : here + (location.hash || "");
+  return "?view=login" + (back ? "&next=" + encodeURIComponent("?" + back) : "");
+}
+function siteBar(){
+  const who = siteRole === "guest"
+    ? `<a class="btn small" href="${esc(loginHref())}">${esc(t().login)}</a>`
+    : `<span class="who ${siteRole}">${esc(siteRole === "moderator" ? st().moderator : st().participant)}</span>
+       <button class="btn ghost small" id="slogout" type="button">${esc(t().logout)}</button>`;
+  return `<header class="sbar">
+    <a class="wordmark" href="./">${esc(t().brand)}</a>
+    <span class="sright">
+      <button class="langcycle" id="lc" type="button" aria-label="Language: ${lang.toUpperCase()}" title="${LANGS.map(l=>l.toUpperCase()).join(" / ")}">${lang.toUpperCase()}</button>
+      <a class="btn ghost small" href="?view=mydm" aria-label="${esc(st().passport)}">★<span class="ptxt"> ${esc(st().passport)}</span></a>
+      ${who}
+    </span></header>`;
+}
+function bindSiteBar(){
+  bindTop();
+  const lo = document.getElementById("slogout");
+  if(lo) lo.onclick = async ()=>{
+    try{ await authReq("logout", {}, AUTH && AUTH.at); }catch(e){}
+    clearAuth(); adminState = null; siteRole = "guest"; rerender();
+  };
+}
+
+/* ---------- start: My DM with the next session ---------- */
+async function renderHome(){
+  phase = "site-home"; document.body.classList.add("site");
+  await resolveRole();
+  if(phase !== "site-home") return;
+  const { hero, heroNext, rest } = splitSessions();
+  const mod = siteRole === "moderator";
+  const stars = mergeStars(localStars(), null);
+  const heroHtml = hero ? `<div class="hero">
+      <div>
+        <div class="when">${esc(heroNext ? st().nextSession : st().latestSession)} · ${esc(longDate(registry[hero].date))}</div>
+        <h2>${esc(L(registry[hero].title) || hero)}</h2>
+        <p class="sub" id="herotag"></p>
+        <div class="acts">
+          <a class="btn" href="?view=session&amp;id=${encodeURIComponent(hero)}">${esc(st().openSession)}</a>
+          ${mod ? `<a class="btn ghost" href="?view=session&amp;id=${encodeURIComponent(hero)}#kit">${esc(st().modKit)}</a>` : ""}
+        </div>
+      </div>
+      ${thumb(hero, 2)}
+    </div>` : `<p class="sub" style="margin-top:16px">${esc(st().noneYet)}</p>`;
+  const allPast = rest.every(id=>!isUpcoming(id));
+  app.innerHTML = `${siteBar()}
+    ${errKey ? `<p class="err site-err">${esc(t()[errKey] || "")}</p>` : ""}
+    ${wordmarkHtml("", t().curriculum)}
+    <h1>${esc(t().myDM)}</h1>
+    ${heroHtml}
+    <div class="two">
+      <div>
+        <h2>${esc(st().yourStars)}</h2>
+        <div class="ministars" id="ministars">${miniStars(stars)}</div>
+        <p class="rules">${esc(t().champRule)}</p>
+        <div class="stack"><a class="btn ghost small" href="?view=mydm">★ ${esc(st().openPassport)}</a></div>
+        ${dailyEntryHtml()}
+      </div>
+      ${rest.length ? `<div>
+        <h2>${esc(allPast ? st().earlier : st().more)}</h2>
+        <div class="rowlist">${rest.map(rowItem).join("")}</div>
+      </div>` : ""}
+    </div>`;
+  bindSiteBar();
+  bindDailyEntry(()=>{ location.href = "./"; });
+  if(hero) takeHome(hero).then(x=>{ const el = document.getElementById("herotag"); if(el && x && phase==="site-home") el.textContent = x.tag; });
+  if(SUPA_URL) fetchMyStars().then(remote=>{
+    const el = document.getElementById("ministars");
+    if(el && remote && phase==="site-home") el.innerHTML = miniStars(mergeStars(localStars(), remote));
+  }).catch(()=>{});
+}
+function miniStars(stars){
+  return PILLAR_IDS.map(p=>`<span title="${esc(L(PILLARS[p]))}">${PILLAR_EMOJI[p]} ${stars.filter(s=>s.pillar===p).length}</span>`).join("");
+}
+function rowItem(id){
+  const s = registry[id];
+  const tags = (s.draft ? `<span class="tag draft">Draft</span>` : "") + (isUpcoming(id) ? `<span class="tag next">${esc(st().nextSession)}</span>` : "");
+  return `<a class="rowitem" href="?view=session&amp;id=${encodeURIComponent(id)}">${thumb(id, 2)}
+    <span><b>${esc(L(s.title) || id)}</b><span class="meta">${esc(pillarLine(id))} · ${esc(longDate(s.date))}</span>
+    ${tags ? `<span class="chipline">${tags}</span>` : ""}</span><span class="go" aria-hidden="true">›</span></a>`;
+}
+
+/* ---------- one page per session ---------- */
+async function renderSessionPage(id){
+  phase = "site-session"; siteId = id; document.body.classList.add("site");
+  await resolveRole();
+  if(phase !== "site-session") return;
+  const s = registry[id];
+  if(!s || !siteSessions().includes(id)){
+    app.innerHTML = `${siteBar()}<a class="lnk" href="./">‹ ${esc(st().backHome)}</a><h1>${esc(st().notFound)}</h1>`;
+    return bindSiteBar();
+  }
+  const mod = siteRole === "moderator";
+  const [take, info] = await Promise.all([takeHome(id), mod ? kitInfo(id) : null]);
+  if(phase !== "site-session" || siteId !== id) return;
+  const up = isUpcoming(id);
+  const everyone = up
+    ? `<li><span class="plain">${esc(st().joinQuiz)}</span><span class="what">${esc(st().joinWhat)}</span></li>`
+    : `${s.materials ? `<li><a href="content/${encodeURIComponent(id)}.html${qsLang(lang)}">${esc(st().takeHome)}</a><span class="what">${esc(st().takeHomeWhat)}</span></li>` : ""}
+       <li><a href="?session=${encodeURIComponent(id)}&amp;solo=1">${esc(st().replay)}</a><span class="what">${esc(st().replayWhat)}</span></li>
+       ${s.materials ? `<li><a href="${esc(pdfPath(id, lang))}" target="_blank" rel="noopener">${esc(st().slides)}</a><span class="fmt">PDF</span><span class="what">${esc(st().slidesWhat)}</span></li>
+       <li><a href="${esc(pdfPath("topic-card-" + id, lang))}" target="_blank" rel="noopener">${esc(st().topicCard)}</a><span class="fmt">PDF</span><span class="what">${esc(st().topicCardWhat)}</span></li>` : ""}`;
+  app.innerHTML = `${siteBar()}
+    <a class="lnk" href="./">‹ ${esc(st().backHome)}</a>
+    <div class="hero plain">
+      <div>
+        <div class="when">${up ? esc(st().nextSession) + " · " : ""}${esc(longDate(s.date))}</div>
+        <h2>${esc(L(s.title) || id)}</h2>
+        ${take && take.tag ? `<p class="sub">${esc(take.tag)}</p>` : ""}
+        ${pillarLine(id) ? `<p class="rules" style="margin-top:8px">${esc(pillarLine(id))} ★</p>` : ""}
+      </div>
+      ${thumb(id, 2)}
+    </div>
+    <div class="two">
+      ${take && take.bottom ? `<div class="why"><b>${esc(st().bottomLine)}</b>${take.bottom}</div>` : "<div></div>"}
+      <div><h2 style="font-size:1rem">${esc(st().forEveryone)}</h2><ul class="slinks">${everyone}</ul></div>
+    </div>
+    ${mod ? `<section class="postkit" id="kit" aria-label="Moderator kit"><div class="lbl">Moderator kit · only you see this</div>${kitHtml(id, info)}</section>`
+      : `<p class="modhint">${siteRole === "guest"
+          ? `${esc(st().modHintGuest)} <a class="lnk" href="${esc(loginHref())}">${esc(st().modHintLogin)}</a>`
+          : esc(st().modHintNo)}</p>`}`;
+  bindSiteBar();
+  if(mod) bindKit(id, info);
+  if(location.hash === "#kit"){ const k = document.getElementById("kit"); if(k) k.scrollIntoView({ block:"start" }); }
+}
+
+/* what the kit needs beyond the registry: languages and question count from the pack,
+   the slide count from the deck, and whether a step-by-step guide exists */
+const kitCache = {};
+function kitInfo(id){
+  if(kitCache[id]) return kitCache[id];
+  const s = registry[id];
+  const head = path => fetch(path, { method:"HEAD", cache:"no-cache" }).then(r=>r.ok).catch(()=>false);
+  return kitCache[id] = Promise.all([
+    loadJSON("packs/" + s.pack).catch(()=>null),
+    fetch("slides/" + encodeURIComponent(id) + ".html", { cache:"no-cache" }).then(r=>r.ok ? r.text() : "").catch(()=>""),
+    head("content/guide-" + encodeURIComponent(id) + ".html")
+  ]).then(([pack, deck, guide])=>{
+    const q0 = pack && pack.questions && pack.questions[0];
+    const langs = LANGS.filter(l=>q0 && q0.q && q0.q[l]);
+    return { nq: pack && pack.questions ? pack.questions.length : 0, langs: langs.length ? langs : LANGS,
+             nSlides: (deck.match(/<section\b[^>]*class="slide[\s"]/g) || []).length, guide };
+  });
+}
+const COPY_SVG = '<svg class="cp" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>' +
+                 '<svg class="ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>';
+function kitHtml(id, info){
+  const s = registry[id];
+  const kl = info.langs.includes(kitLang || lang) ? (kitLang || lang) : info.langs[0];
+  const pres = n => "slides/" + encodeURIComponent(id) + ".html?" + (kl === "de" ? "" : "lang=" + kl + "&") + "present=1" + (n ? "&slide=" + n : "");
+  const slidesUrl = SITE_BASE + "slides/" + encodeURIComponent(id) + ".html" + qsLang(kl);
+  const regie = SITE_BASE + "content/regie-" + encodeURIComponent(id) + ".html" + qsLang(kl);
+  const host = "?session=" + encodeURIComponent(id) + "&host=1";
+  const a = (href, text, what, fmt, isNew) => `<li><a href="${esc(href)}" target="_blank" rel="noopener">${text}</a>${fmt ? `<span class="fmt">${fmt}</span>` : ""}${isNew ? `<span class="tag new">new here</span>` : ""}${what ? `<span class="what">${what}</span>` : ""}</li>`;
+  const practice = s.practice || [];
+  const game = x => a("content/" + x.file + qsLang(kl), esc(L(x.title)),
+    (x.what ? esc(L(x.what)) : "") + (x.pdf ? ` · <a href="${esc(pdfPath(x.pdf, kl))}" target="_blank" rel="noopener">PDF</a>` : ""));
+  const today = todayISO();
+  const ddmm = iso => { const p = String(iso).split("-"); return p.length === 3 ? p[2] + "." + p[1] + "." : iso; };
+  const chip = s.draft ? `<span class="tag draft">Draft</span>`
+    : s.date ? (s.date < today ? `<span class="tag">Last run ${esc(ddmm(s.date))}</span>` : `<span class="tag next">Next run ${esc(ddmm(s.date))}</span>`) : "";
+  const before = practice.filter(x=>x.pdf).map(game).join("") +
+    a(pdfPath("topic-card-" + id, kl), "Topic card", `One-page overview, also the no-slides fallback · <a href="slides/topic-card-${esc(encodeURIComponent(id))}.html${qsLang(kl)}" target="_blank" rel="noopener">HTML</a>`, "PDF") +
+    a(pdfPath(id, kl), "Slides as PDF", "Offline backup of the deck", "PDF") +
+    (info.guide ? a("content/guide-" + encodeURIComponent(id) + ".html", "Step-by-step guide", "How to run this topic, minute by minute (German)", "Page", true) : "");
+  const during = practice.filter(x=>!x.pdf).map(game).join("") +
+    a(host, "Big-screen quiz", "Lobby with the join QR, drives the game") +
+    a(host + "&award=1", "Award the star ★", "Opens the claim window on every phone") +
+    a("?session=" + encodeURIComponent(id), "Quiz as player", "The link behind the QR on the slides") +
+    aliasesOf(id).map(k=>a("?session=" + encodeURIComponent(k), "Rehearsal quiz", `Scratch run «${esc(k)}», keeps test names off the real session`)).join("");
+  const after = a("content/" + encodeURIComponent(id) + ".html" + qsLang(kl), "Take-home page", "For participants: bottom line, material, replay") +
+    a("content/admin.html#people", "Stars &amp; people", "Who collected which star, all sessions");
+  return `<div class="kit">
+    <h2>${esc(L(s.title) || id)} ${chip}</h2>
+    <div class="meta">${[pillarLine(id), s.date ? ddmm(s.date) + s.date.slice(0, 4) : "no date set",
+      info.nq ? info.nq + " questions" : "", info.langs.map(l=>l.toUpperCase()).join(" / ")].filter(Boolean).map(esc).join(" · ")}</div>
+    <div class="prim">
+      <a class="btn big" href="${esc(pres(0))}" target="_blank" rel="noopener">Present ▶</a>
+      <button type="button" class="copy" id="kcopy" data-url="${esc(slidesUrl)}" aria-label="Copy slides link for the moderator">${COPY_SVG}<span class="tip" aria-hidden="true">Copy link for the moderator</span></button>
+      <span class="sr" role="status" aria-live="polite" id="kcopylive"></span>
+      <div class="pills" role="group" aria-label="Language of the material">
+        ${info.langs.map(l=>`<button type="button" class="pill ${l===kl?"on":""}" data-kl="${l}" aria-pressed="${l===kl}">${l.toUpperCase()}</button>`).join("")}
+      </div>
+    </div>
+    <div class="strip">${[1,2,3,4].map(n=>`<a href="${esc(pres(n))}" target="_blank" rel="noopener" aria-label="Present from slide ${n}">${thumb(id, n)}</a>`).join("")}
+      <a class="more" href="${esc(pres(0))}" target="_blank" rel="noopener">${info.nSlides ? "All " + info.nSlides + " slides ›" : "All slides ›"}</a></div>
+    <div class="moments">
+      <div><h3>Before</h3><ul>${before}</ul></div>
+      <div><h3>During</h3><ul>${during}</ul></div>
+      <div><h3>After</h3><ul>${after}</ul>
+        <h3>Run sheet</h3><div class="qrline"><div class="qr" id="kqr" data-qr="${esc(regie)}"></div>
+          <ul>${a(regie, "Run sheet", "Scan for the moderator’s phone")}</ul></div></div>
+    </div>
+  </div>`;
+}
+function bindKit(id, info){
+  const box = document.getElementById("kqr");
+  if(box) box.innerHTML = qrSvg(box.getAttribute("data-qr"));
+  app.querySelectorAll("[data-kl]").forEach(b=>b.onclick = ()=>{
+    kitLang = b.dataset.kl;
+    const k = document.getElementById("kit");
+    if(k){ k.innerHTML = `<div class="lbl">Moderator kit · only you see this</div>${kitHtml(id, info)}`; bindKit(id, info); }
+  });
+  const c = document.getElementById("kcopy"), live = document.getElementById("kcopylive");
+  if(c) c.onclick = ()=>{
+    const text = c.getAttribute("data-url"), tip = c.querySelector(".tip");
+    const done = ok=>{
+      const msg = ok ? "Copied" : "Copy failed: long-press Present";
+      c.classList.add(ok ? "done" : "fail"); tip.textContent = msg; live.textContent = msg;
+      clearTimeout(c._t);
+      c._t = setTimeout(()=>{ c.classList.remove("done","fail"); tip.textContent = "Copy link for the moderator"; live.textContent = ""; }, 1600);
+    };
+    const legacy = ()=>{
+      const ta = document.createElement("textarea"); ta.value = text; ta.setAttribute("readonly",""); ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select(); let ok = false; try{ ok = document.execCommand("copy"); }catch(e){}
+      ta.remove(); return ok;
+    };
+    if(navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(()=>done(true), ()=>done(legacy()));
+    else done(legacy());
+  };
+}
+
+/* ---------- login on its own page ---------- */
+function loginNext(){
+  const n = params.get("next") || "";
+  return /^\?(view|session)=[^\s\\]*$/.test(n) ? "./" + n : "./";   // only our own pages
+}
+function renderLogin(){
+  phase = "login"; document.body.classList.add("site"); acctRender = renderLogin;
+  if(AUTH){
+    // logged in: go back where the person came from, once this device is linked to the account
+    app.innerHTML = `${siteBar()}<p class="rules">…</p>`;
+    Promise.race([linkDeviceToUser(), new Promise(r=>setTimeout(r, 1500))]).then(()=>location.replace(loginNext()));
+    return;
+  }
+  if(!acctAuth) acctAuth = "login";
+  app.innerHTML = `${siteBar()}
+    <div class="screen" style="padding-top:10px">
+      ${wordmarkHtml("", t().curriculum)}
+      <h1>${esc(t().login)}</h1>
+      <p class="sub">${esc(st().loginSub)}</p>
+      ${acctHtml()}
+      <a class="lnk" href="${esc(loginNext())}">${esc(t().cancel)}</a>
+    </div>`;
+  bindSiteBar(); bindAcct();
+}
+
+function siteRerender(){
+  if(phase === "site-home") renderHome();
+  else if(phase === "site-session") renderSessionPage(siteId);
+  else if(phase === "login") renderLogin();
+}
+
+
 /* ---------------- rerender on language switch ---------------- */
 function rerender(){
-  if(phase==="picker") renderPicker();
+  if(SITE_PHASES.includes(phase)) siteRerender();
   else if(phase==="error") renderError();
   else if(phase==="join") renderJoin();
   else if(phase==="passport") renderPassport();

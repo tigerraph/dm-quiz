@@ -45,7 +45,7 @@ der Diskussion zeigen.
   [`content/timer.html`](../content/timer.html) — Time-Timer-Scheibe mit
   Presets (2′/3′/5′/10′), Piepton am Ende, Space/Enter = Start/Pause.
 - **Animation**: «▶ Als Animation zeigen» auf der Auflösungs-Folie öffnet
-  [`content/fauler-apfel.html`](../content/fauler-apfel.html) — spielt
+  `content/fauler-apfel.html` — spielt
   automatisch Panel für Panel ab. Zwei Modi: «▶ Auto abspielen» oder
   durchklicken (Klick/→ weiter, ← zurück; `?mode=click` startet ohne Auto).
 - **Stern-QR**: auf der Take-away-Folie oben rechts — führt in die Session,
