@@ -405,8 +405,8 @@ body.site #app{max-width:1080px; padding:0 28px calc(40px + env(safe-area-inset-
   border-bottom:1px solid rgba(255,255,255,.08); margin-bottom:22px;}
 .sbar .wordmark{color:#fff; text-decoration:none; font-size:.98rem;}
 .sbar .sright{margin-left:auto; display:flex; gap:8px; align-items:center;}
-.sbar .btn.small{min-height:42px; display:inline-flex; align-items:center; gap:6px; white-space:nowrap;}
-.sbar .langcycle{min-height:42px; min-width:44px;}
+.sbar .btn.small{min-height:44px; display:inline-flex; align-items:center; gap:6px; white-space:nowrap;}
+.sbar .langcycle{min-height:44px; min-width:44px;}
 .who{font-size:.78rem; font-weight:800; color:var(--ink); background:var(--teal); border-radius:999px;
   padding:5px 11px; white-space:nowrap;}
 .who.participant{background:var(--cream);}
@@ -459,7 +459,7 @@ body.site #app{max-width:1080px; padding:0 28px calc(40px + env(safe-area-inset-
 .slinks .fmt{font-size:.7rem; font-weight:800; color:var(--teal); margin-left:6px;}
 .slinks .plain{font-weight:600;}
 .modhint{margin-top:26px; color:rgba(255,255,255,.62); font-size:.9rem;}
-.modhint .lnk{min-height:0; margin-left:4px;}
+.modhint .lnk{margin-left:4px;}
 
 /* moderator kit (the session setup approved 07.10.2026, in DM colours) */
 .postkit{background:var(--cream); color:var(--ink); border-radius:6px; box-shadow:var(--paper-shadow); padding:6px;
@@ -519,6 +519,16 @@ body.site #app{max-width:1080px; padding:0 28px calc(40px + env(safe-area-inset-
 }
 @media (prefers-reduced-motion:reduce){ .postkit,.kit{transform:none;} }
 .site .why strong{font-weight:800;}
+
+/* tap targets: every link in the kit and on the session page is at least 44px tall (WCAG 2.5.5) */
+.sbar .wordmark{display:inline-flex; align-items:center; min-height:44px;}
+.slinks a,.moments li > a,.moments .what a{display:inline-flex; align-items:center; min-height:44px; border-bottom:0;
+  text-decoration:underline; text-decoration-color:rgba(255,255,255,.35); text-underline-offset:4px;}
+.moments ul,.slinks{gap:4px;}
+.strip .more{display:inline-flex; align-items:center; min-height:44px;}
+.hero.noimg{grid-template-columns:1fr;}
+.kit .pill{min-height:44px; min-width:48px;}
+.stack .btn{min-height:44px; display:inline-flex; align-items:center;}
 
 </style>
 </head>
@@ -2841,7 +2851,7 @@ var qrcode = function() {
    Engine carried over from the noeggi-kahoot wedding app: timer,
    speed scoring, streak bonus, i18n, synthesized offline audio.
    ================================================================== */
-const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","supabaseSchema":"dm","build":"build 03.11.2026 22:06"};
+const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","supabaseSchema":"dm","build":"build 03.11.2026 22:17"};
 const SUPA_URL = CFG.supabaseUrl || "";
 const SUPA_KEY = CFG.supabaseAnonKey || "";
 
@@ -5244,7 +5254,8 @@ function longDate(iso){
   return isNaN(d) ? iso : d.toLocaleDateString(LOCALES[lang] || "en-GB", { weekday:"short", day:"numeric", month:"long", year:"numeric" });
 }
 function thumb(id, n, cls){
-  return `<img${cls ? ` class="${cls}"` : ""} src="assets/thumbs/${encodeURIComponent(id)}-${n}.jpg" alt="" loading="lazy" onerror="this.style.visibility='hidden'">`;
+  // no thumbnail yet (npm run thumbs not run): the hero drops to one column, a list keeps its slot
+  return `<img${cls ? ` class="${cls}"` : ""} src="assets/thumbs/${encodeURIComponent(id)}-${n}.jpg" alt="" loading="lazy" onerror="var h=this.closest('.hero');if(h){h.classList.add('noimg');this.remove();}else this.style.visibility='hidden'">`;
 }
 function pillarLine(id){
   const p = registry[id].pillar;

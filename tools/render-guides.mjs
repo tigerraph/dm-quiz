@@ -12,7 +12,7 @@
  * paragraphs, lists and checklists, tables, quotes, **bold**, *italic*, `code`,
  * [links](…) and <https://…>. Links stay relative: docs/ and content/ sit at the
  * same depth, so ../slides/… keeps working; a link into docs/ itself is rewritten.
- * Re-run after editing a runbook; CI does not render these.
+ * Also run by `npm run build`, so a merged runbook always gets its page.
  */
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -148,10 +148,16 @@ ${body}
 </main></body></html>
 `;
 
+export function renderGuides(){
 const files = readdirSync(join(root, "docs")).filter(f => /^runbook-.+\.md$/.test(f));
 for (const f of files) {
   const id = f.replace(/^runbook-|\.md$/g, "");
-  const { title, body } = md(readFileSync(join(root, "docs", f), "utf8"));
+  // the page is public: drop the team's internal credits like «(Rafa, 01.10.2026)» or «(Fritz, 2026-08-27)»
+  const src = readFileSync(join(root, "docs", f), "utf8")
+    .replace(/\s*\([A-ZÄÖÜ][a-zäöüé]+(?:\s+[A-ZÄÖÜ][a-zäöüé]+)?,\s*(?:\d{1,2}\.\d{1,2}\.\d{4}|\d{4}-\d{2}-\d{2})\)/g, "");
+  const { title, body } = md(src);
   writeFileSync(join(root, "content", `guide-${id}.html`), page(id, title || id, body));
   console.log(`content/guide-${id}.html  ← docs/${f}`);
 }
+}
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) renderGuides();

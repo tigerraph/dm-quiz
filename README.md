@@ -124,8 +124,8 @@ No rebuild needed — packs are fetched at runtime.
    «date not on record».
 3. Optional, for the start page and the Moderator kit: `npm run thumbs -- <id>`
    (first four slides as `assets/thumbs/<id>-<n>.jpg`; needs Playwright, see
-   `tools/render-thumbs.mjs`) and `npm run guides` (turns `docs/runbook-<id>.md`
-   into the moderators' step-by-step page `content/guide-<id>.html`).
+   `tools/render-thumbs.mjs`) `npm run build` also turns `docs/runbook-<id>.md` into the
+   moderators' step-by-step page `content/guide-<id>.html`.
 
 The tagline and the bottom line on the session page are read from the session's
 take-home page (`content/<id>.html`: the `.sub` line and the first `.postit`),
@@ -240,7 +240,7 @@ phone. Per topic: one **Slides** button (EN by default, language dropdown) and *
 the slides to a moderator; **Topic materials** (games and exercises, and the take-home page for
 participants); a collapsed **Support material** block (topic card, slides PDF, beamer and player
 links, which the slides already carry); and a QR that opens the Regie page on the host's phone.
-The runbook stays in the repo (`docs/runbook-<id>.md`) and is not linked here.
+The runbook (`docs/runbook-<id>.md`) is rendered to `content/guide-<id>.html` by every build and linked from the Moderator kit.
 It is built from `packs/sessions.json` at runtime, so a new topic appears on its own, marked
 «Draft». A game or exercise is registered on its topic's line:
 `"practice": [{"file": "zettel-bypassing.html", "title": {"de": …, "en": …}, "what": {"en": …}, "pdf": "zettel-bypassing"}]`

@@ -118,7 +118,8 @@ function longDate(iso){
   return isNaN(d) ? iso : d.toLocaleDateString(LOCALES[lang] || "en-GB", { weekday:"short", day:"numeric", month:"long", year:"numeric" });
 }
 function thumb(id, n, cls){
-  return `<img${cls ? ` class="${cls}"` : ""} src="assets/thumbs/${encodeURIComponent(id)}-${n}.jpg" alt="" loading="lazy" onerror="this.style.visibility='hidden'">`;
+  // no thumbnail yet (npm run thumbs not run): the hero drops to one column, a list keeps its slot
+  return `<img${cls ? ` class="${cls}"` : ""} src="assets/thumbs/${encodeURIComponent(id)}-${n}.jpg" alt="" loading="lazy" onerror="var h=this.closest('.hero');if(h){h.classList.add('noimg');this.remove();}else this.style.visibility='hidden'">`;
 }
 function pillarLine(id){
   const p = registry[id].pillar;

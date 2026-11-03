@@ -21,6 +21,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { renderGuides } from "./tools/render-guides.mjs";
 
 const root = dirname(fileURLToPath(import.meta.url));
 const p = (...a) => join(root, ...a);
@@ -76,4 +77,5 @@ if (!config.supabaseUrl || !config.supabaseAnonKey) {
   console.warn("!  src/config.json has no Supabase URL/anon key — the app will run\n"
              + "   in local-only mode (scores stay on the device, 📱 indicator).");
 }
+renderGuides();   // docs/runbook-<id>.md -> content/guide-<id>.html, the moderators' step-by-step pages
 console.log(`index.html  ${(html.length / 1024).toFixed(1)} kB  (${config.build})`);
