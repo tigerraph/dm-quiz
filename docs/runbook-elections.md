@@ -27,7 +27,7 @@ füllen sich selbst, auch die Etiketten, Serbiens «Vorläufig»-Satz und die Be
 | 1 | `us.house` | `d`, `r`: entschiedene Sitze. `other`: Sitze anderer. `open`: noch nicht entschiedene. `majority`: `"D"` oder `"R"`, erst wenn die Mehrheit ausgerufen ist | AP-Race-Calls |
 | 2 | `us.senate` | wie oben. Unabhängige zu der Partei zählen, mit der sie stimmen, und das in `note` sagen | AP-Race-Calls |
 | 3 | `us.governors` | `d`, `r`, `other`, `open` (36 Rennen) | AP-Race-Calls |
-| 4 | `us.turnout` | Schätzung als Text, z. B. `"≈ 47 %"`. Gibt es keine, bleibt `null`: Die Folie zeigt dann «nicht publiziert» | U.S. Elections Project, sonst leer |
+| 4 | `us.turnout` | Schätzung als Text, z. B. `"≈ 47 %"`. Gibt es keine, bleibt `null`: Die Folie zeigt dann «folgt» | U.S. Elections Project, sonst leer |
 | 5 | `us.asOf`, `us.source`, `us.note` | Datum und Uhrzeit des Ablesens, Quelle, optional eine Notiz wie `"GA: runoff 01.12."` | selbst |
 | 6 | `rs.student`, `rs.united`, `rs.turnout`, `rs.asOf` | Endresultat der Wahlkommission RIK: beide Listen und Beteiligung, alles oder nichts. Prozent als Text, z. B. `"53,0 %"`, Sitze als Zahl. Nur das amtliche Endresultat, keine Zwischenstände | rik.parlament.gov.rs |
 
