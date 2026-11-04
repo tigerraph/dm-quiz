@@ -10,7 +10,7 @@
      ?view=mydm              the star passport, unchanged (the QR on the slides lands there)
 
    Injected by build.mjs into the app's script, so it shares the app's state:
-   registry, lang, AUTH, adminStatus(), acctHtml()/bindAcct(), stars helpers.
+   registry, lang, AUTH, adminStatus(), acctHtml()/bindAcct() (src/account.js), stars helpers.
    The kit itself is the session setup approved on 07.10.2026 (content/admin.html):
    Present ▶ + copy link, the first slides, before / during / after, run-sheet QR.
    Its labels stay English like that page; its language switch picks the material.
@@ -70,7 +70,7 @@ const SITE_T = {
   notFound:"Questa sessione non è nell’elenco." }
 };
 function st(){ return SITE_T[lang] || SITE_T.en; }
-const SITE_PHASES = ["site-home","site-session","login"];
+const SITE_PHASES = ["site-home","site-session","login","reset"];
 const LOCALES = { en:"en-GB", de:"de-CH", fr:"fr-CH", it:"it-CH" };
 /* QR codes and «copy link» must point at the public site, also from a local preview */
 const SITE_BASE = (location.protocol === "file:" || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname))
@@ -166,9 +166,9 @@ function loginHref(){
   const back = /(^|&)view=login(&|$)/.test(here) ? "" : here + (location.hash || "");
   return "?view=login" + (back ? "&next=" + encodeURIComponent("?" + back) : "");
 }
-function siteBar(){
+function siteBar(onLogin){
   const who = siteRole === "guest"
-    ? `<a class="btn small" href="${esc(loginHref())}">${esc(t().login)}</a>`
+    ? (onLogin ? "" : `<a class="btn small" href="${esc(loginHref())}">${esc(t().login)}</a>`)
     : `<span class="who ${siteRole}">${esc(siteRole === "moderator" ? st().moderator : st().participant)}</span>
        <button class="btn ghost small" id="slogout" type="button">${esc(t().logout)}</button>`;
   return `<header class="sbar">
@@ -399,12 +399,13 @@ function renderLogin(){
     Promise.race([linkDeviceToUser(), new Promise(r=>setTimeout(r, 1500))]).then(()=>location.replace(loginNext()));
     return;
   }
-  if(!acctAuth) acctAuth = "login";
-  app.innerHTML = `${siteBar()}
+  if(!acctAuth){ const m = params.get("mode"); acctAuth = ["signup","forgot"].includes(m) ? m : "login"; }
+  const intro = acctAuth === "login" || acctAuth === "signup";
+  app.innerHTML = `${siteBar(true)}
     <div class="screen" style="padding-top:10px">
       ${wordmarkHtml("", t().curriculum)}
-      <h1>${esc(t().login)}</h1>
-      <p class="sub">${esc(st().loginSub)}</p>
+      <h1>${esc(acctTitle())}</h1>
+      ${intro ? `<p class="sub">${esc(st().loginSub)}</p>` : ""}
       ${acctHtml()}
       <a class="lnk" href="${esc(loginNext())}">${esc(t().cancel)}</a>
     </div>`;
@@ -415,4 +416,5 @@ function siteRerender(){
   if(phase === "site-home") renderHome();
   else if(phase === "site-session") renderSessionPage(siteId);
   else if(phase === "login") renderLogin();
+  else if(phase === "reset") renderReset();
 }

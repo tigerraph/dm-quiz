@@ -33,6 +33,7 @@
  *                                "mock"), so the committed build can be tested
  *                                without editing src/config.json
  * GET /__log lists every REST request with its profile and status.
+ * GET /__mail lists the reset and sign-in mails the real project would send, with their links.
  *
  * Development only. Never deploy this, and remember to put the real
  * Supabase URL and anon key back in src/config.json before committing.
@@ -104,6 +105,22 @@ const UNIQUE = {
 // ------------------------- mock GoTrue (email+password) + edge function ---
 const authUsers = new Map();   // email -> {id, email, password}
 const sessions  = new Map();   // access/refresh token -> user id
+/* mail the real project would send (password reset, sign-in link): kept here instead,
+   GET /__mail lists it, so the flows can be tested end to end without an inbox */
+const outbox = [];
+const links  = new Map();      // one-time token -> {uid, type, redirect}
+const sends  = new Map();      // email -> send times, for the 429 a real project returns
+function mailLink(u, type, redirect) {
+  const tok = type.slice(0, 1) + "-" + ++seq;
+  links.set(tok, { uid: u.id, type, redirect });
+  const link = `http://localhost:${PORT}/auth/v1/verify?token=${tok}&type=${type}&redirect_to=${encodeURIComponent(redirect)}`;
+  outbox.push({ to: u.email, type, link, at: new Date().toISOString() });
+}
+function tooMany(email) {
+  const now = Date.now(), t = (sends.get(email) || []).filter(x => now - x < 60000);
+  t.push(now); sends.set(email, t);
+  return t.length > 3;           // more than 3 mails a minute to one address
+}
 function authSession(u) {
   const at = "at-" + ++seq, rt = "rt-" + ++seq;
   sessions.set(at, u.id); sessions.set(rt, u.id);
@@ -173,6 +190,36 @@ createServer(async (req, res) => {
       return void res.writeHead(200).end(JSON.stringify({ id: u.id, email: u.email }));
     }
     if (ep === "logout" && req.method === "POST") return void res.writeHead(204).end();
+    if (ep === "user" && req.method === "GET") {
+      const u = bearerUser(req);
+      if (!u) return void res.writeHead(401).end('{"msg":"no"}');
+      return void res.writeHead(200).end(JSON.stringify({ id: u.id, email: u.email }));
+    }
+    // password reset: like GoTrue, 200 whether or not the email has an account
+    if (ep === "recover" && req.method === "POST") {
+      if (body.email && tooMany(body.email)) return void res.writeHead(429).end('{"error_code":"over_email_send_rate_limit","msg":"email rate limit exceeded"}');
+      const u = authUsers.get(body.email);
+      if (u) mailLink(u, "recovery", url.searchParams.get("redirect_to") || `http://localhost:${PORT}/`);
+      return void res.writeHead(200).end("{}");
+    }
+    // sign-in link (magic link); create_user:false refuses an unknown email
+    if (ep === "otp" && req.method === "POST") {
+      if (body.email && tooMany(body.email)) return void res.writeHead(429).end('{"error_code":"over_email_send_rate_limit","msg":"email rate limit exceeded"}');
+      const u = authUsers.get(body.email);
+      if (!u) return void res.writeHead(422).end('{"error_code":"otp_disabled","msg":"Signups not allowed for otp"}');
+      mailLink(u, "magiclink", url.searchParams.get("redirect_to") || `http://localhost:${PORT}/`);
+      return void res.writeHead(200).end("{}");
+    }
+    // the link in the mail: one use, then back to the site with the session in the hash
+    if (ep === "verify" && req.method === "GET") {
+      const l = links.get(url.searchParams.get("token") || "");
+      const to = (l && l.redirect) || url.searchParams.get("redirect_to") || `http://localhost:${PORT}/`;
+      if (!l) return void res.writeHead(303, { Location: to + "#error=access_denied&error_code=otp_expired&error_description=Email+link+is+invalid+or+has+expired" }).end();
+      links.delete(url.searchParams.get("token"));
+      const u = [...authUsers.values()].find(x => x.id === l.uid);
+      const sess = authSession(u);
+      return void res.writeHead(303, { Location: `${to}#access_token=${sess.access_token}&refresh_token=${sess.refresh_token}&expires_in=3600&token_type=bearer&type=${l.type}` }).end();
+    }
     return void res.writeHead(404).end('{"msg":"unknown auth endpoint"}');
   }
 
@@ -258,6 +305,10 @@ createServer(async (req, res) => {
     if (!u) return void res.writeHead(404).end("no such user: sign up first");
     admins.add(u.id);
     return void res.writeHead(200).end("ok");
+  }
+  if (url.pathname === "/__mail") {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    return void res.end(JSON.stringify(outbox, null, 1));
   }
   if (url.pathname === "/__log") {
     res.writeHead(200, { "Content-Type": "application/json" });

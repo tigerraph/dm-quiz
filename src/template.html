@@ -921,6 +921,7 @@ async function loadJSON(path){
 }
 async function boot(){
   document.documentElement.lang = lang;
+  await authCallback();                // a link from a reset or sign-in mail brings the session in the hash
   authRefresh();                       // keep a stored login alive; fire and forget
   try{ registry = await loadJSON("packs/sessions.json"); }
   catch(e){ return fail("loadFail"); }
@@ -930,6 +931,7 @@ async function boot(){
   if(VIEW === "daily" && !HOST){ passBack = goHome; return openDaily(); }
   if(VIEW === "session" && !HOST) return renderSessionPage(params.get("id") || "");
   if(VIEW === "login" && !HOST) return renderLogin();
+  if(VIEW === "reset" && !HOST) return renderReset();
 
   /* No session: the start page, My DM with the next session (concept B, Rafa 03.11.2026).
      It replaces the old «Pick a session» list. */
@@ -2071,7 +2073,9 @@ function paintRescue(){
    account's only job is to link this device id to a user, so stars survive
    a lost phone: dm_identities rows are written on signup/login, and the
    passport closure picks up every token the account has ever touched. */
-let AUTH = store.get("auth", null);   // {at, rt, uid, email}
+/* «Stay signed in» off: the login lives in sessionStorage only and ends with the browser tab */
+const sessAuth = ()=>{ try{ return JSON.parse(sessionStorage.getItem("dmq_auth")); }catch(e){ return null; } };
+let AUTH = store.get("auth", null) || sessAuth();   // {at, rt, uid, email}
 async function authReq(path, body, bearer){
   try{
     const r = await fetch(SUPA_URL+"/auth/v1/"+path, {
@@ -2088,10 +2092,12 @@ async function authReq(path, body, bearer){
 function setAuth(j){
   AUTH = { at:j.access_token, rt:j.refresh_token,
            uid:j.user && j.user.id, email:j.user && j.user.email };
-  store.set("auth", AUTH);
+  const keep = store.get("keep", true);
+  store.set("auth", keep ? AUTH : null);
+  try{ if(keep) sessionStorage.removeItem("dmq_auth"); else sessionStorage.setItem("dmq_auth", JSON.stringify(AUTH)); }catch(e){}
   linkDeviceToUser();
 }
-function clearAuth(){ AUTH = null; store.set("auth", null); }
+function clearAuth(){ AUTH = null; store.set("auth", null); try{ sessionStorage.removeItem("dmq_auth"); }catch(e){} }
 async function linkDeviceToUser(){
   if(!AUTH || !AUTH.uid) return;
   try{
@@ -2141,125 +2147,7 @@ async function adminStatus(){
   return adminState = (Array.isArray(j) && j.length) ? "admin" : "no";
 }
 
-/* account block on the My DM page (sketch: name, email, change PW, delete)
-   A real <form> with visible labels, name attributes and the right
-   autocomplete pair per mode — username + new-password on signup,
-   username + current-password on login — is what makes iOS/Android/1Password
-   offer a generated password and later autofill (Rafa review, 28.8.). */
-let acctMode = "";    // "" | "pw"
-let acctMsg = null;   // {text, err}
-let acctAuth = "";    // "" (decide on first render) | "signup" | "login"
-let acctEmail = "";   // survives re-renders, so an error never wipes the field
-let acctRender = ()=>renderPassport();   // the page the account form sits on (passport or ?view=login)
-function acctHtml(){
-  const msg = `<p class="msg ${acctMsg && acctMsg.err ? "err" : ""}">${esc(acctMsg ? acctMsg.text : "")}</p>`;
-  if(AUTH){
-    return `<div class="acct">
-      <p class="rules">${esc(t().loggedInAs(AUTH.email || ""))}</p>
-      ${acctMode==="pw" ? `
-        <form id="apwform" style="display:contents">
-          <input type="email" name="email" autocomplete="username" value="${esc(AUTH.email||"")}" hidden>
-          <label for="anewpw">${esc(t().newPw)}</label>
-          <input id="anewpw" name="password" type="password" autocomplete="new-password"
-                 required minlength="6" placeholder="${esc(t().newPw)}">
-          <div class="row">
-            <button type="submit" class="btn small">${esc(t().save)}</button>
-            <button type="button" class="btn ghost small" id="acancel">${esc(t().cancel)}</button>
-          </div>
-        </form>` : `
-        <div class="row">
-          <button class="btn ghost small" id="achangepw">${esc(t().changePw)}</button>
-          <button class="btn ghost small" id="alogout">${esc(t().logout)}</button>
-          <button class="btn small danger" id="adelete">${esc(t().deleteAccount)}</button>
-        </div>`}
-      ${msg}
-    </div>`;
-  }
-  if(!acctAuth) acctAuth = store.get("had_auth", false) ? "login" : "signup";
-  const su = acctAuth==="signup";
-  return `<form class="acct" id="aform">
-    <p class="rules">${esc(t().accountHint)}</p>
-    <label for="aemail">${esc(t().email)}</label>
-    <input id="aemail" name="email" type="email" autocomplete="username" inputmode="email"
-           autocapitalize="none" spellcheck="false" required
-           value="${esc(acctEmail)}" placeholder="${esc(t().email)}">
-    <label for="apw">${esc(t().pw)}</label>
-    <input id="apw" name="password" type="password" required minlength="6"
-           autocomplete="${su ? "new-password" : "current-password"}" placeholder="${esc(t().pw)}">
-    <div class="row">
-      <button type="submit" class="btn small">${esc(su ? t().signup : t().login)}</button>
-      <button type="button" class="btn ghost small" id="aswitch">${esc(su ? t().login : t().signup)}</button>
-    </div>
-    ${msg}
-  </form>`;
-}
-function setAcctMsg(text, err){ acctMsg = text ? { text, err } : null; acctRender(); }
-function authOk(j){ store.set("had_auth", true); acctEmail=""; setAuth(j); setAcctMsg(""); }
-function bindAcct(){
-  const el = id => document.getElementById(id);
-  if(el("aform")) el("aform").onsubmit = async e=>{
-    e.preventDefault();
-    const em = (el("aemail").value || "").trim(), p = el("apw").value || "";
-    acctEmail = em;
-    if(!em) return setAcctMsg(t().authFailed, true);
-    if(p.length < 6) return setAcctMsg(t().pwShort, true);
-    if(acctAuth==="signup"){
-      const r = await authReq("signup", { email:em, password:p });
-      if(r && r.ok && r.j && r.j.access_token) authOk(r.j);
-      // "Confirm email" on: signup returns a user but no session yet
-      else if(r && r.ok && r.j && (r.j.confirmation_sent_at
-            || (r.j.user && r.j.user.confirmation_sent_at))) setAcctMsg(t().confirmSent);
-      // tell the person what actually went wrong — the generic line sent
-      // Rafa in circles when his email already had an account
-      else if(r && r.j && (r.j.error_code==="user_already_exists"
-            || /already registered/i.test(r.j.msg||""))){
-        acctAuth="login"; setAcctMsg(t().emailTaken, true);
-      }
-      else if(r && r.j && r.j.error_code==="weak_password") setAcctMsg(t().pwShort, true);
-      else setAcctMsg(t().authFailed, true);
-    } else {
-      const r = await authReq("token?grant_type=password", { email:em, password:p });
-      if(r && r.ok && r.j && r.j.access_token) authOk(r.j);
-      else setAcctMsg(t().authFailed, true);
-    }
-  };
-  if(el("aswitch")) el("aswitch").onclick = ()=>{
-    acctEmail = (el("aemail").value || "").trim();
-    acctAuth = acctAuth==="signup" ? "login" : "signup";
-    acctMsg = null; acctRender();
-  };
-  if(el("achangepw")) el("achangepw").onclick = ()=>{ acctMode="pw"; acctRender(); };
-  if(el("acancel"))   el("acancel").onclick   = ()=>{ acctMode="";   acctRender(); };
-  if(el("apwform"))   el("apwform").onsubmit  = async e=>{
-    e.preventDefault();
-    const p = el("anewpw").value || "";
-    if(p.length < 6) return setAcctMsg(t().pwShort, true);
-    let r = await authReq("user", { password:p }, AUTH.at);
-    if(r && r.status === 401){          // access token expired: refresh, retry once
-      await authRefresh();
-      if(AUTH) r = await authReq("user", { password:p }, AUTH.at);
-    }
-    if(r && r.ok){ acctMode=""; setAcctMsg(t().pwChanged); }
-    else setAcctMsg(t().authFailed, true);
-  };
-  if(el("alogout")) el("alogout").onclick = async ()=>{
-    try{ await authReq("logout", {}, AUTH.at); }catch(e){}
-    clearAuth(); acctMode=""; setAcctMsg("");
-  };
-  if(el("adelete")) el("adelete").onclick = async ()=>{
-    if(!confirm(t().deleteConfirm)) return;
-    // The database is insert-only for anon, so deletion runs behind the
-    // delete-account edge function (service role). Not deployed -> soft fail.
-    let ok = false;
-    try{
-      const r = await fetch(SUPA_URL+"/functions/v1/delete-account", {
-        method:"POST", headers:{ apikey:SUPA_KEY, Authorization:"Bearer "+AUTH.at } });
-      ok = r.ok;
-    }catch(e){}
-    if(ok){ clearAuth(); acctMode=""; setAcctMsg(t().deleted); }
-    else setAcctMsg(t().deleteFailed, true);
-  };
-}
+/* The account form (log in, create, forgotten password, sign-in link) lives in src/account.js. */
 
 /* ---------------- passport data ----------------
    A person's stars are the stars of every token connected to this device:
@@ -2578,6 +2466,7 @@ async function openAddStar(){
   };
 }
 
+__ACCOUNT__
 __SITE__
 
 /* ---------------- rerender on language switch ---------------- */

@@ -9,6 +9,7 @@
  *   __QRCODE__   vendor/qrcode.js verbatim (MIT), so the host view needs no CDN
  *   __AUDIO__    src/audio.js, the synthesized offline audio engine
  *   __DAILY__    src/daily.js, the daily lesson's pick/streak/ladder logic
+ *   __ACCOUNT__  src/account.js, log in / create account / reset password / sign-in link
  *   __SITE__     src/site.js, the start page, session pages and login (concept B)
  *   __SITECSS__  src/site.css, their styles
  *   __CONFIG__   src/config.json plus a build stamp
@@ -63,11 +64,12 @@ const html = read("src", "template.html")
   .replace("__QRCODE__", () => guard(read("vendor", "qrcode.js")))
   .replace("__AUDIO__", () => guard(read("src", "audio.js")))
   .replace("__DAILY__", () => guard(read("src", "daily.js")))
+  .replace("__ACCOUNT__", () => guard(read("src", "account.js")))
   .replace("__SITE__", () => guard(read("src", "site.js")))
   .replace("__SITECSS__", () => read("src", "site.css"))
   .replace("__CONFIG__", () => JSON.stringify(config));
 
-for (const token of ["__FONTS__", "__QRCODE__", "__AUDIO__", "__DAILY__", "__SITE__", "__SITECSS__", "__CONFIG__"]) {
+for (const token of ["__FONTS__", "__QRCODE__", "__AUDIO__", "__DAILY__", "__ACCOUNT__", "__SITE__", "__SITECSS__", "__CONFIG__"]) {
   if (html.includes(token)) throw new Error(`placeholder ${token} was not replaced`);
 }
 
