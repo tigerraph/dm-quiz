@@ -13,6 +13,7 @@ Stand aller Fakten: 30. Oktober 2026. **Kein Midterm-Resultat im Material:** Die
 3. November. Auch Serbiens Endresultat fehlt noch (Wiederholung am 1. November).
 
 ## Ausfüllen, sobald Resultate da sind (Mi 4. oder Do 5. November)
+<!-- intern: not on the public guide page -->
 
 **Wer:** Rafa bestimmt, wer die Zahlen einträgt. Vorschlag: Der Master-Agent beauftragt am Mittwochnachmittag
 einen Helfer, der Helfer trägt ein und erstellt die PDFs neu, Rafa gibt das OK für live. Ein offener Punkt, bis Rafa

@@ -132,3 +132,7 @@ body.site #app{max-width:1080px; padding:0 28px calc(40px + env(safe-area-inset-
 .stack .btn{min-height:44px; display:inline-flex; align-items:center;}
 /* login page: the account buttons are full tap targets */
 body.site .acct .btn{min-height:44px; display:inline-flex; align-items:center; justify-content:center;}
+.sbar a.btn.small{min-width:44px; justify-content:center;}
+.strip a{min-height:44px;}
+.strip a img{height:100%; min-height:44px; object-fit:cover;}
+.moments .what a{min-width:44px; justify-content:center;}

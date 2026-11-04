@@ -155,7 +155,9 @@ for (const f of files) {
   // the page is public: drop the team's internal credits like «(Rafa, 01.10.2026)» or «(Fritz, 2026-08-27)»
   const src = readFileSync(join(root, "docs", f), "utf8")
     .replace(/\s*\([A-ZÄÖÜ][a-zäöüé]+(?:\s+[A-ZÄÖÜ][a-zäöüé]+)?,\s*(?:\d{1,2}\.\d{1,2}\.\d{4}|\d{4}-\d{2}-\d{2})\)/g, "");
-  const { title, body } = md(src);
+  // a section marked «<!-- intern … -->» right under its heading stays in the repo only
+  const pub = src.replace(/^(#{2,3}) [^\n]*\n<!-- intern[^\n]*-->\n[\s\S]*?(?=^#{2} |(?![\s\S]))/gm, "");
+  const { title, body } = md(pub);
   writeFileSync(join(root, "content", `guide-${id}.html`), page(id, title || id, body));
   console.log(`content/guide-${id}.html  ← docs/${f}`);
 }
