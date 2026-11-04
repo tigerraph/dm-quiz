@@ -12,13 +12,18 @@
  */
 window.DM_RESULTS = {
   us: {
-    asOf: null,        // when you read the numbers, e.g. "05.11.2026, 08:00"
-    source: null,      // e.g. "AP"
-    house:     { d: null, r: null, other: 0, open: null, majority: null },   // seats called; majority "D" or "R" once called
-    senate:    { d: null, r: null, other: 0, open: null, majority: null },   // count independents with the party they sit with, and say so in `note`
-    governors: { d: null, r: null, other: 0, open: null },
+    asOf: "04.11.2026, 09:10",   // read 04.11.2026 09:10 CET; newest update in the files 09:07 CET
+    source: "AP via NPR",        // apps.npr.org/2026-election-results/data/{house,senate,gov}.json; NPR: «Election results are tabulated by The Associated Press»
+    house:     { d: 219, r: 135, other: 0, open: 81, majority: "D" },   // 354 called; 80 «Too Early to Call» + LA-5 runoff; 219 called seats reach the 218 needed
+    senate:    { d: 54, r: 43, other: 0, open: 3, majority: "D" },      // whole chamber: called 20 D + 12 R; not up 32 D + 31 R + 2 independents who caucus with D (NPR); open AK, MS, NE
+    governors: { d: 19, r: 12, other: 0, open: 5 },                     // of the 36 races; open AK, AZ, KS, NV, OR
     turnout: null,     // estimate as text, e.g. "≈ 47 %"; stays null if none is published
-    note: null         // optional, one line, e.g. "GA: runoff 01.12."
+    note: {            // one line per language
+      de: "Senat inkl. 2 Unabhängige, die mit den Demokraten stimmen · LA-5: Stichwahl",
+      en: "Senate incl. 2 independents who caucus with the Democrats · LA-5: runoff",
+      fr: "Sénat : y compris 2 indépendants qui siègent avec les démocrates · LA-5 : second tour",
+      it: "Senato: inclusi 2 indipendenti che votano con i democratici · LA-5: ballottaggio"
+    }
   },
   rs: {
     asOf: null,        // date of the electoral commission's final report, e.g. "05.11.2026"
@@ -66,7 +71,8 @@ window.DM_RESULTS = {
     var parts = [];
     if (u.asOf) parts.push(esc(w.asOf) + ' ' + esc(u.asOf));
     if (u.source) parts.push(esc(u.source));
-    if (u.note) parts.push(esc(u.note));
+    var note = (u.note && typeof u.note === 'object') ? (u.note[lang] || u.note.de) : u.note;
+    if (note) parts.push(esc(note));
     var stamp = parts.join(' · ');
     var map = {
       'us.house': race(w, w.house, u.house, true),
