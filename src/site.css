@@ -136,3 +136,24 @@ body.site .acct .btn{min-height:44px; display:inline-flex; align-items:center; j
 .strip a{min-height:44px;}
 .strip a img{height:100%; min-height:44px; object-fit:cover;}
 .moments .what a{min-width:44px; justify-content:center;}
+
+/* account form (src/account.js) */
+.acct .pwwrap{position:relative; width:100%;}
+.acct .pwwrap input{padding-right:84px;}
+.acct .pweye{position:absolute; right:4px; top:50%; transform:translateY(-50%); min-height:44px; min-width:70px; border:0; background:none;
+  color:var(--teal); font:inherit; font-weight:800; font-size:.82rem; cursor:pointer; border-radius:10px;}
+.acct .pweye:focus-visible,.acct .lnk:focus-visible,.acct .stay input:focus-visible{outline:3px solid var(--teal); outline-offset:2px;}
+.acct .pwhead{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:-6px;}
+.acct .pwhead label{margin-bottom:0;}
+.acct .lnk.small{font-size:.82rem;}
+.acct .hint{font-size:.78rem; color:rgba(255,255,255,.62); margin:-4px 0 0; text-align:left;}
+.acct .stay{display:flex; align-items:center; gap:10px; min-height:44px; font-size:.88rem; font-weight:600; color:rgba(255,255,255,.85);
+  text-transform:none; letter-spacing:0; margin:0; cursor:pointer;}
+.acct .stay input{width:22px; height:22px; accent-color:var(--teal); margin:0; flex:none;}
+.acct .btn.wide{width:100%; min-height:48px; display:inline-flex; align-items:center; justify-content:center;}
+.acct .ordiv{display:flex; align-items:center; gap:10px; color:rgba(255,255,255,.5); font-size:.8rem; margin:2px 0;}
+.acct .ordiv::before,.acct .ordiv::after{content:""; flex:1; height:1px; background:rgba(255,255,255,.16);}
+.acct .switch{margin:4px 0 0; font-size:.9rem; color:rgba(255,255,255,.75);}
+.acct .switch .lnk{margin-left:6px;}
+.acct .sent{background:var(--cream); color:var(--ink); border-radius:12px; padding:14px 16px; font-weight:600; text-align:left; margin:0;}
+.acct .msg:empty{display:none;}

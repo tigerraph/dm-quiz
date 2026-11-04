@@ -90,6 +90,19 @@ automatically. The host's **Add a star** remains the manual fallback.
 Account deletion runs through the `delete-account` edge function
 (`supabase/functions/`), since the database is insert-only for clients.
 
+**Sign-in** (`src/account.js`, 04.11.2026): log in, create account, **Forgot password?** (Supabase
+sends the reset mail, the link opens `?view=reset` to set a new password), **Email me a sign-in
+link** (magic link, existing accounts only; like the reset, the screen never says whether an
+address has an account), show/hide password, and **Stay signed in** (off: the
+login lasts only for the browser tab). Errors say what went wrong: wrong password, too many tries,
+no connection, link expired. Two Supabase settings make the mail links work
+(Authentication → URL Configuration): Site URL `https://dmatters.org`, Redirect URLs
+`https://dmatters.org/**`. Supabase's built-in mail only reaches the project team's addresses and
+a few mails an hour; real participants need a custom SMTP sender (Authentication → Emails → SMTP).
+**Not yet set or tested on the real project** (as of 04.11.2026): the two URL settings, custom SMTP, and a
+real reset or sign-in mail; everything above was tested only against `tools/mock-supabase.mjs`, which serves the reset and sign-in-link flows locally; `GET /__mail` shows the
+mails it would have sent, with their links.
+
 ### Rehearsing
 
 `?session=probe&host=1` is a scratch session pointing at the same pack. Use it
