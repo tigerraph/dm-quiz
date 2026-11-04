@@ -1,0 +1,123 @@
+{
+ "id": "elections",
+ "title": {
+  "de": "Wahlen",
+  "en": "Elections",
+  "fr": "Élections",
+  "it": "Elezioni"
+ },
+ "timer_ms": 30000,
+ "questions": [
+  {
+   "id": "halbzeit",
+   "img": null,
+   "q": {
+    "de": "Gedankenspiel: Die Partei des US-Präsidenten verliert bei den Midterms beide Kammern. Was passiert mit dem Präsidenten?",
+    "en": "Thought experiment: the US president’s party loses both chambers in the midterms. What happens to the president?",
+    "fr": "Hypothèse : le parti du président américain perd les deux chambres aux midterms. Que devient le président ?",
+    "it": "Ipotesi: il partito del presidente USA perde entrambe le camere alle elezioni di metà mandato. Che cosa succede al presidente?"
+   },
+   "o": {
+    "de": [
+     "Er muss zurücktreten, es gibt Neuwahlen",
+     "Er bleibt im Amt, braucht für Gesetze aber die Gegenseite"
+    ],
+    "en": [
+     "He must resign and a new election is held",
+     "He stays in office, but needs the other side to pass laws"
+    ],
+    "fr": [
+     "Il doit démissionner, il y a une nouvelle élection",
+     "Il reste en fonction, mais a besoin de l’autre camp pour les lois"
+    ],
+    "it": [
+     "Deve dimettersi e si torna a votare",
+     "Resta in carica, ma per le leggi gli serve l’altra parte"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "de": "Die Midterms wählen den Kongress, nicht den Präsidenten: alle 435 Sitze des Repräsentantenhauses und 35 von 100 Senatssitzen. Die Präsidentschaft steht nicht zur Wahl. Gesetze müssen aber durch beide Kammern. Das war ein Gedankenspiel, kein Resultat.",
+    "en": "The midterms elect Congress, not the president: all 435 House seats and 35 of 100 Senate seats. The presidency is not on the ballot. But laws have to pass both chambers. This was a thought experiment, not a result.",
+    "fr": "Les midterms élisent le Congrès, pas le président : les 435 sièges de la Chambre et 35 des 100 sièges du Sénat. La présidence n’est pas en jeu. Mais les lois doivent passer les deux chambres. C’était une hypothèse, pas un résultat.",
+    "it": "Le elezioni di metà mandato eleggono il Congresso, non il presidente: tutti i 435 seggi della Camera e 35 dei 100 del Senato. La presidenza non è in gioco. Ma le leggi devono passare da entrambe le camere. Era un’ipotesi, non un risultato."
+   },
+   "unique": "US Constitution Art. I §§ 2–3 and §7 (House two-year terms, Senate six, bills pass both chambers), Art. II §1 (four-year presidential term); Al Jazeera 26.10.2026 (435 + 35 seats). A midterm has no mechanism that removes a president or triggers a new election, so option A is wrong. The question is marked as hypothetical and states no 2026 outcome.",
+   "sure": true
+  },
+  {
+   "id": "stichwahl",
+   "img": null,
+   "q": {
+    "de": "Bei einer Präsidentschaftswahl in Brasilien holt eine Person im ersten Wahlgang 47 %, eine andere 45 %. Wer ist gewählt?",
+    "en": "In a Brazilian presidential election, one candidate gets 47% in the first round and another 45%. Who is elected?",
+    "fr": "À une présidentielle au Brésil, une personne obtient 47 % au premier tour et une autre 45 %. Qui est élu ?",
+    "it": "A un’elezione presidenziale in Brasile, una persona ottiene il 47 % al primo turno e un’altra il 45 %. Chi è eletto?"
+   },
+   "o": {
+    "de": [
+     "Die Person mit 47 %: Sie hat am meisten Stimmen",
+     "Noch niemand: Es braucht über 50 %, also folgt eine Stichwahl"
+    ],
+    "en": [
+     "The one with 47%: they have the most votes",
+     "Nobody yet: it takes over 50%, so a runoff follows"
+    ],
+    "fr": [
+     "La personne à 47 % : elle a le plus de voix",
+     "Personne pour l’instant : il faut plus de 50 %, donc un second tour"
+    ],
+    "it": [
+     "La persona con il 47 %: ha più voti",
+     "Ancora nessuno: serve oltre il 50 %, quindi c’è un ballottaggio"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "de": "Für die Präsidentschaft braucht es in Brasilien mehr als die Hälfte der gültigen Stimmen. Sonst treten die zwei Bestplatzierten in einer Stichwahl gegeneinander an. 2026 war der erste Wahlgang am 4. Oktober, die Stichwahl am 25. Oktober.",
+    "en": "In Brazil the presidency takes more than half of the valid votes. Otherwise the top two meet in a runoff. In 2026 the first round was on 4 October and the runoff on 25 October.",
+    "fr": "Au Brésil, la présidence exige plus de la moitié des suffrages valables. Sinon, les deux premiers s’affrontent au second tour. En 2026, le premier tour a eu lieu le 4 octobre et le second le 25 octobre.",
+    "it": "In Brasile per la presidenza serve più della metà dei voti validi. Altrimenti i primi due si sfidano al ballottaggio. Nel 2026 il primo turno si è svolto il 4 ottobre e il ballottaggio il 25 ottobre."
+   },
+   "unique": "Brazilian rule: the president needs an absolute majority of valid votes, otherwise the top two go to a runoff (TSE, first-round report, October 2026; Wikipedia, 2026 Brazilian general election). 47% is below 50%, so nobody is elected in the first round. The figures are a rounded illustration; the question names no candidate.",
+   "sure": true
+  },
+  {
+   "id": "beobachtung",
+   "img": null,
+   "q": {
+    "de": "Internationale Beobachter bewerten in Serbien den Wahltag meist positiv und nennen den Wahlkampf trotzdem ungleich. Geht das zusammen?",
+    "en": "In Serbia, international observers rate election day mostly positively, yet call the campaign unequal. Can both be true?",
+    "fr": "En Serbie, des observateurs internationaux jugent le jour du vote plutôt positif, mais la campagne inégale. Les deux sont-ils compatibles ?",
+    "it": "In Serbia gli osservatori internazionali giudicano per lo più positivo il giorno del voto, ma definiscono impari la campagna. Le due cose sono compatibili?"
+   },
+   "o": {
+    "de": [
+     "Nein: Eine Wahl ist entweder fair oder nicht",
+     "Ja: Korrekt gezählt heisst noch nicht gleich lange Spiesse"
+    ],
+    "en": [
+     "No: an election is either fair or it isn’t",
+     "Yes: a correct count doesn’t mean a level playing field"
+    ],
+    "fr": [
+     "Non : une élection est juste ou elle ne l’est pas",
+     "Oui : un décompte correct ne veut pas dire à armes égales"
+    ],
+    "it": [
+     "No: un’elezione o è giusta o non lo è",
+     "Sì: un conteggio corretto non significa ad armi pari"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "de": "Beobachter prüfen den ganzen Weg, nicht nur den Wahltag. Die internationale Beobachtungsmission (OSZE, Europarat, EU-Parlament) bewertete alle Etappen des Wahltags in der grossen Mehrheit der beobachteten Wahllokale positiv. Die Chancengleichheit im Wahlkampf nannte sie aber ernsthaft beeinträchtigt.",
+    "en": "Observers examine the whole process, not just election day. The international observation mission (OSCE, Council of Europe, European Parliament) rated all stages of election day positively in the vast majority of polling stations observed. But it called the equality of campaign opportunities seriously compromised.",
+    "fr": "Les observateurs examinent tout le processus, pas seulement le jour du vote. La mission internationale d’observation (OSCE, Conseil de l’Europe, Parlement européen) a jugé positives toutes les étapes du jour du vote dans la grande majorité des bureaux observés. Mais elle a estimé l’égalité des chances dans la campagne gravement compromise.",
+    "it": "Gli osservatori esaminano tutto il percorso, non solo il giorno del voto. La missione internazionale di osservazione (OSCE, Consiglio d’Europa, Parlamento europeo) ha giudicato positive tutte le fasi del giorno del voto nella grande maggioranza dei seggi osservati. Ma ha definito gravemente compromessa la parità di opportunità nella campagna."
+   },
+   "unique": "ODIHR/IEOM, Statement of Preliminary Findings and Conclusions, 26.10.2026, p. 1: «positively assessed all stages of the election day process in the vast majority of polling stations observed» and «equality of campaign opportunities seriously compromised». Both findings stand in the same statement, so «either fair or not» cannot be the answer.",
+   "sure": true
+  }
+ ]
+}

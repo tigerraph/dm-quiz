@@ -11,7 +11,7 @@
 import { execFileSync } from "node:child_process";
 import { writeFileSync, existsSync } from "node:fs";
 import { pathToFileURL } from "node:url";
-import { p, read, readJSON, file, pdfName, chromePath, sha, stamps, STAMPS, LANGS } from "./topic-lib.mjs";
+import { p, readJSON, file, pdfName, chromePath, sha, stamps, stampSource, STAMPS, LANGS } from "./topic-lib.mjs";
 
 const args = process.argv.slice(2);
 const id = args.find((a) => !a.startsWith("--"));
@@ -26,7 +26,7 @@ const st = stamps();
 for (const [key, base] of [["deck", id], ["card", `topic-card-${id}`]]) {
   const rel = file(key, id);
   if (!existsSync(p(rel))) { console.error(`✗ ${rel} missing`); process.exit(1); }
-  const src = read(rel);
+  const src = stampSource(key, id);
   for (const lang of langs) {
     const out = pdfName(base, lang);
     const url = pathToFileURL(p(rel)).href + "?lang=" + lang;
@@ -35,6 +35,14 @@ for (const [key, base] of [["deck", id], ["card", `topic-card-${id}`]]) {
     st[out] = sha(src + "|" + lang);
     console.log(`  ✓ ${out}`);
   }
+}
+// slips, if the topic has them (A4 from their own @page rule); linked from the admin page and the run sheet
+const slips = `content/zettel-${id}.html`;
+if (existsSync(p(slips))) for (const lang of langs) {
+  const out = pdfName(`zettel-${id}`, lang);
+  execFileSync(chrome, ["--headless", "--disable-gpu", "--force-color-profile=srgb", "--no-pdf-header-footer",
+    "--virtual-time-budget=4000", `--print-to-pdf=${p(out)}`, pathToFileURL(p(slips)).href + "?lang=" + lang], { stdio: "ignore" });
+  console.log(`  ✓ ${out}`);
 }
 writeFileSync(p(STAMPS), JSON.stringify(Object.fromEntries(Object.entries(st).sort()), null, 1) + "\n");
 console.log(`  ~ ${STAMPS}\nLook at every page of every PDF before calling it done.`);

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zettel A/B · Wahlen</title>
+<style>
+  @font-face{font-family:'Poppins';font-style:normal;font-weight:400;
+    src:url(../assets/fonts/poppins-400-latin.woff2) format('woff2');}
+  @font-face{font-family:'Poppins';font-style:normal;font-weight:800;
+    src:url(../assets/fonts/poppins-800-latin.woff2) format('woff2');}
+  :root{--blue:#435CC6;--teal:#5EB9A9;--cream:#FDF2D0;--ink:#22313C}
+  @page{size:A4;margin:10mm}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Poppins',system-ui,sans-serif;color:var(--ink);background:#fff}
+  .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:14px 16px;background:var(--cream);font-size:14px}
+  .bar a{color:var(--blue);font-weight:800;text-decoration:none;border:2px solid var(--blue);border-radius:8px;padding:3px 9px}
+  .bar a[aria-current]{background:var(--blue);color:#fff}
+  .bar span{flex:1;min-width:200px}
+  .sheet{max-width:190mm;margin:0 auto;padding:6mm 0;display:grid;grid-template-columns:1fr 1fr}
+  .slip{border:1.5px dashed #9aa5ad;padding:4mm 6mm;height:52mm;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:1.5mm}
+  .tag{font-weight:800;font-size:20pt;line-height:1;color:var(--blue)}
+  .slip.b .tag{color:#2f7f73}
+  .txt{font-weight:800;font-size:10pt;line-height:1.3}
+  .hint{font-size:8.5pt;opacity:.6}
+  .to{font-size:9pt;color:#7a858c}
+  @media (max-width:560px){.sheet{grid-template-columns:1fr;padding:12px 16px}.slip{height:auto;min-height:52mm}}
+  @media print{.bar{display:none}.sheet{padding:0}}
+</style>
+</head>
+<body>
+<div class="bar">
+  <a href="?lang=de" data-l="de">DE</a><a href="?lang=en" data-l="en">EN</a><a href="?lang=fr" data-l="fr">FR</a><a href="?lang=it" data-l="it">IT</a>
+  <span data-i18n="how">Drucken (A4), an den gestrichelten Linien schneiden. A für die linke Raumhälfte, B für die rechte. Ein Blatt = 5 × A und 5 × B.</span>
+</div>
+<div class="sheet" id="sheet"></div>
+<template id="tpl">
+  <div class="slip a"><div class="tag">A</div><div class="to" data-k="t"></div><div class="txt" data-k="a"></div><div class="hint" data-k="h"></div></div>
+  <div class="slip b"><div class="tag">B</div><div class="to" data-k="t"></div><div class="txt" data-k="b"></div><div class="hint" data-k="h"></div></div>
+</template>
+<script>
+(function(){
+  var L = (new URLSearchParams(location.search).get('lang') || 'de').toLowerCase();
+  if (['de','en','fr','it'].indexOf(L) < 0) L = 'de';
+  document.documentElement.lang = L;
+  var c = document.querySelector('.bar a[data-l="' + L + '"]'); if (c) c.setAttribute('aria-current','page');
+  var T = {
+    de:{t:'Stell dir vor, so wird bei euch gewählt und gezählt:', a:'Alle stimmen am selben Tag elektronisch ab, ohne Papierstimmen. Eine nationale Behörde zählt, das Resultat steht am selben Abend. Jede Urne druckt ihr Resultat aus, es steht auch online.', b:'Jeder Gliedstaat hat eigene Regeln, lokale Ämter zählen. Viele stimmen per Post, fast alle Stimmen sind auf Papier. Das vollständige Resultat dauert Tage bis Wochen.', h:'Still lesen. Nicht zeigen.',
+        how:'Drucken (A4), an den gestrichelten Linien schneiden. A für die linke Raumhälfte, B für die rechte. Ein Blatt = 5 × A und 5 × B.'},
+    en:{t:'Imagine this is how you vote and count:', a:'Everyone votes electronically on the same day. One national election body adds it all up. The result is there the same evening. There are no paper votes; each machine prints its result, and it goes online.', b:'Every state has its own rules, and local offices do the counting. Many people vote by mail, and nearly all votes are on paper. The complete result takes days to weeks.', h:'Read silently. Don’t show it.',
+        how:'Print (A4), cut along the dashed lines. A for the left side of the room, B for the right. One sheet = 5 × A and 5 × B.'},
+    fr:{t:'Imagine que chez vous, on vote et on compte ainsi :', a:'Tout le monde vote électroniquement le même jour. Une autorité électorale nationale fait le total. Le résultat tombe le soir même. Il n’y a pas de votes papier ; chaque urne imprime son résultat, qui est mis en ligne.', b:'Chaque État a ses propres règles, et les bureaux locaux comptent. Beaucoup votent par correspondance, presque tous les votes sont sur papier. Le résultat complet prend des jours, voire des semaines.', h:'Lire en silence. Ne pas montrer.',
+        how:'Imprimer (A4), découper le long des pointillés. A pour le côté gauche de la salle, B pour le droit. Une feuille = 5 × A et 5 × B.'},
+    it:{t:'Immagina che da voi si voti e si conti così:', a:'Tutti votano elettronicamente nello stesso giorno. Un’autorità elettorale nazionale fa il totale. Il risultato arriva la sera stessa. Non ci sono voti su carta; ogni urna stampa il suo risultato, che va online.', b:'Ogni Stato ha le sue regole e sono gli uffici locali a contare. Molti votano per posta, quasi tutti i voti sono su carta. Il risultato completo richiede da giorni a settimane.', h:'Leggere in silenzio. Non mostrare.',
+        how:'Stampare (A4), ritagliare lungo le linee tratteggiate. A per il lato sinistro della sala, B per il destro. Un foglio = 5 × A e 5 × B.'}
+  }[L];
+  document.querySelector('[data-i18n="how"]').textContent = T.how;
+  var sheet = document.getElementById('sheet'), tpl = document.getElementById('tpl');
+  for (var i = 0; i < 5; i++) sheet.appendChild(tpl.content.cloneNode(true));
+  sheet.querySelectorAll('[data-k]').forEach(function(el){ el.textContent = T[el.getAttribute('data-k')]; });
+})();
+</script>
+</body>
+</html>
