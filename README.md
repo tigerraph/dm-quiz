@@ -92,7 +92,8 @@ Account deletion runs through the `delete-account` edge function
 
 **Sign-in** (`src/account.js`, 04.11.2026): log in, create account, **Forgot password?** (Supabase
 sends the reset mail, the link opens `?view=reset` to set a new password), **Email me a sign-in
-link** (magic link, existing accounts only), show/hide password, and **Stay signed in** (off: the
+link** (magic link, existing accounts only; like the reset, the screen never says whether an
+address has an account), show/hide password, and **Stay signed in** (off: the
 login lasts only for the browser tab). Errors say what went wrong: wrong password, too many tries,
 no connection, link expired. Two Supabase settings make the mail links work
 (Authentication → URL Configuration): Site URL `https://dmatters.org`, Redirect URLs

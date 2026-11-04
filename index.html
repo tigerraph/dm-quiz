@@ -2878,7 +2878,7 @@ var qrcode = function() {
    Engine carried over from the noeggi-kahoot wedding app: timer,
    speed scoring, streak bonus, i18n, synthesized offline audio.
    ================================================================== */
-const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","supabaseSchema":"dm","build":"build 04.11.2026 10:38"};
+const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","supabaseSchema":"dm","build":"build 04.11.2026 10:41"};
 const SUPA_URL = CFG.supabaseUrl || "";
 const SUPA_KEY = CFG.supabaseAnonKey || "";
 
@@ -5055,7 +5055,8 @@ async function openAddStar(){
 
    The same form sits on the login page (?view=login) and on the passport (?view=mydm).
      log in        email + password (show/hide), «stay signed in», «Forgot password?»,
-                   or «Email me a sign-in link» (Supabase magic link, existing accounts only)
+                   or «Email me a sign-in link» (Supabase magic link, existing accounts only; an unknown
+                   address gets the same «if there is an account…» screen, nothing is revealed)
      create        email + new password (show/hide, 6 characters minimum)
      forgot        email -> Supabase sends the reset mail -> ?view=reset sets a new password
    Links in the mails come back with the session in the URL hash (GoTrue implicit flow);
@@ -5072,9 +5073,9 @@ const ACC_T = {
   forgotTitle:"Reset your password", forgotSub:"Enter your email. We send you a link to set a new password.",
   sendReset:"Send the link", backLogin:"Back to log in", sentTitle:"Check your inbox",
   sentReset:e=>`If there is an account for ${e}, a link to set a new password is on its way. It can take a few minutes; check your spam folder too.`,
-  sentMagic:e=>`We sent a sign-in link to ${e}. Open it on this device. It can take a few minutes; check your spam folder too.`,
+  sentMagic:e=>`If there is an account for ${e}, a sign-in link is on its way. Open it on this device. It can take a few minutes; check your spam folder too.`,
   resend:"Send it again", wrongCreds:"Email or password is wrong.", rate:"Too many tries. Please wait a few minutes, then try again.",
-  offline:"No connection. Check your internet and try again.", noAcctMagic:"There is no account with this email yet. Create one first.",
+  offline:"No connection. Check your internet and try again.",
   emailInvalid:"Please enter a valid email address.", linkExpired:"This link has expired or was already used. Ask for a new one.", expiredTitle:"Link expired", doneTitle:"All set",
   resetTitle:"Set a new password", resetSub:e=>`Choose a new password for ${e}.`, savePw:"Save new password",
   resetDone:"Password saved. You are logged in.", toMyDM:"Go to My DM", resetNoLink:"Open the link from the email again, or ask for a new one.",
@@ -5084,9 +5085,9 @@ const ACC_T = {
   forgotTitle:"Passwort zurücksetzen", forgotSub:"Gib deine E-Mail ein. Wir schicken dir einen Link, mit dem du ein neues Passwort setzt.",
   sendReset:"Link schicken", backLogin:"Zurück zur Anmeldung", sentTitle:"Schau in dein Postfach",
   sentReset:e=>`Falls es für ${e} einen Account gibt, ist ein Link für ein neues Passwort unterwegs. Das kann ein paar Minuten dauern; schau auch im Spam-Ordner nach.`,
-  sentMagic:e=>`Wir haben einen Anmelde-Link an ${e} geschickt. Öffne ihn auf diesem Gerät. Das kann ein paar Minuten dauern; schau auch im Spam-Ordner nach.`,
+  sentMagic:e=>`Falls es für ${e} einen Account gibt, ist ein Anmelde-Link unterwegs. Öffne ihn auf diesem Gerät. Das kann ein paar Minuten dauern; schau auch im Spam-Ordner nach.`,
   resend:"Nochmals schicken", wrongCreds:"E-Mail oder Passwort stimmt nicht.", rate:"Zu viele Versuche. Warte bitte ein paar Minuten und versuche es dann nochmals.",
-  offline:"Keine Verbindung. Prüfe dein Internet und versuche es nochmals.", noAcctMagic:"Mit dieser E-Mail gibt es noch keinen Account. Erstelle zuerst einen.",
+  offline:"Keine Verbindung. Prüfe dein Internet und versuche es nochmals.",
   emailInvalid:"Bitte gib eine gültige E-Mail-Adresse ein.", linkExpired:"Dieser Link ist abgelaufen oder wurde schon benutzt. Fordere einen neuen an.", expiredTitle:"Link abgelaufen", doneTitle:"Fertig",
   resetTitle:"Neues Passwort setzen", resetSub:e=>`Wähle ein neues Passwort für ${e}.`, savePw:"Neues Passwort speichern",
   resetDone:"Passwort gespeichert. Du bist angemeldet.", toMyDM:"Zu My DM", resetNoLink:"Öffne den Link aus der E-Mail nochmals oder fordere einen neuen an.",
@@ -5096,9 +5097,9 @@ const ACC_T = {
   forgotTitle:"Réinitialiser le mot de passe", forgotSub:"Indique ton e-mail. Nous t’envoyons un lien pour choisir un nouveau mot de passe.",
   sendReset:"Envoyer le lien", backLogin:"Retour à la connexion", sentTitle:"Regarde ta boîte mail",
   sentReset:e=>`Si un compte existe pour ${e}, un lien pour un nouveau mot de passe est en route. Cela peut prendre quelques minutes ; regarde aussi dans les spams.`,
-  sentMagic:e=>`Nous avons envoyé un lien de connexion à ${e}. Ouvre-le sur cet appareil. Cela peut prendre quelques minutes ; regarde aussi dans les spams.`,
+  sentMagic:e=>`Si un compte existe pour ${e}, un lien de connexion est en route. Ouvre-le sur cet appareil. Cela peut prendre quelques minutes ; regarde aussi dans les spams.`,
   resend:"Renvoyer", wrongCreds:"L’e-mail ou le mot de passe est incorrect.", rate:"Trop d’essais. Attends quelques minutes, puis réessaie.",
-  offline:"Pas de connexion. Vérifie ton internet et réessaie.", noAcctMagic:"Il n’y a pas encore de compte avec cet e-mail. Crée-en un d’abord.",
+  offline:"Pas de connexion. Vérifie ton internet et réessaie.",
   emailInvalid:"Indique une adresse e-mail valide.", linkExpired:"Ce lien a expiré ou a déjà été utilisé. Demandes-en un nouveau.", expiredTitle:"Lien expiré", doneTitle:"C’est fait",
   resetTitle:"Choisir un nouveau mot de passe", resetSub:e=>`Choisis un nouveau mot de passe pour ${e}.`, savePw:"Enregistrer le mot de passe",
   resetDone:"Mot de passe enregistré. Ta session est ouverte.", toMyDM:"Aller à My DM", resetNoLink:"Ouvre à nouveau le lien de l’e-mail, ou demandes-en un nouveau.",
@@ -5108,9 +5109,9 @@ const ACC_T = {
   forgotTitle:"Reimposta la password", forgotSub:"Inserisci la tua e-mail. Ti inviamo un link per scegliere una nuova password.",
   sendReset:"Invia il link", backLogin:"Torna all’accesso", sentTitle:"Controlla la tua casella",
   sentReset:e=>`Se esiste un account per ${e}, un link per una nuova password è in arrivo. Può richiedere qualche minuto; controlla anche lo spam.`,
-  sentMagic:e=>`Abbiamo inviato un link di accesso a ${e}. Aprilo su questo dispositivo. Può richiedere qualche minuto; controlla anche lo spam.`,
+  sentMagic:e=>`Se esiste un account per ${e}, un link di accesso è in arrivo. Aprilo su questo dispositivo. Può richiedere qualche minuto; controlla anche lo spam.`,
   resend:"Invia di nuovo", wrongCreds:"E-mail o password non corrette.", rate:"Troppi tentativi. Aspetta qualche minuto e riprova.",
-  offline:"Nessuna connessione. Controlla internet e riprova.", noAcctMagic:"Non c’è ancora un account con questa e-mail. Creane prima uno.",
+  offline:"Nessuna connessione. Controlla internet e riprova.",
   emailInvalid:"Inserisci un indirizzo e-mail valido.", linkExpired:"Questo link è scaduto o è già stato usato. Richiedine uno nuovo.", expiredTitle:"Link scaduto", doneTitle:"Fatto",
   resetTitle:"Imposta una nuova password", resetSub:e=>`Scegli una nuova password per ${e}.`, savePw:"Salva la nuova password",
   resetDone:"Password salvata. Hai effettuato l’accesso.", toMyDM:"Vai a My DM", resetNoLink:"Apri di nuovo il link dell’e-mail o richiedine uno nuovo.",
@@ -5257,7 +5258,6 @@ function authError(r, ctx){
   if(code === "weak_password" || /password should be/i.test(txt)) return t().pwShort;
   if(code === "email_not_confirmed") return at_().confirmFirst;
   if(code === "email_address_invalid" || code === "validation_failed") return at_().emailInvalid;
-  if(ctx === "magic" && (code === "otp_disabled" || /signups not allowed/i.test(txt) || code === "user_not_found")) return at_().noAcctMagic;
   if(ctx === "login" && (r.status === 400 || code === "invalid_credentials" || code === "invalid_grant")) return at_().wrongCreds;
   return t().authFailed;
 }
@@ -5269,7 +5269,9 @@ async function sendMail(kind){
     : await authReq("otp?redirect_to=" + encodeURIComponent(AUTH_BASE + "?view=login" + (params.get("next") ? "&next=" + encodeURIComponent(params.get("next")) : "")),
                     { email: em, create_user: false });
   setBusy(false);
-  if(r && r.ok){ acctAuth = kind === "reset" ? "sent-reset" : "sent-magic"; return setAcctMsg("", false, true); }
+  // never say whether an address has an account: an unknown email gets the same «check your inbox» screen
+  const unknown = kind === "magic" && r && !r.ok && r.status !== 429 && /otp_disabled|signups not allowed|user_not_found/i.test(JSON.stringify(r.j || {}));
+  if(r && (r.ok || unknown)){ acctAuth = kind === "reset" ? "sent-reset" : "sent-magic"; return setAcctMsg("", false, true); }
   setAcctMsg(authError(r, kind === "reset" ? "reset" : "magic"), true);
 }
 
