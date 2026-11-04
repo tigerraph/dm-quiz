@@ -130,3 +130,5 @@ body.site #app{max-width:1080px; padding:0 28px calc(40px + env(safe-area-inset-
 .hero.noimg{grid-template-columns:1fr;}
 .kit .pill{min-height:44px; min-width:48px;}
 .stack .btn{min-height:44px; display:inline-flex; align-items:center;}
+/* login page: the account buttons are full tap targets */
+body.site .acct .btn{min-height:44px; display:inline-flex; align-items:center; justify-content:center;}
