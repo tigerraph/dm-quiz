@@ -24,7 +24,7 @@ const ACC_T = {
   sentMagic:e=>`We sent a sign-in link to ${e}. Open it on this device. It can take a few minutes; check your spam folder too.`,
   resend:"Send it again", wrongCreds:"Email or password is wrong.", rate:"Too many tries. Please wait a few minutes, then try again.",
   offline:"No connection. Check your internet and try again.", noAcctMagic:"There is no account with this email yet. Create one first.",
-  emailInvalid:"Please enter a valid email address.", linkExpired:"This link has expired or was already used. Ask for a new one.", expiredTitle:"Link expired",
+  emailInvalid:"Please enter a valid email address.", linkExpired:"This link has expired or was already used. Ask for a new one.", expiredTitle:"Link expired", doneTitle:"All set",
   resetTitle:"Set a new password", resetSub:e=>`Choose a new password for ${e}.`, savePw:"Save new password",
   resetDone:"Password saved. You are logged in.", toMyDM:"Go to My DM", resetNoLink:"Open the link from the email again, or ask for a new one.",
   confirmFirst:"Please confirm your email first: the link is in your inbox.", busy:"One moment …" },
@@ -36,7 +36,7 @@ const ACC_T = {
   sentMagic:e=>`Wir haben einen Anmelde-Link an ${e} geschickt. Öffne ihn auf diesem Gerät. Das kann ein paar Minuten dauern; schau auch im Spam-Ordner nach.`,
   resend:"Nochmals schicken", wrongCreds:"E-Mail oder Passwort stimmt nicht.", rate:"Zu viele Versuche. Warte bitte ein paar Minuten und versuche es dann nochmals.",
   offline:"Keine Verbindung. Prüfe dein Internet und versuche es nochmals.", noAcctMagic:"Mit dieser E-Mail gibt es noch keinen Account. Erstelle zuerst einen.",
-  emailInvalid:"Bitte gib eine gültige E-Mail-Adresse ein.", linkExpired:"Dieser Link ist abgelaufen oder wurde schon benutzt. Fordere einen neuen an.", expiredTitle:"Link abgelaufen",
+  emailInvalid:"Bitte gib eine gültige E-Mail-Adresse ein.", linkExpired:"Dieser Link ist abgelaufen oder wurde schon benutzt. Fordere einen neuen an.", expiredTitle:"Link abgelaufen", doneTitle:"Fertig",
   resetTitle:"Neues Passwort setzen", resetSub:e=>`Wähle ein neues Passwort für ${e}.`, savePw:"Neues Passwort speichern",
   resetDone:"Passwort gespeichert. Du bist angemeldet.", toMyDM:"Zu My DM", resetNoLink:"Öffne den Link aus der E-Mail nochmals oder fordere einen neuen an.",
   confirmFirst:"Bestätige zuerst deine E-Mail: Der Link ist in deinem Postfach.", busy:"Einen Moment …" },
@@ -48,7 +48,7 @@ const ACC_T = {
   sentMagic:e=>`Nous avons envoyé un lien de connexion à ${e}. Ouvre-le sur cet appareil. Cela peut prendre quelques minutes ; regarde aussi dans les spams.`,
   resend:"Renvoyer", wrongCreds:"L’e-mail ou le mot de passe est incorrect.", rate:"Trop d’essais. Attends quelques minutes, puis réessaie.",
   offline:"Pas de connexion. Vérifie ton internet et réessaie.", noAcctMagic:"Il n’y a pas encore de compte avec cet e-mail. Crée-en un d’abord.",
-  emailInvalid:"Indique une adresse e-mail valide.", linkExpired:"Ce lien a expiré ou a déjà été utilisé. Demandes-en un nouveau.", expiredTitle:"Lien expiré",
+  emailInvalid:"Indique une adresse e-mail valide.", linkExpired:"Ce lien a expiré ou a déjà été utilisé. Demandes-en un nouveau.", expiredTitle:"Lien expiré", doneTitle:"C’est fait",
   resetTitle:"Choisir un nouveau mot de passe", resetSub:e=>`Choisis un nouveau mot de passe pour ${e}.`, savePw:"Enregistrer le mot de passe",
   resetDone:"Mot de passe enregistré. Ta session est ouverte.", toMyDM:"Aller à My DM", resetNoLink:"Ouvre à nouveau le lien de l’e-mail, ou demandes-en un nouveau.",
   confirmFirst:"Confirme d’abord ton e-mail : le lien est dans ta boîte mail.", busy:"Un instant …" },
@@ -60,7 +60,7 @@ const ACC_T = {
   sentMagic:e=>`Abbiamo inviato un link di accesso a ${e}. Aprilo su questo dispositivo. Può richiedere qualche minuto; controlla anche lo spam.`,
   resend:"Invia di nuovo", wrongCreds:"E-mail o password non corrette.", rate:"Troppi tentativi. Aspetta qualche minuto e riprova.",
   offline:"Nessuna connessione. Controlla internet e riprova.", noAcctMagic:"Non c’è ancora un account con questa e-mail. Creane prima uno.",
-  emailInvalid:"Inserisci un indirizzo e-mail valido.", linkExpired:"Questo link è scaduto o è già stato usato. Richiedine uno nuovo.", expiredTitle:"Link scaduto",
+  emailInvalid:"Inserisci un indirizzo e-mail valido.", linkExpired:"Questo link è scaduto o è già stato usato. Richiedine uno nuovo.", expiredTitle:"Link scaduto", doneTitle:"Fatto",
   resetTitle:"Imposta una nuova password", resetSub:e=>`Scegli una nuova password per ${e}.`, savePw:"Salva la nuova password",
   resetDone:"Password salvata. Hai effettuato l’accesso.", toMyDM:"Vai a My DM", resetNoLink:"Apri di nuovo il link dell’e-mail o richiedine uno nuovo.",
   confirmFirst:"Conferma prima la tua e-mail: il link è nella tua casella.", busy:"Un momento …" }
@@ -319,7 +319,7 @@ async function renderReset(){
   app.innerHTML = `${siteBar()}
     <div class="screen" style="padding-top:10px">
       ${wordmarkHtml("", t().curriculum)}
-      <h1>${esc(!AUTH && !resetDone ? A.expiredTitle : A.resetTitle)}</h1>
+      <h1>${esc(resetDone ? A.doneTitle : !AUTH ? A.expiredTitle : A.resetTitle)}</h1>
       ${body}
     </div>`;
   bindSiteBar(); bindAcct();
