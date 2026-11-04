@@ -82,7 +82,7 @@
     <button id="btn-it" onclick="setLang('it')">IT</button>
   </div>
 
-  <div class="kicker">DEMOCRACY MATTERS × DAY8 · THE LEARNING LOOP</div>
+  <div class="kicker">DEMOCRACY MATTERS · THE LEARNING LOOP</div>
   <h1 lang-de>Gewaltenteilung</h1>
   <h1 lang-en>Separation of Powers</h1>
   <h1 lang-fr>La séparation des pouvoirs</h1>
@@ -199,10 +199,6 @@
       <text x="310" y="242" fill="#A8D272" font-size="15" lang-it>referendum e iniziativa</text>
     </g>
   </svg>
-  <p class="small" lang-de>Warum das schützt: <a class="animlink" href="fauler-apfel.html">«Der faule Apfel» — als Animation</a>.</p>
-  <p class="small" lang-en>Why this protects: <a class="animlink" href="fauler-apfel.html">“The rotten apple” — as an animation</a>.</p>
-  <p class="small" lang-fr>Pourquoi ça protège : <a class="animlink" href="fauler-apfel.html">«La pomme pourrie» — en animation</a>.</p>
-  <p class="small" lang-it>Perché protegge: <a class="animlink" href="fauler-apfel.html">«La mela marcia» — come animazione</a>.</p>
 
   <h2 lang-de>Die Hauptpunkte</h2>
   <h2 lang-en>The main points</h2>
@@ -264,7 +260,7 @@
   <p class="small" lang-fr>La topic card est la version une-page de la session — pour animer sans slides.</p>
   <p class="small" lang-it>La topic card è la versione in una pagina della sessione — per condurla senza slide.</p>
 
-  <footer>Democracy Matters × DAY8 — The Learning Loop. Learn it. Keep it.</footer>
+  <footer>Democracy Matters — The Learning Loop. Learn it. Keep it.</footer>
 </div>
 <script>
   function setLang(l){
@@ -274,9 +270,6 @@
     document.documentElement.setAttribute('lang', l);
     ['de','en','fr','it'].forEach(function(x){
       document.getElementById('btn-'+x).classList.toggle('on', x === l);
-    });
-    document.querySelectorAll('.animlink').forEach(function(a){
-      a.href = 'fauler-apfel.html' + (l !== 'de' ? '?lang=' + l : '');
     });
     try{localStorage.setItem('dm-lang', l);}catch(e){}
   }

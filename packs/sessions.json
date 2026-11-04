@@ -9,16 +9,7 @@
       "fr": "Séparation des pouvoirs (CH)",
       "it": "Separazione dei poteri (CH)"
     },
-    "date": null,
-    "practice": [
-      {
-        "file": "fauler-apfel.html",
-        "title": {
-          "de": "Der faule Apfel",
-          "en": "The rotten apple"
-        }
-      }
-    ]
+    "date": null
   },
   "probe": {
     "pack": "gewaltenteilung-ch.json",

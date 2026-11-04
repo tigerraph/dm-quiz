@@ -17,7 +17,11 @@ Skin: [`docs/design-tokens.md`](docs/design-tokens.md)
 
 | URL | What it is |
 |---|---|
-| `/` | Session picker, built from `packs/sessions.json` |
+| `/` | Start page **My DM**: the next session big, your stars, earlier sessions (concept B «Session first», Rafa 03.11.2026) |
+| `/?view=session&id=<id>` | One page per session: bottom line, links for everyone; the **Moderator kit** for a logged-in moderator |
+| `/?view=login` | The My DM account form on its own page (`&next=` returns to the page you came from) |
+| `/?view=mydm` | The star passport (the star QR on the slides lands here) |
+| `/?session=<id>&solo=1` | Replay the quiz alone, even while the database is up |
 | `/?session=<id>` | Player view — join from a phone and follow the beamer |
 | `/?session=<id>&host=1` | Host view for the beamer — drives the game |
 
@@ -115,8 +119,17 @@ No rebuild needed — packs are fetched at runtime.
 2. Add a line to `packs/sessions.json` pointing at it. `pillar` (`civics`,
    `comm` or `action`) decides which pillar the session's star counts
    toward — without it there is no star to claim. `date` is optional
-   (ISO `YYYY-MM-DD`); it shows under the title in the picker, and is left
-   out entirely when null.
+   (ISO `YYYY-MM-DD`); the start page shows the session with the next date
+   (today or later) big, everything else below, newest first. Null shows as
+   «date not on record».
+3. Optional, for the start page and the Moderator kit: `npm run thumbs -- <id>`
+   (first four slides as `assets/thumbs/<id>-<n>.jpg`; needs Playwright, see
+   `tools/render-thumbs.mjs`) `npm run build` also turns `docs/runbook-<id>.md` into the
+   moderators' step-by-step page `content/guide-<id>.html`.
+
+The tagline and the bottom line on the session page are read from the session's
+take-home page (`content/<id>.html`: the `.sub` line and the first `.postit`),
+so they are written only once.
 
 Pack schema:
 
@@ -212,23 +225,31 @@ complete i18n dictionaries (0f9587a, via `tools/check-i18n.py`), no PDF older th
 no scaffold line or golden-topic text left. CI runs `npm run check-topic -- --all`, which skips
 drafts (it lists them) and also checks the admin page below.
 
-## Admin view
+## Moderator kit and admin view
+
+Since concept B (03.11.2026) moderators find everything on the session's own page: log in
+(`?view=login`) with an account in `dm_admins`, open a session, and the **Moderator kit** sits
+below the public part: Present ▶ + copy link, the first four slides, before / during / after
+(slips, topic card, slides PDF, the step-by-step guide, big-screen quiz, award the star, take-home
+page) and the run-sheet QR. Its labels are English, its language switch picks the material.
+It hides the kit from everyone else, but the files themselves stay public URLs, as before.
+The admin page below stays for **Stars & people** (linked from the kit) and for `check-topic`.
 
 https://tigerraph.github.io/dm-quiz/content/admin.html follows the moderator's journey, desktop and
 phone. Per topic: one **Slides** button (EN by default, language dropdown) and **Copy link** to hand
 the slides to a moderator; **Topic materials** (games and exercises, and the take-home page for
 participants); a collapsed **Support material** block (topic card, slides PDF, beamer and player
 links, which the slides already carry); and a QR that opens the Regie page on the host's phone.
-The runbook stays in the repo (`docs/runbook-<id>.md`) and is not linked here.
+The runbook (`docs/runbook-<id>.md`) is rendered to `content/guide-<id>.html` by every build and linked from the Moderator kit.
 It is built from `packs/sessions.json` at runtime, so a new topic appears on its own, marked
 «Draft». A game or exercise is registered on its topic's line:
-`"practice": [{"file": "fauler-apfel.html", "title": {"de": …, "en": …}, "what": {"en": …}}]`
+`"practice": [{"file": "zettel-bypassing.html", "title": {"de": …, "en": …}, "what": {"en": …}, "pdf": "zettel-bypassing"}]`
 (file under `content/`; `what` is the optional one-line description). `check-topic` opens the page
 in Chrome once per language and fails if a topic is missing, a link points at a missing file, or a
 QR does not open that topic's Regie page.
 
 **Stars & people** appear on the admin page only for an admin: someone logged in to My DM whose
-account is in `dm_admins`; for them My DM shows a ⚙ entry to this page. Names are readable only with
+account is in `dm_admins`; the Moderator kit links to it («Stars & people»). Names are readable only with
 an admin's token (`docs/supabase-migration-005.sql`); the live game and the passport read through
 narrow functions (`dm_roster`, `dm_round_answers`, `dm_session_stars`, `dm_stars_for_tokens`,
 `dm_rescue_tokens`) and fall back to the old table reads while the migration has not run.

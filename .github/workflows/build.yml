@@ -33,6 +33,14 @@ jobs:
             exit 1
           fi
           echo "index.html is current."
+          # the build also renders docs/runbook-*.md to content/guide-*.html (the moderators'
+          # step-by-step pages); a changed or missing guide must be committed too
+          if [ -n "$(git status --porcelain -- 'content/guide-*.html')" ]; then
+            echo "::error::content/guide-*.html is out of date: run 'npm run build' and commit the guides."
+            git status --short -- 'content/guide-*.html'
+            exit 1
+          fi
+          echo "content/guide-*.html are current."
       - name: Daily lesson logic (pick, streak, title ladder)
         run: npm test
       - name: Topic checks (packs, PDFs current, QR + timer in Chrome, i18n)

@@ -81,13 +81,13 @@ cron twice a week, one REST `select` on `dm_scores` (URL + anon key as repo secr
 Still worth a 30-second "project Active?" check in the dashboard before each session —
 the local fallback keeps the quiz itself playable either way.
 
-## Skin (DM/DAY8 tokens, replaces the chalet palette)
+## Skin (DM tokens, replaces the chalet palette)
 
 - blue `#435CC6` (primary / buttons), green `#A8D272` (correct), teal `#5EB9A9`
   (accent), cream `#FDF2D0` (postit surfaces), dark `#1B2329` (background),
   ink `#22313C` (text on light)
 - Typography: Poppins (ExtraBold titles, Regular body). No polaroids, no confetti
-  gimmicks — clean DAY8-card look.
+  gimmicks — clean card look.
 
 ## i18n
 

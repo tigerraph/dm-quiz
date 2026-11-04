@@ -3,13 +3,14 @@
  * dm-quiz build — minimal, dependency-free.
  *
  * The original wedding-app pipeline is gone; this replaces it. It takes
- * src/template.html and injects four things:
+ * src/template.html and injects these things:
  *
- *   __LOGO__     the DM/DAY8 mark, base64-inlined as a data URI
  *   __FONTS__    @font-face rules with the Poppins subsets base64-inlined
  *   __QRCODE__   vendor/qrcode.js verbatim (MIT), so the host view needs no CDN
  *   __AUDIO__    src/audio.js, the synthesized offline audio engine
  *   __DAILY__    src/daily.js, the daily lesson's pick/streak/ladder logic
+ *   __SITE__     src/site.js, the start page, session pages and login (concept B)
+ *   __SITECSS__  src/site.css, their styles
  *   __CONFIG__   src/config.json plus a build stamp
  *
  * Question data is NOT injected — packs are fetched at runtime from packs/,
@@ -20,6 +21,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { renderGuides } from "./tools/render-guides.mjs";
 
 const root = dirname(fileURLToPath(import.meta.url));
 const p = (...a) => join(root, ...a);
@@ -56,17 +58,16 @@ config.build = stamp();
 // Injected inside a <script> block, so no closing tag may survive verbatim.
 const guard = s => s.replace(/<\/script/gi, "<\\/script");
 
-const logo = readFileSync(p("assets", "img", "dm-logo-white.png")).toString("base64");
-
 const html = read("src", "template.html")
-  .replace(/__LOGO__/g, () => `data:image/png;base64,${logo}`)
   .replace("__FONTS__", () => fontCss())
   .replace("__QRCODE__", () => guard(read("vendor", "qrcode.js")))
   .replace("__AUDIO__", () => guard(read("src", "audio.js")))
   .replace("__DAILY__", () => guard(read("src", "daily.js")))
+  .replace("__SITE__", () => guard(read("src", "site.js")))
+  .replace("__SITECSS__", () => read("src", "site.css"))
   .replace("__CONFIG__", () => JSON.stringify(config));
 
-for (const token of ["__LOGO__", "__FONTS__", "__QRCODE__", "__AUDIO__", "__DAILY__", "__CONFIG__"]) {
+for (const token of ["__FONTS__", "__QRCODE__", "__AUDIO__", "__DAILY__", "__SITE__", "__SITECSS__", "__CONFIG__"]) {
   if (html.includes(token)) throw new Error(`placeholder ${token} was not replaced`);
 }
 
@@ -76,4 +77,5 @@ if (!config.supabaseUrl || !config.supabaseAnonKey) {
   console.warn("!  src/config.json has no Supabase URL/anon key — the app will run\n"
              + "   in local-only mode (scores stay on the device, 📱 indicator).");
 }
+renderGuides();   // docs/runbook-<id>.md -> content/guide-<id>.html, the moderators' step-by-step pages
 console.log(`index.html  ${(html.length / 1024).toFixed(1)} kB  (${config.build})`);
