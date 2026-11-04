@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wahlen — Democracy Matters</title>
+<style>
+  @font-face{font-family:'Poppins';font-style:normal;font-weight:400;
+    src:url(../assets/fonts/poppins-400-latin.woff2) format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F;}
+  @font-face{font-family:'Poppins';font-style:normal;font-weight:400;
+    src:url(../assets/fonts/poppins-400-latin-ext.woff2) format('woff2');
+    unicode-range:U+0100-02BA,U+1E00-1E9F;}
+  @font-face{font-family:'Poppins';font-style:normal;font-weight:800;
+    src:url(../assets/fonts/poppins-800-latin.woff2) format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F;}
+  @font-face{font-family:'Poppins';font-style:normal;font-weight:800;
+    src:url(../assets/fonts/poppins-800-latin-ext.woff2) format('woff2');
+    unicode-range:U+0100-02BA,U+1E00-1E9F;}
+
+  :root{
+    --blue:#435CC6; --green:#A8D272; --teal:#5EB9A9;
+    --cream:#FDF2D0; --dark:#1B2329; --ink:#22313C;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--dark);color:#fff;font-family:'Poppins',system-ui,sans-serif}
+  .wrap{max-width:780px;margin:0 auto;padding:40px 22px 80px}
+  .kicker{color:var(--teal);font-weight:800;font-size:15px;letter-spacing:.06em}
+  h1{font-weight:800;font-size:clamp(34px,7vw,56px);line-height:1.05;margin:8px 0 10px}
+  .sub{font-size:18px;opacity:.85;margin-bottom:28px}
+  h2{font-weight:800;font-size:24px;margin:44px 0 14px;color:var(--teal)}
+  p,li{font-size:17px;line-height:1.6}
+  ol,ul{padding-left:1.3em}
+  li{margin-bottom:10px}
+  b{font-weight:800}
+  a{color:var(--green)}
+  .langbar{display:flex;justify-content:flex-end;gap:8px;margin-bottom:12px}
+  .langbar button{
+    font-family:inherit;font-weight:800;font-size:14px;padding:7px 14px;
+    border-radius:999px;border:2px solid var(--teal);background:none;
+    color:var(--teal);cursor:pointer;
+  }
+  .langbar button.on{background:var(--teal);color:var(--dark)}
+  .video{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000}
+  .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .videofallback{position:absolute;inset:0;display:block;text-decoration:none;overflow:hidden;border-radius:inherit}
+  .videofallback img{width:100%;height:100%;object-fit:cover;display:block}
+  .videofallback .playbtn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-size:3rem;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.6);background:rgba(0,0,0,.28)}
+  .videofallback .vfcap{position:absolute;left:0;right:0;bottom:0;padding:10px 14px;
+    background:linear-gradient(transparent,rgba(0,0,0,.75));color:#fff;font-weight:700;font-size:.9rem}
+  .postit{
+    background:var(--cream);color:var(--ink);border-radius:6px;
+    box-shadow:0 10px 24px rgba(0,0,0,.35);padding:20px 24px;
+    transform:rotate(-1deg);margin:20px 0;font-size:18px;line-height:1.55;
+  }
+  .btnrow{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+  .btn{
+    display:inline-block;background:var(--blue);color:#fff;text-decoration:none;
+    font-weight:800;font-size:16px;padding:14px 22px;border-radius:12px;
+  }
+  .btn.alt{background:none;border:2px solid var(--blue)}
+  .small{font-size:14px;opacity:.7;margin-top:8px}
+  .diagram{width:100%;max-width:620px;display:block;margin:10px auto}
+  footer{margin-top:60px;font-size:14px;opacity:.6}
+  h3{font-weight:800;font-size:21px;margin:30px 0 4px}
+  .slotbox{border:2.5px dashed #FFD166;background:rgba(255,209,102,.13);border-radius:10px;padding:8px 14px;font-size:15px;line-height:1.4;margin-top:10px}
+  .slotbox b{color:#FFD166}
+  .slotbox.filled{border:2.5px solid var(--teal);background:rgba(94,185,169,.16)}
+  .slotbox.filled b{color:#fff}
+
+  [lang-en],[lang-fr],[lang-it]{display:none}
+  html[data-l=en] [lang-de],html[data-l=en] [lang-fr],html[data-l=en] [lang-it]{display:none}
+  html[data-l=en] [lang-en]{display:revert}
+  html[data-l=fr] [lang-de],html[data-l=fr] [lang-en],html[data-l=fr] [lang-it]{display:none}
+  html[data-l=fr] [lang-fr]{display:revert}
+  html[data-l=it] [lang-de],html[data-l=it] [lang-en],html[data-l=it] [lang-fr]{display:none}
+  html[data-l=it] [lang-it]{display:revert}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="langbar">
+    <button id="btn-de" class="on" onclick="setLang('de')">DE</button>
+    <button id="btn-en" onclick="setLang('en')">EN</button>
+    <button id="btn-fr" onclick="setLang('fr')">FR</button>
+    <button id="btn-it" onclick="setLang('it')">IT</button>
+  </div>
+
+  <div class="kicker">DEMOCRACY MATTERS · THE LEARNING LOOP</div>
+  <h1 lang-de>Wahlen</h1>
+  <h1 lang-en>Elections</h1>
+  <h1 lang-fr>Élections</h1>
+  <h1 lang-it>Elezioni</h1>
+  <p class="sub" lang-de>Brasilien, Serbien, USA: Was eine Wahl entscheidet, und wer dem Resultat glaubt. Alles aus der Session zum Nachschauen und Weitergeben. Stand aller Fakten: 30. Oktober 2026.</p>
+  <p class="sub" lang-en>Brazil, Serbia, USA: what an election decides, and who believes the result. Everything from the session, to revisit and pass on. All facts as of 30 October 2026.</p>
+  <p class="sub" lang-fr>Brésil, Serbie, États-Unis : ce qu’une élection décide, et qui croit le résultat. Tout de la session, à revoir et à transmettre. Tous les faits au 30 octobre 2026.</p>
+  <p class="sub" lang-it>Brasile, Serbia, USA: che cosa decide un’elezione, e chi crede al risultato. Tutto della sessione, da rivedere e condividere. Tutti i fatti al 30 ottobre 2026.</p>
+  <p class="small" lang-de>Fr, 6. November 2026, 15:00 · Raum C2, Impact Hub · Mitglieder und Gäste willkommen</p>
+  <p class="small" lang-en>Fri, 6 November 2026, 3 PM · Room C2, Impact Hub · Members and guests welcome</p>
+  <p class="small" lang-fr>Ven. 6 novembre 2026, 15:00 · Salle C2, Impact Hub · Membres et invités bienvenus</p>
+  <p class="small" lang-it>Ven. 6 novembre 2026, 15:00 · Sala C2, Impact Hub · Soci e ospiti benvenuti</p>
+  <h2 lang-de>Der Merksatz</h2>
+  <h2 lang-en>The bottom line</h2>
+  <h2 lang-fr>La phrase à retenir</h2>
+  <h2 lang-it>La frase da ricordare</h2>
+  <div class="postit" lang-de>Bevor ich ein Wahlresultat kommentiere, frage ich: <b>Was</b> wurde gewählt, ist es <b>definitiv</b>, und <b>wer</b> kann es prüfen?</div>
+  <div class="postit" lang-en>Before I comment on an election result, I ask: <b>what</b> was elected, is it <b>final</b>, and <b>who</b> can check it?</div>
+  <div class="postit" lang-fr>Avant de commenter un résultat électoral, je me demande : <b>qu’a-t-on</b> élu, est-ce <b>définitif</b>, et <b>qui</b> peut vérifier ?</div>
+  <div class="postit" lang-it>Prima di commentare un risultato elettorale mi chiedo: <b>che cosa</b> si è eletto, è <b>definitivo</b>, e <b>chi</b> può verificarlo?</div>
+  <h2 lang-de>Die drei Fälle</h2>
+  <h2 lang-en>The three cases</h2>
+  <h2 lang-fr>Les trois cas</h2>
+  <h2 lang-it>I tre casi</h2>
+  <h3 lang-de>Brasilien: Präsidentschaft und Kongress an einem Tag</h3>
+  <h3 lang-en>Brazil: presidency and Congress on one day</h3>
+  <h3 lang-fr>Brésil : présidence et Congrès le même jour</h3>
+  <h3 lang-it>Brasile: presidenza e Congresso nello stesso giorno</h3>
+  <p class="small" lang-de>FALL 1 · BRASILIEN · 4. UND 25. OKTOBER 2026</p>
+  <p class="small" lang-en>CASE 1 · BRAZIL · 4 AND 25 OCTOBER 2026</p>
+  <p class="small" lang-fr>CAS 1 · BRÉSIL · 4 ET 25 OCTOBRE 2026</p>
+  <p class="small" lang-it>CASO 1 · BRASILE · 4 E 25 OTTOBRE 2026</p>
+  <p lang-de><b>Was entscheidet sie?</b> Präsidentschaft, alle 513 Sitze der Abgeordnetenkammer, 54 von 81 Senatssitzen, Gouverneure und Parlamente der Bundesstaaten.</p>
+  <p lang-en><b>What does it decide?</b> The presidency, all 513 seats in the Chamber of Deputies, 54 of 81 Senate seats, governors and state parliaments.</p>
+  <p lang-fr><b>Que décide-t-elle ?</b> La présidence, les 513 sièges de la Chambre des députés, 54 des 81 sièges du Sénat, les gouverneurs et les parlements des États.</p>
+  <p lang-it><b>Che cosa decide?</b> La presidenza, tutti i 513 seggi della Camera dei deputati, 54 degli 81 seggi del Senato, i governatori e i parlamenti degli Stati.</p>
+  <p lang-de><b>Wie funktioniert sie?</b> Präsidentschaft: über 50 % der gültigen Stimmen, sonst Stichwahl. Für die meisten Erwachsenen gilt Wahlpflicht. Gewählt wird an elektronischen Urnen.</p>
+  <p lang-en><b>How does it work?</b> Presidency: more than 50% of valid votes, otherwise a runoff. Voting is compulsory for most adults. People vote on electronic machines.</p>
+  <p lang-fr><b>Comment ça marche ?</b> Présidence : plus de 50 % des suffrages valables, sinon un second tour. Le vote est obligatoire pour la plupart des adultes. On vote sur des urnes électroniques.</p>
+  <p lang-it><b>Come funziona?</b> Presidenza: oltre il 50 % dei voti validi, altrimenti ballottaggio. Per la maggior parte degli adulti il voto è obbligatorio. Si vota su urne elettroniche.</p>
+  <p lang-de><b>Was stand auf dem Spiel?</b> Wer das Land regiert. 1. Wahlgang: Flávio Bolsonaro 47,03 %, Lula 45,16 %. Stichwahl: Lula 51,79 %, Bolsonaro 48,21 %. Beteiligung 80,8 %.</p>
+  <p lang-en><b>What was at stake?</b> Who runs the country. First round: Flávio Bolsonaro 47.03%, Lula 45.16%. Runoff: Lula 51.79%, Bolsonaro 48.21%. Turnout 80.8%.</p>
+  <p lang-fr><b>Quel était l’enjeu ?</b> Qui dirige le pays. 1er tour : Flávio Bolsonaro 47,03 %, Lula 45,16 %. Second tour : Lula 51,79 %, Bolsonaro 48,21 %. Participation 80,8 %.</p>
+  <p lang-it><b>Che cosa era in gioco?</b> Chi governa il Paese. Primo turno: Flávio Bolsonaro 47,03 %, Lula 45,16 %. Ballottaggio: Lula 51,79 %, Bolsonaro 48,21 %. Affluenza 80,8 %.</p>
+  <p lang-de><b>Wer glaubt dem Resultat?</b> Das Wahlgericht TSE verkündete das Resultat am Wahlabend. Flávio Bolsonaro schrieb am 28. Oktober von Wahlbetrug und verweist auf die Verlängerung der Stimmabgabe; laut CNN Brasil nennt der Brief keine Belege. Seine Partei PL anerkennt das Resultat.</p>
+  <p lang-en><b>Who believes the result?</b> The electoral court TSE announced the result on election night. On 28 October Flávio Bolsonaro wrote of electoral fraud, pointing to the extended voting hours; according to CNN Brasil the letter offers no evidence. His party, the PL, recognises the result.</p>
+  <p lang-fr><b>Qui croit le résultat ?</b> Le tribunal électoral TSE a annoncé le résultat le soir du vote. Le 28 octobre, Flávio Bolsonaro a écrit à propos d’une fraude électorale, en invoquant la prolongation du vote ; selon CNN Brasil, la lettre n’apporte aucune preuve. Son parti, le PL, reconnaît le résultat.</p>
+  <p lang-it><b>Chi crede al risultato?</b> Il tribunale elettorale TSE ha annunciato il risultato la sera del voto. Il 28 ottobre Flávio Bolsonaro ha scritto di frode elettorale, richiamando la proroga del voto; secondo CNN Brasil la lettera non porta prove. Il suo partito, il PL, riconosce il risultato.</p>
+  <p class="small" lang-de>Amtsantritt vorgesehen: 5. Januar 2027.</p>
+  <p class="small" lang-en>Inauguration scheduled: 5 January 2027.</p>
+  <p class="small" lang-fr>Entrée en fonction prévue : 5 janvier 2027.</p>
+  <p class="small" lang-it>Insediamento previsto: 5 gennaio 2027.</p>
+  <h3 lang-de>Serbien: Vorgezogene Parlamentswahl</h3>
+  <h3 lang-en>Serbia: early parliamentary election</h3>
+  <h3 lang-fr>Serbie : législatives anticipées</h3>
+  <h3 lang-it>Serbia: elezioni parlamentari anticipate</h3>
+  <p class="small" lang-de>FALL 2 · SERBIEN · 25. OKTOBER 2026</p>
+  <p class="small" lang-en>CASE 2 · SERBIA · 25 OCTOBER 2026</p>
+  <p class="small" lang-fr>CAS 2 · SERBIE · 25 OCTOBRE 2026</p>
+  <p class="small" lang-it>CASO 2 · SERBIA · 25 OTTOBRE 2026</p>
+  <p lang-de><b>Was entscheidet sie?</b> Alle 250 Parlamentssitze. Mit 126 Sitzen hat eine Liste die Mehrheit, und das Parlament bestimmt die Regierung. Die Präsidentschaft wird separat gewählt, spätestens am 27. Dezember.</p>
+  <p lang-en><b>What does it decide?</b> All 250 seats in parliament. With 126 seats a list has the majority, and parliament settles the government. The presidency is elected separately, by 27 December at the latest.</p>
+  <p lang-fr><b>Que décide-t-elle ?</b> Les 250 sièges du parlement. Avec 126 sièges, une liste a la majorité, et le parlement décide du gouvernement. La présidence est élue à part, au plus tard le 27 décembre.</p>
+  <p lang-it><b>Che cosa decide?</b> Tutti i 250 seggi del parlamento. Con 126 seggi una lista ha la maggioranza, e il parlamento decide il governo. La presidenza si elegge a parte, al più tardi il 27 dicembre.</p>
+  <p lang-de><b>Wie funktioniert sie?</b> Proporz mit festen Listen, das ganze Land ist ein Wahlkreis. Es gilt eine 3-%-Hürde, ausser für Listen nationaler Minderheiten.</p>
+  <p lang-en><b>How does it work?</b> Proportional representation with closed lists; the whole country is one constituency. A 3% threshold applies, except for national minority lists.</p>
+  <p lang-fr><b>Comment ça marche ?</b> Proportionnelle à listes bloquées, le pays forme une seule circonscription. Un seuil de 3 % s’applique, sauf pour les listes de minorités nationales.</p>
+  <p lang-it><b>Come funziona?</b> Proporzionale con liste bloccate, tutto il Paese è un’unica circoscrizione. Vale una soglia del 3 %, tranne per le liste delle minoranze nazionali.</p>
+  <p lang-de><b>Was stand auf dem Spiel?</b> Nach dem Vordach-Einsturz in Novi Sad mit 16 Toten (2024) verlangte die Studentenbewegung Neuwahlen. <span data-slot="rs.line"></span></p>
+  <p lang-en><b>What was at stake?</b> After the canopy collapse in Novi Sad that killed 16 (2024), the student movement demanded early elections. <span data-slot="rs.line"></span></p>
+  <p lang-fr><b>Quel était l’enjeu ?</b> Après l’effondrement de l’auvent de Novi Sad, 16 morts (2024), le mouvement étudiant a exigé des élections anticipées. <span data-slot="rs.line"></span></p>
+  <p lang-it><b>Che cosa era in gioco?</b> Dopo il crollo della pensilina di Novi Sad, 16 morti (2024), il movimento studentesco ha chiesto elezioni anticipate. <span data-slot="rs.line"></span></p>
+  <p lang-de><b>Wer glaubt dem Resultat?</b> Vučić anerkannte die Niederlage in der Wahlnacht. Die internationale Beobachtungsmission (OSZE, Europarat, EU-Parlament) bewertet den Wahltag grösstenteils positiv, nennt die Chancengleichheit im Wahlkampf aber ernsthaft beeinträchtigt. In 53 Wahllokalen ist die Wiederholung auf den 1. November angesetzt.</p>
+  <p lang-en><b>Who believes the result?</b> Vučić conceded on election night. The international observation mission (OSCE, Council of Europe, European Parliament) rates election day mostly positively but calls equal campaign opportunities seriously compromised. A repeat vote is set for 1 November at 53 polling stations.</p>
+  <p lang-fr><b>Qui croit le résultat ?</b> Vučić a reconnu sa défaite le soir du vote. La mission internationale d’observation (OSCE, Conseil de l’Europe, Parlement européen) juge le jour du vote plutôt positif, mais l’égalité des chances gravement compromise. Un nouveau vote est fixé au 1er novembre dans 53 bureaux.</p>
+  <p lang-it><b>Chi crede al risultato?</b> Vučić ha ammesso la sconfitta la notte del voto. La missione internazionale di osservazione (OSCE, Consiglio d’Europa, Parlamento europeo) giudica per lo più positivo il giorno del voto, ma gravemente compromessa la parità di opportunità. In 53 seggi il voto è ripetuto il 1° novembre.</p>
+  <div class="slotbox" data-slot="rs.final"><b>⏳</b></div>
+  <h3 lang-de>USA: Halbzeit im Kongress</h3>
+  <h3 lang-en>USA: Congress at half-time</h3>
+  <h3 lang-fr>États-Unis : le Congrès à mi-mandat</h3>
+  <h3 lang-it>USA: il Congresso a metà mandato</h3>
+  <p class="small" lang-de>FALL 3 · USA · 3. NOVEMBER 2026</p>
+  <p class="small" lang-en>CASE 3 · USA · 3 NOVEMBER 2026</p>
+  <p class="small" lang-fr>CAS 3 · ÉTATS-UNIS · 3 NOVEMBRE 2026</p>
+  <p class="small" lang-it>CASO 3 · USA · 3 NOVEMBRE 2026</p>
+  <p lang-de><b>Was entscheidet sie?</b> Den Kongress, nicht die Präsidentschaft: alle 435 Sitze im Repräsentantenhaus, 35 von 100 im Senat, dazu 36 Gouverneure.</p>
+  <p lang-en><b>What does it decide?</b> Congress, not the presidency: all 435 House seats, 35 of 100 Senate seats, plus 36 governors.</p>
+  <p lang-fr><b>Que décide-t-elle ?</b> Le Congrès, pas la présidence : les 435 sièges de la Chambre, 35 des 100 sièges du Sénat, plus 36 gouverneurs.</p>
+  <p lang-it><b>Che cosa decide?</b> Il Congresso, non la presidenza: tutti i 435 seggi della Camera, 35 dei 100 del Senato, più 36 governatori.</p>
+  <p lang-de><b>Wie funktioniert sie?</b> Jeder Gliedstaat hat eigene Regeln, mehrere zeichneten ihre Wahlkreise neu. Im Juni 2026 entschied das Oberste Gericht 5 zu 4: Staaten dürfen rechtzeitig abgeschickte Post-Stimmen zählen, die nach dem Wahltag eintreffen.</p>
+  <p lang-en><b>How does it work?</b> Each state has its own rules, and several redrew their districts. In June 2026 the Supreme Court ruled 5–4 that states may count mail ballots sent in time that arrive after Election Day.</p>
+  <p lang-fr><b>Comment ça marche ?</b> Chaque État a ses règles, plusieurs ont redessiné leurs circonscriptions. En juin 2026, la Cour suprême a jugé par 5 voix contre 4 que les États peuvent compter les votes postaux envoyés à temps et arrivés après le jour du scrutin.</p>
+  <p lang-it><b>Come funziona?</b> Ogni Stato ha le sue regole e diversi hanno ridisegnato i collegi. Nel giugno 2026 la Corte suprema ha stabilito con 5 voti a 4 che gli Stati possono contare i voti postali spediti in tempo e arrivati dopo il giorno del voto.</p>
+  <p lang-de><b>Was steht auf dem Spiel?</b> Wer die Gesetze prägt. Vor der Wahl im Haus: Demokraten 214, Republikaner 218, 1 Unabhängiger, 2 vakant. Im Senat: Demokraten mit 2 Unabhängigen 47, Republikaner 53. Mehrheit: 218 und 51.</p>
+  <p lang-en><b>What is at stake?</b> Who shapes the laws. Before the vote, House: Democrats 214, Republicans 218, 1 independent, 2 vacant. Senate: Democrats with 2 independents 47, Republicans 53. Majority: 218 and 51.</p>
+  <p lang-fr><b>Quel est l’enjeu ?</b> Qui façonne les lois. Avant le vote, Chambre : démocrates 214, républicains 218, 1 indépendant, 2 vacants. Sénat : démocrates avec 2 indépendants 47, républicains 53. Majorité : 218 et 51.</p>
+  <p lang-it><b>Che cosa è in gioco?</b> Chi plasma le leggi. Prima del voto, Camera: democratici 214, repubblicani 218, 1 indipendente, 2 vacanti. Senato: democratici con 2 indipendenti 47, repubblicani 53. Maggioranza: 218 e 51.</p>
+  <p lang-de><b>Wer glaubt dem Resultat?</b> Offen. Eine Nacht reicht nicht: Die Auszählung dauert Tage bis Wochen, frühe Zwischenstände können täuschen.</p>
+  <p lang-en><b>Who believes the result?</b> Open. One night is not enough: the count takes days to weeks, and early tallies can mislead.</p>
+  <p lang-fr><b>Qui croit le résultat ?</b> Ouvert. Une nuit ne suffit pas : le décompte prend des jours, voire des semaines, et les premiers chiffres peuvent tromper.</p>
+  <p lang-it><b>Chi crede al risultato?</b> Aperto. Una notte non basta: lo spoglio richiede da giorni a settimane e i primi dati possono ingannare.</p>
+  <div class="slotbox" data-slot="us.house"><b>⏳</b></div>
+  <div class="slotbox" data-slot="us.senate"><b>⏳</b></div>
+  <div class="slotbox" data-slot="us.governors"><b>⏳</b></div>
+  <p class="small" data-slot="us.stamp"></p>
+  <h2 lang-de>Wann vertraut man einem Resultat?</h2>
+  <h2 lang-en>When do people trust a result?</h2>
+  <h2 lang-fr>Quand fait-on confiance à un résultat ?</h2>
+  <h2 lang-it>Quando ci si fida di un risultato?</h2>
+  <ol lang-de>
+    <li><b>Prüfbar:</li>
+    <li><b>Fair:</li>
+    <li><b>Akzeptiert:</li>
+  </ol>
+  <ol lang-en>
+    <li><b>Checkable:</b> can someone outside recalculate it?</li>
+    <li><b>Fair:</b> were the chances equal before election day?</li>
+    <li><b>Accepted:</b> do the losers recognise the result?</li>
+  </ol>
+  <ol lang-fr>
+    <li><b>Vérifiable :</b> quelqu’un d’extérieur peut-il recalculer ?</li>
+    <li><b>Équitable :</b> les chances étaient-elles égales avant le vote ?</li>
+    <li><b>Accepté :</b> les perdants reconnaissent-ils le résultat ?</li>
+  </ol>
+  <ol lang-it>
+    <li><b>Verificabile:</b> qualcuno dall’esterno può ricalcolare?</li>
+    <li><b>Equo:</b> le opportunità erano pari già prima del voto?</li>
+    <li><b>Accettato:</b> gli sconfitti riconoscono il risultato?</li>
+  </ol>
+  <h2 lang-de>Und die Schweiz?</h2>
+  <h2 lang-en>And Switzerland?</h2>
+  <h2 lang-fr>Et la Suisse ?</h2>
+  <h2 lang-it>E la Svizzera?</h2>
+  <ul lang-de>
+    <li><b>Wir wählen das Parlament, nicht die Regierung.</b> Den Bundesrat wählt die Bundesversammlung. Die nächsten eidgenössischen Wahlen sind am 24. Oktober 2027.</li>
+    <li><b>Zwischen den Wahlen entscheiden wir mit.</b> Bis zu viermal im Jahr. 50’000 Unterschriften für ein Referendum, 100’000 für eine Initiative. Nächster Termin: 29. November 2026.</li>
+    <li>Auch bei uns: 2023 publizierte das BFS falsche Parteistärken und korrigierte sie drei Tage später. Die Sitze blieben gleich.</li>
+  </ul>
+  <ul lang-en>
+    <li><b>We elect parliament, not the government.</b> The Federal Council is elected by the Federal Assembly. The next federal elections are on 24 October 2027.</li>
+    <li><b>Between elections, we decide too.</b> Up to four times a year. 50,000 signatures for a referendum, 100,000 for an initiative. Next date: 29 November 2026.</li>
+    <li>Here too: in 2023 the Federal Statistical Office published wrong party shares and corrected them three days later. The seats stayed the same.</li>
+  </ul>
+  <ul lang-fr>
+    <li><b>Nous élisons le parlement, pas le gouvernement.</b> Le Conseil fédéral est élu par l’Assemblée fédérale. Les prochaines élections fédérales ont lieu le 24 octobre 2027.</li>
+    <li><b>Entre les élections, nous décidons aussi.</b> Jusqu’à quatre fois par an. 50 000 signatures pour un référendum, 100 000 pour une initiative. Prochaine date : 29 novembre 2026.</li>
+    <li>Chez nous aussi : en 2023, l’OFS a publié de fausses forces des partis et les a corrigées trois jours plus tard. Les sièges n’ont pas changé.</li>
+  </ul>
+  <ul lang-it>
+    <li><b>Eleggiamo il parlamento, non il governo.</b> Il Consiglio federale è eletto dall’Assemblea federale. Le prossime elezioni federali sono il 24 ottobre 2027.</li>
+    <li><b>Tra un’elezione e l’altra decidiamo anche noi.</b> Fino a quattro volte l’anno. 50 000 firme per un referendum, 100 000 per un’iniziativa. Prossima data: 29 novembre 2026.</li>
+    <li>Anche da noi: nel 2023 l’UST ha pubblicato forze dei partiti errate e le ha corrette tre giorni dopo. I seggi non sono cambiati.</li>
+  </ul>
+  <h2 lang-de>Dein Kit</h2>
+  <h2 lang-en>Your kit</h2>
+  <h2 lang-fr>Ton kit</h2>
+  <h2 lang-it>Il tuo kit</h2>
+  <ol lang-de>
+    <li><b>Was wurde gewählt?</b> Präsidentschaft, Parlament, Halbzeit? Das Wort «Wahl» sagt noch nicht, was sich ändert.</li>
+    <li><b>Welche Regel gilt?</b> Stichwahl, Proporz, Wahlkreise: Dieselben Stimmen können je nach Regel anders ausgehen.</li>
+    <li><b>Vorläufig oder definitiv?</b> Umfrage, Hochrechnung, Zwischenstand und amtliches Resultat sind vier verschiedene Dinge.</li>
+    <li><b>Wer kann es prüfen?</b> Wer zählt, wer schaut zu, wo kann man sich beschweren? Erst dann urteilen.</li>
+  </ol>
+  <ol lang-en>
+    <li><b>What was elected?</b> Presidency, parliament, half-term? The word “election” doesn’t say what changes.</li>
+    <li><b>Which rule applies?</b> Runoff, proportional, districts: the same votes can come out differently under different rules.</li>
+    <li><b>Preliminary or final?</b> Poll, projection, interim count and official result are four different things.</li>
+    <li><b>Who can check it?</b> Who counts, who watches, where can you complain? Only then judge.</li>
+  </ol>
+  <ol lang-fr>
+    <li><b>Qu’a-t-on élu ?</b> Présidence, parlement, mi-mandat ? Le mot «élection» ne dit pas ce qui change.</li>
+    <li><b>Quelle règle s’applique ?</b> Second tour, proportionnelle, circonscriptions : les mêmes voix peuvent donner un autre résultat selon la règle.</li>
+    <li><b>Provisoire ou définitif ?</b> Sondage, projection, décompte intermédiaire et résultat officiel sont quatre choses différentes.</li>
+    <li><b>Qui peut vérifier ?</b> Qui compte, qui observe, où se plaindre ? Ensuite seulement, juger.</li>
+  </ol>
+  <ol lang-it>
+    <li><b>Che cosa si è eletto?</b> Presidenza, parlamento, metà mandato? La parola «elezione» non dice che cosa cambia.</li>
+    <li><b>Quale regola vale?</b> Ballottaggio, proporzionale, collegi: gli stessi voti possono dare un esito diverso a seconda della regola.</li>
+    <li><b>Provvisorio o definitivo?</b> Sondaggio, proiezione, dato parziale e risultato ufficiale sono quattro cose diverse.</li>
+    <li><b>Chi può verificare?</b> Chi conta, chi osserva, dove ci si può opporre? Solo dopo giudicare.</li>
+  </ol>
+  <h2 lang-de>Selber spielen &amp; nachlesen</h2>
+  <h2 lang-en>Play &amp; look it up</h2>
+  <h2 lang-fr>Jouer &amp; relire</h2>
+  <h2 lang-it>Gioca &amp; rileggi</h2>
+  <p lang-de>Der Quiz aus der Session läuft jederzeit auch solo auf deinem Handy.</p>
+  <p lang-en>The session quiz also runs solo on your phone, any time.</p>
+  <p lang-fr>Le quiz de la session se joue aussi en solo sur ton téléphone, à tout moment.</p>
+  <p lang-it>Il quiz della sessione si gioca anche da soli sul telefono, in qualsiasi momento.</p>
+  <div class="btnrow">
+    <a class="btn" href="../?session=elections" lang-de>Quiz spielen</a>
+    <a class="btn" href="../?session=elections" lang-en>Play the quiz</a>
+    <a class="btn" href="../?session=elections" lang-fr>Jouer au quiz</a>
+    <a class="btn" href="../?session=elections" lang-it>Gioca al quiz</a>
+    <a class="btn alt" href="../slides/elections.pdf" lang-de>Folien (PDF)</a>
+    <a class="btn alt" href="../slides/elections.en.pdf" lang-en>Slides (PDF)</a>
+    <a class="btn alt" href="../slides/elections.fr.pdf" lang-fr>Slides (PDF)</a>
+    <a class="btn alt" href="../slides/elections.it.pdf" lang-it>Slide (PDF)</a>
+    <a class="btn alt" href="../slides/topic-card-elections.pdf" lang-de>Topic Card (PDF)</a>
+    <a class="btn alt" href="../slides/topic-card-elections.en.pdf" lang-en>Topic card (PDF)</a>
+    <a class="btn alt" href="../slides/topic-card-elections.fr.pdf" lang-fr>Topic card (PDF)</a>
+    <a class="btn alt" href="../slides/topic-card-elections.it.pdf" lang-it>Topic card (PDF)</a>
+  </div>
+  <p class="small" lang-de>Die Topic Card ist die Ein-Blatt-Version der Session — für Durchführungen ohne Folien.</p>
+  <p class="small" lang-en>The topic card is the one-page version of the session — for runs without slides.</p>
+  <p class="small" lang-fr>La topic card est la version une-page de la session — pour animer sans slides.</p>
+  <p class="small" lang-it>La topic card è la versione in una pagina della sessione — per condurla senza slide.</p>
+  <h2 lang-de>Quellen</h2>
+  <h2 lang-en>Sources</h2>
+  <h2 lang-fr>Sources</h2>
+  <h2 lang-it>Fonti</h2>
+  <p class="small" lang-de>Umfragen kommen in dieser Session nicht vor: Sie sind keine Resultate.</p>
+  <p class="small" lang-en>This session uses no polls: they are not results.</p>
+  <p class="small" lang-fr>Cette session n’utilise aucun sondage : ce ne sont pas des résultats.</p>
+  <p class="small" lang-it>Questa sessione non usa sondaggi: non sono risultati.</p>
+  <p class="small"><b>Brasilien / Brazil:</b> <a href="https://www.tse.jus.br/comunicacao/noticias/2026/Outubro/presidente-do-tse-anuncia-reeleicao-de-lula-e-faz-balanco-do-2o-turno-das-eleicoes-2026">TSE: Result of the runoff, 26.10.2026</a> · <a href="https://www.tse.jus.br/comunicacao/noticias/2026/Outubro/flavio-bolsonaro-e-lula-vao-disputar-o-2o-turno-para-a-presidencia-da-republica">TSE: First round</a> · <a href="https://www.tse.jus.br/comunicacao/noticias/2026/Outubro/falta-1-dia-zeresima-e-boletim-de-urna-comprovam-seguranca-da-urna-veja-diferencas">TSE: Boletim de Urna</a> · <a href="https://www.camara.leg.br/noticias/1313705-lula-e-reeleito-presidente-com-quase-52-dos-votos-validos-no-2o-turno">Câmara dos Deputados, 26.10.2026</a> · <a href="https://www.cnnbrasil.com.br/politica/flavio-recua-em-carta-com-teor-golpista-e-se-diz-lider-do-brasil/">CNN Brasil, 28.10.2026</a></p>
+  <p class="small"><b>Serbien / Serbia:</b> <a href="https://odihr.osce.org/odihr/669165">ODIHR/OSCE: Preliminary statement, 26.10.2026</a> · <a href="https://www.rts.rs/vesti/izbori-2026/6071452/rik-izbori-2026-ponovno-glasanje-53-biracka-mesta-1-novembra.html">RTS: Repeat vote at 53 polling stations</a> · <a href="https://www.danas.rs/vesti/politika/izbori26/rik-rezultati-izbora-izlaznost/">Danas: Commission figures, 26.10.2026</a> · <a href="https://www.aljazeera.com/news/2026/10/26/serbia-after-vucic-who-will-be-pm-and-when-will-a-government-be-formed">Al Jazeera, 26.10.2026</a> · <a href="https://www.thestar.com.my/news/world/2026/10/26/serbia039s-vucic-concedes-defeat-to-student-led-movement-in-parliamentary-election">Reuters via The Star, 26.10.2026</a></p>
+  <p class="small"><b>USA:</b> <a href="https://clerk.house.gov/">Clerk of the House</a> · <a href="https://www.aljazeera.com/news/2026/10/26/us-midterm-elections-2026-in-maps-and-charts">Al Jazeera, 26.10.2026</a> · <a href="https://www.votebeat.org/national/2026/06/29/supreme-court-watson-rnc-mail-ballots-absentee-deadline-grace-period/">Votebeat, 29.06.2026</a> · <a href="https://ballotpedia.org/Redistricting_ahead_of_the_2026_elections">Ballotpedia: Redistricting</a> · <a href="https://www.brennancenter.org/our-work/analysis-opinion/some-good-news-donald-trump-we-already-use-paper-ballots">Brennan Center: Paper ballots</a></p>
+  <p class="small"><b>Schweiz / Switzerland:</b> <a href="https://www.parlament.ch/de/%C3%BCber-das-parlament/parlamentsportraet/aufgaben-der-bundesversammlung/wahlen/wahl-mitglieder-bundesrat">Parlament: Bundesratswahl</a> · <a href="https://www.bk.admin.ch/dam/de/sd-web/B74oYqykWJXb/Der%20Bund%20kurz%20erkl%C3%A4rt%202026.pdf">Bundeskanzlei: Der Bund kurz erklärt 2026</a> · <a href="https://www.bfs.admin.ch/bfs/de/home/statistiken/politik/abstimmungen.html">BFS: Abstimmungen</a> · <a href="https://www.bs.ch/en/node/28998">Kanton Basel-Stadt: Termine</a> · <a href="https://www.ch.ch/de/abstimmungen-und-wahlen/initiativen/was-ist-eine-eidgenossische-volksinitiative/">ch.ch: Volksinitiative</a> · <a href="https://www.parlament.ch/centers/documents/de/Faktenblatt%20Referendum-d.pdf">Parlament: Referendum</a> · <a href="https://www.srf.ch/news/schweiz/wahlen-2023/waehleranteile-waren-falsch-bund-verrechnet-sich-fdp-liegt-jetzt-doch-vor-der-mitte">SRF: Parteistärken 2023 korrigiert</a> · <a href="https://de.statista.com/statistik/daten/studie/288670/umfrage/wahlbeteiligung-an-den-nationalratswahlen-in-der-schweiz">Statista/BFS: Beteiligung 2023</a></p>
+
+  <footer>Democracy Matters — The Learning Loop. Learn it. Keep it.</footer>
+</div>
+<script src="../slides/elections-results.js"></script>
+<script>
+  function setLang(l){
+    if(['de','en','fr','it'].indexOf(l) < 0) l = 'de';
+    if(l === 'de') document.documentElement.removeAttribute('data-l');
+    else document.documentElement.setAttribute('data-l', l);
+    document.documentElement.setAttribute('lang', l);
+    ['de','en','fr','it'].forEach(function(x){
+      document.getElementById('btn-'+x).classList.toggle('on', x === l);
+    });
+    if(window.DM_renderResults) window.DM_renderResults(l);
+    try{localStorage.setItem('dm-lang', l);}catch(e){}
+  }
+  if(window.DM_renderResults) window.DM_renderResults('de');
+  try{
+    var q = new URLSearchParams(location.search).get('lang');
+    var saved = q || localStorage.getItem('dm-lang');
+    if(saved && saved !== 'de') setLang(saved);
+  }catch(e){}
+</script>
+</body>
+</html>

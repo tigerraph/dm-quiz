@@ -42,6 +42,12 @@ export const GOLDEN_LEFTOVERS = ["Gewaltenteilung", "Separation of powers", "Sé
 export const STAMPS = "slides/pdf-stamps.json";
 export const sha = (s) => createHash("sha256").update(s).digest("hex").slice(0, 16);
 export const stamps = () => (existsSync(p(STAMPS)) ? readJSON(STAMPS) : {});
+// What a PDF is rendered from: the HTML, plus slides/<id>-results.js if the topic has one
+// (elections: results filled in after the vote must make the old PDF stale).
+export const stampSource = (key, id) => {
+  const extra = `slides/${id}-results.js`;
+  return read(file(key, id)) + (key === "deck" && existsSync(p(extra)) ? read(extra) : "");
+};
 
 export function chromePath() {
   const c = [process.env.CHROME, "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
