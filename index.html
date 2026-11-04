@@ -2878,7 +2878,7 @@ var qrcode = function() {
    Engine carried over from the noeggi-kahoot wedding app: timer,
    speed scoring, streak bonus, i18n, synthesized offline audio.
    ================================================================== */
-const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","supabaseSchema":"dm","build":"build 04.11.2026 10:41"};
+const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","supabaseSchema":"dm","build":"build 04.11.2026 10:45"};
 const SUPA_URL = CFG.supabaseUrl || "";
 const SUPA_KEY = CFG.supabaseAnonKey || "";
 
@@ -5270,7 +5270,8 @@ async function sendMail(kind){
                     { email: em, create_user: false });
   setBusy(false);
   // never say whether an address has an account: an unknown email gets the same «check your inbox» screen
-  const unknown = kind === "magic" && r && !r.ok && r.status !== 429 && /otp_disabled|signups not allowed|user_not_found/i.test(JSON.stringify(r.j || {}));
+  // (any 4xx except «too many», so nothing hangs on Supabase's exact error wording)
+  const unknown = kind === "magic" && r && !r.ok && r.status >= 400 && r.status < 500 && r.status !== 429;
   if(r && (r.ok || unknown)){ acctAuth = kind === "reset" ? "sent-reset" : "sent-magic"; return setAcctMsg("", false, true); }
   setAcctMsg(authError(r, kind === "reset" ? "reset" : "magic"), true);
 }

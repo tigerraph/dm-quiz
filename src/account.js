@@ -219,7 +219,8 @@ async function sendMail(kind){
                     { email: em, create_user: false });
   setBusy(false);
   // never say whether an address has an account: an unknown email gets the same «check your inbox» screen
-  const unknown = kind === "magic" && r && !r.ok && r.status !== 429 && /otp_disabled|signups not allowed|user_not_found/i.test(JSON.stringify(r.j || {}));
+  // (any 4xx except «too many», so nothing hangs on Supabase's exact error wording)
+  const unknown = kind === "magic" && r && !r.ok && r.status >= 400 && r.status < 500 && r.status !== 429;
   if(r && (r.ok || unknown)){ acctAuth = kind === "reset" ? "sent-reset" : "sent-magic"; return setAcctMsg("", false, true); }
   setAcctMsg(authError(r, kind === "reset" ? "reset" : "magic"), true);
 }
