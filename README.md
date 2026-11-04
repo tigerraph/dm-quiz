@@ -98,7 +98,8 @@ no connection, link expired. Two Supabase settings make the mail links work
 (Authentication → URL Configuration): Site URL `https://dmatters.org`, Redirect URLs
 `https://dmatters.org/**`. Supabase's built-in mail only reaches the project team's addresses and
 a few mails an hour; real participants need a custom SMTP sender (Authentication → Emails → SMTP).
-`tools/mock-supabase.mjs` serves the reset and sign-in-link flows locally; `GET /__mail` shows the
+**Not yet set or tested on the real project** (as of 04.11.2026): the two URL settings, custom SMTP, and a
+real reset or sign-in mail; everything above was tested only against `tools/mock-supabase.mjs`, which serves the reset and sign-in-link flows locally; `GET /__mail` shows the
 mails it would have sent, with their links.
 
 ### Rehearsing
