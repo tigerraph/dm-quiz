@@ -68,6 +68,7 @@ window.DM_RESULTS = {
     if (withMajority) line += ' · ' + esc(w.maj) + ': ' + (x.majority ? esc(x.majority === 'D' ? w.d : x.majority === 'R' ? w.r : x.majority) : esc(w.undecided));
     return { on:true, html:line };
   }
+  function num(lang, v){ return lang === 'en' ? String(v).replace(/(\d),(\d)/g, '$1.$2').replace(/\s%/g, '%') : v; }   // English: 53.01%
   window.DM_renderResults = function(lang){
     var w = W[lang] || W.de, R = window.DM_RESULTS, u = R.us, s = R.rs;
     var rsFinal = has(s.student.pct) && has(s.student.seats) && has(s.united.pct) && has(s.united.seats) && has(s.turnout);   // all or nothing
@@ -88,15 +89,15 @@ window.DM_RESULTS = {
       'us.tag': { on:false, html:esc(called ? w.tagInterim : w.tagNone) },
       'rs.tag': { on:false, html:esc(rsFinal ? w.tagFinal : w.tagPre) },
       'rs.line': { on:false, html:esc(rsFinal ? w.rsLineFinal : w.rsLine) },
-      'rs.turnoutCell': { on:false, html:esc(rsFinal ? s.turnout : w.rsCell) },
+      'rs.turnoutCell': { on:false, html:esc(rsFinal ? num(lang, s.turnout) : w.rsCell) },
       'rs.turnoutNote': { on:false, html:esc(rsFinal ? w.rsCellFinal : w.rsCellNote) },
       'rs.final': rsFinal
-        ? { on:true, html:'<b>' + esc(w.rsTitle) + ':</b> ' + esc(w.student) + ' ' + esc(s.student.pct) + ' · ' + esc(s.student.seats) + ' ' + esc(w.seats) +
-            ' · ' + esc(w.united) + ' ' + esc(s.united.pct) + ' · ' + esc(s.united.seats) + ' ' + esc(w.seats) +
-            ' · ' + esc(w.turnout) + ' ' + esc(s.turnout) + (s.asOf ? ' · ' + esc(w.asOf) + ' ' + esc(s.asOf) : '') }
+        ? { on:true, html:'<b>' + esc(w.rsTitle) + ':</b> ' + esc(w.student) + ' ' + esc(num(lang, s.student.pct)) + ' · ' + esc(s.student.seats) + ' ' + esc(w.seats) +
+            ' · ' + esc(w.united) + ' ' + esc(num(lang, s.united.pct)) + ' · ' + esc(s.united.seats) + ' ' + esc(w.seats) +
+            ' · ' + esc(w.turnout) + ' ' + esc(num(lang, s.turnout)) + (s.asOf ? ' · ' + esc(w.asOf) + ' ' + esc(s.asOf) : '') }
         : rsCounted
-        ? { on:false, html:'<b>' + esc(w.rsCounted) + '</b> ' + esc(w.student) + ' ' + esc(c.student) + ' · ' + esc(w.united) + ' ' + esc(c.united) +
-            (has(c.turnout) ? ' · ' + esc(w.turnout) + ' ' + esc(c.turnout) : '') + (c.asOf ? ' · ' + esc(w.asOf) + ' ' + esc(c.asOf) : '') }
+        ? { on:false, html:'<b>' + esc(w.rsCounted) + '</b> ' + esc(w.student) + ' ' + esc(num(lang, c.student)) + ' · ' + esc(w.united) + ' ' + esc(num(lang, c.united)) +
+            (has(c.turnout) ? ' · ' + esc(w.turnout) + ' ' + esc(num(lang, c.turnout)) : '') + (c.asOf ? ' · ' + esc(w.asOf) + ' ' + esc(c.asOf) : '') }
         : { on:false, html:'<b>' + esc(w.slot) + ' · ' + esc(w.rsTitle) + '</b> ' + esc(w.rsNone) }
     };
     document.querySelectorAll('[data-slot]').forEach(function(el){
