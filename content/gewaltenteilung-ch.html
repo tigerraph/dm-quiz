@@ -263,11 +263,15 @@
   <footer>Democracy Matters — The Learning Loop. Learn it. Keep it.</footer>
 </div>
 <script>
+  var TITLE_DE = document.title;
   function setLang(l){
     if(['de','en','fr','it'].indexOf(l) < 0) l = 'de';
     if(l === 'de') document.documentElement.removeAttribute('data-l');
     else document.documentElement.setAttribute('data-l', l);
     document.documentElement.setAttribute('lang', l);
+    // the tab title follows the language too (DE keeps the page's own <title>)
+    var h = document.querySelector('h1[lang-'+l+']');
+    document.title = (l === 'de' || !h) ? TITLE_DE : h.textContent.trim() + ' — Democracy Matters';
     ['de','en','fr','it'].forEach(function(x){
       document.getElementById('btn-'+x).classList.toggle('on', x === l);
     });

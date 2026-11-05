@@ -40,6 +40,10 @@ base64-inlined at build, so there is no runtime font request.
 - **No logo.** Democracy Matters has no mark of its own. The round «dP» mark in
   the reference PDFs belongs to another organisation and never goes on a DM
   surface; the name set in Poppins ExtraBold is the wordmark.
+- **The site is «Democracy Matters».** Tab title, link preview (og:title,
+  og:image, twitter:title) and the site bar say only that, in every language.
+  «Quiz» stays in the teal second word on the quiz game's own screens, where
+  it names the game; the passport and the daily lesson put their own word there.
 
 - **A red had to be invented.** The palette has none, so a wrong answer uses
   `--wrong: #DB6A57`, a muted terracotta tuned to sit beside the green. It is
