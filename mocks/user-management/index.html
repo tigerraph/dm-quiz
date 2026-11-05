@@ -54,10 +54,11 @@ input[type=email]{flex:1; min-width:0; border-radius:12px; border:1.5px solid rg
 .sheet .foot{display:flex; gap:8px; justify-content:space-between; margin-top:18px; flex-wrap:wrap}
 /* C: columns */
 .cols{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:12px}
-.col h3{font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; color:var(--teal); margin:0 0 4px}
+.col{min-width:0} .col h3{font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; color:var(--teal); margin:0 0 4px}
 .col .row{cursor:default}
 .mini{font-size:.84rem; padding:7px 12px; border-radius:10px}
-@media (max-width:720px){.cols{grid-template-columns:1fr} .kit{padding:16px}}
+@media (max-width:720px){.cols{grid-template-columns:1fr} .kit{padding:16px} .invite input{flex-basis:100%} .invite .btn{width:100%} .tag{font-size:.62rem; padding:3px 7px; letter-spacing:.04em}}
+html,body{overflow-x:clip}
 .v{display:none} .v.on{display:block}
 .why{margin-top:18px; color:var(--mute); font-size:.9rem}
 </style>
@@ -98,7 +99,7 @@ input[type=email]{flex:1; min-width:0; border-radius:12px; border:1.5px solid rg
   <!-- C -->
   <section class="v" id="v-c">
     <div class="postkit"><div class="lbl">People · My DM accounts</div><div class="kit">
-      <h2>Who runs DM sessions</h2><div class="meta">Moderators on the left, everyone else with a My DM account on the right.</div>
+      <h2>Who runs DM sessions</h2><div class="meta">Moderators first, then everyone else with a My DM account.</div>
       <form class="invite" data-inv><input type="email" placeholder="Invite by email: name@example.org" required aria-label="Email to invite"><button class="btn">Invite as moderator</button></form>
       <div class="cols">
         <div class="col"><h3>Moderators</h3><ul class="list" data-list="c-mod"></ul></div>
