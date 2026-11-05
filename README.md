@@ -207,6 +207,11 @@ wedding quiz (the free plan allows two active projects). Each app has its own sc
   with Supabase's roles and replays the app's reads and writes as anon, a user and the admin;
   `node tools/test-client-schema.mjs` opens the built app in headless Chrome against the mock
   before and after the move. Both run in CI.
+- **Session QR:** `node tools/test-qr-join.mjs` scans `?session=<id>` with a fresh phone in
+  headless Chrome for every session and language: it must land on «name → join» when no host
+  has opened the session yet, when last time's game is done and when an old claim window is
+  left over, wait in the lobby, and be on the roster once the host opens the round.
+  `&view=mydm` must still open the star passport and `&host=1` the beamer. Runs in CI.
 - Auth is shared per project: DM accounts mean nothing to the quiz. An app that needs logins
   gates them with its own membership table, as DM does with `dm_admins`.
 

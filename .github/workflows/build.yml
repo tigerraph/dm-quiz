@@ -52,3 +52,5 @@ jobs:
           npm i --no-save @electric-sql/pglite@0.3
           node tools/test-dm-schema.mjs
           node tools/test-client-schema.mjs
+      - name: Session QR opens the game in every state (no round yet, done, old claim window; host and passport QRs, 4 languages)
+        run: node tools/test-qr-join.mjs
