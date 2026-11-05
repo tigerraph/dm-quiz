@@ -2881,7 +2881,7 @@ var qrcode = function() {
    Engine carried over from the noeggi-kahoot wedding app: timer,
    speed scoring, streak bonus, i18n, synthesized offline audio.
    ================================================================== */
-const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","supabaseSchema":"dm","build":"build 05.11.2026 08:29"};
+const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","supabaseSchema":"dm","build":"build 05.11.2026 15:29"};
 const SUPA_URL = CFG.supabaseUrl || "";
 const SUPA_KEY = CFG.supabaseAnonKey || "";
 
@@ -3435,22 +3435,32 @@ async function boot(){
   order = LIVE
     ? pack.questions.map((q,i)=>seededOrder(q, i, L(q.o).length))
     : pack.questions.map(q=>shuffled(L(q.o).length));
-  /* One QR, three modes: with no game running the phone rests on the
-     passport; a 'stars' phase means the host has opened the claim window.
-     The idle loop keeps watching, so the screen switches by itself the
-     moment the host starts a lobby. */
-  if(LIVE){
-    const ph = liveState && liveState.phase;
-    if(ph === "stars") return startIdleLoop("claim");
-    if(!ph || ph === "done") return startIdleLoop("passport");
-  }
+  /* The session QR opens the game: name, then play (Rafa, 05.11.2026). It used to
+     rest on the passport while no round was running, so a phone that scanned the
+     warm-up slide before the moderator opened the beamer (or after last time's
+     game ended) landed on «My DM» with the sign-up form instead of the game. Now
+     the phone joins and waits in the lobby; the host's next lobby picks it up.
+     The star passport has its own QR (&view=mydm). Only a claim window the host
+     opened in this sitting still shows the claim screen; one left over from an
+     earlier sitting does not. */
+  if(LIVE && liveState && liveState.phase === "stars"
+     && serverNow() - Date.parse(liveState.started_at) <= SITTING_IDLE_MS)
+    return startIdleLoop("claim");
   renderJoin();
+}
+/* No round to join yet: no host has opened this session, or the last round is
+   over (or an old claim window). The player waits in the lobby until the host
+   opens the next round, and is put on that round's roster then. */
+let waitingRound = false;
+function noRoundYet(){
+  const ph = liveState && liveState.phase;
+  return !ph || ph === "done" || ph === "stars";
 }
 function fail(key){ phase="error"; errKey=key; renderError(); }
 function renderError(){
   const big = errKey==="hostNeedsDb";
   app.innerHTML = `<div class="screen">
-    ${wordmarkHtml()}
+    ${wordmarkHtml("", "")}
     <h1>${esc(big ? t().hostNeedsDb : t().noSession)}</h1>
     <div class="err">${esc(big ? t().hostNeedsDbSub : t()[errKey] || "")}</div>
   </div>`;
@@ -3458,8 +3468,10 @@ function renderError(){
 /* The star screens are Curriculum, not Quiz — the passport outlives any
    single quiz session. */
 function wordmarkHtml(cls, word){
+  // word "" = the site itself («Democracy Matters», e.g. the error screen); undefined = the game
+  const w = word === undefined ? t().quiz : word;
   return `<div class="kicker ${cls||""}"><span class="wordmark">`
-       + `${esc(t().brand)} <span class="wm2">${esc(word||t().quiz)}</span></span></div>`;
+       + `${esc(t().brand)}${w ? ` <span class="wm2">${esc(w)}</span>` : ""}</span></div>`;
 }
 
 function langPills(){
@@ -3632,8 +3644,9 @@ function renderJoin(){
    starts a new round has to register again — silently, on their behalf. */
 async function rejoinRound(){
   if(!myToken) return;
-  await sbInsert("dm_players",
-    { session:SESSION, token:myToken, name:myName, round:curRound() }, { conflictOk:true });
+  const row = { session:SESSION, token:myToken, name:myName, round:curRound() };
+  if(waitingRound){ waitingRound = false; row.fp = canvasFp(); }
+  await sbInsert("dm_players", row, { conflictOk:true });
 }
 async function joinLive(){
   // The token is the player's identity, so reloading mid-game keeps their score.
@@ -3645,7 +3658,10 @@ async function joinLive(){
     myToken = newToken();
     store.set("token_"+SESSION, myToken);
   }
-  const ok = await sbInsert("dm_players",
+  waitingRound = noRoundYet();
+  // waiting for a round: the row is written when it opens, so last time's
+  // leaderboard never gets a player with no answers
+  const ok = waitingRound || await sbInsert("dm_players",
     { session:SESSION, token:myToken, name:myName, round:curRound(), fp:canvasFp() },
     { conflictOk:true });
   if(!ok){ LIVE=false; return startSolo(); }   // database went away mid-join
@@ -3654,6 +3670,11 @@ async function joinLive(){
   // awarded to either shows up in the same passport (fire and forget)
   sbInsert("dm_token_links",
     { token_a:DEVICE, token_b:myToken, method:"device" }, { conflictOk:true });
+  if(waitingRound){
+    // what is on the server now is not this player's round: ignore it until it changes
+    lastKey = liveState ? liveState.round+":"+liveState.phase+":"+liveState.q_index : "";
+    renderPlayerLobby();
+  }
   startPlayerLoop();
   checkRescue();
 }
@@ -3688,6 +3709,8 @@ async function tickPlayer(){
 }
 function onPlayerPhase(st){
   stopTimer();
+  // joined while no round was open and the host skipped straight past the lobby
+  if(waitingRound && (st.phase==="question" || st.phase==="reveal")) rejoinRound();
   if(st.phase==="lobby"){ myAnswer=null; myStreak=0; answers=[]; clearReview(); rejoinRound(); renderPlayerLobby(); }
   else if(st.phase==="question"){ myAnswer=null; renderPlayerQuestion(); }
   else if(st.phase==="reveal"){ renderPlayerReveal(); }
@@ -3711,7 +3734,8 @@ function renderPlayerLobby(){
 }
 function paintLobbyCount(){
   const el = document.getElementById("lobbycount");
-  const n = livePlayers().length;
+  // while waiting for a round, the roster on the server is last time's
+  const n = waitingRound ? 0 : livePlayers().length;
   if(el) el.textContent = n ? `${n} ${t().players}` : "";
 }
 function renderPlayerQuestion(){
