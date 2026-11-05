@@ -12,11 +12,11 @@
  */
 window.DM_RESULTS = {
   us: {
-    asOf: "04.11.2026, 09:10",   // read 04.11.2026 09:10 CET; newest update in the files 09:07 CET
-    source: "AP via NPR",        // apps.npr.org/2026-election-results/data/{house,senate,gov}.json; NPR: «Election results are tabulated by The Associated Press»
-    house:     { d: 219, r: 135, other: 0, open: 81, majority: "D" },   // 354 called; 80 «Too Early to Call» + LA-5 runoff; 219 called seats reach the 218 needed
-    senate:    { d: 54, r: 43, other: 0, open: 3, majority: "D" },      // whole chamber: called 20 D + 12 R; not up 32 D + 31 R + 2 independents who caucus with D (NPR); open AK, MS, NE
-    governors: { d: 19, r: 12, other: 0, open: 5 },                     // of the 36 races; open AK, AZ, KS, NV, OR
+    asOf: "05.11.2026, 15:28",   // read 05.11.2026 15:28 CET on apnews.com/projects/elections-2026 («Updated Nov 5, 2026, 3:28 PM»)
+    source: "AP",        // apps.npr.org/2026-election-results/data/{house,senate,gov}.json; NPR: «Election results are tabulated by The Associated Press»
+    house:     { d: 240, r: 147, other: 0, open: 48, majority: "D" },   // AP: 240 D + 147 R called, 48 to be called (incl. LA-5 runoff); same AP totals in Yahoo News live blog 05.11. 5 a.m. ET; 240 called seats reach the 218 needed
+    senate:    { d: 54, r: 44, other: 0, open: 2, majority: "D" },      // whole chamber, AP: 54 D (incl. 2 independents) + 44 R, open AK, MS; = called 20 D + 13 R (NE called R) + not up 32 D + 31 R + 2 I (AP data via NPR); same in Yahoo News 05.11.
+    governors: { d: 22, r: 12, other: 0, open: 2 },                     // of the 36 races (AP data via NPR); open AK, KS (also Yahoo News citing AP); AP national 28 D / 20 R = these + 6 D / 8 R not up
     turnout: null,     // estimate as text, e.g. "≈ 47 %"; stays null if none is published
     note: {            // one line per language
       de: "Senat inkl. 2 Unabhängige, die mit den Demokraten stimmen · Repräsentantenhaus: Louisiana 5 geht in eine Stichwahl",
@@ -29,7 +29,11 @@ window.DM_RESULTS = {
     asOf: null,        // date of the electoral commission's final report, e.g. "05.11.2026"
     student: { pct: null, seats: null },   // final figures of the Republic Electoral Commission (RIK), e.g. "53,0 %", 141
     united:  { pct: null, seats: null },
-    turnout: null      // e.g. "69,0 %". Serbia shows as final only when both lists and the turnout are all filled in
+    turnout: null,     // e.g. "69,0 %". Serbia shows as final only when both lists and the turnout are all filled in
+    // Between preliminary and final: RIK's count from all 8,392 polling stations after the 1 Nov repeat vote. NOT the final
+    // report; shown as «all polling stations counted · final report pending» until the final fields above are filled.
+    // Lists: N1/RTS 02.11.2026 14:25 + Tanjug 01.11.2026 23:46 + Kurir 02.11.2026 07:21. Turnout 68,89 % (4'444'310): Tanjug + Kurir.
+    counted: { asOf: "02.11.2026", student: "53,01 %", united: "38,98 %", turnout: "68,89 %" }
   }
 };
 
@@ -38,19 +42,19 @@ window.DM_RESULTS = {
   var W = {
     de:{tagPre:'VORLÄUFIG', tagFinal:'ENDRESULTAT', tagNone:'NOCH KEIN RESULTAT', tagInterim:'NICHT AMTLICH', slot:'⏳ Resultat folgt', none:'Wird eingetragen, sobald es vorliegt.', house:'Repräsentantenhaus', senate:'Senat', gov:'Gouverneure',
         d:'Demokraten', r:'Republikaner', other:'andere', open:'noch offen', maj:'Mehrheit', undecided:'noch nicht entschieden', asOf:'Stand', turnout:'Beteiligung', noTurnout:'folgt',
-        rsTitle:'Endresultat der Wahlkommission', rsNone:'Erst nach der Wiederholung am 1. November.', student:'Studentenliste', united:'Vereintes Serbien', seats:'Sitze',
+        rsCounted:'Alle Wahllokale ausgezählt · Schlussbericht ausstehend:', rsTitle:'Endresultat der Wahlkommission', rsNone:'Die Wiederholung vom 1. November hat stattgefunden, der Schlussbericht der Kommission steht noch aus.', student:'Studentenliste', united:'Vereintes Serbien', seats:'Sitze',
         rsLine:'Vorläufig: Studentenliste rund 53 %, Vereintes Serbien (SNS) rund 39 %, Beteiligung rund 69 %.', rsLineFinal:'Das Endresultat steht unten.', rsCell:'rund 69 %', rsCellNote:'vorläufig', rsCellFinal:'Endresultat'},
     en:{tagPre:'PRELIMINARY', tagFinal:'FINAL RESULT', tagNone:'NO RESULT YET', tagInterim:'NOT OFFICIAL', slot:'⏳ Result to follow', none:'To be entered once it exists.', house:'House', senate:'Senate', gov:'Governors',
         d:'Democrats', r:'Republicans', other:'others', open:'still open', maj:'Majority', undecided:'not decided yet', asOf:'As of', turnout:'Turnout', noTurnout:'to follow',
-        rsTitle:'Final result of the electoral commission', rsNone:'Only after the repeat vote on 1 November.', student:'Student List', united:'United Serbia', seats:'seats',
+        rsCounted:'All polling stations counted · final report pending:', rsTitle:'Final result of the electoral commission', rsNone:'The repeat vote on 1 November has taken place; the commission’s final report is still pending.', student:'Student List', united:'United Serbia', seats:'seats',
         rsLine:'Preliminary: Student List about 53%, United Serbia (SNS) about 39%, turnout about 69%.', rsLineFinal:'The final result is below.', rsCell:'about 69%', rsCellNote:'preliminary', rsCellFinal:'final result'},
     fr:{tagPre:'PROVISOIRE', tagFinal:'RÉSULTAT FINAL', tagNone:'PAS ENCORE DE RÉSULTAT', tagInterim:'NON OFFICIEL', slot:'⏳ Résultat à venir', none:'À inscrire dès qu’il existe.', house:'Chambre', senate:'Sénat', gov:'Gouverneurs',
         d:'Démocrates', r:'Républicains', other:'autres', open:'encore ouverts', maj:'Majorité', undecided:'pas encore décidée', asOf:'État au', turnout:'Participation', noTurnout:'à venir',
-        rsTitle:'Résultat final de la commission électorale', rsNone:'Seulement après le nouveau vote du 1er novembre.', student:'Liste étudiante', united:'Serbie unie', seats:'sièges',
+        rsCounted:'Tous les bureaux dépouillés · rapport final en attente :', rsTitle:'Résultat final de la commission électorale', rsNone:'Le nouveau vote du 1er novembre a eu lieu ; le rapport final de la commission est encore attendu.', student:'Liste étudiante', united:'Serbie unie', seats:'sièges',
         rsLine:'Provisoire : Liste étudiante env. 53 %, Serbie unie (SNS) env. 39 %, participation env. 69 %.', rsLineFinal:'Le résultat final figure ci-dessous.', rsCell:'env. 69 %', rsCellNote:'provisoire', rsCellFinal:'résultat final'},
     it:{tagPre:'PROVVISORIO', tagFinal:'RISULTATO FINALE', tagNone:'ANCORA NESSUN RISULTATO', tagInterim:'NON UFFICIALE', slot:'⏳ Risultato in arrivo', none:'Da inserire appena esiste.', house:'Camera', senate:'Senato', gov:'Governatori',
         d:'Democratici', r:'Repubblicani', other:'altri', open:'ancora aperti', maj:'Maggioranza', undecided:'non ancora decisa', asOf:'Stato al', turnout:'Affluenza', noTurnout:'in arrivo',
-        rsTitle:'Risultato finale della commissione elettorale', rsNone:'Solo dopo la ripetizione del voto del 1° novembre.', student:'Lista studentesca', united:'Serbia unita', seats:'seggi',
+        rsCounted:'Tutti i seggi scrutinati · rapporto finale in attesa:', rsTitle:'Risultato finale della commissione elettorale', rsNone:'La ripetizione del voto del 1° novembre si è svolta; il rapporto finale della commissione è ancora atteso.', student:'Lista studentesca', united:'Serbia unita', seats:'seggi',
         rsLine:'Provvisorio: Lista studentesca circa 53 %, Serbia unita (SNS) circa 39 %, affluenza circa 69 %.', rsLineFinal:'Il risultato finale è qui sotto.', rsCell:'circa 69 %', rsCellNote:'provvisorio', rsCellFinal:'risultato finale'}
   };
   var esc = function(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };
@@ -64,9 +68,11 @@ window.DM_RESULTS = {
     if (withMajority) line += ' · ' + esc(w.maj) + ': ' + (x.majority ? esc(x.majority === 'D' ? w.d : x.majority === 'R' ? w.r : x.majority) : esc(w.undecided));
     return { on:true, html:line };
   }
+  function num(lang, v){ return lang === 'en' ? String(v).replace(/(\d),(\d)/g, '$1.$2').replace(/\s%/g, '%') : v; }   // English: 53.01%
   window.DM_renderResults = function(lang){
     var w = W[lang] || W.de, R = window.DM_RESULTS, u = R.us, s = R.rs;
     var rsFinal = has(s.student.pct) && has(s.student.seats) && has(s.united.pct) && has(s.united.seats) && has(s.turnout);   // all or nothing
+    var c = s.counted || {}, rsCounted = !rsFinal && has(c.student) && has(c.united);   // counted, not final
     var called = has(u.house.d) || has(u.senate.d) || has(u.governors.d);
     var parts = [];
     if (u.asOf) parts.push(esc(w.asOf) + ' ' + esc(u.asOf));
@@ -83,12 +89,15 @@ window.DM_RESULTS = {
       'us.tag': { on:false, html:esc(called ? w.tagInterim : w.tagNone) },
       'rs.tag': { on:false, html:esc(rsFinal ? w.tagFinal : w.tagPre) },
       'rs.line': { on:false, html:esc(rsFinal ? w.rsLineFinal : w.rsLine) },
-      'rs.turnoutCell': { on:false, html:esc(rsFinal ? s.turnout : w.rsCell) },
+      'rs.turnoutCell': { on:false, html:esc(rsFinal ? num(lang, s.turnout) : w.rsCell) },
       'rs.turnoutNote': { on:false, html:esc(rsFinal ? w.rsCellFinal : w.rsCellNote) },
       'rs.final': rsFinal
-        ? { on:true, html:'<b>' + esc(w.rsTitle) + ':</b> ' + esc(w.student) + ' ' + esc(s.student.pct) + ' · ' + esc(s.student.seats) + ' ' + esc(w.seats) +
-            ' · ' + esc(w.united) + ' ' + esc(s.united.pct) + ' · ' + esc(s.united.seats) + ' ' + esc(w.seats) +
-            ' · ' + esc(w.turnout) + ' ' + esc(s.turnout) + (s.asOf ? ' · ' + esc(w.asOf) + ' ' + esc(s.asOf) : '') }
+        ? { on:true, html:'<b>' + esc(w.rsTitle) + ':</b> ' + esc(w.student) + ' ' + esc(num(lang, s.student.pct)) + ' · ' + esc(s.student.seats) + ' ' + esc(w.seats) +
+            ' · ' + esc(w.united) + ' ' + esc(num(lang, s.united.pct)) + ' · ' + esc(s.united.seats) + ' ' + esc(w.seats) +
+            ' · ' + esc(w.turnout) + ' ' + esc(num(lang, s.turnout)) + (s.asOf ? ' · ' + esc(w.asOf) + ' ' + esc(s.asOf) : '') }
+        : rsCounted
+        ? { on:false, html:'<b>' + esc(w.rsCounted) + '</b> ' + esc(w.student) + ' ' + esc(num(lang, c.student)) + ' · ' + esc(w.united) + ' ' + esc(num(lang, c.united)) +
+            (has(c.turnout) ? ' · ' + esc(w.turnout) + ' ' + esc(num(lang, c.turnout)) : '') + (c.asOf ? ' · ' + esc(w.asOf) + ' ' + esc(c.asOf) : '') }
         : { on:false, html:'<b>' + esc(w.slot) + ' · ' + esc(w.rsTitle) + '</b> ' + esc(w.rsNone) }
     };
     document.querySelectorAll('[data-slot]').forEach(function(el){
