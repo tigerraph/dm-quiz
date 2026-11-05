@@ -71,6 +71,12 @@
       "fr": "Brésil · Serbie · États-Unis",
       "it": "Brasile · Serbia · USA"
     },
+    "question": {
+      "de": "Was entscheidet eine Wahl wirklich? Und wer glaubt dem Resultat?",
+      "en": "What does an election really decide? And who believes the result?",
+      "fr": "Que décide vraiment une élection ? Et qui croit le résultat ?",
+      "it": "Che cosa decide davvero un’elezione? E chi crede al risultato?"
+    },
     "practice": [
       {
         "file": "zettel-elections.html",

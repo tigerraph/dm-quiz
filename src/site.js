@@ -326,11 +326,11 @@ function posterDates(planned){
   const ids = siteSessions().filter(id=>!registry[id].draft);
   const withTopic = ids.filter(isUpcoming).map(id=>{
     const s = registry[id];
-    return { id, date:s.date, time:s.time || "", room:s.room || "", minutes:s.minutes || 0, title:L(s.title) || id, cases:L(s.cases), note:"" };
+    return { id, date:s.date, time:s.time || "", room:s.room || "", minutes:s.minutes || 0, title:L(s.title) || id, cases:L(s.cases), question:L(s.question), note:"" };
   });
   const taken = new Set(withTopic.map(x=>x.date)), today = todayISO();
   const free = planned.filter(p=>p && /^\d{4}-\d{2}-\d{2}$/.test(p.date) && p.date >= today && !taken.has(p.date))
-    .map(p=>({ id:"", date:p.date, time:p.time || "", room:p.room || "", minutes:p.minutes || 0, title:"", cases:"", note:L(p.note) }));
+    .map(p=>({ id:"", date:p.date, time:p.time || "", room:p.room || "", minutes:p.minutes || 0, title:"", cases:"", question:"", note:L(p.note) }));
   const up = withTopic.concat(free).sort((a,b)=>a.date.localeCompare(b.date));
   const byDateDesc = (a,b)=>String(registry[b].date||"").localeCompare(String(registry[a].date||""));
   const past = ids.filter(id=>!isUpcoming(id)).sort(byDateDesc);
@@ -367,6 +367,8 @@ function posterBar(){
       <a class="psignin" href="${esc(loginHref())}">${esc(pt().signin)}</a>
     </span></header>`;
 }
+/* «What …? And who …?»: the second question in cream, as on the mock */
+function qHtml(q){ const m = /^(.+?\?)\s+(.+)$/.exec(q); return m ? `${esc(m[1])} <span>${esc(m[2])}</span>` : esc(q); }
 function sloganHtml(i){ const s = SLOGANS[i]; return `${esc(s[0])} <span class="c2">${esc(s[1])}</span>`; }
 
 async function renderPoster(){
@@ -378,7 +380,8 @@ async function renderPoster(){
   const title = n ? (n.title ? [n.title, relDay(n.date)].filter(Boolean).join(" ") : st().nextSession) : "";
   const band = n ? `<section class="c-band" aria-label="${esc(st().nextSession)}">
       <div class="c-hd"><div class="jc">${esc(P.join)}</div><h2 class="t">${esc(title)}</h2></div>
-      <div class="c-q"><p class="q" id="ctag">${n.id ? "" : esc(P.topicTbc) + "."}</p></div>
+      <div class="c-q">${n.question ? `<p class="q">${qHtml(n.question)}</p>${n.cases ? `<p class="q cs">${esc(n.cases)}</p>` : ""}`
+        : `<p class="q" id="ctag">${n.id ? "" : esc(P.topicTbc) + "."}</p>`}</div>
       <div class="c-dt">
         <div class="c-date"><div class="d">${esc(shortDay(n.date))}</div><div class="tr">${esc(timeRoom(n))}</div>
           <div class="og">${esc(P.rhythm)} · ${esc(P.open)}</div></div>

@@ -570,8 +570,8 @@ body.site .acct .btn{min-height:44px; display:inline-flex; align-items:center; j
 .c-say .c2{color:var(--cream); display:block;}
 .c-say.fade{opacity:0;}
 .c-this{font-weight:800; font-size:clamp(1.15rem,4.6vw,2.4rem); color:var(--teal); letter-spacing:.01em; margin:14px 0 0;}
-.c-dots{display:flex; margin:8px 0 0 -6px; align-items:center; flex-wrap:wrap;}
-.c-dots button[data-dot]{width:32px; height:44px; border:0; background:none; cursor:pointer; padding:0; display:grid; place-items:center; border-radius:8px;}
+.c-dots{display:flex; margin:8px 0 0 -12px; align-items:center; flex-wrap:wrap;}
+.c-dots button[data-dot]{width:44px; height:44px; border:0; background:none; cursor:pointer; padding:0; display:grid; place-items:center; border-radius:8px;}
 .c-dots button[data-dot]::after{content:""; width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,.3);}
 .c-dots button[data-dot][aria-pressed="true"]::after{background:var(--teal);}
 .c-pause{font:inherit; font-weight:800; font-size:.78rem; color:rgba(255,255,255,.7); background:none; border:1.5px solid rgba(255,255,255,.25);
@@ -583,6 +583,8 @@ body.site .acct .btn{min-height:44px; display:inline-flex; align-items:center; j
 .c-band h2.t{font-weight:800; font-size:clamp(1.5rem,5.4vw,2.4rem); line-height:1.05; margin-top:2px;}
 .c-band .q{font-weight:800; font-size:.96rem; margin:0;}
 .c-band .q:empty{display:none;}
+.c-band .q span{color:var(--cream);}
+.c-band .q.cs{margin-top:8px;}
 .c-date{background:var(--cream); color:var(--ink); border-radius:4px; padding:14px 16px; transform:rotate(-1.2deg); box-shadow:0 6px 18px rgba(0,0,0,.28);}
 .c-date .d{font-weight:800; font-size:1.7rem; line-height:1.05;}
 .c-date .tr{font-weight:800; font-size:1.05rem; color:var(--blue); margin-top:2px;}
@@ -2942,7 +2944,7 @@ var qrcode = function() {
    Engine carried over from the noeggi-kahoot wedding app: timer,
    speed scoring, streak bonus, i18n, synthesized offline audio.
    ================================================================== */
-const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","supabaseSchema":"dm","build":"build 05.11.2026 10:06"};
+const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","supabaseSchema":"dm","build":"build 05.11.2026 10:15"};
 const SUPA_URL = CFG.supabaseUrl || "";
 const SUPA_KEY = CFG.supabaseAnonKey || "";
 
@@ -5782,11 +5784,11 @@ function posterDates(planned){
   const ids = siteSessions().filter(id=>!registry[id].draft);
   const withTopic = ids.filter(isUpcoming).map(id=>{
     const s = registry[id];
-    return { id, date:s.date, time:s.time || "", room:s.room || "", minutes:s.minutes || 0, title:L(s.title) || id, cases:L(s.cases), note:"" };
+    return { id, date:s.date, time:s.time || "", room:s.room || "", minutes:s.minutes || 0, title:L(s.title) || id, cases:L(s.cases), question:L(s.question), note:"" };
   });
   const taken = new Set(withTopic.map(x=>x.date)), today = todayISO();
   const free = planned.filter(p=>p && /^\d{4}-\d{2}-\d{2}$/.test(p.date) && p.date >= today && !taken.has(p.date))
-    .map(p=>({ id:"", date:p.date, time:p.time || "", room:p.room || "", minutes:p.minutes || 0, title:"", cases:"", note:L(p.note) }));
+    .map(p=>({ id:"", date:p.date, time:p.time || "", room:p.room || "", minutes:p.minutes || 0, title:"", cases:"", question:"", note:L(p.note) }));
   const up = withTopic.concat(free).sort((a,b)=>a.date.localeCompare(b.date));
   const byDateDesc = (a,b)=>String(registry[b].date||"").localeCompare(String(registry[a].date||""));
   const past = ids.filter(id=>!isUpcoming(id)).sort(byDateDesc);
@@ -5823,6 +5825,8 @@ function posterBar(){
       <a class="psignin" href="${esc(loginHref())}">${esc(pt().signin)}</a>
     </span></header>`;
 }
+/* «What …? And who …?»: the second question in cream, as on the mock */
+function qHtml(q){ const m = /^(.+?\?)\s+(.+)$/.exec(q); return m ? `${esc(m[1])} <span>${esc(m[2])}</span>` : esc(q); }
 function sloganHtml(i){ const s = SLOGANS[i]; return `${esc(s[0])} <span class="c2">${esc(s[1])}</span>`; }
 
 async function renderPoster(){
@@ -5834,7 +5838,8 @@ async function renderPoster(){
   const title = n ? (n.title ? [n.title, relDay(n.date)].filter(Boolean).join(" ") : st().nextSession) : "";
   const band = n ? `<section class="c-band" aria-label="${esc(st().nextSession)}">
       <div class="c-hd"><div class="jc">${esc(P.join)}</div><h2 class="t">${esc(title)}</h2></div>
-      <div class="c-q"><p class="q" id="ctag">${n.id ? "" : esc(P.topicTbc) + "."}</p></div>
+      <div class="c-q">${n.question ? `<p class="q">${qHtml(n.question)}</p>${n.cases ? `<p class="q cs">${esc(n.cases)}</p>` : ""}`
+        : `<p class="q" id="ctag">${n.id ? "" : esc(P.topicTbc) + "."}</p>`}</div>
       <div class="c-dt">
         <div class="c-date"><div class="d">${esc(shortDay(n.date))}</div><div class="tr">${esc(timeRoom(n))}</div>
           <div class="og">${esc(P.rhythm)} · ${esc(P.open)}</div></div>

@@ -171,8 +171,8 @@ body.site .acct .btn{min-height:44px; display:inline-flex; align-items:center; j
 .c-say .c2{color:var(--cream); display:block;}
 .c-say.fade{opacity:0;}
 .c-this{font-weight:800; font-size:clamp(1.15rem,4.6vw,2.4rem); color:var(--teal); letter-spacing:.01em; margin:14px 0 0;}
-.c-dots{display:flex; margin:8px 0 0 -6px; align-items:center; flex-wrap:wrap;}
-.c-dots button[data-dot]{width:32px; height:44px; border:0; background:none; cursor:pointer; padding:0; display:grid; place-items:center; border-radius:8px;}
+.c-dots{display:flex; margin:8px 0 0 -12px; align-items:center; flex-wrap:wrap;}
+.c-dots button[data-dot]{width:44px; height:44px; border:0; background:none; cursor:pointer; padding:0; display:grid; place-items:center; border-radius:8px;}
 .c-dots button[data-dot]::after{content:""; width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,.3);}
 .c-dots button[data-dot][aria-pressed="true"]::after{background:var(--teal);}
 .c-pause{font:inherit; font-weight:800; font-size:.78rem; color:rgba(255,255,255,.7); background:none; border:1.5px solid rgba(255,255,255,.25);
@@ -184,6 +184,8 @@ body.site .acct .btn{min-height:44px; display:inline-flex; align-items:center; j
 .c-band h2.t{font-weight:800; font-size:clamp(1.5rem,5.4vw,2.4rem); line-height:1.05; margin-top:2px;}
 .c-band .q{font-weight:800; font-size:.96rem; margin:0;}
 .c-band .q:empty{display:none;}
+.c-band .q span{color:var(--cream);}
+.c-band .q.cs{margin-top:8px;}
 .c-date{background:var(--cream); color:var(--ink); border-radius:4px; padding:14px 16px; transform:rotate(-1.2deg); box-shadow:0 6px 18px rgba(0,0,0,.28);}
 .c-date .d{font-weight:800; font-size:1.7rem; line-height:1.05;}
 .c-date .tr{font-weight:800; font-size:1.05rem; color:var(--blue); margin-top:2px;}
