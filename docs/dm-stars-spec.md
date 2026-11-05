@@ -35,13 +35,19 @@ of every session. What the phone shows depends on the newest `dm_state` row:
 
 | Latest phase | Phone shows |
 |---|---|
-| none, or `done` | **My DM** passport (default resting state) |
+| none, or `done` | the quiz's join screen (name → join), then the lobby until the host opens the next round |
 | `lobby` / `question` / `reveal` | the quiz, exactly as today |
-| `stars` *(new)* | the star-claim screen |
+| `stars`, opened in this sitting (≤ 2 h) | the star-claim screen |
+| `stars`, older | the join screen, like `done` |
 
-So scanning at the start drops you into the lobby; scanning at the end (or
-still having the page open) drops you into the claim. The passport is always
-reachable via a "My DM" button in the header, in every mode.
+So scanning at the start drops you into the game, even before the moderator
+has opened the beamer; scanning while the claim window is open drops you into
+the claim. The passport has its own QR (`&view=mydm`) on the last slide and is
+always reachable via the "My DM" button.
+
+*Changed 05.11.2026 (Rafa): «none, or `done`» used to show the passport, so a
+phone that scanned the warm-up slide before the host had opened the session
+landed on «My DM» and its sign-up form instead of the game.*
 
 ## Identity — three layers
 
