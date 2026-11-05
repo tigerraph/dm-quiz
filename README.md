@@ -21,6 +21,7 @@ Skin: [`docs/design-tokens.md`](docs/design-tokens.md)
 | `/?view=session&id=<id>` | One page per session: bottom line, links for everyone; the **Moderator kit** for a logged-in moderator |
 | `/?view=login` | The My DM account form on its own page (`&next=` returns to the page you came from) |
 | `/?view=mydm` | The star passport (the star QR on the slides lands here) |
+| `/?view=people` | **People**, admin only: who moderates; switch moderators on/off, invite by email (Rafa's pick A, 05.11.2026) |
 | `/?session=<id>&solo=1` | Replay the quiz alone, even while the database is up |
 | `/?session=<id>` | Player view — join from a phone and follow the beamer |
 | `/?session=<id>&host=1` | Host view for the beamer — drives the game |
@@ -273,6 +274,21 @@ narrow functions (`dm_roster`, `dm_round_answers`, `dm_session_stars`, `dm_stars
 `dm_rescue_tokens`) and fall back to the old table reads while the migration has not run.
 `node tools/mock-supabase.mjs` serves the post-migration rules (006: DM in `dm`); `--legacy` the ones
 before 005, `--schemas public,noeggi --tables-in public` the ones before 006.
+
+**People** (`?view=people`, linked from the Moderator kit as «People & moderators») replaces pasting
+SQL into `dm_admins` and inviting from the Supabase dashboard. Since migration 007
+(`docs/supabase-migration-007-people.sql`, undo: `…-007-rollback.sql`) a `dm_admins` row has a
+`role`: one `admin` (the row added first) and any number of `moderator`s. Both see the Moderator
+kit, as before (`dm_is_admin()` is unchanged); only the admin opens People. The page lists the My DM
+accounts; tap a person and a sheet slides up with the Moderator switch (asks before removing; the
+admin's own switch is locked). **Invite by email**: an existing account becomes moderator at once; a
+new address gets Supabase's sign-in mail (sent with the public key, `create_user`), lands on
+`?view=reset&invite=1`, chooses a password, every other device is signed out, and only then is the
+invite claimed. Every rule is checked on the server by security-definer functions (`dm_people`,
+`dm_set_moderator`, `dm_invite_moderator`, `dm_cancel_invite`, `dm_claim_invite`) that refuse anyone
+but the admin; there is no service key in the page or the repo. Before 007 has run the page says so
+and changes nothing. Tests: `npm run test-people` (the SQL on PGlite, the page in headless Chrome
+against the mock, whose `/__mail` outbox stands in for real mail). Runs in CI.
 
 ## Testing
 

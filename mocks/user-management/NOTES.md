@@ -1,5 +1,10 @@
 # DM user management — hand-over (05.11.2026, 18:45)
 
+> **Built (05.11.2026, evening):** Rafa picked **A · Tap a person**. It is `?view=people` (`src/people.js`),
+> migration `docs/supabase-migration-007-people.sql`, tests `npm run test-people`. Open question answered
+> by the brief: only the admin makes moderators (`dm_admins.role = 'admin'`, the row added first).
+> The rest of this note is the hand-over as it was.
+
 Status: NOT STARTED beyond reading. This session ran on the Mac (Mac off at 19:00), so nothing was built,
 committed or pushed. A cloud session should start from `origin/main` of `tigerraph/dm-quiz` (6db4c21 at 18:41).
 Do NOT use the local checkouts: `~/Claude/Projects/dm-quiz` is on branch `keep-alive-daily-0924`,

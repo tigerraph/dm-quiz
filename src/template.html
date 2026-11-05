@@ -932,6 +932,7 @@ async function boot(){
   if(VIEW === "session" && !HOST) return renderSessionPage(params.get("id") || "");
   if(VIEW === "login" && !HOST) return renderLogin();
   if(VIEW === "reset" && !HOST) return renderReset();
+  if(VIEW === "people" && !HOST) return renderPeople();   // the admin's People page (src/people.js)
 
   /* No session: the start page, My DM with the next session (concept B, Rafa 03.11.2026).
      It replaces the old «Pick a session» list. */
@@ -2490,6 +2491,7 @@ async function openAddStar(){
 
 __ACCOUNT__
 __SITE__
+__PEOPLE__
 
 /* ---------------- rerender on language switch ---------------- */
 function rerender(){

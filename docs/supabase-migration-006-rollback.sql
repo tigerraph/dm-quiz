@@ -28,6 +28,10 @@ declare
                        'dm_session_stars(text)','dm_stars_for_tokens(text[])',
                        'dm_rescue_tokens(text,text)'];
 begin
+  -- migration 007 (People page) lives in «dm» only and reads dm.dm_admins: undo it first
+  if to_regclass('dm.dm_invites') is not null then
+    raise exception 'migration 007 is in place: run docs/supabase-migration-007-rollback.sql first (nothing was moved)';
+  end if;
   foreach t in array tabs loop
     in_public := to_regclass('public.' || t) is not null;
     in_dm     := to_regclass('dm.' || t) is not null;

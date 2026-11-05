@@ -158,7 +158,9 @@ declare
   some_session text; some_round int;
 begin
   -- 1-3: everything is in dm, nothing DM is left in public
-  select count(*) into v from pg_tables where schemaname = 'dm' and tablename like 'dm\_%';
+  -- the 8 tables of 001-005 (a later migration may add its own, e.g. dm_invites in 007)
+  select count(*) into v from pg_tables where schemaname = 'dm' and tablename = any (array['dm_players','dm_answers',
+    'dm_state','dm_kicks','dm_stars','dm_token_links','dm_identities','dm_admins']);
   insert into _dm006_check values (1, 'All 8 DM tables are in schema dm', v = 8, v || ' tables in dm');
 
   select string_agg(tablename, ', ') into bad from pg_tables

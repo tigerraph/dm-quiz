@@ -33,7 +33,17 @@
  *                                "mock"), so the committed build can be tested
  *                                without editing src/config.json
  * GET /__log lists every REST request with its profile and status.
- * GET /__mail lists the reset and sign-in mails the real project would send, with their links.
+ * GET /__mail lists the reset, sign-in and invite mails the real project would send, with their links.
+ *
+ * People page (docs/supabase-migration-007-people.sql): dm_admins rows carry a role,
+ * 'admin' or 'moderator'. GET /__admin?email=…&role=admin flags the admin (default:
+ * moderator, which is what every dm_admins row was before 007). The rpc/ functions
+ * dm_people, dm_set_moderator, dm_invite_moderator, dm_cancel_invite and
+ * dm_claim_invite check the caller like the SQL does and answer 403 (42501) when
+ * it is not the admin. Sessions carry the amr and session id GoTrue puts in the
+ * JWT: a password login is «password», the link in a mail «magiclink» or «recovery».
+ *   --no-007                     before 007: those functions answer 404 PGRST202
+ * GET /__users lists the accounts with their open sessions; GET /__invites the open invites.
  *
  * Development only. Never deploy this, and remember to put the real
  * Supabase URL and anon key back in src/config.json before committing.
@@ -50,8 +60,10 @@ const SELF = process.argv.includes("--self");
 const arg = (name, dflt) => { const i = process.argv.indexOf(name); return i > 0 ? process.argv[i + 1] : dflt; };
 const EXPOSED = arg("--schemas", LEGACY ? "public,noeggi" : "public,noeggi,dm").split(",");
 const TABLES_IN = arg("--tables-in", LEGACY ? "public" : "dm");
+const NO007 = process.argv.includes("--no-007");
 const restLog = [];
-const admins = new Set();      // user ids in dm_admins
+const admins = new Map();      // user id -> {role, added_at, added_by}: the rows of dm_admins
+const invites = new Map();     // email -> {invited_by, invited_at}: dm_invites (007)
 
 const db = { dm_state: [], dm_players: [], dm_answers: [], dm_kicks: [],
              dm_stars: [], dm_token_links: [], dm_identities: [] };
@@ -105,6 +117,7 @@ const UNIQUE = {
 // ------------------------- mock GoTrue (email+password) + edge function ---
 const authUsers = new Map();   // email -> {id, email, password}
 const sessions  = new Map();   // access/refresh token -> user id
+const sessMeta  = new Map();   // access/refresh token -> {sid, amr}: the session's JWT claims
 /* mail the real project would send (password reset, sign-in link): kept here instead,
    GET /__mail lists it, so the flows can be tested end to end without an inbox */
 const outbox = [];
@@ -121,9 +134,11 @@ function tooMany(email) {
   t.push(now); sends.set(email, t);
   return t.length > 3;           // more than 3 mails a minute to one address
 }
-function authSession(u) {
+function authSession(u, amr = "password", sid = "sess-" + ++seq) {
   const at = "at-" + ++seq, rt = "rt-" + ++seq;
   sessions.set(at, u.id); sessions.set(rt, u.id);
+  sessMeta.set(at, { sid, amr }); sessMeta.set(rt, { sid, amr });
+  u.last_sign_in_at = new Date().toISOString();
   return { access_token: at, refresh_token: rt, token_type: "bearer",
            user: { id: u.id, email: u.email } };
 }
@@ -132,7 +147,79 @@ function bearerUser(req) {
   const uid = m && sessions.get(m[1]);
   return uid ? [...authUsers.values()].find(u => u.id === uid) : null;
 }
+const bearerMeta = req => sessMeta.get((/^Bearer (.+)$/.exec(req.headers.authorization || "") || [])[1]) || null;
 const isAdmin = req => { const u = bearerUser(req); return !!(u && admins.has(u.id)); };
+const isPeopleAdmin = req => { const u = bearerUser(req); return !!(u && admins.get(u.id)?.role === "admin"); };
+// a refusal the way PostgREST reports a raised exception
+class Refused extends Error { constructor(status, code, message) { super(message); this.status = status; this.code = code; } }
+const onlyAdmin = (req, what) => {
+  if (!bearerUser(req)) throw new Refused(401, "42501", "permission denied for function " + what);
+  if (!isPeopleAdmin(req)) throw new Refused(403, "42501", "only the admin can " + what);
+};
+const userById = id => [...authUsers.values()].find(u => u.id === id);
+const userByEmail = e => [...authUsers.values()].find(u => u.email.toLowerCase() === e);
+const EMAIL_OK = e => e.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e);
+const freshInvite = e => { const i = invites.get(e); return i && Date.now() - Date.parse(i.invited_at) < 14 * 864e5; };
+const liveSids = uid => new Set([...sessions].filter(([, id]) => id === uid).map(([t]) => sessMeta.get(t)?.sid));
+function latestName(uid) {
+  const toks = new Set(db.dm_identities.filter(r => r.user_id === uid).map(r => r.token));
+  for (const l of db.dm_token_links) if (toks.has(l.token_a)) toks.add(l.token_b);
+  const p = db.dm_players.filter(r => toks.has(r.token)).sort((a, b) => (a.joined_at < b.joined_at ? 1 : -1))[0];
+  return p ? p.name : null;
+}
+// the functions of migration 007: same arguments, columns and refusals
+const PEOPLE = {
+  dm_people: (a, req) => {
+    onlyAdmin(req, "see this list");
+    const me = bearerUser(req);
+    const rows = [...authUsers.values()]
+      .filter(u => admins.has(u.id) || invites.has(u.email.toLowerCase()) || db.dm_identities.some(r => r.user_id === u.id))
+      .map(u => ({ user_id: u.id, email: u.email, name: latestName(u.id), role: admins.get(u.id)?.role || null,
+        moderator_since: admins.get(u.id)?.added_at || null, account_since: u.created_at, last_seen: u.last_sign_in_at || null,
+        invited_at: invites.get(u.email.toLowerCase())?.invited_at || null, is_me: u.id === me.id }));
+    for (const [email, i] of invites) if (!userByEmail(email))
+      rows.push({ user_id: null, email, name: null, role: null, moderator_since: null, account_since: null,
+        last_seen: null, invited_at: i.invited_at, is_me: false });
+    return rows;
+  },
+  dm_set_moderator: (a, req) => {
+    onlyAdmin(req, "change moderators");
+    if (!a.p_user || typeof a.p_on !== "boolean") throw new Refused(400, "22004", "missing argument");
+    if (a.p_user === bearerUser(req).id) throw new Refused(403, "42501", "you cannot change your own access");
+    if (admins.get(a.p_user)?.role === "admin") throw new Refused(403, "42501", "an admin cannot be changed here");
+    const u = userById(a.p_user);
+    if (!u) throw new Refused(404, "P0002", "no such account");
+    if (a.p_on) { if (!admins.has(u.id)) admins.set(u.id, { role: "moderator", added_at: new Date().toISOString(), added_by: bearerUser(req).id }); }
+    else admins.delete(u.id);
+    invites.delete(u.email.toLowerCase());
+    return a.p_on ? "moderator" : "player";
+  },
+  dm_invite_moderator: (a, req) => {
+    onlyAdmin(req, "invite moderators");
+    const e = String(a.p_email || "").trim().toLowerCase();
+    if (!EMAIL_OK(e)) throw new Refused(400, "22023", "not an email address");
+    const u = userByEmail(e);
+    if (u && admins.has(u.id)) return "already";
+    if (u && !invites.has(e)) { admins.set(u.id, { role: "moderator", added_at: new Date().toISOString(), added_by: bearerUser(req).id }); return "moderator"; }
+    invites.set(e, { invited_by: bearerUser(req).id, invited_at: new Date().toISOString() });
+    return "invite";
+  },
+  dm_cancel_invite: (a, req) => {
+    onlyAdmin(req, "cancel invites");
+    return invites.delete(String(a.p_email || "").trim().toLowerCase()) ? "cancelled" : "none";
+  },
+  dm_claim_invite: (a, req) => {
+    const u = bearerUser(req), m = bearerMeta(req);
+    if (!u) throw new Refused(401, "42501", "permission denied for function dm_claim_invite");
+    const e = u.email.toLowerCase();
+    if (!freshInvite(e)) return "none";
+    if (!m || !["otp", "magiclink", "invite", "recovery", "email/signup", "signup"].includes(m.amr)) return "not-from-link";
+    if ([...liveSids(u.id)].some(sid => sid !== m.sid)) return "other-sessions";
+    if (!admins.has(u.id)) admins.set(u.id, { role: "moderator", added_at: new Date().toISOString(), added_by: invites.get(e).invited_by });
+    invites.delete(e);
+    return "moderator";
+  },
+};
 const NAMED = ["dm_players", "dm_answers", "dm_stars"];   // anon-unreadable after 005
 
 // the functions of migration 005, same arguments and columns
@@ -164,7 +251,7 @@ createServer(async (req, res) => {
     res.setHeader("Content-Type", "application/json");
     if (ep === "signup" && req.method === "POST") {
       if (authUsers.has(body.email)) return void res.writeHead(422).end('{"msg":"exists"}');
-      const u = { id: "u" + ++seq, email: body.email, password: body.password };
+      const u = { id: "u" + ++seq, email: body.email, password: body.password, created_at: new Date().toISOString() };
       authUsers.set(u.email, u);
       return void res.writeHead(200).end(JSON.stringify(authSession(u)));
     }
@@ -172,7 +259,7 @@ createServer(async (req, res) => {
       const grant = url.searchParams.get("grant_type");
       if (grant === "password") {
         const u = authUsers.get(body.email);
-        if (!u || u.password !== body.password)
+        if (!u || !u.password || u.password !== body.password)
           return void res.writeHead(400).end('{"error":"invalid_grant"}');
         return void res.writeHead(200).end(JSON.stringify(authSession(u)));
       }
@@ -180,7 +267,8 @@ createServer(async (req, res) => {
         const uid = sessions.get(body.refresh_token);
         const u = uid && [...authUsers.values()].find(x => x.id === uid);
         if (!u) return void res.writeHead(400).end('{"error":"invalid_grant"}');
-        return void res.writeHead(200).end(JSON.stringify(authSession(u)));
+        const m = sessMeta.get(body.refresh_token) || {};
+        return void res.writeHead(200).end(JSON.stringify(authSession(u, m.amr, m.sid)));
       }
     }
     if (ep === "user" && req.method === "PUT") {
@@ -189,7 +277,16 @@ createServer(async (req, res) => {
       if (body.password) u.password = body.password;
       return void res.writeHead(200).end(JSON.stringify({ id: u.id, email: u.email }));
     }
-    if (ep === "logout" && req.method === "POST") return void res.writeHead(204).end();
+    // like GoTrue: scope=others ends every other session of this user, global all of them
+    if (ep === "logout" && req.method === "POST") {
+      const u = bearerUser(req), m = bearerMeta(req), scope = url.searchParams.get("scope") || "local";
+      if (u && m) for (const [tok, id] of [...sessions]) {
+        if (id !== u.id) continue;
+        const sid = sessMeta.get(tok)?.sid;
+        if (scope === "global" || (scope === "others" ? sid !== m.sid : sid === m.sid)) { sessions.delete(tok); sessMeta.delete(tok); }
+      }
+      return void res.writeHead(204).end();
+    }
     if (ep === "user" && req.method === "GET") {
       const u = bearerUser(req);
       if (!u) return void res.writeHead(401).end('{"msg":"no"}');
@@ -202,10 +299,15 @@ createServer(async (req, res) => {
       if (u) mailLink(u, "recovery", url.searchParams.get("redirect_to") || `http://localhost:${PORT}/`);
       return void res.writeHead(200).end("{}");
     }
-    // sign-in link (magic link); create_user:false refuses an unknown email
+    // sign-in link (magic link); create_user:false refuses an unknown email, create_user:true
+    // (the People page's invite) creates the account first, with no password anyone knows
     if (ep === "otp" && req.method === "POST") {
       if (body.email && tooMany(body.email)) return void res.writeHead(429).end('{"error_code":"over_email_send_rate_limit","msg":"email rate limit exceeded"}');
-      const u = authUsers.get(body.email);
+      let u = authUsers.get(body.email);
+      if (!u && body.create_user === true && body.email) {
+        u = { id: "u" + ++seq, email: body.email, password: null, created_at: new Date().toISOString() };
+        authUsers.set(u.email, u);
+      }
       if (!u) return void res.writeHead(422).end('{"error_code":"otp_disabled","msg":"Signups not allowed for otp"}');
       mailLink(u, "magiclink", url.searchParams.get("redirect_to") || `http://localhost:${PORT}/`);
       return void res.writeHead(200).end("{}");
@@ -217,7 +319,7 @@ createServer(async (req, res) => {
       if (!l) return void res.writeHead(303, { Location: to + "#error=access_denied&error_code=otp_expired&error_description=Email+link+is+invalid+or+has+expired" }).end();
       links.delete(url.searchParams.get("token"));
       const u = [...authUsers.values()].find(x => x.id === l.uid);
-      const sess = authSession(u);
+      const sess = authSession(u, l.type);
       return void res.writeHead(303, { Location: `${to}#access_token=${sess.access_token}&refresh_token=${sess.refresh_token}&expires_in=3600&token_type=bearer&type=${l.type}` }).end();
     }
     return void res.writeHead(404).end('{"msg":"unknown auth endpoint"}');
@@ -253,11 +355,19 @@ createServer(async (req, res) => {
   }
 
   if (url.pathname.startsWith("/rest/v1/rpc/")) {
-    const fn = RPC[url.pathname.slice("/rest/v1/rpc/".length)];
+    const name = url.pathname.slice("/rest/v1/rpc/".length);
+    const fn = RPC[name] || (!NO007 && PEOPLE[name]);
     if (LEGACY || !fn || req.method !== "POST")
       return void res.writeHead(404, { "Content-Type": "application/json" }).end('{"code":"PGRST202"}');
-    res.writeHead(200, { "Content-Type": "application/json" });
-    return void res.end(JSON.stringify(fn(await readJson(req))));
+    try {
+      const out = fn(await readJson(req), req);
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return void res.end(JSON.stringify(out));
+    } catch (e) {
+      if (!(e instanceof Refused)) throw e;
+      return void res.writeHead(e.status, { "Content-Type": "application/json" })
+        .end(JSON.stringify({ code: e.code, message: e.message, details: null, hint: null }));
+    }
   }
 
   if (url.pathname === "/rest/v1/dm_admins") {
@@ -303,8 +413,18 @@ createServer(async (req, res) => {
   if (url.pathname === "/__admin") {
     const u = authUsers.get(url.searchParams.get("email") || "");
     if (!u) return void res.writeHead(404).end("no such user: sign up first");
-    admins.add(u.id);
+    const role = url.searchParams.get("role") === "admin" ? "admin" : "moderator";
+    admins.set(u.id, { role, added_at: new Date().toISOString(), added_by: null });
     return void res.writeHead(200).end("ok");
+  }
+  if (url.pathname === "/__users") {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    return void res.end(JSON.stringify([...authUsers.values()].map(u => ({ id: u.id, email: u.email,
+      role: admins.get(u.id)?.role || null, hasPassword: !!u.password, sessions: [...liveSids(u.id)].length })), null, 1));
+  }
+  if (url.pathname === "/__invites") {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    return void res.end(JSON.stringify([...invites].map(([email, i]) => ({ email, ...i })), null, 1));
   }
   if (url.pathname === "/__mail") {
     res.writeHead(200, { "Content-Type": "application/json" });
