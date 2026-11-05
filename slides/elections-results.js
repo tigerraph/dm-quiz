@@ -29,7 +29,11 @@ window.DM_RESULTS = {
     asOf: null,        // date of the electoral commission's final report, e.g. "05.11.2026"
     student: { pct: null, seats: null },   // final figures of the Republic Electoral Commission (RIK), e.g. "53,0 %", 141
     united:  { pct: null, seats: null },
-    turnout: null      // e.g. "69,0 %". Serbia shows as final only when both lists and the turnout are all filled in
+    turnout: null,     // e.g. "69,0 %". Serbia shows as final only when both lists and the turnout are all filled in
+    // Between preliminary and final: RIK's count from all 8,392 polling stations after the 1 Nov repeat vote. NOT the final
+    // report; shown as «all polling stations counted · final report pending» until the final fields above are filled.
+    // Lists: N1/RTS 02.11.2026 14:25 + Tanjug 01.11.2026 23:46 + Kurir 02.11.2026 07:21. Turnout 68,89 % (4'444'310): Tanjug + Kurir.
+    counted: { asOf: "02.11.2026", student: "53,01 %", united: "38,98 %", turnout: "68,89 %" }
   }
 };
 
@@ -38,19 +42,19 @@ window.DM_RESULTS = {
   var W = {
     de:{tagPre:'VORLÄUFIG', tagFinal:'ENDRESULTAT', tagNone:'NOCH KEIN RESULTAT', tagInterim:'NICHT AMTLICH', slot:'⏳ Resultat folgt', none:'Wird eingetragen, sobald es vorliegt.', house:'Repräsentantenhaus', senate:'Senat', gov:'Gouverneure',
         d:'Demokraten', r:'Republikaner', other:'andere', open:'noch offen', maj:'Mehrheit', undecided:'noch nicht entschieden', asOf:'Stand', turnout:'Beteiligung', noTurnout:'folgt',
-        rsTitle:'Endresultat der Wahlkommission', rsNone:'Die Wiederholung vom 1. November hat stattgefunden, der Schlussbericht der Kommission steht noch aus.', student:'Studentenliste', united:'Vereintes Serbien', seats:'Sitze',
+        rsCounted:'Alle Wahllokale ausgezählt · Schlussbericht ausstehend:', rsTitle:'Endresultat der Wahlkommission', rsNone:'Die Wiederholung vom 1. November hat stattgefunden, der Schlussbericht der Kommission steht noch aus.', student:'Studentenliste', united:'Vereintes Serbien', seats:'Sitze',
         rsLine:'Vorläufig: Studentenliste rund 53 %, Vereintes Serbien (SNS) rund 39 %, Beteiligung rund 69 %.', rsLineFinal:'Das Endresultat steht unten.', rsCell:'rund 69 %', rsCellNote:'vorläufig', rsCellFinal:'Endresultat'},
     en:{tagPre:'PRELIMINARY', tagFinal:'FINAL RESULT', tagNone:'NO RESULT YET', tagInterim:'NOT OFFICIAL', slot:'⏳ Result to follow', none:'To be entered once it exists.', house:'House', senate:'Senate', gov:'Governors',
         d:'Democrats', r:'Republicans', other:'others', open:'still open', maj:'Majority', undecided:'not decided yet', asOf:'As of', turnout:'Turnout', noTurnout:'to follow',
-        rsTitle:'Final result of the electoral commission', rsNone:'The repeat vote on 1 November has taken place; the commission’s final report is still pending.', student:'Student List', united:'United Serbia', seats:'seats',
+        rsCounted:'All polling stations counted · final report pending:', rsTitle:'Final result of the electoral commission', rsNone:'The repeat vote on 1 November has taken place; the commission’s final report is still pending.', student:'Student List', united:'United Serbia', seats:'seats',
         rsLine:'Preliminary: Student List about 53%, United Serbia (SNS) about 39%, turnout about 69%.', rsLineFinal:'The final result is below.', rsCell:'about 69%', rsCellNote:'preliminary', rsCellFinal:'final result'},
     fr:{tagPre:'PROVISOIRE', tagFinal:'RÉSULTAT FINAL', tagNone:'PAS ENCORE DE RÉSULTAT', tagInterim:'NON OFFICIEL', slot:'⏳ Résultat à venir', none:'À inscrire dès qu’il existe.', house:'Chambre', senate:'Sénat', gov:'Gouverneurs',
         d:'Démocrates', r:'Républicains', other:'autres', open:'encore ouverts', maj:'Majorité', undecided:'pas encore décidée', asOf:'État au', turnout:'Participation', noTurnout:'à venir',
-        rsTitle:'Résultat final de la commission électorale', rsNone:'Le nouveau vote du 1er novembre a eu lieu ; le rapport final de la commission est encore attendu.', student:'Liste étudiante', united:'Serbie unie', seats:'sièges',
+        rsCounted:'Tous les bureaux dépouillés · rapport final en attente :', rsTitle:'Résultat final de la commission électorale', rsNone:'Le nouveau vote du 1er novembre a eu lieu ; le rapport final de la commission est encore attendu.', student:'Liste étudiante', united:'Serbie unie', seats:'sièges',
         rsLine:'Provisoire : Liste étudiante env. 53 %, Serbie unie (SNS) env. 39 %, participation env. 69 %.', rsLineFinal:'Le résultat final figure ci-dessous.', rsCell:'env. 69 %', rsCellNote:'provisoire', rsCellFinal:'résultat final'},
     it:{tagPre:'PROVVISORIO', tagFinal:'RISULTATO FINALE', tagNone:'ANCORA NESSUN RISULTATO', tagInterim:'NON UFFICIALE', slot:'⏳ Risultato in arrivo', none:'Da inserire appena esiste.', house:'Camera', senate:'Senato', gov:'Governatori',
         d:'Democratici', r:'Repubblicani', other:'altri', open:'ancora aperti', maj:'Maggioranza', undecided:'non ancora decisa', asOf:'Stato al', turnout:'Affluenza', noTurnout:'in arrivo',
-        rsTitle:'Risultato finale della commissione elettorale', rsNone:'La ripetizione del voto del 1° novembre si è svolta; il rapporto finale della commissione è ancora atteso.', student:'Lista studentesca', united:'Serbia unita', seats:'seggi',
+        rsCounted:'Tutti i seggi scrutinati · rapporto finale in attesa:', rsTitle:'Risultato finale della commissione elettorale', rsNone:'La ripetizione del voto del 1° novembre si è svolta; il rapporto finale della commissione è ancora atteso.', student:'Lista studentesca', united:'Serbia unita', seats:'seggi',
         rsLine:'Provvisorio: Lista studentesca circa 53 %, Serbia unita (SNS) circa 39 %, affluenza circa 69 %.', rsLineFinal:'Il risultato finale è qui sotto.', rsCell:'circa 69 %', rsCellNote:'provvisorio', rsCellFinal:'risultato finale'}
   };
   var esc = function(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };
@@ -67,6 +71,7 @@ window.DM_RESULTS = {
   window.DM_renderResults = function(lang){
     var w = W[lang] || W.de, R = window.DM_RESULTS, u = R.us, s = R.rs;
     var rsFinal = has(s.student.pct) && has(s.student.seats) && has(s.united.pct) && has(s.united.seats) && has(s.turnout);   // all or nothing
+    var c = s.counted || {}, rsCounted = !rsFinal && has(c.student) && has(c.united);   // counted, not final
     var called = has(u.house.d) || has(u.senate.d) || has(u.governors.d);
     var parts = [];
     if (u.asOf) parts.push(esc(w.asOf) + ' ' + esc(u.asOf));
@@ -89,6 +94,9 @@ window.DM_RESULTS = {
         ? { on:true, html:'<b>' + esc(w.rsTitle) + ':</b> ' + esc(w.student) + ' ' + esc(s.student.pct) + ' · ' + esc(s.student.seats) + ' ' + esc(w.seats) +
             ' · ' + esc(w.united) + ' ' + esc(s.united.pct) + ' · ' + esc(s.united.seats) + ' ' + esc(w.seats) +
             ' · ' + esc(w.turnout) + ' ' + esc(s.turnout) + (s.asOf ? ' · ' + esc(w.asOf) + ' ' + esc(s.asOf) : '') }
+        : rsCounted
+        ? { on:false, html:'<b>' + esc(w.rsCounted) + '</b> ' + esc(w.student) + ' ' + esc(c.student) + ' · ' + esc(w.united) + ' ' + esc(c.united) +
+            (has(c.turnout) ? ' · ' + esc(w.turnout) + ' ' + esc(c.turnout) : '') + (c.asOf ? ' · ' + esc(w.asOf) + ' ' + esc(c.asOf) : '') }
         : { on:false, html:'<b>' + esc(w.slot) + ' · ' + esc(w.rsTitle) + '</b> ' + esc(w.rsNone) }
     };
     document.querySelectorAll('[data-slot]').forEach(function(el){
