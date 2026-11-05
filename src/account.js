@@ -28,7 +28,10 @@ const ACC_T = {
   emailInvalid:"Please enter a valid email address.", linkExpired:"This link has expired or was already used. Ask for a new one.", expiredTitle:"Link expired", doneTitle:"All set",
   resetTitle:"Set a new password", resetSub:e=>`Choose a new password for ${e}.`, savePw:"Save new password",
   resetDone:"Password saved. You are logged in.", toMyDM:"Go to My DM", resetNoLink:"Open the link from the email again, or ask for a new one.",
-  confirmFirst:"Please confirm your email first: the link is in your inbox.", busy:"One moment …" },
+  confirmFirst:"Please confirm your email first: the link is in your inbox.", busy:"One moment …",
+  inviteTitle:"Welcome to Democracy Matters", inviteSub:e=>`You are invited to moderate DM sessions. Choose a password for ${e}.`, inviteSave:"Save password",
+  inviteDone:"Password saved. You are a moderator now: every session page shows you the Moderator kit.",
+  inviteNotYet:"Password saved, you are logged in. Your moderator access is not switched on yet: ask the person who invited you." },
  de:{ show:"Zeigen", hide:"Verbergen", stay:"Auf diesem Gerät angemeldet bleiben", forgot:"Passwort vergessen?", or:"oder",
   magic:"Anmelde-Link per E-Mail schicken", newHere:"Neu hier?", haveAcct:"Schon einen Account?", pwHint:"Mindestens 6 Zeichen.",
   forgotTitle:"Passwort zurücksetzen", forgotSub:"Gib deine E-Mail ein. Wir schicken dir einen Link, mit dem du ein neues Passwort setzt.",
@@ -40,7 +43,10 @@ const ACC_T = {
   emailInvalid:"Bitte gib eine gültige E-Mail-Adresse ein.", linkExpired:"Dieser Link ist abgelaufen oder wurde schon benutzt. Fordere einen neuen an.", expiredTitle:"Link abgelaufen", doneTitle:"Fertig",
   resetTitle:"Neues Passwort setzen", resetSub:e=>`Wähle ein neues Passwort für ${e}.`, savePw:"Neues Passwort speichern",
   resetDone:"Passwort gespeichert. Du bist angemeldet.", toMyDM:"Zu My DM", resetNoLink:"Öffne den Link aus der E-Mail nochmals oder fordere einen neuen an.",
-  confirmFirst:"Bestätige zuerst deine E-Mail: Der Link ist in deinem Postfach.", busy:"Einen Moment …" },
+  confirmFirst:"Bestätige zuerst deine E-Mail: Der Link ist in deinem Postfach.", busy:"Einen Moment …",
+  inviteTitle:"Willkommen bei Democracy Matters", inviteSub:e=>`Du bist eingeladen, DM-Sessions zu moderieren. Wähle ein Passwort für ${e}.`, inviteSave:"Passwort speichern",
+  inviteDone:"Passwort gespeichert. Du moderierst jetzt: Auf jeder Session-Seite siehst du das Moderator-Kit.",
+  inviteNotYet:"Passwort gespeichert, du bist angemeldet. Dein Moderations-Zugang ist noch nicht eingeschaltet: Frag die Person, die dich eingeladen hat." },
  fr:{ show:"Afficher", hide:"Masquer", stay:"Garder la session ouverte sur cet appareil", forgot:"Mot de passe oublié ?", or:"ou",
   magic:"Recevoir un lien de connexion par e-mail", newHere:"Nouveau ici ?", haveAcct:"Déjà un compte ?", pwHint:"Au moins 6 caractères.",
   forgotTitle:"Réinitialiser le mot de passe", forgotSub:"Indique ton e-mail. Nous t’envoyons un lien pour choisir un nouveau mot de passe.",
@@ -52,7 +58,10 @@ const ACC_T = {
   emailInvalid:"Indique une adresse e-mail valide.", linkExpired:"Ce lien a expiré ou a déjà été utilisé. Demandes-en un nouveau.", expiredTitle:"Lien expiré", doneTitle:"C’est fait",
   resetTitle:"Choisir un nouveau mot de passe", resetSub:e=>`Choisis un nouveau mot de passe pour ${e}.`, savePw:"Enregistrer le mot de passe",
   resetDone:"Mot de passe enregistré. Ta session est ouverte.", toMyDM:"Aller à My DM", resetNoLink:"Ouvre à nouveau le lien de l’e-mail, ou demandes-en un nouveau.",
-  confirmFirst:"Confirme d’abord ton e-mail : le lien est dans ta boîte mail.", busy:"Un instant …" },
+  confirmFirst:"Confirme d’abord ton e-mail : le lien est dans ta boîte mail.", busy:"Un instant …",
+  inviteTitle:"Bienvenue chez Democracy Matters", inviteSub:e=>`Tu es invité·e à animer des sessions DM. Choisis un mot de passe pour ${e}.`, inviteSave:"Enregistrer le mot de passe",
+  inviteDone:"Mot de passe enregistré. Tu fais maintenant partie de la modération : chaque page de session te montre le kit de modération.",
+  inviteNotYet:"Mot de passe enregistré, ta session est ouverte. Ton accès de modération n’est pas encore activé : demande à la personne qui t’a invité·e." },
  it:{ show:"Mostra", hide:"Nascondi", stay:"Resta connesso su questo dispositivo", forgot:"Password dimenticata?", or:"oppure",
   magic:"Inviami un link di accesso via e-mail", newHere:"Nuovo qui?", haveAcct:"Hai già un account?", pwHint:"Almeno 6 caratteri.",
   forgotTitle:"Reimposta la password", forgotSub:"Inserisci la tua e-mail. Ti inviamo un link per scegliere una nuova password.",
@@ -64,7 +73,10 @@ const ACC_T = {
   emailInvalid:"Inserisci un indirizzo e-mail valido.", linkExpired:"Questo link è scaduto o è già stato usato. Richiedine uno nuovo.", expiredTitle:"Link scaduto", doneTitle:"Fatto",
   resetTitle:"Imposta una nuova password", resetSub:e=>`Scegli una nuova password per ${e}.`, savePw:"Salva la nuova password",
   resetDone:"Password salvata. Hai effettuato l’accesso.", toMyDM:"Vai a My DM", resetNoLink:"Apri di nuovo il link dell’e-mail o richiedine uno nuovo.",
-  confirmFirst:"Conferma prima la tua e-mail: il link è nella tua casella.", busy:"Un momento …" }
+  confirmFirst:"Conferma prima la tua e-mail: il link è nella tua casella.", busy:"Un momento …",
+  inviteTitle:"Benvenuto in Democracy Matters", inviteSub:e=>`Sei invitato a moderare le sessioni DM. Scegli una password per ${e}.`, inviteSave:"Salva la password",
+  inviteDone:"Password salvata. Ora fai parte della moderazione: ogni pagina di sessione ti mostra il kit di moderazione.",
+  inviteNotYet:"Password salvata, hai effettuato l’accesso. Il tuo accesso alla moderazione non è ancora attivo: chiedi a chi ti ha invitato." }
 };
 function at_(){ return ACC_T[lang] || ACC_T.en; }
 
@@ -298,31 +310,46 @@ function bindAcct(){
   };
 }
 
-/* ---------- ?view=reset: the link from the reset mail lands here ---------- */
+/* ---------- ?view=reset: the link from the reset mail lands here ----------
+   &invite=1: the link from a People-page invite (src/people.js). The person chooses a
+   password, every other device signed in to the account is signed out, and only then
+   is the invite claimed (dm_claim_invite in docs/supabase-migration-007-people.sql
+   checks all of that again on the server). */
 let resetDone = false;
+let inviteResult = "";    // what dm_claim_invite answered: "moderator" or why not
+const INVITE = params.get("invite") === "1";
+async function claimInvite(){
+  try{ await authReq("logout?scope=others", {}, AUTH.at); }catch(e){}
+  const r = await asUser("rpc/dm_claim_invite", { method:"POST",
+    headers:{ "Content-Type":"application/json" }, body:"{}" });
+  let j = null;
+  try{ j = r && r.ok ? await r.json() : null; }catch(e){}
+  adminState = null;
+  return typeof j === "string" ? j : "failed";
+}
 async function renderReset(){
   phase = "reset"; document.body.classList.add("site"); acctRender = renderReset;
   await resolveRole();
   if(phase !== "reset") return;
   const A = at_();
   let body;
-  if(resetDone) body = `<p class="sub">${esc(A.resetDone)}</p><a class="btn" href="./">${esc(A.toMyDM)}</a>`;
+  if(resetDone) body = `<p class="sub">${esc(!INVITE ? A.resetDone : inviteResult === "moderator" ? A.inviteDone : A.inviteNotYet)}</p><a class="btn" href="./">${esc(A.toMyDM)}</a>`;
   else if(!AUTH) body = `<div class="acct">
       ${acctMsg && acctMsg.err ? msgHtml() : `<p class="sub">${esc(A.resetNoLink)}</p>`}
       <a class="btn small wide" href="?view=login&amp;mode=forgot">${esc(A.forgotTitle)}</a></div>`;
   else body = `<form class="acct" id="rform" novalidate>
-      <p class="rules">${esc(A.resetSub(AUTH.email || ""))}</p>
+      <p class="rules">${esc(INVITE ? A.inviteSub(AUTH.email || "") : A.resetSub(AUTH.email || ""))}</p>
       <input type="email" name="email" autocomplete="username" value="${esc(AUTH.email||"")}" hidden>
       <label for="anewpw">${esc(t().newPw)}</label>
       ${pwField("anewpw", "new-password", t().newPw)}
       <p class="hint">${esc(A.pwHint)}</p>
-      <button type="submit" class="btn small wide">${esc(A.savePw)}</button>
+      <button type="submit" class="btn small wide">${esc(INVITE ? A.inviteSave : A.savePw)}</button>
       ${msgHtml()}
     </form>`;
   app.innerHTML = `${siteBar()}
     <div class="screen" style="padding-top:10px">
       ${wordmarkHtml("", t().curriculum)}
-      <h1>${esc(resetDone ? A.doneTitle : !AUTH ? A.expiredTitle : A.resetTitle)}</h1>
+      <h1>${esc(resetDone ? A.doneTitle : !AUTH ? A.expiredTitle : INVITE ? A.inviteTitle : A.resetTitle)}</h1>
       ${body}
     </div>`;
   bindSiteBar(); bindAcct();
@@ -334,7 +361,10 @@ async function renderReset(){
     setBusy(true);
     const r = await authReq("user", { password:p }, AUTH.at);
     setBusy(false);
-    if(r && r.ok){ resetDone = true; acctMsg = null; return renderReset(); }
+    if(r && r.ok){
+      if(INVITE) inviteResult = await claimInvite();
+      resetDone = true; acctMsg = null; return renderReset();
+    }
     setAcctMsg(r && r.status === 401 ? A.linkExpired : authError(r, "pw"), true);
   };
 }

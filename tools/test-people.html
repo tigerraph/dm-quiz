@@ -1,0 +1,73 @@
+<!doctype html>
+<!--
+  Harness for tools/test-people.mjs: opens the app in an iframe on the same origin
+  (the mock server) and taps through it, so a headless Chrome with --dump-dom can
+  drive the People page. Query:
+    u      app URL (or a mail link: it redirects back to the app)
+    auth   JSON for localStorage «dmq_auth» (a login), or empty for a guest
+    w, h   iframe size (default 1440 × 900)
+    steps  JSON list, run in order:
+             {"wait": selector}             until it exists (8 s max)
+             {"click": selector}            click it
+             {"fill": [selector, value]}    type into a field
+             {"submit": selector}           submit a form
+             {"confirm": true|false}        what the next confirm() answers
+             {"sleep": ms}
+             {"snap": name}                 record what the page shows (see peek)
+  The result is written to <pre id="out"> as JSON: {name: snapshot, …, error?}.
+-->
+<meta charset="utf-8">
+<iframe id="f" style="border:0"></iframe>
+<pre id="out"></pre>
+<script>
+const q = new URLSearchParams(location.search);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const f = document.getElementById("f");
+f.style.width = (q.get("w") || 1440) + "px"; f.style.height = (q.get("h") || 900) + "px";
+const out = { confirms: [] };
+let answer = true;
+const $ = s => f.contentDocument.querySelector(s);
+const txt = s => { const e = $(s); return e ? e.textContent.replace(/\s+/g, " ").trim() : null; };
+const peek = () => {
+  const w = f.contentWindow, d = f.contentDocument;
+  let phase = "?"; try { phase = w.eval("phase"); } catch (e) {}
+  const sw = $("#ppmod"), sheet = $(".pp-sheet"), bg = $("#ppsheet");
+  // the laid-out box (offsets), not the animated one: the sheet slides up 24 px on opening
+  const r = sheet ? { top: sheet.offsetTop, left: sheet.offsetLeft, bottom: sheet.offsetTop + sheet.offsetHeight,
+                      right: sheet.offsetLeft + sheet.offsetWidth } : null;
+  return {
+    phase, url: w.location.href, h1: txt("h1"), kit: txt("#ppkit"), screen: txt(".screen"), toast: txt("#pptoast"),
+    who: txt(".sbar .who"), body: d.body.innerText.replace(/\s+/g, " ").trim().slice(0, 1500),
+    rows: [...d.querySelectorAll(".pp-row")].map(b => ({ key: b.dataset.pp, name: txt(`[data-pp="${CSS.escape(b.dataset.pp)}"] .pp-n`),
+      email: txt(`[data-pp="${CSS.escape(b.dataset.pp)}"] .pp-e`), tags: [...b.querySelectorAll(".pp-tag")].map(t => t.textContent) })),
+    sheetOpen: !!(bg && !bg.hidden && sheet), sheetName: txt("#ppname"),
+    sw: sw ? { checked: sw.getAttribute("aria-checked"), disabled: sw.disabled } : null,
+    sheetBox: r ? { top: Math.round(r.top), bottom: Math.round(r.bottom), left: Math.round(r.left), right: Math.round(r.right) } : null,
+    vw: w.innerWidth, vh: w.innerHeight, scrollW: d.documentElement.scrollWidth,
+    emailsInPage: (d.body.innerText.match(/[\w.+-]+@[\w-]+\.[\w.]+/g) || []),
+  };
+};
+const waitFor = async (pred, ms) => { for (let t = 0; t < ms; t += 100) { try { if (pred()) return true; } catch (e) {} await sleep(100); } return false; };
+(async () => {
+  try {
+    localStorage.clear();
+    sessionStorage.clear();
+    localStorage.setItem("dmq_sound", "false");          // README: audio off when testing
+    if (q.get("auth")) localStorage.setItem("dmq_auth", q.get("auth"));
+    f.src = q.get("u");
+    await waitFor(() => { const p = f.contentWindow.eval("phase"); return p && p !== "boot"; }, 8000);
+    await sleep(800);
+    for (const s of JSON.parse(q.get("steps") || "[]")) {
+      f.contentWindow.confirm = m => { out.confirms.push(m); return answer; };
+      if ("wait" in s && !(await waitFor(() => $(s.wait), 8000))) throw new Error("never appeared: " + s.wait);
+      if ("click" in s) { const e = $(s.click); if (!e) throw new Error("no " + s.click); e.click(); await sleep(900); }
+      if ("fill" in s) { const e = $(s.fill[0]); e.value = s.fill[1]; e.dispatchEvent(new Event("input", { bubbles: true })); }
+      if ("submit" in s) { $(s.submit).requestSubmit(); await sleep(1200); }
+      if ("confirm" in s) answer = s.confirm;
+      if ("sleep" in s) await sleep(s.sleep);
+      if ("snap" in s) out[s.snap] = peek();
+    }
+  } catch (e) { out.error = String(e); out.last = peek(); }
+  document.getElementById("out").textContent = JSON.stringify(out);
+})();
+</script>

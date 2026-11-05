@@ -557,6 +557,70 @@ body.site .acct .btn{min-height:44px; display:inline-flex; align-items:center; j
 .acct .sent{background:var(--cream); color:var(--ink); border-radius:12px; padding:14px 16px; font-weight:600; text-align:left; margin:0;}
 .acct .msg:empty{display:none;}
 
+/* ---------- People (?view=people): Rafa's pick A «Tap a person», 05.11.2026 (src/people.js) ---------- */
+.pp-card{margin-top:18px;}
+.pp-card .kit{min-height:320px;}
+.pp-note{margin:10px 0 14px; max-width:60ch;}
+.pp-invite{display:flex; gap:8px; margin:16px 0 6px; flex-wrap:wrap;}
+.pp-invite input,.pp-search{flex:1; min-width:0; border-radius:12px; border:1.5px solid rgba(255,255,255,.28);
+  background:rgba(0,0,0,.2); color:#fff; font:inherit; font-weight:600; padding:11px 14px; min-height:46px;}
+.pp-invite input::placeholder,.pp-search::placeholder{color:rgba(255,255,255,.55); font-weight:400;}
+.pp-invite input:focus-visible,.pp-search:focus-visible{outline:3px solid var(--teal); outline-offset:2px;}
+.pp-search{width:100%; margin:6px 0 10px; -webkit-appearance:none; appearance:none;}
+.pp-list{list-style:none; margin:10px 0 0; padding:0;}
+.pp-row{display:flex; align-items:center; gap:12px; width:100%; padding:12px 10px; min-height:62px; border:0;
+  border-top:1px solid rgba(255,255,255,.14); border-radius:8px; background:none; color:inherit; font:inherit;
+  text-align:left; cursor:pointer;}
+.pp-row:hover{background:rgba(255,255,255,.05);}
+.pp-row:focus-visible,.pp-sw:focus-visible{outline:3px solid var(--teal); outline-offset:2px;}
+.pp-av{width:38px; height:38px; border-radius:50%; display:grid; place-items:center; font-weight:800; font-size:.9rem;
+  background:var(--cream); color:var(--ink); flex:none;}
+.pp-who{flex:1; min-width:0; display:flex; flex-direction:column;}
+.pp-n{font-weight:800; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.pp-e{font-size:.84rem; color:rgba(255,255,255,.62); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.pp-tag{font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; border-radius:999px;
+  padding:4px 9px; white-space:nowrap; flex:none;}
+.pp-tag.mod{background:var(--green); color:var(--ink);}
+.pp-tag.adm{background:var(--blue); color:#fff;}
+.pp-tag.pend{border:1.5px dashed var(--teal); color:var(--teal);}
+.pp-chev{color:rgba(255,255,255,.62); flex:none;}
+.pp-none{padding:12px 10px; border-top:1px solid rgba(255,255,255,.14);}
+.pp-sw{position:relative; width:52px; height:30px; border-radius:999px; background:rgba(255,255,255,.2); border:0;
+  cursor:pointer; flex:none; padding:0;}
+.pp-sw::after{content:""; position:absolute; top:3px; left:3px; width:24px; height:24px; border-radius:50%; background:#fff;
+  transition:left .15s;}
+.pp-sw[aria-checked=true]{background:var(--green);}
+.pp-sw[aria-checked=true]::after{left:25px;}
+.pp-sw[disabled]{opacity:.45; cursor:not-allowed;}
+.pp-bg{position:fixed; inset:0; background:rgba(0,0,0,.5); display:flex; align-items:flex-end; justify-content:center; z-index:20;}
+.pp-bg[hidden]{display:none;}
+.pp-sheet{background:var(--dark-2); color:#fff; width:100%; max-width:520px; border-radius:18px 18px 0 0;
+  padding:22px 22px calc(26px + env(safe-area-inset-bottom)); border-top:4px solid var(--cream);
+  box-shadow:var(--paper-shadow); animation:pp-up .18s ease-out; max-height:92dvh; overflow-y:auto;}
+@keyframes pp-up{from{transform:translateY(24px); opacity:.4;} to{transform:none; opacity:1;}}
+.pp-top{display:flex; gap:12px; align-items:center; margin-bottom:16px;}
+.pp-right{display:flex; align-items:center; gap:12px; padding:14px 0; border-top:1px solid rgba(255,255,255,.14);}
+.pp-t{flex:1; min-width:0;}
+.pp-t small{display:block; color:rgba(255,255,255,.62); font-size:.84rem;}
+.pp-sheet .meta{font-size:.84rem; color:rgba(255,255,255,.62);}
+.pp-lock{margin:2px 0 0;}
+.pp-foot{display:flex; gap:10px; justify-content:space-between; align-items:center; margin-top:16px; flex-wrap:wrap;}
+.pp-foot .meta{font-size:.84rem; color:rgba(255,255,255,.62); flex:1 1 200px;}
+.pp-acts{display:flex; gap:8px; flex-wrap:wrap; margin-left:auto;}
+.pp-toast{position:fixed; left:50%; bottom:calc(24px + env(safe-area-inset-bottom)); transform:translateX(-50%);
+  background:var(--cream); color:var(--ink); font-weight:700; padding:12px 18px; border-radius:12px;
+  box-shadow:var(--paper-shadow); opacity:0; transition:opacity .2s; pointer-events:none; z-index:30;
+  width:max-content; max-width:calc(100% - 32px);}
+.pp-toast.on{opacity:1;}
+.pp-bg:not([hidden]) ~ .pp-toast{bottom:auto; top:calc(16px + env(safe-area-inset-top));}   /* the sheet is at the bottom */
+@media (max-width:700px){
+  .pp-invite input{flex-basis:100%;}
+  .pp-invite .btn{width:100%;}
+  .pp-tag{font-size:.62rem; padding:3px 7px; letter-spacing:.04em;}
+  .pp-row{gap:10px; padding:12px 4px;}
+}
+@media (prefers-reduced-motion:reduce){ .pp-sheet{animation:none;} .pp-sw::after{transition:none;} }
+
 </style>
 </head>
 <body>
@@ -2878,7 +2942,7 @@ var qrcode = function() {
    Engine carried over from the noeggi-kahoot wedding app: timer,
    speed scoring, streak bonus, i18n, synthesized offline audio.
    ================================================================== */
-const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","supabaseSchema":"dm","build":"build 05.11.2026 15:29"};
+const CFG = {"supabaseUrl":"https://bvglvdcndhqrvpnghrkp.supabase.co","supabaseAnonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z2x2ZGNuZGhxcnZwbmdocmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NzI1NTEsImV4cCI6MjEwMzI0ODU1MX0.KbfEhfxMpgpngP9iJQRqnmyF8hoiNo9vUJN3-c-k05Q","supabaseSchema":"dm","build":"build 05.11.2026 18:32"};
 const SUPA_URL = CFG.supabaseUrl || "";
 const SUPA_KEY = CFG.supabaseAnonKey || "";
 
@@ -3391,6 +3455,7 @@ async function boot(){
   if(VIEW === "session" && !HOST) return renderSessionPage(params.get("id") || "");
   if(VIEW === "login" && !HOST) return renderLogin();
   if(VIEW === "reset" && !HOST) return renderReset();
+  if(VIEW === "people" && !HOST) return renderPeople();   // the admin's People page (src/people.js)
 
   /* No session: the start page, My DM with the next session (concept B, Rafa 03.11.2026).
      It replaces the old «Pick a session» list. */
@@ -5101,7 +5166,10 @@ const ACC_T = {
   emailInvalid:"Please enter a valid email address.", linkExpired:"This link has expired or was already used. Ask for a new one.", expiredTitle:"Link expired", doneTitle:"All set",
   resetTitle:"Set a new password", resetSub:e=>`Choose a new password for ${e}.`, savePw:"Save new password",
   resetDone:"Password saved. You are logged in.", toMyDM:"Go to My DM", resetNoLink:"Open the link from the email again, or ask for a new one.",
-  confirmFirst:"Please confirm your email first: the link is in your inbox.", busy:"One moment …" },
+  confirmFirst:"Please confirm your email first: the link is in your inbox.", busy:"One moment …",
+  inviteTitle:"Welcome to Democracy Matters", inviteSub:e=>`You are invited to moderate DM sessions. Choose a password for ${e}.`, inviteSave:"Save password",
+  inviteDone:"Password saved. You are a moderator now: every session page shows you the Moderator kit.",
+  inviteNotYet:"Password saved, you are logged in. Your moderator access is not switched on yet: ask the person who invited you." },
  de:{ show:"Zeigen", hide:"Verbergen", stay:"Auf diesem Gerät angemeldet bleiben", forgot:"Passwort vergessen?", or:"oder",
   magic:"Anmelde-Link per E-Mail schicken", newHere:"Neu hier?", haveAcct:"Schon einen Account?", pwHint:"Mindestens 6 Zeichen.",
   forgotTitle:"Passwort zurücksetzen", forgotSub:"Gib deine E-Mail ein. Wir schicken dir einen Link, mit dem du ein neues Passwort setzt.",
@@ -5113,7 +5181,10 @@ const ACC_T = {
   emailInvalid:"Bitte gib eine gültige E-Mail-Adresse ein.", linkExpired:"Dieser Link ist abgelaufen oder wurde schon benutzt. Fordere einen neuen an.", expiredTitle:"Link abgelaufen", doneTitle:"Fertig",
   resetTitle:"Neues Passwort setzen", resetSub:e=>`Wähle ein neues Passwort für ${e}.`, savePw:"Neues Passwort speichern",
   resetDone:"Passwort gespeichert. Du bist angemeldet.", toMyDM:"Zu My DM", resetNoLink:"Öffne den Link aus der E-Mail nochmals oder fordere einen neuen an.",
-  confirmFirst:"Bestätige zuerst deine E-Mail: Der Link ist in deinem Postfach.", busy:"Einen Moment …" },
+  confirmFirst:"Bestätige zuerst deine E-Mail: Der Link ist in deinem Postfach.", busy:"Einen Moment …",
+  inviteTitle:"Willkommen bei Democracy Matters", inviteSub:e=>`Du bist eingeladen, DM-Sessions zu moderieren. Wähle ein Passwort für ${e}.`, inviteSave:"Passwort speichern",
+  inviteDone:"Passwort gespeichert. Du moderierst jetzt: Auf jeder Session-Seite siehst du das Moderator-Kit.",
+  inviteNotYet:"Passwort gespeichert, du bist angemeldet. Dein Moderations-Zugang ist noch nicht eingeschaltet: Frag die Person, die dich eingeladen hat." },
  fr:{ show:"Afficher", hide:"Masquer", stay:"Garder la session ouverte sur cet appareil", forgot:"Mot de passe oublié ?", or:"ou",
   magic:"Recevoir un lien de connexion par e-mail", newHere:"Nouveau ici ?", haveAcct:"Déjà un compte ?", pwHint:"Au moins 6 caractères.",
   forgotTitle:"Réinitialiser le mot de passe", forgotSub:"Indique ton e-mail. Nous t’envoyons un lien pour choisir un nouveau mot de passe.",
@@ -5125,7 +5196,10 @@ const ACC_T = {
   emailInvalid:"Indique une adresse e-mail valide.", linkExpired:"Ce lien a expiré ou a déjà été utilisé. Demandes-en un nouveau.", expiredTitle:"Lien expiré", doneTitle:"C’est fait",
   resetTitle:"Choisir un nouveau mot de passe", resetSub:e=>`Choisis un nouveau mot de passe pour ${e}.`, savePw:"Enregistrer le mot de passe",
   resetDone:"Mot de passe enregistré. Ta session est ouverte.", toMyDM:"Aller à My DM", resetNoLink:"Ouvre à nouveau le lien de l’e-mail, ou demandes-en un nouveau.",
-  confirmFirst:"Confirme d’abord ton e-mail : le lien est dans ta boîte mail.", busy:"Un instant …" },
+  confirmFirst:"Confirme d’abord ton e-mail : le lien est dans ta boîte mail.", busy:"Un instant …",
+  inviteTitle:"Bienvenue chez Democracy Matters", inviteSub:e=>`Tu es invité·e à animer des sessions DM. Choisis un mot de passe pour ${e}.`, inviteSave:"Enregistrer le mot de passe",
+  inviteDone:"Mot de passe enregistré. Tu fais maintenant partie de la modération : chaque page de session te montre le kit de modération.",
+  inviteNotYet:"Mot de passe enregistré, ta session est ouverte. Ton accès de modération n’est pas encore activé : demande à la personne qui t’a invité·e." },
  it:{ show:"Mostra", hide:"Nascondi", stay:"Resta connesso su questo dispositivo", forgot:"Password dimenticata?", or:"oppure",
   magic:"Inviami un link di accesso via e-mail", newHere:"Nuovo qui?", haveAcct:"Hai già un account?", pwHint:"Almeno 6 caratteri.",
   forgotTitle:"Reimposta la password", forgotSub:"Inserisci la tua e-mail. Ti inviamo un link per scegliere una nuova password.",
@@ -5137,7 +5211,10 @@ const ACC_T = {
   emailInvalid:"Inserisci un indirizzo e-mail valido.", linkExpired:"Questo link è scaduto o è già stato usato. Richiedine uno nuovo.", expiredTitle:"Link scaduto", doneTitle:"Fatto",
   resetTitle:"Imposta una nuova password", resetSub:e=>`Scegli una nuova password per ${e}.`, savePw:"Salva la nuova password",
   resetDone:"Password salvata. Hai effettuato l’accesso.", toMyDM:"Vai a My DM", resetNoLink:"Apri di nuovo il link dell’e-mail o richiedine uno nuovo.",
-  confirmFirst:"Conferma prima la tua e-mail: il link è nella tua casella.", busy:"Un momento …" }
+  confirmFirst:"Conferma prima la tua e-mail: il link è nella tua casella.", busy:"Un momento …",
+  inviteTitle:"Benvenuto in Democracy Matters", inviteSub:e=>`Sei invitato a moderare le sessioni DM. Scegli una password per ${e}.`, inviteSave:"Salva la password",
+  inviteDone:"Password salvata. Ora fai parte della moderazione: ogni pagina di sessione ti mostra il kit di moderazione.",
+  inviteNotYet:"Password salvata, hai effettuato l’accesso. Il tuo accesso alla moderazione non è ancora attivo: chiedi a chi ti ha invitato." }
 };
 function at_(){ return ACC_T[lang] || ACC_T.en; }
 
@@ -5371,31 +5448,46 @@ function bindAcct(){
   };
 }
 
-/* ---------- ?view=reset: the link from the reset mail lands here ---------- */
+/* ---------- ?view=reset: the link from the reset mail lands here ----------
+   &invite=1: the link from a People-page invite (src/people.js). The person chooses a
+   password, every other device signed in to the account is signed out, and only then
+   is the invite claimed (dm_claim_invite in docs/supabase-migration-007-people.sql
+   checks all of that again on the server). */
 let resetDone = false;
+let inviteResult = "";    // what dm_claim_invite answered: "moderator" or why not
+const INVITE = params.get("invite") === "1";
+async function claimInvite(){
+  try{ await authReq("logout?scope=others", {}, AUTH.at); }catch(e){}
+  const r = await asUser("rpc/dm_claim_invite", { method:"POST",
+    headers:{ "Content-Type":"application/json" }, body:"{}" });
+  let j = null;
+  try{ j = r && r.ok ? await r.json() : null; }catch(e){}
+  adminState = null;
+  return typeof j === "string" ? j : "failed";
+}
 async function renderReset(){
   phase = "reset"; document.body.classList.add("site"); acctRender = renderReset;
   await resolveRole();
   if(phase !== "reset") return;
   const A = at_();
   let body;
-  if(resetDone) body = `<p class="sub">${esc(A.resetDone)}</p><a class="btn" href="./">${esc(A.toMyDM)}</a>`;
+  if(resetDone) body = `<p class="sub">${esc(!INVITE ? A.resetDone : inviteResult === "moderator" ? A.inviteDone : A.inviteNotYet)}</p><a class="btn" href="./">${esc(A.toMyDM)}</a>`;
   else if(!AUTH) body = `<div class="acct">
       ${acctMsg && acctMsg.err ? msgHtml() : `<p class="sub">${esc(A.resetNoLink)}</p>`}
       <a class="btn small wide" href="?view=login&amp;mode=forgot">${esc(A.forgotTitle)}</a></div>`;
   else body = `<form class="acct" id="rform" novalidate>
-      <p class="rules">${esc(A.resetSub(AUTH.email || ""))}</p>
+      <p class="rules">${esc(INVITE ? A.inviteSub(AUTH.email || "") : A.resetSub(AUTH.email || ""))}</p>
       <input type="email" name="email" autocomplete="username" value="${esc(AUTH.email||"")}" hidden>
       <label for="anewpw">${esc(t().newPw)}</label>
       ${pwField("anewpw", "new-password", t().newPw)}
       <p class="hint">${esc(A.pwHint)}</p>
-      <button type="submit" class="btn small wide">${esc(A.savePw)}</button>
+      <button type="submit" class="btn small wide">${esc(INVITE ? A.inviteSave : A.savePw)}</button>
       ${msgHtml()}
     </form>`;
   app.innerHTML = `${siteBar()}
     <div class="screen" style="padding-top:10px">
       ${wordmarkHtml("", t().curriculum)}
-      <h1>${esc(resetDone ? A.doneTitle : !AUTH ? A.expiredTitle : A.resetTitle)}</h1>
+      <h1>${esc(resetDone ? A.doneTitle : !AUTH ? A.expiredTitle : INVITE ? A.inviteTitle : A.resetTitle)}</h1>
       ${body}
     </div>`;
   bindSiteBar(); bindAcct();
@@ -5407,7 +5499,10 @@ async function renderReset(){
     setBusy(true);
     const r = await authReq("user", { password:p }, AUTH.at);
     setBusy(false);
-    if(r && r.ok){ resetDone = true; acctMsg = null; return renderReset(); }
+    if(r && r.ok){
+      if(INVITE) inviteResult = await claimInvite();
+      resetDone = true; acctMsg = null; return renderReset();
+    }
     setAcctMsg(r && r.status === 401 ? A.linkExpired : authError(r, "pw"), true);
   };
 }
@@ -5422,6 +5517,7 @@ async function renderReset(){
      ?view=session&id=<id>   one session: bottom line, links for everyone, kit for moderators
      ?view=login&next=…      the My DM account form on its own page
      ?view=mydm              the star passport, unchanged (the QR on the slides lands there)
+     ?view=people            People: the admin makes and removes moderators (src/people.js)
 
    Injected by build.mjs into the app's script, so it shares the app's state:
    registry, lang, AUTH, adminStatus(), acctHtml()/bindAcct() (src/account.js), stars helpers.
@@ -5484,7 +5580,7 @@ const SITE_T = {
   notFound:"Questa sessione non è nell’elenco." }
 };
 function st(){ return SITE_T[lang] || SITE_T.en; }
-const SITE_PHASES = ["site-home","site-session","login","reset"];
+const SITE_PHASES = ["site-home","site-session","login","reset","people"];
 const LOCALES = { en:"en-GB", de:"de-CH", fr:"fr-CH", it:"it-CH" };
 /* QR codes and «copy link» must point at the public site, also from a local preview */
 const SITE_BASE = (location.protocol === "file:" || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname))
@@ -5749,7 +5845,8 @@ function kitHtml(id, info){
     a("?session=" + encodeURIComponent(id), "Quiz as player", "The link behind the QR on the slides") +
     aliasesOf(id).map(k=>a("?session=" + encodeURIComponent(k), "Rehearsal quiz", `Scratch run «${esc(k)}», keeps test names off the real session`)).join("");
   const after = a("content/" + encodeURIComponent(id) + ".html" + qsLang(kl), "Take-home page", "For participants: bottom line, material, replay") +
-    a("content/admin.html#people", "Stars &amp; people", "Who collected which star, all sessions");
+    a("content/admin.html#people", "Stars &amp; people", "Who collected which star, all sessions") +
+    a("?view=people", "People &amp; moderators", "Who moderates; only the admin switches it", "", true);
   return `<div class="kit">
     <h2>${esc(L(s.title) || id)} ${chip}</h2>
     <div class="meta">${[pillarLine(id), s.date ? ddmm(s.date) + s.date.slice(0, 4) : "no date set",
@@ -5831,6 +5928,265 @@ function siteRerender(){
   else if(phase === "site-session") renderSessionPage(siteId);
   else if(phase === "login") renderLogin();
   else if(phase === "reset") renderReset();
+  else if(phase === "people") renderPeople();
+}
+
+/* ==================================================================
+   People (?view=people) — Rafa's pick A «Tap a person», 05.11.2026, from
+   mocks/user-management/index.html. Replaces pasting SQL into dm_admins and
+   inviting from the Supabase dashboard.
+
+     list      every My DM account, the admin first, then moderators, open invites,
+               everyone else; search by name or email
+     tap       a sheet slides up: Moderator switch (on/off, asks before removing),
+               Player always on; the admin's own switch is locked
+     invite    by email: an existing account becomes moderator at once; a new
+               address gets a Supabase sign-in mail, opens it, chooses their own
+               password (?view=reset&invite=1 in src/account.js) and is moderator
+
+   Every rule is checked on the server (docs/supabase-migration-007-people.sql): the
+   page only calls the dm_* functions as the logged-in user, and they refuse anyone
+   but the admin. The page shows only what the server sent; when it refuses, is
+   missing (before 007) or does not answer, there is no list and nothing to switch.
+   Labels stay English, like the Moderator kit and the admin page (one admin).
+   Injected by build.mjs after site.js; shares the app's state (AUTH, asUser, siteBar).
+   ================================================================== */
+let ppRows = null;        // the last list the server sent, never edited locally
+let ppState = "";         // loading | ok | missing | refused | error
+let ppQuery = "";
+let ppOpen = null;        // key of the person whose sheet is open
+let ppBusy = false;
+const ppKey = r => r.user_id || "invite:" + r.email;
+
+async function ppCall(fn, args){
+  const r = await asUser("rpc/" + fn, { method:"POST",
+    headers:{ "Content-Type":"application/json" }, body: JSON.stringify(args || {}) });
+  if(!r) return { ok:false, status:0, j:null };
+  let j = null;
+  try{ j = await r.json(); }catch(e){}
+  return { ok:r.ok, status:r.status, j };
+}
+const ppRefused = r => r.status === 401 || r.status === 403 || (r.j && r.j.code === "42501");
+
+/* ---------- the people, from the server's rows ---------- */
+function ppPerson(r){
+  const local = String(r.email || "").split("@")[0];
+  return { key: ppKey(r), id: r.user_id, email: r.email || "", name: r.name || local || r.email,
+    admin: r.role === "admin", mod: !!r.role, pend: !r.role && !!r.invited_at, me: !!r.is_me,
+    account: !!r.user_id, since: r.moderator_since, created: r.account_since, seen: r.last_seen, invited: r.invited_at };
+}
+function ppPeople(){
+  const rank = p => p.admin ? 0 : p.mod ? 1 : p.pend ? 2 : 3;
+  return (ppRows || []).map(ppPerson)
+    .sort((a, b)=>rank(a) - rank(b) || a.name.localeCompare(b.name) || a.email.localeCompare(b.email));
+}
+const ppFind = key => ppPeople().find(p=>p.key === key) || null;
+const ppInitials = p => p.pend && !p.account ? "✉"
+  : (p.name.match(/[\p{L}\p{N}]+/gu) || ["?"]).slice(0, 2).map(w=>w[0]).join("").toUpperCase();
+const ppDay = iso => { const d = new Date(iso); return isNaN(d) ? "" : d.toLocaleDateString("en-GB", { day:"numeric", month:"short", year:"numeric" }); };
+function ppTags(p){
+  return (p.admin ? `<span class="pp-tag adm">Admin</span>` : "")
+    + (p.pend ? `<span class="pp-tag pend">Invite sent</span>` : p.mod && !p.admin ? `<span class="pp-tag mod">Moderator</span>` : "");
+}
+function ppSinceLine(p){
+  if(p.admin) return "Admin" + (p.since ? " since " + ppDay(p.since) : "") + " · only the admin changes moderators";
+  if(p.pend) return "Invite sent " + ppDay(p.invited) + ", not accepted yet";
+  if(p.mod) return "Moderator" + (p.since ? " since " + ppDay(p.since) : "");
+  return [p.created ? "Account since " + ppDay(p.created) : "", p.seen ? "last seen " + ppDay(p.seen) : ""].filter(Boolean).join(" · ");
+}
+
+/* ---------- page ---------- */
+async function renderPeople(){
+  phase = "people"; document.body.classList.add("site");
+  await resolveRole();
+  if(phase !== "people") return;
+  let body;
+  if(!AUTH) body = `<p class="sub">Log in with the admin account to manage who moderates.</p>
+      <a class="btn small" href="${esc(loginHref())}">${esc(t().login)}</a>`;
+  else if(siteRole !== "moderator") body = `<p class="sub">This page is only for the DM admin.</p>
+      <a class="lnk" href="./">‹ ${esc(st().backHome)}</a>`;
+  else body = `<section class="postkit pp-card" aria-label="People"><div class="lbl">People · My DM accounts</div>
+      <div class="kit" id="ppkit">${ppKitHtml()}</div></section>`;
+  app.innerHTML = `${siteBar()}
+    <div class="kicker">Democracy Matters · Admin</div>
+    <h1>People</h1>
+    ${body}
+    <div class="pp-bg" id="ppsheet" hidden></div>
+    <div class="pp-toast" id="pptoast" role="status" aria-live="polite"></div>`;
+  bindSiteBar();
+  if(AUTH && siteRole === "moderator"){ bindPeople(); if(!ppRows && ppState !== "loading") ppLoad(); }
+}
+
+function ppKitHtml(){
+  if(ppState === "missing") return `<h2>People</h2>
+    <p class="meta pp-note">Waiting for the database update (docs/supabase-migration-007-people.sql). Until it has run, nothing here can be seen or changed.</p>`;
+  if(ppState === "refused") return `<h2>People</h2>
+    <p class="meta pp-note">Only the admin can make or remove moderators. You are a moderator: the Moderator kit is on every session page.</p>`;
+  if(ppState === "error") return `<h2>People</h2>
+    <p class="meta pp-note">The list could not be loaded, so nothing can be changed right now.</p>
+    <button type="button" class="btn small ghost" id="ppretry">Try again</button>`;
+  if(ppState !== "ok") return `<h2>People</h2><p class="meta pp-note">Loading …</p>`;
+  return `<h2>Moderators and players</h2><div class="meta">Tap a person to see and change what they can do.</div>
+    <form class="pp-invite" id="ppinv" novalidate>
+      <input type="email" id="ppmail" autocomplete="off" autocapitalize="none" spellcheck="false" inputmode="email"
+        placeholder="Invite by email: name@example.org" aria-label="Email to invite" maxlength="254">
+      <button class="btn small" type="submit" id="ppinvbtn">Invite as moderator</button>
+    </form>
+    <input type="search" class="pp-search" id="ppq" placeholder="Search by name or email" aria-label="Search people" value="${esc(ppQuery)}">
+    <ul class="pp-list" id="pplist">${ppListHtml()}</ul>`;
+}
+function ppListHtml(){
+  const q = ppQuery.trim().toLowerCase();
+  const list = ppPeople().filter(p=>!q || (p.name + " " + p.email).toLowerCase().includes(q));
+  if(!list.length) return `<li class="meta pp-none">${q ? "Nobody matches." : "No My DM accounts yet."}</li>`;
+  return list.map(p=>`<li><button type="button" class="pp-row" data-pp="${esc(p.key)}">
+      <span class="pp-av" aria-hidden="true">${esc(ppInitials(p))}</span>
+      <span class="pp-who"><span class="pp-n">${esc(p.name)}${p.me ? " (you)" : ""}</span><span class="pp-e">${esc(p.email)}</span></span>
+      ${ppTags(p)}<span class="pp-chev" aria-hidden="true">›</span></button></li>`).join("");
+}
+
+async function ppLoad(){
+  ppState = ppRows ? ppState : "loading";
+  const r = await ppCall("dm_people");
+  if(r.ok && Array.isArray(r.j)){ ppRows = r.j; ppState = "ok"; }
+  else{
+    ppRows = null;
+    ppState = r.status === 404 ? "missing" : ppRefused(r) ? "refused" : "error";
+  }
+  if(phase !== "people") return;
+  const kit = document.getElementById("ppkit");
+  if(kit){
+    const typed = document.getElementById("ppmail"), keep = typed ? typed.value : "";
+    kit.innerHTML = ppKitHtml(); bindPeopleKit();
+    const again = document.getElementById("ppmail"); if(again) again.value = keep;   // a failed invite keeps the address
+  }
+  if(ppOpen) ppSheet(ppFind(ppOpen));
+}
+
+function bindPeople(){
+  bindPeopleKit();
+  const bg = document.getElementById("ppsheet");
+  bg.onclick = e=>{ if(e.target === bg) ppClose(); };
+  if(!bindPeople.esc){ bindPeople.esc = true; document.addEventListener("keydown", e=>{ if(e.key === "Escape" && ppOpen && phase === "people") ppClose(); }); }
+}
+function bindPeopleKit(){
+  const el = id => document.getElementById(id);
+  if(el("ppretry")) el("ppretry").onclick = ()=>{ ppState = "loading"; el("ppkit").innerHTML = ppKitHtml(); ppLoad(); };
+  if(el("ppq")) el("ppq").oninput = e=>{ ppQuery = e.target.value; el("pplist").innerHTML = ppListHtml(); bindRows(); };
+  if(el("ppinv")) el("ppinv").onsubmit = e=>{ e.preventDefault(); ppInvite(el("ppmail")); };
+  bindRows();
+}
+function bindRows(){
+  app.querySelectorAll("[data-pp]").forEach(b=>b.onclick = ()=>ppSheet(ppFind(b.dataset.pp), b));
+}
+
+/* ---------- the sheet ---------- */
+let ppReturn = null;    // the row to give focus back to
+function ppSheet(p, from){
+  const bg = document.getElementById("ppsheet");
+  if(!bg) return;
+  if(!p){ ppClose(); return; }
+  if(from) ppReturn = from;
+  const wasOpen = ppOpen === p.key && !bg.hidden;
+  ppOpen = p.key;
+  const locked = p.admin || p.me;
+  bg.innerHTML = `<div class="pp-sheet" role="dialog" aria-modal="true" aria-labelledby="ppname">
+    <div class="pp-top"><span class="pp-av" aria-hidden="true">${esc(ppInitials(p))}</span>
+      <span class="pp-who"><span class="pp-n" id="ppname">${esc(p.name)}</span><span class="pp-e">${esc(p.email)}</span></span>${ppTags(p)}</div>
+    <div class="pp-right"><span class="pp-t"><b>Moderator</b><small>Sees the Moderator kit, the run sheet and the slide links</small></span>
+      <button type="button" class="pp-sw" role="switch" id="ppmod" aria-checked="${p.mod || p.pend}" aria-label="Moderator"
+        ${locked || ppBusy ? "disabled" : ""} ${locked ? `title="${p.me ? "You can’t remove yourself" : "The admin can’t be switched off here"}"` : ""}></button></div>
+    <div class="pp-right"><span class="pp-t"><b>Player</b><small>${p.account ? "Plays quizzes and collects stars. Everyone with an account." : "Once they accept the invite: plays quizzes and collects stars."}</small></span>
+      <button type="button" class="pp-sw" role="switch" aria-checked="true" disabled aria-label="Player (always on)"></button></div>
+    ${locked ? `<p class="meta pp-lock">${p.me ? "This is you. Your own switch is locked, so you can’t lock yourself out." : "An admin can’t be switched off here."}</p>` : ""}
+    <div class="pp-foot"><span class="meta">${esc(ppSinceLine(p))}</span>
+      <span class="pp-acts">${p.pend ? `<button type="button" class="btn small ghost" id="ppresend" ${ppBusy ? "disabled" : ""}>Send the invite again</button>` : ""}
+      <button type="button" class="btn small" id="ppdone">Done</button></span></div>
+  </div>`;
+  bg.hidden = false;
+  document.getElementById("ppdone").onclick = ppClose;
+  const sw = document.getElementById("ppmod");
+  sw.onclick = ()=>ppToggle(p);
+  const rs = document.getElementById("ppresend");
+  if(rs) rs.onclick = ()=>ppResend(p);
+  if(!wasOpen) (locked ? document.getElementById("ppdone") : sw).focus();
+}
+function ppClose(){
+  const bg = document.getElementById("ppsheet");
+  if(bg){ bg.hidden = true; bg.innerHTML = ""; }
+  ppOpen = null;
+  if(ppReturn && document.body.contains(ppReturn)) ppReturn.focus();
+  else if(ppReturn){ const b = app.querySelector(`[data-pp="${CSS.escape(ppReturn.dataset.pp)}"]`); if(b) b.focus(); }
+  ppReturn = null;
+}
+function ppToast(text){
+  const el = document.getElementById("pptoast");
+  if(!el) return;
+  el.textContent = text; el.classList.add("on");
+  clearTimeout(el._t); el._t = setTimeout(()=>el.classList.remove("on"), 4200);
+}
+function ppFail(r, what){
+  if(r.status === 404) return "The database update has not run yet (migration 007): nothing was changed.";
+  if(ppRefused(r)) return "Only the admin can " + what + ". Nothing was changed.";
+  if(!r.status) return "No connection. Nothing was changed.";
+  return "That did not work: " + ((r.j && r.j.message) || "error " + r.status) + ". Nothing was changed.";
+}
+async function ppBusyRun(fn){
+  if(ppBusy) return;
+  ppBusy = true;
+  const sw = document.getElementById("ppmod"); if(sw) sw.disabled = true;
+  try{ await fn(); } finally { ppBusy = false; await ppLoad(); }
+}
+
+/* switch: on asks nothing, off asks once; an open invite switched off is cancelled */
+function ppToggle(p){
+  if(p.admin || p.me || ppBusy) return;
+  const on = !(p.mod || p.pend);
+  if(!on){
+    const q = p.pend ? `Cancel the invite to ${p.email}? They will not become a moderator.`
+                     : `${p.name} will no longer see the Moderator kit. Remove?`;
+    if(!confirm(q)){ ppSheet(p); return; }
+  }
+  ppBusyRun(async ()=>{
+    const r = p.pend && !p.account ? await ppCall("dm_cancel_invite", { p_email:p.email })
+                                   : await ppCall("dm_set_moderator", { p_user:p.id, p_on:on });
+    if(!r.ok) return ppToast(ppFail(r, "change moderators"));
+    ppToast(p.pend ? `Invite to ${p.email} cancelled.` : on ? `${p.name} is now a moderator.` : `${p.name} is no longer a moderator.`);
+  });
+}
+
+/* the mail: Supabase's own sign-in mail, which also creates the account; the link brings
+   the person to ?view=reset&invite=1 to choose a password (src/account.js) */
+async function ppSendMail(email){
+  const r = await authReq("otp?redirect_to=" + encodeURIComponent(AUTH_BASE + "?view=reset&invite=1"),
+                          { email, create_user:true });
+  if(r && r.ok) return "";
+  if(r && (r.status === 429 || /rate_limit/.test((r.j && (r.j.error_code || r.j.code)) || "")))
+    return "Supabase is sending too many mails right now. Open the person in a few minutes and press «Send the invite again».";
+  return "The mail could not be sent" + (r ? " (error " + r.status + ")" : ": no connection") + ". Open the person and press «Send the invite again».";
+}
+function ppInvite(input){
+  const email = (input.value || "").trim().toLowerCase();
+  if(!EMAIL_RE.test(email)){ ppToast("Please enter a valid email address."); input.focus(); return; }
+  ppBusyRun(async ()=>{
+    const btn = document.getElementById("ppinvbtn"); if(btn) btn.disabled = true;
+    const r = await ppCall("dm_invite_moderator", { p_email:email });
+    if(!r.ok) return ppToast(r.j && r.j.code === "22023" ? "That is not an email address." : ppFail(r, "invite moderators"));
+    input.value = ""; const again = document.getElementById("ppmail"); if(again) again.value = "";
+    if(r.j === "already") return ppToast(`${email} is already a moderator.`);
+    if(r.j === "moderator") return ppToast(`${email} already has a My DM account and is now a moderator. No mail needed.`);
+    const err = await ppSendMail(email);
+    ppToast(err ? `Invite saved for ${email}. ${err}` : `Invite sent to ${email}. They choose their own password.`);
+  });
+}
+function ppResend(p){
+  ppBusyRun(async ()=>{
+    const r = await ppCall("dm_invite_moderator", { p_email:p.email });
+    if(!r.ok) return ppToast(ppFail(r, "invite moderators"));
+    if(r.j !== "invite") return ppToast(`${p.email} is already a moderator.`);
+    const err = await ppSendMail(p.email);
+    ppToast(err || `Invite sent again to ${p.email}.`);
+  });
 }
 
 

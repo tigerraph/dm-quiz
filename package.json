@@ -10,6 +10,7 @@
     "check-topic": "node tools/check-topic.mjs",
     "render-topic": "node tools/render-topic.mjs",
     "test-schema": "node tools/test-dm-schema.mjs && node tools/test-client-schema.mjs",
+    "test-people": "node tools/test-people-schema.mjs && node tools/test-people.mjs",
     "guides": "node tools/render-guides.mjs",
     "thumbs": "node tools/render-thumbs.mjs"
   }

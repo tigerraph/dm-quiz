@@ -8,6 +8,7 @@
      ?view=session&id=<id>   one session: bottom line, links for everyone, kit for moderators
      ?view=login&next=…      the My DM account form on its own page
      ?view=mydm              the star passport, unchanged (the QR on the slides lands there)
+     ?view=people            People: the admin makes and removes moderators (src/people.js)
 
    Injected by build.mjs into the app's script, so it shares the app's state:
    registry, lang, AUTH, adminStatus(), acctHtml()/bindAcct() (src/account.js), stars helpers.
@@ -70,7 +71,7 @@ const SITE_T = {
   notFound:"Questa sessione non è nell’elenco." }
 };
 function st(){ return SITE_T[lang] || SITE_T.en; }
-const SITE_PHASES = ["site-home","site-session","login","reset"];
+const SITE_PHASES = ["site-home","site-session","login","reset","people"];
 const LOCALES = { en:"en-GB", de:"de-CH", fr:"fr-CH", it:"it-CH" };
 /* QR codes and «copy link» must point at the public site, also from a local preview */
 const SITE_BASE = (location.protocol === "file:" || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname))
@@ -335,7 +336,8 @@ function kitHtml(id, info){
     a("?session=" + encodeURIComponent(id), "Quiz as player", "The link behind the QR on the slides") +
     aliasesOf(id).map(k=>a("?session=" + encodeURIComponent(k), "Rehearsal quiz", `Scratch run «${esc(k)}», keeps test names off the real session`)).join("");
   const after = a("content/" + encodeURIComponent(id) + ".html" + qsLang(kl), "Take-home page", "For participants: bottom line, material, replay") +
-    a("content/admin.html#people", "Stars &amp; people", "Who collected which star, all sessions");
+    a("content/admin.html#people", "Stars &amp; people", "Who collected which star, all sessions") +
+    a("?view=people", "People &amp; moderators", "Who moderates; only the admin switches it", "", true);
   return `<div class="kit">
     <h2>${esc(L(s.title) || id)} ${chip}</h2>
     <div class="meta">${[pillarLine(id), s.date ? ddmm(s.date) + s.date.slice(0, 4) : "no date set",
@@ -417,4 +419,5 @@ function siteRerender(){
   else if(phase === "site-session") renderSessionPage(siteId);
   else if(phase === "login") renderLogin();
   else if(phase === "reset") renderReset();
+  else if(phase === "people") renderPeople();
 }
