@@ -4,18 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1B2329">
-<title>Democracy Matters Quiz</title>
+<title>Democracy Matters</title>
 <!-- Open Graph for link previews (WhatsApp, iMessage, Slack). Must stay above the
      inlined fonts: scrapers read only the first part of the file. No og:url on
      purpose — session links carry ?session=…, and these tags describe the app as
-     a whole. assets/img/og.png is the wordmark on the dark ground. -->
+     a whole. assets/img/og.png is the wordmark on the dark ground. The site is
+     Democracy Matters (sessions, slides, quiz); «Quiz» names only the game. The
+     tab title follows the page and the language at runtime (syncTitle below). -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Democracy Matters Quiz">
-<meta property="og:description" content="Live session quiz for Democracy Matters: scan the QR code, join from your phone and answer together with the room.">
-<meta property="og:image" content="https://tigerraph.github.io/dm-quiz/assets/img/og.png">
+<meta property="og:title" content="Democracy Matters">
+<meta property="og:description" content="Democracy Matters, the Learning Loop: sessions, slides and the live quiz. Scan the QR code and join from your phone.">
+<meta property="og:image" content="https://dmatters.org/assets/img/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Democracy Matters Quiz">
+<meta property="og:image:alt" content="Democracy Matters · The Learning Loop">
+<meta name="twitter:title" content="Democracy Matters">
 <meta name="twitter:card" content="summary_large_image">
 <style>
 __FONTS__
@@ -407,7 +410,7 @@ __QRCODE__
 <script>
 "use strict";
 /* ==================================================================
-   dm-quiz — Democracy Matters Quiz
+   dm-quiz — the Democracy Matters site (start page, session pages, quiz)
 
    Two modes:
      LIVE  — host-driven, Kahoot-style. The host view owns the game
@@ -2487,6 +2490,26 @@ function rerender(){
   else if(phase==="reveal") LIVE ? paintPlayerReveal() : renderSoloReveal();
   else if(phase==="done") LIVE ? renderPlayerDone() : renderSoloDone();
 }
+
+/* ---------------- tab title ----------------
+   The site is «Democracy Matters»; «Quiz» names only the game. The tab title
+   follows the page and the current language, so the English page never keeps
+   a German title. Every render writes #app, so watching it covers every view
+   and every language switch without touching each renderer. */
+const GAME_PHASES = ["join","lobby","question","locked","reveal","done","review","kicked"];
+function pageTitle(){
+  const brand = t().brand;
+  const topic = id => (id && registry && registry[id] && typeof registry[id].title === "object") ? L(registry[id].title) : "";
+  const sub = (phase === "site-session") ? topic(siteId)
+    : (phase === "passport" || phase === "claim") ? t().myDM
+    : phase.startsWith("daily") ? t().daily
+    : (SESSION && (HOST || GAME_PHASES.includes(phase)))
+      ? [t().quiz, topic(SESSION)].filter(Boolean).join(" · ")
+    : "";
+  return sub ? sub + " — " + brand : brand;
+}
+function syncTitle(){ const x = pageTitle(); if(document.title !== x) document.title = x; }
+new MutationObserver(syncTitle).observe(app, { childList:true });
 
 __AUDIO__
 
