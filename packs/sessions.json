@@ -65,6 +65,7 @@
     "date": "2026-11-06",
     "time": "15:00",
     "room": "C2",
+    "minutes": 30,
     "cases": {
       "de": "Brasilien · Serbien · USA",
       "en": "Brazil · Serbia · USA",

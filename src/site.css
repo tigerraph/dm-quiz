@@ -216,6 +216,7 @@ body.site .acct .btn{min-height:44px; display:inline-flex; align-items:center; j
 .qfoot a{font-weight:800; color:rgba(255,255,255,.72); text-decoration:none; display:inline-flex; align-items:center; min-height:44px;}
 .qfoot .sep{margin-left:auto;}
 @media (max-width:600px){ .qfoot .sep{margin-left:0; flex-basis:100%;} }
+@media (max-width:480px){ .c-pause{width:44px; padding:0; margin-left:0;} .c-pause .pl{display:none;} }
 @media (min-width:820px){
   .c-say{margin-top:10px; min-height:2.2em;}
   .c-band{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); grid-template-areas:'hd dt' 'q dt'; padding:30px 32px; gap:12px 28px;}

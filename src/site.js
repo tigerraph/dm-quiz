@@ -413,7 +413,7 @@ async function renderPoster(){
       <p class="c-this">THIS IS DEMOCRACY.</p>
       <div class="c-dots" role="group" aria-label="${esc(P.slogans)}">
         ${SLOGANS.map((_, i)=>`<button type="button" data-dot="${i}" aria-label="${esc(P.slogan(i + 1, SLOGANS.length))}" aria-pressed="${i === poster.say}"></button>`).join("")}
-        <button type="button" class="c-pause" id="cpause" aria-pressed="${!!poster.paused}">${poster.paused ? "▶ " + esc(P.play) : "❚❚ " + esc(P.pause)}</button>
+        <button type="button" class="c-pause" id="cpause" aria-pressed="${!!poster.paused}" aria-label="${esc(poster.paused ? P.play : P.pause)}">${pauseHtml(!!poster.paused)}</button>
       </div>
       ${band}${how}${soon}${pastHtml}
     </main>
@@ -441,10 +441,12 @@ function setSlogan(i, fade){
   el.classList.add("fade");
   setTimeout(()=>{ el.innerHTML = sloganHtml(poster.say); el.classList.remove("fade"); }, 350);
 }
+/* icon always; the word only where it fits beside the dots (on a phone the icon alone, 44 × 44) */
+function pauseHtml(v){ return `<span aria-hidden="true">${v ? "▶" : "❚❚"}</span><span class="pl" aria-hidden="true"> ${esc(v ? pt().play : pt().pause)}</span>`; }
 function setPaused(v){
   poster.paused = v;
   const b = document.getElementById("cpause"), el = document.getElementById("csay");
-  if(b){ b.textContent = v ? "▶ " + pt().play : "❚❚ " + pt().pause; b.setAttribute("aria-pressed", String(v)); }
+  if(b){ b.innerHTML = pauseHtml(v); b.setAttribute("aria-label", v ? pt().play : pt().pause); b.setAttribute("aria-pressed", String(v)); }
   if(el) el.setAttribute("aria-live", v ? "polite" : "off");   // a moving slogan is not read out every few seconds
   stopPoster();
   if(!v) poster.timer = setInterval(()=>{
@@ -472,7 +474,7 @@ function bindPoster(n){
 }
 
 /* one event as iCalendar (RFC 5545): Zurich time with its VTIMEZONE, or an all-day entry
-   while time is to follow; 60 minutes unless the session says otherwise («minutes») */
+   while time is to follow; the session's «minutes», else 30 (the sprint every run sheet plans) */
 function icsFor(n, tag){
   const P = pt(), ymd = n.date.replace(/-/g, "");
   const tx = s => String(s).replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\r?\n/g, "\\n");
@@ -493,7 +495,7 @@ function icsFor(n, tag){
   let when;
   if(m){
     const start = new Date(Date.UTC(+n.date.slice(0,4), +n.date.slice(5,7) - 1, +n.date.slice(8,10), +m[1], +m[2]));
-    const end = new Date(start.getTime() + (n.minutes || 60) * 6e4);
+    const end = new Date(start.getTime() + (n.minutes || 30) * 6e4);
     const local = d => d.toISOString().slice(0, 19).replace(/[-:]/g, "");
     when = [`DTSTART;TZID=${ZRH.tz}:${local(start)}`, `DTEND;TZID=${ZRH.tz}:${local(end)}`];
   } else {

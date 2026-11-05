@@ -136,7 +136,7 @@ No rebuild needed — packs are fetched at runtime.
    (today or later) big, everything else below, newest first. Null shows as
    «date not on record». Optional for the start page visitors see without signing in:
    `time` (`"15:00"`, Zurich), `room` (`"C2"`), `cases` (per language, e.g. «Brazil · Serbia · USA»), `question` (per language, the band line under the title)
-   and `minutes` (calendar entry length, default 60).
+   and `minutes` (calendar entry length, default 30, the sprint on every run sheet).
    Planned dates that have no topic yet go into `packs/dates.json` (they show under «Coming up»
    and drop out once a session takes the date).
 3. Optional, for the start page and the Moderator kit: `npm run thumbs -- <id>`
