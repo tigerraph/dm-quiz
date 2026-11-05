@@ -63,6 +63,14 @@
       "it": "Elezioni"
     },
     "date": "2026-11-06",
+    "time": "15:00",
+    "room": "C2",
+    "cases": {
+      "de": "Brasilien · Serbien · USA",
+      "en": "Brazil · Serbia · USA",
+      "fr": "Brésil · Serbie · États-Unis",
+      "it": "Brasile · Serbia · USA"
+    },
     "practice": [
       {
         "file": "zettel-elections.html",

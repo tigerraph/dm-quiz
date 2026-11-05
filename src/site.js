@@ -193,6 +193,9 @@ async function renderHome(){
   phase = "site-home"; document.body.classList.add("site");
   await resolveRole();
   if(phase !== "site-home") return;
+  stopPoster();
+  // nobody signed in: the poster (concept C, Rafa 05.11.2026); signed in: unchanged
+  if(siteRole === "guest") return renderPoster();
   const { hero, heroNext, rest } = splitSessions();
   const mod = siteRole === "moderator";
   const stars = mergeStars(localStars(), null);
@@ -244,6 +247,265 @@ function rowItem(id){
   return `<a class="rowitem" href="?view=session&amp;id=${encodeURIComponent(id)}">${thumb(id, 2)}
     <span><b>${esc(L(s.title) || id)}</b><span class="meta">${esc(pillarLine(id))} · ${esc(longDate(s.date))}</span>
     ${tags ? `<span class="chipline">${tags}</span>` : ""}</span><span class="go" aria-hidden="true">›</span></a>`;
+}
+
+/* ---------- start for visitors who are not signed in: concept C «Poster» ----------
+   Rafa, 05.11.2026, picked from «DM signed-out mocks» (like the Apple Events page):
+   a slogan from the TV set in big type, «THIS IS DEMOCRACY.», the next date on a blue
+   band with one «Save the date» (a real .ics), what happens, coming up, past topics.
+   Moderator kit and stars stay behind the quiet footer. Signed-in people see My DM above.
+   Next and coming-up dates: packs/sessions.json (sessions with a topic; time, room, cases)
+   plus packs/dates.json (planned dates without a topic yet). Nothing about a date is written here. */
+const POSTER_T = {
+ en:{ join:"Join the conversation", thisDay:wd=>"this " + wd, today:"today", topicTbc:"Topic to follow",
+  timeTbc:"Time and room to follow", room:"room", rhythm:"First Friday of every month",
+  open:"Open to all Impact Hub members and guests", save:"Save the date",
+  what:"What happens", one:"Democracy is more than voting day. Let’s talk about it.",
+  where:"First Friday of every month at Impact Hub Zürich.",
+  quiz:"Quiz", quizWhat:"On the day: scan the QR code on the slides.",
+  cases:"Real cases", disc:"Discussion", discWhat:"Together, in the room.",
+  soon:"Coming up", past:"Past topics", stars:"Your stars", mods:"For moderators · Sign in", signin:"Sign in",
+  pause:"Pause", play:"Play", slogans:"Slogans", slogan:(i,n)=>`Slogan ${i} of ${n}`,
+  saved:"Calendar file downloaded: open it to add the date." },
+ de:{ join:"Diskutier mit", thisDay:wd=>"diesen " + wd, today:"heute", topicTbc:"Thema folgt",
+  timeTbc:"Zeit und Raum folgen", room:"Raum", rhythm:"Jeden ersten Freitag im Monat",
+  open:"Offen für alle Mitglieder und Gäste des Impact Hub", save:"Termin speichern",
+  what:"Was passiert", one:"Demokratie ist mehr als der Abstimmungssonntag. Reden wir darüber.",
+  where:"Jeden ersten Freitag im Monat im Impact Hub Zürich.",
+  quiz:"Quiz", quizWhat:"Am Tag selbst: QR-Code auf den Folien scannen.",
+  cases:"Echte Fälle", disc:"Diskussion", discWhat:"Gemeinsam, im Raum.",
+  soon:"Demnächst", past:"Frühere Themen", stars:"Deine Sterne", mods:"Für Moderierende · Anmelden", signin:"Anmelden",
+  pause:"Pause", play:"Abspielen", slogans:"Slogans", slogan:(i,n)=>`Slogan ${i} von ${n}`,
+  saved:"Kalenderdatei geladen: öffnen, um den Termin einzutragen." },
+ fr:{ join:"Rejoins la discussion", thisDay:wd=>"ce " + wd, today:"aujourd’hui", topicTbc:"Thème à venir",
+  timeTbc:"Heure et salle à venir", room:"salle", rhythm:"Le premier vendredi de chaque mois",
+  open:"Ouvert à tous les membres et invités de l’Impact Hub", save:"Noter la date",
+  what:"Au programme", one:"La démocratie, c’est plus que le jour du vote. Parlons-en.",
+  where:"Le premier vendredi de chaque mois à l’Impact Hub Zürich.",
+  quiz:"Quiz", quizWhat:"Le jour même : scanne le code QR sur les diapositives.",
+  cases:"Cas réels", disc:"Discussion", discWhat:"Ensemble, dans la salle.",
+  soon:"Prochainement", past:"Thèmes passés", stars:"Tes étoiles", mods:"Pour la modération · Connexion", signin:"Connexion",
+  pause:"Pause", play:"Lecture", slogans:"Slogans", slogan:(i,n)=>`Slogan ${i} sur ${n}`,
+  saved:"Fichier calendrier téléchargé : ouvre-le pour ajouter la date." },
+ it:{ join:"Unisciti alla discussione", thisDay:wd=>"questo " + wd, today:"oggi", topicTbc:"Tema in arrivo",
+  timeTbc:"Orario e sala in arrivo", room:"sala", rhythm:"Il primo venerdì di ogni mese",
+  open:"Aperto a tutti i soci e agli ospiti dell’Impact Hub", save:"Segna la data",
+  what:"Cosa succede", one:"La democrazia è più del giorno del voto. Parliamone.",
+  where:"Il primo venerdì di ogni mese all’Impact Hub Zürich.",
+  quiz:"Quiz", quizWhat:"Il giorno stesso: scansiona il codice QR sulle slide.",
+  cases:"Casi reali", disc:"Discussione", discWhat:"Insieme, in sala.",
+  soon:"Prossimamente", past:"Temi passati", stars:"Le tue stelle", mods:"Per la moderazione · Accedi", signin:"Accedi",
+  pause:"Pausa", play:"Riproduci", slogans:"Slogan", slogan:(i,n)=>`Slogan ${i} di ${n}`,
+  saved:"File del calendario scaricato: aprilo per aggiungere la data." }
+};
+function pt(){ return POSTER_T[lang] || POSTER_T.en; }
+/* word for word from the TV set (English only there, so on every language) */
+const SLOGANS = [
+  ["You disagreed with your neighbour about the vote.","You’re still neighbours."],
+  ["Your vote was secret. Nobody can check it.","Nobody can punish it."],
+  ["Collect 100,000 signatures and the whole country","votes on your idea."],
+  ["You searched for anything you wanted today.","Nothing was blocked."],
+  ["You walked past a protest this morning.","Nobody was arrested."],
+  ["You could quit your job today.","Nobody has to approve it."],
+  ["Nobody entered your home last night.","Not without a warrant."]
+];
+const HUB = "Impact Hub Zürich";
+const ZRH = { tz:"Europe/Zurich", lines:["BEGIN:VTIMEZONE","TZID:Europe/Zurich",
+  "BEGIN:DAYLIGHT","TZOFFSETFROM:+0100","TZOFFSETTO:+0200","TZNAME:CEST","DTSTART:19700329T020000","RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU","END:DAYLIGHT",
+  "BEGIN:STANDARD","TZOFFSETFROM:+0200","TZOFFSETTO:+0100","TZNAME:CET","DTSTART:19701025T030000","RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU","END:STANDARD",
+  "END:VTIMEZONE"] };
+const poster = { say:0, paused:null, timer:0, planned:null };
+function stopPoster(){ clearInterval(poster.timer); poster.timer = 0; }
+let datesCache = null;
+function plannedDates(){
+  if(!datesCache) datesCache = loadJSON("packs/dates.json").then(d=>Array.isArray(d && d.planned) ? d.planned : []).catch(()=>[]);
+  return datesCache;
+}
+/* upcoming = sessions with a topic and a date today or later, plus planned dates not taken by one */
+function posterDates(planned){
+  const ids = siteSessions().filter(id=>!registry[id].draft);
+  const withTopic = ids.filter(isUpcoming).map(id=>{
+    const s = registry[id];
+    return { id, date:s.date, time:s.time || "", room:s.room || "", minutes:s.minutes || 0, title:L(s.title) || id, cases:L(s.cases), note:"" };
+  });
+  const taken = new Set(withTopic.map(x=>x.date)), today = todayISO();
+  const free = planned.filter(p=>p && /^\d{4}-\d{2}-\d{2}$/.test(p.date) && p.date >= today && !taken.has(p.date))
+    .map(p=>({ id:"", date:p.date, time:p.time || "", room:p.room || "", minutes:p.minutes || 0, title:"", cases:"", note:L(p.note) }));
+  const up = withTopic.concat(free).sort((a,b)=>a.date.localeCompare(b.date));
+  const byDateDesc = (a,b)=>String(registry[b].date||"").localeCompare(String(registry[a].date||""));
+  const past = ids.filter(id=>!isUpcoming(id)).sort(byDateDesc);
+  return { next:up[0] || null, later:up.slice(1), past };
+}
+const isoDay = iso => new Date(iso + "T12:00:00");
+function shortDay(iso){
+  const d = isoDay(iso);
+  return isNaN(d) ? iso : d.toLocaleDateString(LOCALES[lang] || "en-GB", { weekday:"short", day:"numeric", month:"short" });
+}
+function relDay(iso){
+  const days = Math.round((isoDay(iso) - isoDay(todayISO())) / 864e5);
+  if(days === 0) return pt().today;
+  if(days > 0 && days < 7) return pt().thisDay(isoDay(iso).toLocaleDateString(LOCALES[lang] || "en-GB", { weekday:"long" }));
+  return "";
+}
+function clock(hm){
+  const m = /^(\d{1,2}):(\d{2})$/.exec(hm || "");
+  if(!m) return "";
+  if(lang !== "en") return `${m[1].padStart(2,"0")}:${m[2]}`;
+  const h = +m[1], h12 = h % 12 || 12;
+  return `${h12}${m[2] === "00" ? "" : ":" + m[2]} ${h < 12 ? "AM" : "PM"}`;
+}
+function timeRoom(n){
+  const parts = [clock(n.time), n.room ? pt().room + " " + n.room : ""].filter(Boolean);
+  return parts.length ? parts.join(", ") : pt().timeTbc;
+}
+
+function posterBar(){
+  return `<header class="sbar">
+    <a class="wordmark" href="./">${esc(t().brand)}</a>
+    <span class="sright">
+      <button class="langcycle" id="lc" type="button" aria-label="Language: ${lang.toUpperCase()}" title="${LANGS.map(l=>l.toUpperCase()).join(" / ")}">${lang.toUpperCase()}</button>
+      <a class="psignin" href="${esc(loginHref())}">${esc(pt().signin)}</a>
+    </span></header>`;
+}
+function sloganHtml(i){ const s = SLOGANS[i]; return `${esc(s[0])} <span class="c2">${esc(s[1])}</span>`; }
+
+async function renderPoster(){
+  const planned = await plannedDates();
+  if(phase !== "site-home" || siteRole !== "guest") return;
+  let reduce = false; try{ reduce = matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){}
+  if(poster.paused === null) poster.paused = reduce;      // less motion: still until the visitor presses Play
+  const P = pt(), { next:n, later, past } = posterDates(planned);
+  const title = n ? (n.title ? [n.title, relDay(n.date)].filter(Boolean).join(" ") : st().nextSession) : "";
+  const band = n ? `<section class="c-band" aria-label="${esc(st().nextSession)}">
+      <div class="c-hd"><div class="jc">${esc(P.join)}</div><h2 class="t">${esc(title)}</h2></div>
+      <div class="c-q"><p class="q" id="ctag">${n.id ? "" : esc(P.topicTbc) + "."}</p></div>
+      <div class="c-dt">
+        <div class="c-date"><div class="d">${esc(shortDay(n.date))}</div><div class="tr">${esc(timeRoom(n))}</div>
+          <div class="og">${esc(P.rhythm)} · ${esc(P.open)}</div></div>
+        <div class="acts"><button class="btn white" id="csave" type="button">${esc(P.save)}</button>
+          <span class="sr" role="status" aria-live="polite" id="csavelive"></span></div>
+      </div></section>` : `<p class="sub" style="margin-top:16px">${esc(st().noneYet)}</p>`;
+  const how = `<section class="c-sec"><h3>${esc(P.what)}</h3>
+      <p class="c-one">${esc(P.one)}</p><p class="c-where">${esc(P.where)}</p>
+      <div class="c-how">
+        <div class="why rot1"><b>${esc(P.quiz)}</b>${esc(P.quizWhat)}</div>
+        <div class="why rot2"><b>${esc(P.cases)}</b><span id="ccases">${n && n.cases ? esc(n.cases) + "." : n && n.id ? "" : esc(P.topicTbc) + "."}</span></div>
+        <div class="why rot1"><b>${esc(P.disc)}</b>${esc(P.discWhat)}</div>
+      </div></section>`;
+  const soon = later.length ? `<section class="c-sec"><h3>${esc(P.soon)}</h3><div class="c-soon">${later.map(x=>
+      x.id ? `<a href="?view=session&amp;id=${encodeURIComponent(x.id)}"><b>${esc(shortDay(x.date))}</b><span>${esc(x.title)}</span></a>`
+           : `<div><b>${esc(shortDay(x.date))}</b><span>${x.note ? esc(x.note) + ". " : ""}${esc(P.topicTbc)}</span></div>`).join("")}</div></section>` : "";
+  const pastHtml = past.length ? `<section class="c-sec"><h3>${esc(P.past)}</h3><div class="c-past">${past.map(id=>{
+      const s = registry[id], pl = PILLAR_EMOJI[s.pillar] || "";
+      return `<a class="c-pcard" href="?view=session&amp;id=${encodeURIComponent(id)}">
+        <img src="assets/thumbs/${encodeURIComponent(id)}-2.jpg" alt="" loading="lazy" onerror="this.remove()">
+        <span class="bd"><b>${esc(L(s.title) || id)}</b><span class="meta">${pl ? pl + "&nbsp; " : ""}${esc(longDate(s.date))}</span>
+        <span class="why" data-bl="${esc(id)}" hidden><b>${esc(st().bottomLine)}</b><span></span></span></span></a>`;
+    }).join("")}</div></section>` : "";
+  app.innerHTML = `${posterBar()}
+    ${errKey ? `<p class="err site-err">${esc(t()[errKey] || "")}</p>` : ""}
+    <main class="poster">
+      <h1 class="kicker">${esc(t().brand)}</h1>
+      <p class="c-say" id="csay" aria-live="${poster.paused ? "polite" : "off"}" aria-atomic="true">${sloganHtml(poster.say)}</p>
+      <p class="c-this">THIS IS DEMOCRACY.</p>
+      <div class="c-dots" role="group" aria-label="${esc(P.slogans)}">
+        ${SLOGANS.map((_, i)=>`<button type="button" data-dot="${i}" aria-label="${esc(P.slogan(i + 1, SLOGANS.length))}" aria-pressed="${i === poster.say}"></button>`).join("")}
+        <button type="button" class="c-pause" id="cpause" aria-pressed="${!!poster.paused}">${poster.paused ? "▶ " + esc(P.play) : "❚❚ " + esc(P.pause)}</button>
+      </div>
+      ${band}${how}${soon}${pastHtml}
+    </main>
+    <footer class="qfoot"><span>${esc(t().brand)} · ${HUB}</span><span class="sep"></span>
+      <a href="?view=mydm">★ ${esc(P.stars)}</a><a href="${esc(loginHref())}">${esc(P.mods)}</a></footer>`;
+  bindSiteBar();
+  bindPoster(n);
+  if(n && n.id) takeHome(n.id).then(x=>{
+    if(phase !== "site-home") return;
+    const tag = document.getElementById("ctag"), cs = document.getElementById("ccases");
+    if(tag && x && x.tag) tag.textContent = x.tag;
+    if(cs && !cs.textContent) cs.textContent = x && x.tag ? x.tag : "";
+  });
+  past.forEach(id=>takeHome(id).then(x=>{
+    const el = phase === "site-home" && app.querySelector(`[data-bl="${CSS.escape(id)}"]`);
+    if(el && x && x.bottom){ el.lastElementChild.innerHTML = x.bottom; el.hidden = false; }
+  }));
+}
+function setSlogan(i, fade){
+  poster.say = (i + SLOGANS.length) % SLOGANS.length;
+  const el = document.getElementById("csay");
+  if(!el) return stopPoster();
+  app.querySelectorAll("[data-dot]").forEach(d=>d.setAttribute("aria-pressed", String(+d.dataset.dot === poster.say)));
+  if(!fade){ el.innerHTML = sloganHtml(poster.say); return; }
+  el.classList.add("fade");
+  setTimeout(()=>{ el.innerHTML = sloganHtml(poster.say); el.classList.remove("fade"); }, 350);
+}
+function setPaused(v){
+  poster.paused = v;
+  const b = document.getElementById("cpause"), el = document.getElementById("csay");
+  if(b){ b.textContent = v ? "▶ " + pt().play : "❚❚ " + pt().pause; b.setAttribute("aria-pressed", String(v)); }
+  if(el) el.setAttribute("aria-live", v ? "polite" : "off");   // a moving slogan is not read out every few seconds
+  stopPoster();
+  if(!v) poster.timer = setInterval(()=>{
+    if(phase !== "site-home" || document.hidden) return;
+    setSlogan(poster.say + 1, true);
+  }, 4500);
+}
+function bindPoster(n){
+  setPaused(!!poster.paused);
+  const say = document.getElementById("csay");
+  if(say) say.onclick = ()=>setPaused(!poster.paused);
+  const pb = document.getElementById("cpause");
+  if(pb) pb.onclick = ()=>setPaused(!poster.paused);
+  app.querySelectorAll("[data-dot]").forEach(d=>d.onclick = ()=>{ setPaused(true); setSlogan(+d.dataset.dot, false); });
+  const sv = document.getElementById("csave");
+  if(sv && n) sv.onclick = async ()=>{
+    const take = n.id ? await takeHome(n.id) : null;
+    const blob = new Blob([icsFor(n, take && take.tag)], { type:"text/calendar;charset=utf-8" });
+    const url = URL.createObjectURL(blob), a = document.createElement("a");
+    a.href = url; a.download = `democracy-matters-${n.date}.ics`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 30000);
+    const live = document.getElementById("csavelive"); if(live) live.textContent = pt().saved;
+  };
+}
+
+/* one event as iCalendar (RFC 5545): Zurich time with its VTIMEZONE, or an all-day entry
+   while time is to follow; 60 minutes unless the session says otherwise («minutes») */
+function icsFor(n, tag){
+  const P = pt(), ymd = n.date.replace(/-/g, "");
+  const tx = s => String(s).replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\r?\n/g, "\\n");
+  const enc = new TextEncoder();
+  const fold = line => {                      // lines of at most 75 octets, never inside a character
+    const out = []; let cur = "", len = 0;
+    for(const ch of line){
+      const b = enc.encode(ch).length;
+      if(len + b > (out.length ? 74 : 75)){ out.push(cur); cur = ""; len = 0; }
+      cur += ch; len += b;
+    }
+    out.push(cur);
+    return out.join("\r\n ");
+  };
+  const stampNow = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+Z$/, "Z");
+  const link = SITE_BASE + (n.id ? "?view=session&id=" + encodeURIComponent(n.id) : "");
+  const m = /^(\d{1,2}):(\d{2})$/.exec(n.time || "");
+  let when;
+  if(m){
+    const start = new Date(Date.UTC(+n.date.slice(0,4), +n.date.slice(5,7) - 1, +n.date.slice(8,10), +m[1], +m[2]));
+    const end = new Date(start.getTime() + (n.minutes || 60) * 6e4);
+    const local = d => d.toISOString().slice(0, 19).replace(/[-:]/g, "");
+    when = [`DTSTART;TZID=${ZRH.tz}:${local(start)}`, `DTEND;TZID=${ZRH.tz}:${local(end)}`];
+  } else {
+    const nd = new Date(Date.UTC(+n.date.slice(0,4), +n.date.slice(5,7) - 1, +n.date.slice(8,10) + 1));
+    when = [`DTSTART;VALUE=DATE:${ymd}`, `DTEND;VALUE=DATE:${nd.toISOString().slice(0,10).replace(/-/g, "")}`];
+  }
+  const room = n.room ? P.room.charAt(0).toUpperCase() + P.room.slice(1) + " " + n.room + ", " : "";
+  const about = [tag || (n.id ? "" : P.topicTbc + "."), m ? "" : P.timeTbc + ".", P.open + ".", link].filter(Boolean).join("\n");
+  const lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Democracy Matters//dmatters.org//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
+    ...(m ? ZRH.lines : []),
+    "BEGIN:VEVENT", `UID:dm-${n.id || "session"}-${ymd}@dmatters.org`, `DTSTAMP:${stampNow}`, ...when,
+    `SUMMARY:${tx(t().brand + (n.title ? " · " + n.title : ""))}`,
+    `LOCATION:${tx(room + HUB)}`, `DESCRIPTION:${tx(about)}`, `URL:${link}`,
+    "END:VEVENT", "END:VCALENDAR"];
+  return lines.map(fold).join("\r\n") + "\r\n";
 }
 
 /* ---------- one page per session ---------- */
