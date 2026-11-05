@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DM People · 3 mocks</title>
+<!-- Mock only: fictional people, no Supabase calls, nothing is saved or sent.
+     Colours from docs/design-tokens.md; kit look copied from index.html (.postkit/.kit). -->
+<style>
+:root{--blue:#435CC6; --green:#A8D272; --teal:#5EB9A9; --cream:#FDF2D0; --dark:#1B2329; --dark-2:#243039; --ink:#22313C;
+  --wrong:#DB6A57; --line:rgba(255,255,255,.14); --mute:rgba(255,255,255,.62);
+  --paper-shadow:0 1px 0 rgba(0,0,0,.25), 0 10px 24px rgba(0,0,0,.35);}
+*{box-sizing:border-box}
+body{margin:0; background:var(--dark); color:#fff; font:16px/1.45 "Inter",system-ui,-apple-system,"Segoe UI",sans-serif;}
+.wrap{max-width:1180px; margin:0 auto; padding:28px 16px 80px;}
+h1{font-size:1.7rem; margin:0 0 4px} .sub{color:var(--mute); margin:0 0 22px}
+.tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px}
+.tabs button{border:1.5px solid var(--line); background:transparent; color:#fff; border-radius:999px; padding:9px 16px; font:inherit; font-weight:700; cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--cream); color:var(--ink); border-color:var(--cream)}
+.q{background:var(--dark-2); border-left:4px solid var(--teal); border-radius:8px; padding:12px 16px; margin-bottom:22px; font-size:.95rem}
+.q b{color:var(--teal)}
+.postkit{background:var(--cream); color:var(--ink); border-radius:6px; box-shadow:var(--paper-shadow); padding:6px; transform:rotate(-.25deg)}
+.postkit > .lbl{font-weight:800; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--blue); padding:8px 12px 4px}
+.kit{color:#fff; background:var(--dark-2); border-radius:12px; padding:20px 22px; transform:rotate(.25deg); min-height:420px}
+.kit h2{margin:0; font-size:1.3rem} .meta{font-size:.84rem; color:var(--mute); margin-top:3px}
+.btn{border:0; border-radius:12px; background:var(--blue); color:#fff; font:inherit; font-weight:800; padding:11px 18px; cursor:pointer}
+.btn.ghost{background:transparent; border:1.5px solid rgba(255,255,255,.28)}
+.btn.danger{background:transparent; border:1.5px solid var(--wrong); color:var(--wrong)}
+.btn:focus-visible,.row:focus-visible,.sw:focus-visible{outline:3px solid var(--teal); outline-offset:2px}
+input[type=email]{flex:1; min-width:0; border-radius:12px; border:1.5px solid rgba(255,255,255,.28); background:rgba(0,0,0,.2); color:#fff; font:inherit; padding:11px 14px}
+.invite{display:flex; gap:8px; margin:16px 0 6px; flex-wrap:wrap}
+.search{width:100%; margin:6px 0 10px}
+.list{list-style:none; margin:10px 0 0; padding:0}
+.row{display:flex; align-items:center; gap:12px; padding:12px 10px; border-top:1px solid var(--line); cursor:pointer; border-radius:8px; width:100%; background:none; border-left:0; border-right:0; border-bottom:0; color:inherit; font:inherit; text-align:left}
+.row:hover{background:rgba(255,255,255,.05)}
+.av{width:38px; height:38px; border-radius:50%; display:grid; place-items:center; font-weight:800; background:var(--cream); color:var(--ink); flex:none}
+.who{flex:1; min-width:0} .who .n{font-weight:700} .who .e{font-size:.84rem; color:var(--mute); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.tag{font-size:.72rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; border-radius:999px; padding:4px 9px; white-space:nowrap}
+.tag.mod{background:var(--green); color:var(--ink)} .tag.adm{background:var(--blue)} .tag.pend{background:transparent; border:1.5px dashed var(--teal); color:var(--teal)}
+.chev{color:var(--mute)}
+.sw{position:relative; width:52px; height:30px; border-radius:999px; background:rgba(255,255,255,.2); border:0; cursor:pointer; flex:none}
+.sw::after{content:""; position:absolute; top:3px; left:3px; width:24px; height:24px; border-radius:50%; background:#fff; transition:left .15s}
+.sw[aria-checked=true]{background:var(--green)} .sw[aria-checked=true]::after{left:25px}
+.sw[disabled]{opacity:.45; cursor:not-allowed}
+.toast{position:fixed; left:50%; bottom:24px; transform:translateX(-50%); background:var(--cream); color:var(--ink); font-weight:700; padding:12px 18px; border-radius:12px; box-shadow:var(--paper-shadow); opacity:0; transition:opacity .2s; pointer-events:none; max-width:calc(100% - 32px)}
+.toast.on{opacity:1}
+/* A: sheet */
+.sheet-bg{position:fixed; inset:0; background:rgba(0,0,0,.5); display:none; align-items:flex-end; justify-content:center; z-index:5}
+.sheet-bg.on{display:flex}
+.sheet{background:var(--dark-2); width:100%; max-width:520px; border-radius:18px 18px 0 0; padding:22px 22px 28px; border-top:4px solid var(--cream)}
+.sheet .top{display:flex; gap:12px; align-items:center; margin-bottom:18px}
+.right{display:flex; align-items:center; gap:12px; padding:14px 0; border-top:1px solid var(--line)}
+.right .t{flex:1} .right .t small{display:block; color:var(--mute)}
+.sheet .foot{display:flex; gap:8px; justify-content:space-between; margin-top:18px; flex-wrap:wrap}
+/* C: columns */
+.cols{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:12px}
+.col h3{font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; color:var(--teal); margin:0 0 4px}
+.col .row{cursor:default}
+.mini{font-size:.84rem; padding:7px 12px; border-radius:10px}
+@media (max-width:720px){.cols{grid-template-columns:1fr} .kit{padding:16px}}
+.v{display:none} .v.on{display:block}
+.why{margin-top:18px; color:var(--mute); font-size:.9rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>DM People: 3 ways to manage moderators</h1>
+  <p class="sub">Mock only. The people are made up and nothing is saved or sent. Try tapping and switching things.</p>
+  <div class="q"><b>One question for you:</b> should every moderator be able to make other people moderators, or only you? The mocks show <b>only you</b>: you're marked "Admin" and your own switch is locked, so you can't lock yourself out.</div>
+  <div class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-v="a">A · Tap a person</button>
+    <button role="tab" aria-selected="false" data-v="b">B · Switch in the list</button>
+    <button role="tab" aria-selected="false" data-v="c">C · Two groups</button>
+  </div>
+
+  <!-- A -->
+  <section class="v on" id="v-a">
+    <div class="postkit"><div class="lbl">People · My DM accounts</div><div class="kit">
+      <h2>People</h2><div class="meta">Tap a person to see and change what they can do.</div>
+      <form class="invite" data-inv><input type="email" placeholder="Invite by email: name@example.org" required aria-label="Email to invite"><button class="btn">Invite as moderator</button></form>
+      <input type="email" class="search" placeholder="Search by name or email" aria-label="Search people" data-search>
+      <ul class="list" data-list="a"></ul>
+    </div></div>
+    <p class="why">Same pattern as the team access page you picked for calmOS: one calm list, all choices in the sheet that slides up.</p>
+  </section>
+
+  <!-- B -->
+  <section class="v" id="v-b">
+    <div class="postkit"><div class="lbl">People · My DM accounts</div><div class="kit">
+      <h2>Moderators</h2><div class="meta">A moderator sees the Moderator kit on every session page.</div>
+      <form class="invite" data-inv><input type="email" placeholder="Invite by email: name@example.org" required aria-label="Email to invite"><button class="btn">Invite</button></form>
+      <input type="email" class="search" placeholder="Search by name or email" aria-label="Search people" data-search>
+      <ul class="list" data-list="b"></ul>
+    </div></div>
+    <p class="why">Fastest: one switch per person, right in the list. Turning a switch off asks once before removing.</p>
+  </section>
+
+  <!-- C -->
+  <section class="v" id="v-c">
+    <div class="postkit"><div class="lbl">People · My DM accounts</div><div class="kit">
+      <h2>Who runs DM sessions</h2><div class="meta">Moderators on the left, everyone else with a My DM account on the right.</div>
+      <form class="invite" data-inv><input type="email" placeholder="Invite by email: name@example.org" required aria-label="Email to invite"><button class="btn">Invite as moderator</button></form>
+      <div class="cols">
+        <div class="col"><h3>Moderators</h3><ul class="list" data-list="c-mod"></ul></div>
+        <div class="col"><h3>Everyone else</h3><input type="email" class="search" placeholder="Search" aria-label="Search people" data-search><ul class="list" data-list="c-rest"></ul></div>
+      </div>
+    </div></div>
+    <p class="why">Clearest overview: you can see who is on the team at a glance. Moving someone takes one button.</p>
+  </section>
+</div>
+
+<div class="sheet-bg" id="sheet" role="dialog" aria-modal="true" aria-labelledby="s-name"><div class="sheet">
+  <div class="top"><div class="av" id="s-av"></div><div class="who"><div class="n" id="s-name"></div><div class="e" id="s-mail"></div></div></div>
+  <div class="right"><div class="t"><b>Moderator</b><small>Sees the Moderator kit, the run sheet and the slide links</small></div><button class="sw" role="switch" id="s-mod" aria-label="Moderator"></button></div>
+  <div class="right"><div class="t"><b>Player</b><small>Plays quizzes and collects stars. Everyone with an account.</small></div><button class="sw" role="switch" aria-checked="true" disabled aria-label="Player (always on)"></button></div>
+  <div class="foot"><span class="meta" id="s-since"></span><button class="btn ghost" id="s-close">Done</button></div>
+</div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const people=[
+ {n:"You",e:"you@example.org",mod:true,admin:true,since:"since Oct 2026"},
+ {n:"Lea Brunner",e:"lea.brunner@example.org",mod:true,since:"since 5 Nov"},
+ {n:"Marco Rossi",e:"marco@example.ch",mod:true,since:"since 5 Nov"},
+ {n:"Sina Keller",e:"sina.k@example.com",mod:false,since:"account since Sep"},
+ {n:"Jonas Weber",e:"jonas.weber@example.org",mod:false,since:"account since Oct"},
+ {n:"Amira Haddad",e:"amira@example.net",mod:false,since:"account since Oct"},
+ {n:"Tim Huber",e:"tim.huber@example.ch",mod:false,since:"account since Nov"}];
+let q="";
+const $=s=>document.querySelector(s), esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ini=p=>p.pend?"✉":p.n.split(" ").map(w=>w[0]).join("").slice(0,2);
+function toast(t){const el=$("#toast"); el.textContent=t; el.classList.add("on"); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove("on"),2600);}
+const tags=p=>(p.admin?'<span class="tag adm">Admin</span>':"")+(p.pend?'<span class="tag pend">Invite sent</span>':p.mod?'<span class="tag mod">Moderator</span>':"");
+const match=p=>!q||(p.n+" "+p.e).toLowerCase().includes(q);
+const ordered=()=>[...people].sort((a,b)=>(b.admin|0)-(a.admin|0)||(b.mod|0)-(a.mod|0)||a.n.localeCompare(b.n));
+function setMod(p,on){
+  if(p.admin)return;
+  if(!on&&!confirm(p.n+" will no longer see the Moderator kit. Remove?"))return render();
+  p.mod=on; toast(on?p.n+" is now a moderator.":p.n+" is no longer a moderator."); render();}
+function who(p){return `<div class="av">${ini(p)}</div><div class="who"><div class="n">${esc(p.n)}</div><div class="e">${esc(p.e)}</div></div>`;}
+function render(){
+  $('[data-list=a]').innerHTML=ordered().filter(match).map(p=>`<li><button class="row" data-open="${people.indexOf(p)}">${who(p)}${tags(p)}<span class="chev">›</span></button></li>`).join("");
+  $('[data-list=b]').innerHTML=ordered().filter(match).map(p=>`<li class="row" style="cursor:default">${who(p)}${p.admin?'<span class="tag adm">Admin</span>':p.pend?'<span class="tag pend">Invite sent</span>':""}<button class="sw" role="switch" aria-checked="${p.mod}" aria-label="Moderator: ${esc(p.n)}" data-sw="${people.indexOf(p)}" ${p.admin?"disabled":""}></button></li>`).join("");
+  $('[data-list=c-mod]').innerHTML=ordered().filter(p=>p.mod).map(p=>`<li class="row">${who(p)}${p.admin?'<span class="tag adm">Admin</span>':p.pend?'<span class="tag pend">Invite sent</span>':`<button class="btn danger mini" data-off="${people.indexOf(p)}">Remove</button>`}</li>`).join("")||'<li class="meta">No moderators yet.</li>';
+  $('[data-list=c-rest]').innerHTML=ordered().filter(p=>!p.mod&&match(p)).map(p=>`<li class="row">${who(p)}<button class="btn mini" data-on="${people.indexOf(p)}">Make moderator</button></li>`).join("")||'<li class="meta">Nobody matches.</li>';
+}
+let cur=null;
+function openSheet(p){cur=p; $("#s-av").textContent=ini(p); $("#s-name").textContent=p.n; $("#s-mail").textContent=p.e; $("#s-since").textContent=p.pend?"Invite sent, not accepted yet":p.since;
+  const s=$("#s-mod"); s.setAttribute("aria-checked",p.mod); s.disabled=!!p.admin; s.title=p.admin?"You can't remove yourself":""; $("#sheet").classList.add("on"); s.focus();}
+document.addEventListener("click",e=>{const t=e.target.closest("[data-open],[data-sw],[data-on],[data-off],#s-mod,#s-close,#sheet,[role=tab]"); if(!t)return;
+  if(t.dataset.open)openSheet(people[t.dataset.open]);
+  else if(t.dataset.sw)setMod(people[t.dataset.sw],t.getAttribute("aria-checked")!=="true");
+  else if(t.dataset.on)setMod(people[t.dataset.on],true);
+  else if(t.dataset.off)setMod(people[t.dataset.off],false);
+  else if(t.id==="s-mod"&&!t.disabled){setMod(cur,!cur.mod); t.setAttribute("aria-checked",cur.mod);}
+  else if(t.id==="s-close"||(t.id==="sheet"&&e.target===t))$("#sheet").classList.remove("on");
+  else if(t.getAttribute("role")==="tab"){document.querySelectorAll("[role=tab]").forEach(b=>b.setAttribute("aria-selected",b===t));document.querySelectorAll(".v").forEach(v=>v.classList.toggle("on",v.id==="v-"+t.dataset.v));}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")$("#sheet").classList.remove("on");});
+document.querySelectorAll("[data-search]").forEach(i=>i.addEventListener("input",()=>{q=i.value.trim().toLowerCase();render();}));
+document.querySelectorAll("[data-inv]").forEach(f=>f.addEventListener("submit",e=>{e.preventDefault();const i=f.querySelector("input"),m=i.value.trim().toLowerCase();
+  if(people.some(p=>p.e===m)){const p=people.find(p=>p.e===m); if(!p.mod)setMod(p,true); else toast(m+" is already a moderator."); i.value="";return;}
+  people.push({n:m.split("@")[0],e:m,mod:true,pend:true}); i.value=""; render(); toast("Mock: an invite would go to "+m+". They set their own password.");}));
+render();
+</script>
+</body>
+</html>
