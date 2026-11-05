@@ -157,3 +157,70 @@ body.site .acct .btn{min-height:44px; display:inline-flex; align-items:center; j
 .acct .switch .lnk{margin-left:6px;}
 .acct .sent{background:var(--cream); color:var(--ink); border-radius:12px; padding:14px 16px; font-weight:600; text-align:left; margin:0;}
 .acct .msg:empty{display:none;}
+
+/* ---------- start for visitors who are not signed in: concept C «Poster» (Rafa, 05.11.2026) ----------
+   Ported from the picked mock «DM signed-out mocks» C (like the Apple Events page). */
+.sbar .psignin{display:inline-flex; align-items:center; min-height:44px; padding:0 8px; font-weight:800; font-size:.84rem;
+  color:rgba(255,255,255,.78); text-decoration:none;}
+.sbar .psignin:focus-visible,.poster a:focus-visible,.poster button:focus-visible,.qfoot a:focus-visible{outline:3px solid var(--teal); outline-offset:3px;}
+.poster{display:block;}
+.poster h1.kicker{font-size:.8rem; letter-spacing:.12em; text-transform:uppercase; margin:6px 0 0; line-height:1.3;}
+.poster h3{font-weight:800; font-size:.74rem; letter-spacing:.12em; text-transform:uppercase; color:var(--teal); margin:0;}
+.c-say{min-height:2.2em; display:flex; flex-direction:column; justify-content:flex-end; margin:22px 0 0; cursor:pointer;
+  font-weight:800; font-size:clamp(1.6rem,8vw,4.6rem); line-height:1.06; letter-spacing:-.015em; transition:opacity .35s; text-wrap:balance;}
+.c-say .c2{color:var(--cream); display:block;}
+.c-say.fade{opacity:0;}
+.c-this{font-weight:800; font-size:clamp(1.15rem,4.6vw,2.4rem); color:var(--teal); letter-spacing:.01em; margin:14px 0 0;}
+.c-dots{display:flex; margin:8px 0 0 -12px; align-items:center; flex-wrap:wrap;}
+.c-dots button[data-dot]{width:44px; height:44px; border:0; background:none; cursor:pointer; padding:0; display:grid; place-items:center; border-radius:8px;}
+.c-dots button[data-dot]::after{content:""; width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,.3);}
+.c-dots button[data-dot][aria-pressed="true"]::after{background:var(--teal);}
+.c-pause{font:inherit; font-weight:800; font-size:.78rem; color:rgba(255,255,255,.7); background:none; border:1.5px solid rgba(255,255,255,.25);
+  border-radius:999px; padding:0 14px; min-height:44px; margin-left:4px; cursor:pointer; white-space:nowrap;}
+.c-band{background:var(--blue); border-radius:18px; padding:18px 18px 20px; margin:20px 0 0; display:grid; grid-template-columns:1fr;
+  grid-template-areas:'hd' 'dt' 'q'; gap:14px; align-items:center;}
+.c-hd{grid-area:hd;} .c-q{grid-area:q;} .c-dt{grid-area:dt; display:flex; flex-direction:column; gap:16px;}
+.c-band .jc{font-weight:800; font-size:.9rem; color:var(--cream);}
+.c-band h2.t{font-weight:800; font-size:clamp(1.5rem,5.4vw,2.4rem); line-height:1.05; margin-top:2px;}
+.c-band .q{font-weight:800; font-size:.96rem; margin:0;}
+.c-band .q:empty{display:none;}
+.c-band .q span{color:var(--cream);}
+.c-band .q.cs{margin-top:8px;}
+.c-date{background:var(--cream); color:var(--ink); border-radius:4px; padding:14px 16px; transform:rotate(-1.2deg); box-shadow:0 6px 18px rgba(0,0,0,.28);}
+.c-date .d{font-weight:800; font-size:1.7rem; line-height:1.05;}
+.c-date .tr{font-weight:800; font-size:1.05rem; color:var(--blue); margin-top:2px;}
+.c-date .og{font-size:.82rem; margin-top:6px;}
+.c-band .acts{display:flex; flex-direction:column; gap:6px; align-items:flex-start;}
+.c-band .btn.white{background:#fff; color:var(--blue); box-shadow:0 4px 0 rgba(0,0,0,.25); min-height:48px; padding:13px 26px;}
+.c-sec{margin-top:30px;}
+.c-one{font-weight:800; font-size:1.1rem; margin:10px 0 0;}
+.c-where{font-size:.84rem; color:rgba(255,255,255,.62); margin:4px 0 0;}
+.c-how{display:grid; grid-template-columns:1fr; gap:14px; margin-top:12px;}
+.c-how .why{font-size:.9rem; box-shadow:var(--paper-shadow); border-radius:6px;}
+.c-how .why b:first-child{font-size:.95rem; letter-spacing:0; text-transform:none; color:var(--ink); margin-bottom:3px;}
+.rot1{transform:rotate(-.6deg);} .rot2{transform:rotate(.6deg);}
+.c-soon{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px;}
+.c-soon > *{border:1.5px dashed rgba(255,255,255,.25); border-radius:14px; padding:12px 14px; color:#fff; text-decoration:none;}
+.c-soon b{display:block; font-weight:800; font-size:1.05rem;}
+.c-soon span{font-size:.8rem; color:rgba(255,255,255,.62);}
+.c-past{display:grid; grid-template-columns:1fr; gap:14px; margin-top:12px;}
+.c-pcard{display:block; background:var(--dark-2); border:1px solid rgba(255,255,255,.1); border-radius:16px; overflow:hidden; color:#fff; text-decoration:none;}
+.c-pcard img{width:100%; aspect-ratio:16/9; display:block; background:rgba(255,255,255,.06);}
+.c-pcard .bd{display:block; padding:12px 14px 14px;}
+.c-pcard .bd > b{display:block; font-weight:800; font-size:1rem;}
+.c-pcard .meta{display:block; font-size:.78rem; color:rgba(255,255,255,.6); margin:2px 0 10px;}
+.c-pcard .why{display:block; font-size:.88rem; box-shadow:none; border-radius:6px; padding:11px 13px;}
+.c-pcard .why[hidden]{display:none;}
+.qfoot{border-top:1px solid rgba(255,255,255,.08); margin-top:28px; padding:18px 0 6px; display:flex; flex-wrap:wrap; align-items:center;
+  gap:2px 18px; font-size:.84rem; color:rgba(255,255,255,.55);}
+.qfoot a{font-weight:800; color:rgba(255,255,255,.72); text-decoration:none; display:inline-flex; align-items:center; min-height:44px;}
+.qfoot .sep{margin-left:auto;}
+@media (max-width:600px){ .qfoot .sep{margin-left:0; flex-basis:100%;} }
+@media (max-width:480px){ .c-pause{width:44px; padding:0; margin-left:0;} .c-pause .pl{display:none;} }
+@media (min-width:820px){
+  .c-say{margin-top:10px; min-height:2.2em;}
+  .c-band{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); grid-template-areas:'hd dt' 'q dt'; padding:30px 32px; gap:12px 28px;}
+  .c-how,.c-past{grid-template-columns:repeat(3,minmax(0,1fr));}
+  .c-soon{grid-template-columns:repeat(4,minmax(0,1fr));}
+}
+@media (prefers-reduced-motion:reduce){ .c-say{transition:none;} }

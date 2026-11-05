@@ -1,0 +1,15 @@
+{
+  "about": "Planned session dates that have no topic yet. The signed-out start page lists them under «Coming up» and offers the next one as «Save the date». A date drops out by itself once it has passed or once a session in sessions.json has the same date. time (HH:MM, Zurich) and room are optional, as in sessions.json.",
+  "planned": [
+    { "date": "2026-12-04" },
+    {
+      "date": "2027-01-08",
+      "note": {
+        "en": "One week later for the New Year",
+        "de": "Wegen Neujahr eine Woche später",
+        "fr": "Une semaine plus tard à cause du Nouvel An",
+        "it": "Una settimana dopo per Capodanno"
+      }
+    }
+  ]
+}
